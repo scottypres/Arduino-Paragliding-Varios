@@ -1,0 +1,7 @@
+profiles:
+  feather-v2:
+    fqbn: esp32:esp32:adafruit_feather_esp32_v2
+    platforms:
+      - platform: esp32:esp32 (3.3.10)
+    libraries:
+      - WiFiManager (2.0.17)

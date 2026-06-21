@@ -1918,58 +1918,6 @@
 		(effects (font (size 1.27 1.27)))
 	)
 	(symbol
-		(lib_id "Connector:Conn_01x03_Pin")
-		(at 25.4 68.58 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid 5593818d-a787-4558-aa1a-42b1aca58bde)
-		(property "Reference" "J3"
-			(at 25.4 63.5 0)
-			(effects (font (size 1.27 1.27)))
-		)
-		(property "Value" "Comidox Boost Module"
-			(at 25.4 73.66 0)
-			(effects (font (size 1.27 1.27)))
-		)
-		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical"
-			(at 25.4 68.58 0)
-			(hide yes)
-			(effects (font (size 1.27 1.27)))
-		)
-		(property "Datasheet" ""
-			(at 25.4 68.58 0)
-			(hide yes)
-			(effects (font (size 1.27 1.27)))
-		)
-		(pin "1" (uuid afdfa9a1-feae-43f1-8441-bd631fbc9716))
-		(pin "2" (uuid a3d201e3-84c5-4f05-8d66-e584dd5120a2))
-		(pin "3" (uuid a3c7392a-6d17-45b1-bb92-2fd73ba079e4))
-		(instances (project "Buzzer PCB" (path "/6e2f3a7a-f7cb-4ca1-a616-e9fb51cc60ce" (reference "J3") (unit 1))))
-	)
-	(label "SW_BAT"
-		(at 30.48 66.04 0)
-		(uuid 3ebaaf8e-7e4a-4a46-bbbc-30ab1e13a1f5)
-		(effects (font (size 1.27 1.27)))
-	)
-	(label "GND"
-		(at 30.48 68.58 0)
-		(uuid bf821fe0-708d-40a1-b865-454d26324cac)
-		(effects (font (size 1.27 1.27)))
-	)
-	(label "BOOST_5V"
-		(at 30.48 71.12 0)
-		(uuid f6ac82d7-cbed-444d-a7ea-fdcb0a449c91)
-		(effects (font (size 1.27 1.27)))
-	)
-	(text "Boost module pin order per markdown: VIN, GND, VOUT"
-		(at 15.24 78.74 0)
-		(uuid a059d758-67aa-4200-8014-a189734e69da)
-		(effects (font (size 1.1 1.1)) (justify left bottom))
-	)
-	(symbol
 		(lib_id "Connector:Conn_01x01_Pin")
 		(at 25.4 104.14 0)
 		(unit 1)
@@ -2164,7 +2112,7 @@
 		(pin "2" (uuid 6bed4627-e9ca-426d-8fdc-c69a819b0ae2))
 		(instances (project "Buzzer PCB" (path "/6e2f3a7a-f7cb-4ca1-a616-e9fb51cc60ce" (reference "BZ1") (unit 1))))
 	)
-	(label "BOOST_5V"
+	(label "SW_BAT"
 		(at 114.3 86.36 0)
 		(uuid 5101ec73-9311-4c05-a2d9-651f3f0df4e7)
 		(effects (font (size 1.27 1.27)))
@@ -2205,7 +2153,7 @@
 		(pin "2" (uuid cb1750a8-69d0-4f97-a18e-86835795001c))
 		(instances (project "Buzzer PCB" (path "/6e2f3a7a-f7cb-4ca1-a616-e9fb51cc60ce" (reference "D1") (unit 1))))
 	)
-	(label "BOOST_5V"
+	(label "SW_BAT"
 		(at 113.03 99.06 0)
 		(uuid ba248b18-e332-4358-a7b4-0a726e2cf0bc)
 		(effects (font (size 1.27 1.27)))
@@ -2215,7 +2163,7 @@
 		(uuid 8ba48667-cc2b-4f48-8324-607b3985b5db)
 		(effects (font (size 1.27 1.27)))
 	)
-	(text "Flyback diode: cathode/stripe to BOOST_5V, anode to BUZZER_LOW"
+	(text "Flyback diode: cathode/stripe to SW_BAT, anode to BUZZER_LOW"
 		(at 99.06 106.68 0)
 		(uuid 4d506ff9-8b21-4b9e-b6b4-53ce0effac6f)
 		(effects (font (size 1.1 1.1)) (justify left bottom))
@@ -2251,7 +2199,7 @@
 		(pin "2" (uuid 095c5274-76ff-4f40-bc77-0869c693da9f))
 		(instances (project "Buzzer PCB" (path "/6e2f3a7a-f7cb-4ca1-a616-e9fb51cc60ce" (reference "C1") (unit 1))))
 	)
-	(label "BOOST_5V"
+	(label "SW_BAT"
 		(at 142.24 85.09 0)
 		(uuid 0ba8a5b9-683c-49cb-b6f4-48d3423a86eb)
 		(effects (font (size 1.27 1.27)))
@@ -2292,7 +2240,7 @@
 		(pin "2" (uuid 9446819a-cdec-467a-a7a6-615dc903cbb2))
 		(instances (project "Buzzer PCB" (path "/6e2f3a7a-f7cb-4ca1-a616-e9fb51cc60ce" (reference "C2") (unit 1))))
 	)
-	(label "BOOST_5V"
+	(label "SW_BAT"
 		(at 154.94 85.09 0)
 		(uuid a52bd1e2-8535-428c-9410-898484d78823)
 		(effects (font (size 1.27 1.27)))
