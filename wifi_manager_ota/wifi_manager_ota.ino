@@ -6,13 +6,54 @@
 #include <WiFiManager.h>
 
 namespace {
-const char *const kWifiSsid = "helloworld";
-const char *const kWifiPassword = "allyourbase69";
+const char *const kWifiSsid = "Warehouse_2G";
+const char *const kWifiPassword = "Scottypres";
 const char *const kOtaHostname = "vario-feather-v2";
 const char *const kConfigPortalSsid = "VarioFeatherSetup";
 const char *const kConfigPortalPassword = "configureme";
 
+constexpr uint8_t kBuzzerPin = 13;
+constexpr uint32_t kBuzzerToneHz = 4000;
+constexpr uint32_t kBuzzerPeriodMs = 3000;
+constexpr uint32_t kBuzzerOnMs = 500;
+constexpr uint8_t kBuzzerResolutionBits = 8;
+
 uint32_t lastOtaProgressMs = 0;
+uint32_t buzzerCycleStartMs = 0;
+bool buzzerOn = false;
+
+void setBuzzer(bool enabled) {
+  if (enabled == buzzerOn) {
+    return;
+  }
+
+  if (enabled) {
+    ledcWriteTone(kBuzzerPin, kBuzzerToneHz);
+  } else {
+    ledcWriteTone(kBuzzerPin, 0);
+    digitalWrite(kBuzzerPin, LOW);
+  }
+
+  buzzerOn = enabled;
+}
+
+void startBuzzer() {
+  pinMode(kBuzzerPin, OUTPUT);
+  digitalWrite(kBuzzerPin, LOW);
+  if (!ledcAttach(kBuzzerPin, kBuzzerToneHz, kBuzzerResolutionBits)) {
+    Serial.println("Buzzer PWM setup failed");
+  }
+  buzzerCycleStartMs = millis();
+}
+
+void serviceBuzzer() {
+  const uint32_t now = millis();
+  while (now - buzzerCycleStartMs >= kBuzzerPeriodMs) {
+    buzzerCycleStartMs += kBuzzerPeriodMs;
+  }
+
+  setBuzzer(now - buzzerCycleStartMs < kBuzzerOnMs);
+}
 
 void onConfigPortal(WiFiManager *manager) {
   Serial.println("WiFiManager configuration portal started");
@@ -22,8 +63,36 @@ void onConfigPortal(WiFiManager *manager) {
   Serial.println(WiFi.softAPIP());
 }
 
+bool connectRequestedWifi() {
+  WiFi.mode(WIFI_STA);
+  WiFi.setHostname(kOtaHostname);
+  WiFi.begin(kWifiSsid, kWifiPassword);
+
+  Serial.printf("Connecting to WiFi SSID: %s\n", kWifiSsid);
+  const uint32_t startMs = millis();
+  while (WiFi.status() != WL_CONNECTED && millis() - startMs < 30000) {
+    serviceBuzzer();
+    delay(100);
+  }
+
+  if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("Requested WiFi connection failed; starting setup portal");
+    WiFi.disconnect(false);
+    return false;
+  }
+
+  Serial.print("Connected to SSID: ");
+  Serial.println(WiFi.SSID());
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
+  return true;
+}
+
 void startWifi() {
   WiFi.mode(WIFI_STA);
+  if (connectRequestedWifi()) {
+    return;
+  }
 
   WiFiManager wm;
   wm.setDebugOutput(true);
@@ -91,11 +160,13 @@ void setup() {
 
   Serial.println();
   Serial.println("Booting Vario Feather WiFiManager OTA sketch");
+  startBuzzer();
   startWifi();
   startOta();
 }
 
 void loop() {
   ArduinoOTA.handle();
+  serviceBuzzer();
   delay(10);
 }

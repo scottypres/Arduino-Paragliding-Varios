@@ -5,7 +5,7 @@
       "Application": "Pcbnew",
       "Version": "10.0.3"
     },
-    "CreationDate": "2026-06-21T18:25:07-04:00"
+    "CreationDate": "2026-06-21T18:25:41-04:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
@@ -32,8 +32,8 @@
   ],
   "FilesAttributes": [
     {
-      "Path": "Buzzer PCB-F_Cu.gbr",
-      "FileFunction": "Copper,L1,Top",
+      "Path": "Buzzer PCB-Edge_Cuts.gbr",
+      "FileFunction": "Profile",
       "FilePolarity": "Positive"
     }
   ],

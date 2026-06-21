@@ -13,8 +13,8 @@
 #include "driver/rtc_io.h"
 
 namespace {
-const char *const kWifiSsid = "helloworld";
-const char *const kWifiPassword = "allyourbase69";
+const char *const kWifiSsid = "Warehouse_2G";
+const char *const kWifiPassword = "Scottypres";
 const char *const kHostname = "vario-feather-v2";
 const char *const kConfigPortalSsid = "VarioFeatherSetup";
 const char *const kConfigPortalPassword = "configureme";
