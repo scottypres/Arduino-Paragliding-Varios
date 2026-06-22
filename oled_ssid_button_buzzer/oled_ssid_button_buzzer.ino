@@ -13,11 +13,15 @@
 #include "driver/rtc_io.h"
 
 namespace {
-const char *const kWifiSsid = "Warehouse_2G";
-const char *const kWifiPassword = "Scottypres";
+const char *const kWifiSsid = "helloworld";
+const char *const kWifiPassword = "allyourbase69";
 const char *const kHostname = "vario-feather-v2";
 const char *const kConfigPortalSsid = "VarioFeatherSetup";
 const char *const kConfigPortalPassword = "configureme";
+
+constexpr uint8_t kBuzzerPin = 13;
+constexpr uint32_t kBuzzerToneHz = 4000;
+constexpr uint8_t kBuzzerResolutionBits = 8;
 
 constexpr uint8_t kButtonA = 15;
 constexpr uint8_t kButtonB = 32;
@@ -45,6 +49,7 @@ bool wifiEnabled = true;
 bool otaStarted = false;
 bool neopixelEnabled = true;
 bool menuActive = false;
+bool buzzerOn = false;
 uint8_t menuIndex = 0;
 
 float altitudeFt = 0.0F;
@@ -75,6 +80,29 @@ void setPixelColor(uint8_t red, uint8_t green, uint8_t blue) {
 #ifdef RGB_BUILTIN
   rgbLedWrite(RGB_BUILTIN, red, green, blue);
 #endif
+}
+
+void setBuzzer(bool enabled) {
+  if (enabled == buzzerOn) {
+    return;
+  }
+
+  if (enabled) {
+    ledcWriteTone(kBuzzerPin, kBuzzerToneHz);
+  } else {
+    ledcWriteTone(kBuzzerPin, 0);
+    digitalWrite(kBuzzerPin, LOW);
+  }
+
+  buzzerOn = enabled;
+}
+
+void startBuzzer() {
+  pinMode(kBuzzerPin, OUTPUT);
+  digitalWrite(kBuzzerPin, LOW);
+  if (!ledcAttach(kBuzzerPin, kBuzzerToneHz, kBuzzerResolutionBits)) {
+    Serial.println("Buzzer PWM setup failed");
+  }
 }
 
 void updatePixel() {
@@ -188,6 +216,27 @@ void drawDisplay() {
 
 void connectWifi() {
   WiFi.mode(WIFI_STA);
+  WiFi.setHostname(kHostname);
+  WiFi.begin(kWifiSsid, kWifiPassword);
+
+  Serial.printf("Connecting to WiFi SSID: %s\n", kWifiSsid);
+  const uint32_t startMs = millis();
+  while (WiFi.status() != WL_CONNECTED && millis() - startMs < 30000) {
+    setBuzzer(digitalRead(kButtonB) == LOW);
+    delay(10);
+  }
+  setBuzzer(false);
+
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.print("Connected to SSID: ");
+    Serial.println(WiFi.SSID());
+    Serial.print("IP address: ");
+    Serial.println(WiFi.localIP());
+    return;
+  }
+
+  Serial.println("Requested WiFi failed; starting setup portal");
+  WiFi.disconnect(false);
 
   WiFiManager wm;
   wm.setDebugOutput(true);
@@ -324,6 +373,8 @@ void serviceButtons() {
   const bool b = digitalRead(kButtonB);
   const bool c = digitalRead(kButtonC);
 
+  setBuzzer(b == LOW);
+
   if (lastA == HIGH && a == LOW) {
     buttonAPressStartMs = millis();
   }
@@ -381,6 +432,7 @@ void setup() {
   pinMode(kButtonA, INPUT_PULLUP);
   pinMode(kButtonB, INPUT_PULLUP);
   pinMode(kButtonC, INPUT_PULLUP);
+  startBuzzer();
   analogSetPinAttenuation(BAT_VOLT_PIN, ADC_11db);
 
   setPixelColor(0, 0, 20);
