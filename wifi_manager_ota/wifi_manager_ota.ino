@@ -14,7 +14,7 @@ const char *const kConfigPortalPassword = "configureme";
 
 constexpr uint8_t kBuzzerPin = 13;
 constexpr uint32_t kBuzzerToneHz = 4000;
-constexpr uint32_t kBuzzerPeriodMs = 3000;
+constexpr uint32_t kBuzzerPeriodMs = 5000;
 constexpr uint32_t kBuzzerOnMs = 500;
 constexpr uint8_t kBuzzerResolutionBits = 8;
 

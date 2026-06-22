@@ -1559,7 +1559,7 @@
 		)
 		(embedded_fonts no)
 	)
-	(symbol "Transistor_BJT:Q_NPN_BCE"
+	(symbol "Transistor_BJT:Q_NPN_EBC"
 		(pin_names
 			(offset 0)
 			(hide yes)
@@ -1580,7 +1580,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "Q_NPN_BCE"
+		(property "Value" "Q_NPN_EBC"
 			(at 5.08 -1.27 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1613,7 +1613,7 @@
 				)
 			)
 		)
-		(property "Description" "NPN transistor, base/collector/emitter"
+		(property "Description" "NPN transistor, emitter/base/collector"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1635,7 +1635,7 @@
 				)
 			)
 		)
-		(property "Sim.Pins" "1=B 2=C 3=E"
+		(property "Sim.Pins" "1=E 2=B 3=C"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1657,7 +1657,7 @@
 				)
 			)
 		)
-		(symbol "Q_NPN_BCE_0_1"
+		(symbol "Q_NPN_EBC_0_1"
 			(polyline
 				(pts
 					(xy -2.54 0) (xy 0.635 0)
@@ -1694,7 +1694,7 @@
 				)
 			)
 		)
-		(symbol "Q_NPN_BCE_1_1"
+		(symbol "Q_NPN_EBC_1_1"
 			(polyline
 				(pts
 					(xy 0.635 0.635) (xy 2.54 2.54)
@@ -1731,10 +1731,10 @@
 					(type outline)
 				)
 			)
-			(pin input line
-				(at -5.08 0 0)
+			(pin passive line
+				(at 2.54 -5.08 90)
 				(length 2.54)
-				(name "B"
+				(name "E"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -1749,10 +1749,10 @@
 					)
 				)
 			)
-			(pin passive line
-				(at 2.54 5.08 270)
+			(pin input line
+				(at -5.08 0 0)
 				(length 2.54)
-				(name "C"
+				(name "B"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -1768,9 +1768,9 @@
 				)
 			)
 			(pin passive line
-				(at 2.54 -5.08 90)
+				(at 2.54 5.08 270)
 				(length 2.54)
-				(name "E"
+				(name "C"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -2035,7 +2035,7 @@
 		(effects (font (size 1.27 1.27)))
 	)
 	(symbol
-		(lib_id "Transistor_BJT:Q_NPN_BCE")
+		(lib_id "Transistor_BJT:Q_NPN_EBC")
 		(at 83.82 104.14 0)
 		(unit 1)
 		(exclude_from_sim no)
