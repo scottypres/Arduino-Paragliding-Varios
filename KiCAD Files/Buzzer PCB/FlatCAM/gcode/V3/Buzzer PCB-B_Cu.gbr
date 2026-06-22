@@ -1,0 +1,68 @@
+%TF.GenerationSoftware,KiCad,Pcbnew,10.0.3*%
+%TF.CreationDate,2026-06-21T20:06:11-04:00*%
+%TF.ProjectId,Buzzer PCB,42757a7a-6572-4205-9043-422e6b696361,rev?*%
+%TF.SameCoordinates,PX5176fe3PY6d58075*%
+%TF.FileFunction,Copper,L2,Bot*%
+%TF.FilePolarity,Positive*%
+%FSLAX46Y46*%
+G04 Gerber Fmt 4.6, Leading zero omitted, Abs format (unit mm)*
+G04 Created by KiCad (PCBNEW 10.0.3) date 2026-06-21 20:06:11*
+%MOMM*%
+%LPD*%
+G01*
+G04 APERTURE LIST*
+%TA.AperFunction,ComponentPad*%
+%ADD10C,1.800000*%
+%TD*%
+%TA.AperFunction,ComponentPad*%
+%ADD11C,2.000000*%
+%TD*%
+%TA.AperFunction,ComponentPad*%
+%ADD12O,1.450000X2.250000*%
+%TD*%
+%TA.AperFunction,ViaPad*%
+%ADD13C,2.000000*%
+%TD*%
+%TA.AperFunction,Conductor*%
+%ADD14C,1.000000*%
+%TD*%
+G04 APERTURE END LIST*
+D10*
+%TO.P,J4,1,Feather D13*%
+%TO.N,D13*%
+X21564000Y-1318600D03*
+%TD*%
+D11*
+%TO.P,R1,1*%
+%TO.N,D13*%
+X21434000Y531400D03*
+%TD*%
+D12*
+%TO.P,J2,1,+*%
+%TO.N,SW_BAT*%
+X6734000Y3691400D03*
+%TO.P,J2,2,-*%
+%TO.N,GND*%
+X8734000Y3691400D03*
+%TD*%
+%TO.P,J1,2,-*%
+%TO.N,GND*%
+X14934000Y3691400D03*
+%TO.P,J1,1,+*%
+%TO.N,BAT_IN*%
+X12934000Y3691400D03*
+%TD*%
+D13*
+%TO.N,D13*%
+X21434000Y3141400D03*
+%TD*%
+%TO.N,D13*%
+D14*
+X21564000Y401400D02*
+X21434000Y531400D01*
+X21564000Y-1318600D02*
+X21564000Y401400D01*
+X21434000Y531400D02*
+X21434000Y3141400D01*
+%TD*%
+M02*

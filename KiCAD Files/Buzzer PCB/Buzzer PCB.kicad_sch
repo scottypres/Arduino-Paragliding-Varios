@@ -1806,7 +1806,7 @@
 			(at 25.4 45.72 0)
 			(effects (font (size 1.27 1.27)))
 		)
-		(property "Footprint" "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
+		(property "Footprint" "Connector_JST:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal"
 			(at 25.4 40.64 0)
 			(hide yes)
 			(effects (font (size 1.27 1.27)))
@@ -1820,12 +1820,12 @@
 		(pin "2" (uuid af8cbc95-a5f8-4e1e-946c-2c24db2fc22a))
 		(instances (project "Buzzer PCB" (path "/6e2f3a7a-f7cb-4ca1-a616-e9fb51cc60ce" (reference "J1") (unit 1))))
 	)
-	(label "GND"
+	(label "BAT_IN"
 		(at 30.48 40.64 0)
 		(uuid 073319ec-02c1-4010-b63c-5575fcbc3566)
 		(effects (font (size 1.27 1.27)))
 	)
-	(label "BAT_IN"
+	(label "GND"
 		(at 30.48 43.18 0)
 		(uuid 7cc00bcf-67cd-4f2f-99f7-f41c83b7c4e5)
 		(effects (font (size 1.27 1.27)))
@@ -1893,7 +1893,7 @@
 			(at 76.2 45.72 0)
 			(effects (font (size 1.27 1.27)))
 		)
-		(property "Footprint" "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
+		(property "Footprint" "Connector_JST:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal"
 			(at 76.2 40.64 0)
 			(hide yes)
 			(effects (font (size 1.27 1.27)))
@@ -1907,12 +1907,12 @@
 		(pin "2" (uuid 081564c6-0dfc-4f18-bac5-6c35f95263e7))
 		(instances (project "Buzzer PCB" (path "/6e2f3a7a-f7cb-4ca1-a616-e9fb51cc60ce" (reference "J2") (unit 1))))
 	)
-	(label "GND"
+	(label "SW_BAT"
 		(at 81.28 40.64 0)
 		(uuid f598e915-06d5-4f82-bff3-5acdb1d622ab)
 		(effects (font (size 1.27 1.27)))
 	)
-	(label "SW_BAT"
+	(label "GND"
 		(at 81.28 43.18 0)
 		(uuid bd628db6-cc33-4cbb-8892-f0864286468d)
 		(effects (font (size 1.27 1.27)))
