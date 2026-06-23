@@ -31,6 +31,8 @@ const char *const kPrefsNamespace = "vario";
 const char *const kPrefWifi = "bootWifi";
 const char *const kPrefPixel = "bootPixel";
 const char *const kPrefAudio = "bootAudio";
+const char *const kPrefStartupBeeps = "startBeeps";
+const char *const kPrefBuzzerVolume = "buzzVol";
 const char *const kPrefDirectSettings = "directAP";
 const char *const kPrefResponse = "response";
 const char *const kPrefColorScale = "colorFt";
@@ -61,9 +63,12 @@ constexpr uint32_t kSinkFreqDecrementHzPerMps = 45;
 constexpr uint32_t kMinToneHz = 130;
 constexpr uint32_t kMaxToneHz = 1800;
 constexpr uint32_t kToneQuantizeHz = 10;
-constexpr uint8_t kBuzzerDuty = 96;
+constexpr uint8_t kDefaultBuzzerVolumePercent = 40;
+constexpr uint8_t kMinBuzzerVolumePercent = 5;
+constexpr uint8_t kMaxBuzzerVolumePercent = 100;
 constexpr uint32_t kMenuLongPressMs = 800;
-constexpr uint8_t kMenuItemCount = 8;
+constexpr uint8_t kMenuItemCount = 10;
+constexpr uint8_t kMenuVisibleRows = 8;
 constexpr uint8_t kToneTestCount = 4;
 constexpr uint32_t kToneTestDurationMs = 3000;
 constexpr uint32_t kBmpWarmupMs = 5000;
@@ -96,6 +101,7 @@ bool wifiEnabled = true;
 bool otaStarted = false;
 bool neopixelEnabled = true;
 bool audioEnabled = true;
+bool startupBeepsEnabled = true;
 bool menuActive = false;
 bool toneOn = false;
 bool liftAudioActive = false;
@@ -114,11 +120,13 @@ bool settingsServerStarted = false;
 bool apSettingsServerStarted = false;
 bool pendingWifiReset = false;
 bool pendingRestart = false;
+bool displayNeedsRefresh = true;
 uint8_t menuIndex = 0;
 uint8_t varioResponseIndex = 1;
 uint8_t toneTestPatternIndex = 0;
 uint8_t toneTestPlayingIndex = 0;
 uint8_t readyBeepCount = 0;
+uint8_t buzzerVolumePercent = kDefaultBuzzerVolumePercent;
 
 float altitudeFt = 0.0F;
 float smoothedAltitudeFt = 0.0F;
@@ -150,8 +158,11 @@ uint32_t lastWifiRetryMs = 0;
 void disableWifi();
 void startWifiPortal();
 void startDirectSettingsAp();
+void stopSettingsServer();
+void stopApSettingsServer();
 void updatePixel();
 void startToneTest();
+void requestDisplayRefresh();
 
 float clampFloat(float value, float low, float high) {
   return min(max(value, low), high);
@@ -177,6 +188,19 @@ uint32_t quantizeFrequency(uint32_t value) {
   return ((value + kToneQuantizeHz / 2) / kToneQuantizeHz) * kToneQuantizeHz;
 }
 
+uint8_t buzzerDuty() {
+  const uint8_t volume = constrain(buzzerVolumePercent,
+                                   kMinBuzzerVolumePercent,
+                                   kMaxBuzzerVolumePercent);
+  uint16_t duty = static_cast<uint16_t>(volume) * 255U / 100U;
+  if (duty < 1U) {
+    duty = 1U;
+  } else if (duty > 255U) {
+    duty = 255U;
+  }
+  return static_cast<uint8_t>(duty);
+}
+
 void setTone(uint32_t frequencyHz) {
   if (!audioEnabled) {
     frequencyHz = 0;
@@ -189,7 +213,7 @@ void setTone(uint32_t frequencyHz) {
 
   if (frequencyHz > 0) {
     ledcWriteTone(kBuzzerPin, frequencyHz);
-    ledcWrite(kBuzzerPin, kBuzzerDuty);
+    ledcWrite(kBuzzerPin, buzzerDuty());
   } else {
     ledcWriteTone(kBuzzerPin, 0);
     digitalWrite(kBuzzerPin, LOW);
@@ -204,6 +228,11 @@ void loadSettings() {
   wifiEnabled = prefs.getBool(kPrefWifi, true);
   neopixelEnabled = prefs.getBool(kPrefPixel, true);
   audioEnabled = prefs.getBool(kPrefAudio, true);
+  startupBeepsEnabled = prefs.getBool(kPrefStartupBeeps, true);
+  buzzerVolumePercent =
+    constrain(prefs.getUChar(kPrefBuzzerVolume, kDefaultBuzzerVolumePercent),
+              kMinBuzzerVolumePercent,
+              kMaxBuzzerVolumePercent);
   directSettingsMode = prefs.getBool(kPrefDirectSettings, false);
   varioResponseIndex = prefs.getUChar(kPrefResponse, varioResponseIndex);
   if (varioResponseIndex >= kVarioResponseCount) {
@@ -237,6 +266,7 @@ void saveAltitudeZero() {
 void saveTuningSettings() {
   prefs.putUChar(kPrefResponse, varioResponseIndex);
   prefs.putFloat(kPrefColorScale, colorScaleFt);
+  prefs.putUChar(kPrefBuzzerVolume, buzzerVolumePercent);
 }
 
 void clearAltitudeZero() {
@@ -303,9 +333,28 @@ String selected(uint8_t value, uint8_t option) {
   return value == option ? " selected" : "";
 }
 
+String wifiStatusText() {
+  if (!wifiEnabled) {
+    return "off";
+  }
+  if (directSettingsMode) {
+    return "AP 192.168.4.1";
+  }
+  if (wifiPortalRunning) {
+    return String("AP ") + kConfigPortalSsid;
+  }
+  if (WiFi.status() == WL_CONNECTED) {
+    return WiFi.localIP().toString();
+  }
+  if (wifiConnectInProgress) {
+    return "connecting";
+  }
+  return "offline";
+}
+
 String settingsPage(const String &message = "") {
   String html;
-  html.reserve(4200);
+  html.reserve(4800);
   html += F("<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'>");
   html += F("<title>Vario Settings</title><style>");
   html += F("body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;margin:18px;max-width:620px}");
@@ -347,7 +396,15 @@ String settingsPage(const String &message = "") {
   html += checked(neopixelEnabled);
   html += F("> NeoPixel enabled</label><label><input type='checkbox' name='buzz'");
   html += checked(audioEnabled);
-  html += F("> Buzzer enabled</label></div>");
+  html += F("> Buzzer enabled</label><label><input type='checkbox' name='startupBeeps'");
+  html += checked(startupBeepsEnabled);
+  html += F("> Startup triple beep</label><label>Buzzer volume <input name='volume' type='number' min='");
+  html += String(kMinBuzzerVolumePercent);
+  html += F("' max='");
+  html += String(kMaxBuzzerVolumePercent);
+  html += F("' step='5' value='");
+  html += String(buzzerVolumePercent);
+  html += F("'>%</label></div>");
   html += F("<div class='row'><label>Vario response <select name='response'>");
   for (uint8_t i = 0; i < kVarioResponseCount; i++) {
     html += F("<option value='");
@@ -385,6 +442,12 @@ void handleSettingsSave(WebServer &server) {
   if (server.hasArg("response")) {
     varioResponseIndex = constrain(server.arg("response").toInt(), 0, kVarioResponseCount - 1);
   }
+  startupBeepsEnabled = server.hasArg("startupBeeps");
+  if (server.hasArg("volume")) {
+    buzzerVolumePercent = constrain(server.arg("volume").toInt(),
+                                    kMinBuzzerVolumePercent,
+                                    kMaxBuzzerVolumePercent);
+  }
   if (server.hasArg("color")) {
     colorScaleFt = clampFloat(server.arg("color").toFloat(), kMinColorScaleFt, kMaxColorScaleFt);
   }
@@ -392,6 +455,7 @@ void handleSettingsSave(WebServer &server) {
   saveBoolSetting(kPrefWifi, wifiEnabled);
   saveBoolSetting(kPrefPixel, neopixelEnabled);
   saveBoolSetting(kPrefAudio, audioEnabled);
+  saveBoolSetting(kPrefStartupBeeps, startupBeepsEnabled);
   saveBoolSetting(kPrefDirectSettings, directSettingsMode);
   saveTuningSettings();
   updatePixel();
@@ -400,6 +464,10 @@ void handleSettingsSave(WebServer &server) {
     toneTestActive = false;
     readyBeepActive = false;
   }
+  if (toneOn) {
+    ledcWrite(kBuzzerPin, buzzerDuty());
+  }
+  requestDisplayRefresh();
   handleSettingsGet(server, "Saved. Network mode changes apply after restart unless you use the direct-mode button.");
 }
 
@@ -429,15 +497,24 @@ void handleDirectNow(WebServer &server) {
 
 void resetWifiCredentials() {
   Serial.println("Resetting WiFi credentials");
+  ArduinoOTA.end();
+  otaStarted = false;
+  wifiManager.stopConfigPortal();
+  wifiPortalRunning = false;
+  wifiConnectInProgress = false;
+  stopSettingsServer();
+  stopApSettingsServer();
+  WiFi.disconnect(true, true);
+  WiFi.mode(WIFI_OFF);
+  delay(100);
   wifiManager.resetSettings();
   directSettingsMode = false;
   wifiEnabled = true;
   saveBoolSetting(kPrefDirectSettings, false);
   saveBoolSetting(kPrefWifi, true);
-  otaStarted = false;
-  wifiConnectInProgress = false;
   lastWifiRetryMs = 0;
   startWifiPortal();
+  requestDisplayRefresh();
 }
 
 void handleResetWifi(WebServer &server) {
@@ -473,7 +550,7 @@ void startToneTest() {
 }
 
 void startReadyBeeps() {
-  if (!audioEnabled) {
+  if (!audioEnabled || !startupBeepsEnabled) {
     return;
   }
 
@@ -646,35 +723,63 @@ void readBattery() {
   batteryPercent = clampFloat((batteryVolts - 3.2F) * 100.0F / (4.2F - 3.2F), 0.0F, 100.0F);
 }
 
+void requestDisplayRefresh() {
+  displayNeedsRefresh = true;
+}
+
+String menuItemText(uint8_t index) {
+  switch (index) {
+    case 0:
+      return String("Boot WiFi:") + boolText(wifiEnabled);
+    case 1:
+      return String("Boot LED:") + boolText(neopixelEnabled);
+    case 2:
+      return String("Boot Buzz:") + boolText(audioEnabled);
+    case 3:
+      return String("Start beep:") + boolText(startupBeepsEnabled);
+    case 4:
+      return String("Volume:") + String(buzzerVolumePercent) + "%";
+    case 5:
+      return String("Response:") + kVarioResponseLabel[varioResponseIndex];
+    case 6:
+      return String("Test:") + (toneTestActive ? kToneTestLabel[toneTestPlayingIndex]
+                                               : kToneTestLabel[toneTestPatternIndex]);
+    case 7:
+      return "Reset WiFi";
+    case 8:
+      return sketchMenuSummary();
+    case 9:
+      return "Deep sleep";
+  }
+  return "";
+}
+
+void drawMenu() {
+  display.setTextSize(1);
+  uint8_t firstRow = 0;
+  if (menuIndex >= kMenuVisibleRows) {
+    firstRow = menuIndex - kMenuVisibleRows + 1;
+  }
+
+  for (uint8_t row = 0; row < kMenuVisibleRows; row++) {
+    const uint8_t item = firstRow + row;
+    if (item >= kMenuItemCount) {
+      break;
+    }
+    display.setCursor(0, row * 8);
+    display.print(item == menuIndex ? "> " : "  ");
+    display.println(menuItemText(item));
+  }
+}
+
 void drawDisplay() {
+  displayNeedsRefresh = false;
   display.clearDisplay();
   display.setCursor(0, 0);
   display.setTextColor(SH110X_WHITE);
 
   if (menuActive) {
-    display.setTextSize(1);
-    display.print(menuIndex == 0 ? "> " : "  ");
-    display.print("Boot WiFi:");
-    display.println(wifiEnabled ? "on" : "off");
-    display.print(menuIndex == 1 ? "> " : "  ");
-    display.print("Boot LED:");
-    display.println(neopixelEnabled ? "on" : "off");
-    display.print(menuIndex == 2 ? "> " : "  ");
-    display.print("Boot Buzz:");
-    display.println(audioEnabled ? "on" : "off");
-    display.print(menuIndex == 3 ? "> " : "  ");
-    display.print("Response: ");
-    display.println(kVarioResponseLabel[varioResponseIndex]);
-    display.print(menuIndex == 4 ? "> " : "  ");
-    display.print("Test: ");
-    display.println(toneTestActive ? kToneTestLabel[toneTestPlayingIndex]
-                                   : kToneTestLabel[toneTestPatternIndex]);
-    display.print(menuIndex == 5 ? "> " : "  ");
-    display.println("Reset WiFi");
-    display.print(menuIndex == 6 ? "> " : "  ");
-    display.println(sketchMenuSummary());
-    display.print(menuIndex == 7 ? "> " : "  ");
-    display.println("Deep sleep");
+    drawMenu();
     display.display();
     return;
   }
@@ -710,10 +815,6 @@ void drawDisplay() {
     display.println("V");
   }
 
-  display.print("Color: ");
-  display.print(colorScaleFt, colorScaleFt < 10.0F ? 1 : 0);
-  display.println(" ft");
-
   display.print("Vario: ");
   if (!bmpWarmupComplete) {
     display.println("warming");
@@ -728,19 +829,9 @@ void drawDisplay() {
   display.print(" SHT: ");
   display.println(shtReady ? "ok" : "missing");
 
+  display.setCursor(0, 56);
   display.print("WiFi: ");
-  if (!wifiEnabled) {
-    display.println("off");
-  } else if (directSettingsMode) {
-    display.println("AP 192.168.4.1");
-  } else if (wifiPortalRunning) {
-    display.println(kConfigPortalSsid);
-  } else {
-    display.println(WiFi.status() == WL_CONNECTED ? WiFi.localIP().toString() : "offline");
-  }
-
-  display.println("A zero B- C+");
-  display.println("Hold A menu");
+  display.println(wifiStatusText());
   display.display();
 }
 
@@ -865,15 +956,27 @@ void startWifiConnection() {
 
 void startWifiPortal() {
   stopSettingsServer();
+  stopApSettingsServer();
+  ArduinoOTA.end();
+  otaStarted = false;
+  wifiManager.stopConfigPortal();
+  delay(50);
   WiFi.disconnect(false);
+  WiFi.mode(WIFI_OFF);
+  delay(100);
   WiFi.mode(WIFI_AP_STA);
   Serial.print("Starting setup AP: ");
   Serial.println(kConfigPortalSsid);
-  wifiManager.startConfigPortal(kConfigPortalSsid, kConfigPortalPassword);
-  wifiPortalRunning = wifiManager.getConfigPortalActive();
+  const bool portalStarted = wifiManager.startConfigPortal(kConfigPortalSsid, kConfigPortalPassword);
+  wifiPortalRunning = wifiManager.getConfigPortalActive() || portalStarted;
   wifiPortalStartMs = millis();
   wifiConnectInProgress = false;
   startApSettingsServer();
+  Serial.print("Setup AP active: ");
+  Serial.println(wifiPortalRunning ? "yes" : "no");
+  Serial.print("Setup AP IP: ");
+  Serial.println(WiFi.softAPIP());
+  requestDisplayRefresh();
 }
 
 void startDirectSettingsAp() {
@@ -888,6 +991,7 @@ void startDirectSettingsAp() {
   startSettingsServer();
   Serial.print("Direct AP mode active at ");
   Serial.println(settingsUrl());
+  requestDisplayRefresh();
 }
 
 void startOta() {
@@ -930,6 +1034,7 @@ void disableWifi() {
   stopApSettingsServer();
   WiFi.disconnect(true);
   WiFi.mode(WIFI_OFF);
+  requestDisplayRefresh();
 }
 
 void enableWifi() {
@@ -963,6 +1068,7 @@ void serviceWifi() {
       Serial.println(WiFi.localIP());
       startOta();
       startSettingsServer();
+      requestDisplayRefresh();
       return;
     }
 
@@ -973,6 +1079,7 @@ void serviceWifi() {
       stopApSettingsServer();
       lastWifiRetryMs = millis();
       Serial.println("WiFi setup AP closed; continuing offline");
+      requestDisplayRefresh();
     }
     return;
   }
@@ -982,6 +1089,7 @@ void serviceWifi() {
     wifiConnectInProgress = false;
     startOta();
     startSettingsServer();
+    requestDisplayRefresh();
     return;
   }
 
@@ -1146,6 +1254,7 @@ void serviceButtons() {
     const bool longPress = millis() - buttonAPressStartMs >= kMenuLongPressMs;
     if (longPress) {
       menuActive = !menuActive;
+      requestDisplayRefresh();
     } else if (menuActive) {
       if (menuIndex == 0) {
         wifiEnabled = !wifiEnabled;
@@ -1172,25 +1281,44 @@ void serviceButtons() {
           readyBeepActive = false;
         }
       } else if (menuIndex == 3) {
+        startupBeepsEnabled = !startupBeepsEnabled;
+        saveBoolSetting(kPrefStartupBeeps, startupBeepsEnabled);
+        if (!startupBeepsEnabled) {
+          readyBeepActive = false;
+          setTone(0);
+        }
+      } else if (menuIndex == 4) {
+        buzzerVolumePercent += 10;
+        if (buzzerVolumePercent > kMaxBuzzerVolumePercent) {
+          buzzerVolumePercent = kMinBuzzerVolumePercent;
+        }
+        saveTuningSettings();
+        if (toneOn) {
+          ledcWrite(kBuzzerPin, buzzerDuty());
+        }
+      } else if (menuIndex == 5) {
         varioResponseIndex = (varioResponseIndex + 1) % kVarioResponseCount;
         saveTuningSettings();
-      } else if (menuIndex == 4) {
-        startToneTest();
-      } else if (menuIndex == 5) {
-        resetWifiCredentials();
       } else if (menuIndex == 6) {
-        // Memory is display-only.
+        startToneTest();
       } else if (menuIndex == 7) {
+        resetWifiCredentials();
+      } else if (menuIndex == 8) {
+        // Memory is display-only.
+      } else if (menuIndex == 9) {
         enterDeepSleep();
       }
+      requestDisplayRefresh();
     } else {
       saveAltitudeZero();
+      requestDisplayRefresh();
     }
   }
 
   if (lastB == HIGH && b == LOW) {
     if (menuActive) {
       menuIndex = (menuIndex + kMenuItemCount - 1) % kMenuItemCount;
+      requestDisplayRefresh();
     } else {
       colorScaleFt = clampFloat(colorScaleFt / 1.5F, kMinColorScaleFt, kMaxColorScaleFt);
       saveTuningSettings();
@@ -1200,6 +1328,7 @@ void serviceButtons() {
   if (lastC == HIGH && c == LOW) {
     if (menuActive) {
       menuIndex = (menuIndex + 1) % kMenuItemCount;
+      requestDisplayRefresh();
     } else {
       colorScaleFt = clampFloat(colorScaleFt * 1.5F, kMinColorScaleFt, kMaxColorScaleFt);
       saveTuningSettings();
@@ -1242,13 +1371,13 @@ void setup() {
 }
 
 void loop() {
+  serviceButtons();
   serviceWifi();
 
   if (wifiEnabled && otaStarted) {
     ArduinoOTA.handle();
   }
   serviceSettingsServers();
-  serviceButtons();
   updateVarioAudio();
 
   if (millis() - lastSensorReadMs >= 100) {
@@ -1256,7 +1385,7 @@ void loop() {
     readSensors();
   }
 
-  if (millis() - lastDisplayUpdateMs >= 100) {
+  if (displayNeedsRefresh || millis() - lastDisplayUpdateMs >= 100) {
     lastDisplayUpdateMs = millis();
     drawDisplay();
   }
