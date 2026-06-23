@@ -62,6 +62,8 @@ constexpr uint8_t kToneTestCount = 4;
 constexpr uint32_t kToneTestDurationMs = 3000;
 constexpr uint32_t kBmpWarmupMs = 5000;
 constexpr uint32_t kBmpRetryMs = 2000;
+constexpr uint32_t kWifiConnectTimeoutMs = 8000;
+constexpr uint32_t kWifiPortalTimeoutMs = 300000;
 constexpr uint32_t kWifiRetryMs = 30000;
 const char *const kToneTestLabel[] = {"Ascent", "Fast up", "Descent", "Fast down"};
 
@@ -90,6 +92,7 @@ bool varioRateInitialized = false;
 bool toneTestActive = false;
 bool readyBeepActive = false;
 bool bmpWarmupComplete = false;
+bool wifiConnectInProgress = false;
 bool wifiPortalRunning = false;
 uint8_t menuIndex = 0;
 uint8_t varioResponseIndex = 1;
@@ -120,6 +123,8 @@ uint32_t toneTestStartMs = 0;
 uint32_t bmpWarmupStartMs = 0;
 uint32_t lastBmpInitAttemptMs = 0;
 uint32_t readyBeepPhaseStartMs = 0;
+uint32_t wifiConnectStartMs = 0;
+uint32_t wifiPortalStartMs = 0;
 uint32_t lastWifiRetryMs = 0;
 
 void disableWifi();
@@ -480,38 +485,51 @@ void drawDisplay() {
 void configureWifiManager() {
   wifiManager.setDebugOutput(true);
   wifiManager.setHostname(kHostname);
-  wifiManager.setConnectTimeout(10);
-  wifiManager.setConnectRetries(2);
+  wifiManager.setConnectTimeout(4);
+  wifiManager.setConnectRetries(1);
   wifiManager.setSaveConnectTimeout(20);
-  wifiManager.setConfigPortalTimeout(300);
+  wifiManager.setConfigPortalTimeout(kWifiPortalTimeoutMs / 1000);
   wifiManager.setConfigPortalBlocking(false);
   wifiManager.preloadWiFi(kWifiSsid, kWifiPassword);
 }
 
-void beginWifi() {
+void startWifiConnection() {
   if (!wifiEnabled) {
     disableWifi();
     return;
   }
 
+  if (wifiPortalRunning) {
+    wifiManager.stopConfigPortal();
+    wifiPortalRunning = false;
+  }
+
   WiFi.mode(WIFI_STA);
   WiFi.setHostname(kHostname);
-
-  Serial.println("Starting WiFiManager");
-  const bool connected = wifiManager.autoConnect(kConfigPortalSsid, kConfigPortalPassword);
-  wifiPortalRunning = !connected && WiFi.status() != WL_CONNECTED;
-  lastWifiRetryMs = millis();
-
-  if (connected || WiFi.status() == WL_CONNECTED) {
-    wifiPortalRunning = false;
-    Serial.print("Connected to SSID: ");
+  if (WiFi.SSID().length() > 0) {
+    Serial.print("Starting WiFi with saved SSID: ");
     Serial.println(WiFi.SSID());
-    Serial.print("IP address: ");
-    Serial.println(WiFi.localIP());
+    WiFi.begin();
   } else {
-    Serial.print("WiFi offline; setup AP active as ");
-    Serial.println(kConfigPortalSsid);
+    Serial.print("Starting WiFi with default SSID: ");
+    Serial.println(kWifiSsid);
+    WiFi.begin(kWifiSsid, kWifiPassword);
   }
+
+  wifiConnectInProgress = true;
+  wifiConnectStartMs = millis();
+  lastWifiRetryMs = wifiConnectStartMs;
+}
+
+void startWifiPortal() {
+  WiFi.disconnect(false);
+  WiFi.mode(WIFI_AP_STA);
+  Serial.print("Starting setup AP: ");
+  Serial.println(kConfigPortalSsid);
+  wifiManager.startConfigPortal(kConfigPortalSsid, kConfigPortalPassword);
+  wifiPortalRunning = wifiManager.getConfigPortalActive();
+  wifiPortalStartMs = millis();
+  wifiConnectInProgress = false;
 }
 
 void startOta() {
@@ -547,14 +565,15 @@ void startOta() {
 void disableWifi() {
   ArduinoOTA.end();
   otaStarted = false;
+  wifiConnectInProgress = false;
   wifiPortalRunning = false;
+  wifiManager.stopConfigPortal();
   WiFi.disconnect(true);
   WiFi.mode(WIFI_OFF);
 }
 
 void enableWifi() {
-  beginWifi();
-  startOta();
+  startWifiConnection();
 }
 
 void serviceWifi() {
@@ -562,18 +581,50 @@ void serviceWifi() {
     return;
   }
 
+  if (!bmpWarmupComplete) {
+    return;
+  }
+
   if (wifiPortalRunning) {
-    wifiPortalRunning = wifiManager.process();
+    wifiManager.process();
+    if (WiFi.status() == WL_CONNECTED) {
+      wifiPortalRunning = false;
+      wifiConnectInProgress = false;
+      Serial.print("Connected to SSID: ");
+      Serial.println(WiFi.SSID());
+      Serial.print("IP address: ");
+      Serial.println(WiFi.localIP());
+      startOta();
+      return;
+    }
+
+    if (!wifiManager.getConfigPortalActive() ||
+        millis() - wifiPortalStartMs >= kWifiPortalTimeoutMs) {
+      wifiManager.stopConfigPortal();
+      wifiPortalRunning = false;
+      lastWifiRetryMs = millis();
+      Serial.println("WiFi setup AP closed; continuing offline");
+    }
+    return;
   }
 
   if (WiFi.status() == WL_CONNECTED) {
     wifiPortalRunning = false;
+    wifiConnectInProgress = false;
     startOta();
     return;
   }
 
-  if (!wifiPortalRunning && millis() - lastWifiRetryMs >= kWifiRetryMs) {
-    beginWifi();
+  if (wifiConnectInProgress) {
+    if (millis() - wifiConnectStartMs >= kWifiConnectTimeoutMs) {
+      Serial.println("WiFi connect timed out");
+      startWifiPortal();
+    }
+    return;
+  }
+
+  if (lastWifiRetryMs == 0 || millis() - lastWifiRetryMs >= kWifiRetryMs) {
+    startWifiConnection();
   }
 }
 
@@ -800,10 +851,7 @@ void setup() {
   drawDisplay();
 
   configureWifiManager();
-  if (wifiEnabled) {
-    beginWifi();
-    startOta();
-  } else {
+  if (!wifiEnabled) {
     disableWifi();
   }
 }
