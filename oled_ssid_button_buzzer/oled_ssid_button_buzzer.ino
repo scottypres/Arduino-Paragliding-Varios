@@ -162,6 +162,7 @@ void startWifiPortal();
 void startDirectSettingsAp();
 void stopSettingsServer();
 void stopApSettingsServer();
+void stopWifiPortalIfActive();
 void startToneTest();
 void requestDisplayRefresh();
 
@@ -493,15 +494,12 @@ void resetWifiCredentials() {
   Serial.println("Resetting WiFi credentials");
   ArduinoOTA.end();
   otaStarted = false;
-  wifiManager.stopConfigPortal();
+  stopWifiPortalIfActive();
   wifiPortalRunning = false;
   wifiConnectInProgress = false;
   stopSettingsServer();
   stopApSettingsServer();
   wifiManager.resetSettings();
-  WiFi.disconnect(true, true);
-  WiFi.mode(WIFI_OFF);
-  delay(100);
   directSettingsMode = false;
   wifiSetupRequired = true;
   wifiEnabled = true;
@@ -874,6 +872,12 @@ void stopApSettingsServer() {
   }
 }
 
+void stopWifiPortalIfActive() {
+  if (wifiManager.getConfigPortalActive()) {
+    wifiManager.stopConfigPortal();
+  }
+}
+
 void serviceSettingsServers() {
   if (settingsServerStarted) {
     settingsServer.handleClient();
@@ -905,7 +909,7 @@ void startWifiConnection() {
   }
 
   if (wifiPortalRunning) {
-    wifiManager.stopConfigPortal();
+    stopWifiPortalIfActive();
     wifiPortalRunning = false;
   }
   stopApSettingsServer();
@@ -934,12 +938,10 @@ void startWifiPortal() {
   stopApSettingsServer();
   ArduinoOTA.end();
   otaStarted = false;
-  wifiManager.stopConfigPortal();
-  delay(50);
+  stopWifiPortalIfActive();
   WiFi.disconnect(false);
-  WiFi.mode(WIFI_OFF);
-  delay(100);
-  WiFi.mode(WIFI_AP_STA);
+  WiFi.mode(WIFI_STA);
+  WiFi.setHostname(kHostname);
   Serial.print("Starting setup AP: ");
   Serial.println(kConfigPortalSsid);
   const bool portalStarted = wifiManager.startConfigPortal(kConfigPortalSsid, kConfigPortalPassword);
@@ -956,7 +958,7 @@ void startWifiPortal() {
 
 void startDirectSettingsAp() {
   stopApSettingsServer();
-  wifiManager.stopConfigPortal();
+  stopWifiPortalIfActive();
   wifiPortalRunning = false;
   wifiConnectInProgress = false;
   otaStarted = false;
@@ -1004,7 +1006,7 @@ void disableWifi() {
   otaStarted = false;
   wifiConnectInProgress = false;
   wifiPortalRunning = false;
-  wifiManager.stopConfigPortal();
+  stopWifiPortalIfActive();
   stopSettingsServer();
   stopApSettingsServer();
   WiFi.disconnect(true);
@@ -1051,7 +1053,7 @@ void serviceWifi() {
 
     if (!wifiManager.getConfigPortalActive() ||
         millis() - wifiPortalStartMs >= kWifiPortalTimeoutMs) {
-      wifiManager.stopConfigPortal();
+      stopWifiPortalIfActive();
       wifiPortalRunning = false;
       stopApSettingsServer();
       lastWifiRetryMs = millis();
