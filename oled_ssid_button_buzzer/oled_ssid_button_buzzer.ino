@@ -40,6 +40,7 @@ constexpr uint8_t kButtonA = 15;
 constexpr uint8_t kButtonB = 32;
 constexpr uint8_t kButtonC = 14;
 
+constexpr uint32_t kI2cClockHz = 400000;
 constexpr float kMetersToFeet = 3.28084F;
 constexpr float kFeetToMeters = 1.0F / kMetersToFeet;
 constexpr float kSeaLevelPressureHpa = 1013.25F;
@@ -62,12 +63,12 @@ constexpr uint8_t kDefaultBuzzerVolumePercent = 40;
 constexpr uint8_t kMinBuzzerVolumePercent = 5;
 constexpr uint8_t kMaxBuzzerVolumePercent = 100;
 constexpr uint32_t kMenuLongPressMs = 800;
+constexpr uint32_t kButtonDebounceMs = 45;
 constexpr uint8_t kMenuItemCount = 9;
 constexpr uint8_t kMenuVisibleRows = 8;
 constexpr uint8_t kToneTestCount = 4;
 constexpr uint32_t kToneTestDurationMs = 3000;
 constexpr uint32_t kSensorReadMs = 100;
-constexpr uint32_t kMenuSensorReadMs = 250;
 constexpr uint32_t kDisplayUpdateMs = 100;
 constexpr uint32_t kBmpWarmupMs = 5000;
 constexpr uint32_t kBmpRetryMs = 2000;
@@ -94,6 +95,8 @@ bool shtReady = false;
 bool lastA = HIGH;
 bool lastB = HIGH;
 bool lastC = HIGH;
+volatile bool buttonBPressed = false;
+volatile bool buttonCPressed = false;
 bool altitudeFilterInitialized = false;
 bool wifiEnabled = true;
 bool otaStarted = false;
@@ -143,6 +146,8 @@ uint32_t lastOtaProgressMs = 0;
 uint32_t lastVarioRateUpdateMs = 0;
 uint32_t liftPhaseStartMs = 0;
 uint32_t buttonAPressStartMs = 0;
+uint32_t lastButtonBEventMs = 0;
+uint32_t lastButtonCEventMs = 0;
 uint32_t currentToneHz = 0;
 uint32_t toneTestStartMs = 0;
 uint32_t bmpWarmupStartMs = 0;
@@ -159,6 +164,14 @@ void stopSettingsServer();
 void stopApSettingsServer();
 void startToneTest();
 void requestDisplayRefresh();
+
+void IRAM_ATTR onButtonBPressed() {
+  buttonBPressed = true;
+}
+
+void IRAM_ATTR onButtonCPressed() {
+  buttonCPressed = true;
+}
 
 float clampFloat(float value, float low, float high) {
   return min(max(value, low), high);
@@ -1104,7 +1117,6 @@ void startSht() {
 }
 
 void startSensors() {
-  Wire.begin();
   startBmp();
   startSht();
 }
@@ -1222,6 +1234,19 @@ void serviceButtons() {
   const bool a = digitalRead(kButtonA);
   const bool b = digitalRead(kButtonB);
   const bool c = digitalRead(kButtonC);
+  bool pendingB = false;
+  bool pendingC = false;
+
+  noInterrupts();
+  if (buttonBPressed) {
+    pendingB = true;
+    buttonBPressed = false;
+  }
+  if (buttonCPressed) {
+    pendingC = true;
+    buttonCPressed = false;
+  }
+  interrupts();
 
   if (lastA == HIGH && a == LOW) {
     buttonAPressStartMs = millis();
@@ -1288,14 +1313,19 @@ void serviceButtons() {
     }
   }
 
-  if (lastB == HIGH && b == LOW) {
+  const uint32_t now = millis();
+  if ((pendingB || (lastB == HIGH && b == LOW)) &&
+      now - lastButtonBEventMs >= kButtonDebounceMs) {
+    lastButtonBEventMs = now;
     if (menuActive) {
       menuIndex = (menuIndex + kMenuItemCount - 1) % kMenuItemCount;
       requestDisplayRefresh();
     }
   }
 
-  if (lastC == HIGH && c == LOW) {
+  if ((pendingC || (lastC == HIGH && c == LOW)) &&
+      now - lastButtonCEventMs >= kButtonDebounceMs) {
+    lastButtonCEventMs = now;
     if (menuActive) {
       menuIndex = (menuIndex + 1) % kMenuItemCount;
       requestDisplayRefresh();
@@ -1317,10 +1347,15 @@ void setup() {
   pinMode(kButtonA, INPUT_PULLUP);
   pinMode(kButtonB, INPUT_PULLUP);
   pinMode(kButtonC, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(kButtonB), onButtonBPressed, FALLING);
+  attachInterrupt(digitalPinToInterrupt(kButtonC), onButtonCPressed, FALLING);
   startBuzzer();
   analogSetPinAttenuation(BAT_VOLT_PIN, ADC_11db);
 
   disableOnboardPixel();
+
+  Wire.begin();
+  Wire.setClock(kI2cClockHz);
 
   display.begin(0x3C, true);
   display.setRotation(1);
@@ -1350,8 +1385,7 @@ void loop() {
   updateVarioAudio();
 
   const uint32_t now = millis();
-  const uint32_t sensorIntervalMs = menuActive ? kMenuSensorReadMs : kSensorReadMs;
-  if (now - lastSensorReadMs >= sensorIntervalMs) {
+  if (!menuActive && now - lastSensorReadMs >= kSensorReadMs) {
     lastSensorReadMs = millis();
     readSensors();
     serviceButtons();
