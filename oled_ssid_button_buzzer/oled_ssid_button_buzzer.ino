@@ -4,6 +4,7 @@
 #include <NetworkUdp.h>
 #include <ArduinoOTA.h>
 #include <Preferences.h>
+#include <WebServer.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SH110X.h>
@@ -30,6 +31,9 @@ const char *const kPrefsNamespace = "vario";
 const char *const kPrefWifi = "bootWifi";
 const char *const kPrefPixel = "bootPixel";
 const char *const kPrefAudio = "bootAudio";
+const char *const kPrefDirectSettings = "directAP";
+const char *const kPrefResponse = "response";
+const char *const kPrefColorScale = "colorFt";
 const char *const kPrefHasAltitudeZero = "hasZero";
 const char *const kPrefAltitudeZeroFt = "zeroFt";
 
@@ -59,7 +63,7 @@ constexpr uint32_t kMaxToneHz = 1800;
 constexpr uint32_t kToneQuantizeHz = 10;
 constexpr uint8_t kBuzzerDuty = 96;
 constexpr uint32_t kMenuLongPressMs = 800;
-constexpr uint8_t kMenuItemCount = 6;
+constexpr uint8_t kMenuItemCount = 7;
 constexpr uint8_t kToneTestCount = 4;
 constexpr uint32_t kToneTestDurationMs = 3000;
 constexpr uint32_t kBmpWarmupMs = 5000;
@@ -67,13 +71,20 @@ constexpr uint32_t kBmpRetryMs = 2000;
 constexpr uint32_t kWifiConnectTimeoutMs = 8000;
 constexpr uint32_t kWifiPortalTimeoutMs = 300000;
 constexpr uint32_t kWifiRetryMs = 30000;
+constexpr uint16_t kSettingsPort = 80;
+constexpr uint16_t kApSettingsPort = 8080;
 const char *const kToneTestLabel[] = {"Ascent", "Fast up", "Descent", "Fast down"};
+const char *const kNoRouterLinkHtml =
+  "<p><a href='http://192.168.4.1:8080/'>No router mode / settings</a></p>";
 
 Adafruit_SH1107 display = Adafruit_SH1107(64, 128, &Wire);
 Adafruit_SHT4x sht4 = Adafruit_SHT4x();
 Adafruit_BMP5xx bmp;
 Preferences prefs;
 WiFiManager wifiManager;
+WiFiManagerParameter noRouterLink(kNoRouterLinkHtml);
+WebServer settingsServer(kSettingsPort);
+WebServer apSettingsServer(kApSettingsPort);
 
 bool bmpReady = false;
 bool shtReady = false;
@@ -95,8 +106,14 @@ bool toneTestActive = false;
 bool readyBeepActive = false;
 bool bmpWarmupComplete = false;
 bool altitudeZeroSaved = false;
+bool directSettingsMode = false;
 bool wifiConnectInProgress = false;
 bool wifiPortalRunning = false;
+bool settingsRoutesConfigured = false;
+bool settingsServerStarted = false;
+bool apSettingsServerStarted = false;
+bool pendingWifiReset = false;
+bool pendingRestart = false;
 uint8_t menuIndex = 0;
 uint8_t varioResponseIndex = 1;
 uint8_t toneTestPatternIndex = 0;
@@ -131,6 +148,10 @@ uint32_t wifiPortalStartMs = 0;
 uint32_t lastWifiRetryMs = 0;
 
 void disableWifi();
+void startWifiPortal();
+void startDirectSettingsAp();
+void updatePixel();
+void startToneTest();
 
 float clampFloat(float value, float low, float high) {
   return min(max(value, low), high);
@@ -183,8 +204,19 @@ void loadSettings() {
   wifiEnabled = prefs.getBool(kPrefWifi, true);
   neopixelEnabled = prefs.getBool(kPrefPixel, true);
   audioEnabled = prefs.getBool(kPrefAudio, true);
+  directSettingsMode = prefs.getBool(kPrefDirectSettings, false);
+  varioResponseIndex = prefs.getUChar(kPrefResponse, varioResponseIndex);
+  if (varioResponseIndex >= kVarioResponseCount) {
+    varioResponseIndex = 1;
+  }
+  colorScaleFt = clampFloat(prefs.getFloat(kPrefColorScale, colorScaleFt),
+                            kMinColorScaleFt,
+                            kMaxColorScaleFt);
   altitudeZeroSaved = prefs.getBool(kPrefHasAltitudeZero, false);
   baselineSmoothedAltitudeFt = prefs.getFloat(kPrefAltitudeZeroFt, 0.0F);
+  if (directSettingsMode) {
+    wifiEnabled = true;
+  }
 }
 
 void saveBoolSetting(const char *key, bool value) {
@@ -200,6 +232,179 @@ void saveAltitudeZero() {
   Serial.print("Altitude zero saved at ");
   Serial.print(baselineSmoothedAltitudeFt, 2);
   Serial.println(" ft");
+}
+
+void saveTuningSettings() {
+  prefs.putUChar(kPrefResponse, varioResponseIndex);
+  prefs.putFloat(kPrefColorScale, colorScaleFt);
+}
+
+void clearAltitudeZero() {
+  prefs.remove(kPrefAltitudeZeroFt);
+  prefs.putBool(kPrefHasAltitudeZero, false);
+  altitudeZeroSaved = false;
+  baselineSmoothedAltitudeFt = smoothedAltitudeFt;
+  displayAltitudeFt = 0.0F;
+  Serial.println("Saved altitude zero cleared");
+}
+
+String boolText(bool value) {
+  return value ? "on" : "off";
+}
+
+String settingsUrl() {
+  if (wifiPortalRunning) {
+    return String("http://192.168.4.1:") + String(kApSettingsPort) + "/";
+  }
+  if (directSettingsMode) {
+    return "http://192.168.4.1/";
+  }
+  if (WiFi.status() == WL_CONNECTED) {
+    return String("http://") + WiFi.localIP().toString() + "/";
+  }
+  return "offline";
+}
+
+String checked(bool value) {
+  return value ? " checked" : "";
+}
+
+String selected(uint8_t value, uint8_t option) {
+  return value == option ? " selected" : "";
+}
+
+String settingsPage(const String &message = "") {
+  String html;
+  html.reserve(4200);
+  html += F("<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'>");
+  html += F("<title>Vario Settings</title><style>");
+  html += F("body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;margin:18px;max-width:620px}");
+  html += F("label{display:block;margin:12px 0}.row{padding:10px 0;border-bottom:1px solid #ddd}");
+  html += F("button,input,select{font-size:16px;padding:7px}button{margin:4px 4px 4px 0}.status{background:#eee;padding:10px}");
+  html += F("</style></head><body><h1>Vario Settings</h1>");
+  if (message.length() > 0) {
+    html += F("<p class='status'>");
+    html += message;
+    html += F("</p>");
+  }
+  html += F("<p class='status'>Altitude ");
+  html += String(displayAltitudeFt, 2);
+  html += F(" ft<br>Vario ");
+  html += String(verticalSpeedMps, 2);
+  html += F(" m/s<br>Battery ");
+  html += isnan(batteryPercent) ? String("--") : String(batteryPercent, 0);
+  html += F("%<br>Settings URL ");
+  html += settingsUrl();
+  html += F("</p><form method='POST' action='/save'>");
+  html += F("<div class='row'><label><input type='checkbox' name='bootWifi'");
+  html += checked(wifiEnabled);
+  html += F("> Boot WiFi</label><label><input type='checkbox' name='direct'");
+  html += checked(directSettingsMode);
+  html += F("> Direct AP / no-router mode</label></div>");
+  html += F("<div class='row'><label><input type='checkbox' name='led'");
+  html += checked(neopixelEnabled);
+  html += F("> NeoPixel enabled</label><label><input type='checkbox' name='buzz'");
+  html += checked(audioEnabled);
+  html += F("> Buzzer enabled</label></div>");
+  html += F("<div class='row'><label>Vario response <select name='response'>");
+  for (uint8_t i = 0; i < kVarioResponseCount; i++) {
+    html += F("<option value='");
+    html += String(i);
+    html += "'";
+    html += selected(varioResponseIndex, i);
+    html += ">";
+    html += kVarioResponseLabel[i];
+    html += F("</option>");
+  }
+  html += F("</select></label><label>Color scale ft <input name='color' type='number' min='0.1' max='1000' step='0.1' value='");
+  html += String(colorScaleFt, 1);
+  html += F("'></label></div><button type='submit'>Save settings</button></form>");
+  html += F("<form method='POST' action='/zero'><button>Set altitude zero</button></form>");
+  html += F("<form method='POST' action='/clear-zero'><button>Clear saved altitude zero</button></form>");
+  html += F("<form method='POST' action='/tone-test'><button>Play tone test</button></form>");
+  html += F("<form method='POST' action='/direct-now'><button>Use no-router mode now</button></form>");
+  html += F("<form method='POST' action='/reset-wifi'><button>Reset WiFi credentials</button></form>");
+  html += F("</body></html>");
+  return html;
+}
+
+void handleSettingsGet(WebServer &server, const String &message = "") {
+  server.send(200, "text/html", settingsPage(message));
+}
+
+void handleSettingsSave(WebServer &server) {
+  wifiEnabled = server.hasArg("bootWifi");
+  directSettingsMode = server.hasArg("direct");
+  if (directSettingsMode) {
+    wifiEnabled = true;
+  }
+  neopixelEnabled = server.hasArg("led");
+  audioEnabled = server.hasArg("buzz");
+  if (server.hasArg("response")) {
+    varioResponseIndex = constrain(server.arg("response").toInt(), 0, kVarioResponseCount - 1);
+  }
+  if (server.hasArg("color")) {
+    colorScaleFt = clampFloat(server.arg("color").toFloat(), kMinColorScaleFt, kMaxColorScaleFt);
+  }
+
+  saveBoolSetting(kPrefWifi, wifiEnabled);
+  saveBoolSetting(kPrefPixel, neopixelEnabled);
+  saveBoolSetting(kPrefAudio, audioEnabled);
+  saveBoolSetting(kPrefDirectSettings, directSettingsMode);
+  saveTuningSettings();
+  updatePixel();
+  if (!audioEnabled) {
+    setTone(0);
+    toneTestActive = false;
+    readyBeepActive = false;
+  }
+  handleSettingsGet(server, "Saved. Network mode changes apply after restart unless you use the direct-mode button.");
+}
+
+void handleSettingsZero(WebServer &server) {
+  saveAltitudeZero();
+  handleSettingsGet(server, "Altitude zero saved.");
+}
+
+void handleClearZero(WebServer &server) {
+  clearAltitudeZero();
+  handleSettingsGet(server, "Saved altitude zero cleared.");
+}
+
+void handleToneTest(WebServer &server) {
+  startToneTest();
+  handleSettingsGet(server, "Tone test started.");
+}
+
+void handleDirectNow(WebServer &server) {
+  directSettingsMode = true;
+  wifiEnabled = true;
+  saveBoolSetting(kPrefDirectSettings, true);
+  saveBoolSetting(kPrefWifi, true);
+  handleSettingsGet(server, "Direct AP mode saved. Restarting into no-router mode.");
+  pendingRestart = true;
+}
+
+void resetWifiCredentials() {
+  Serial.println("Resetting WiFi credentials");
+  wifiManager.resetSettings();
+  directSettingsMode = false;
+  wifiEnabled = true;
+  saveBoolSetting(kPrefDirectSettings, false);
+  saveBoolSetting(kPrefWifi, true);
+  otaStarted = false;
+  wifiConnectInProgress = false;
+  lastWifiRetryMs = 0;
+  startWifiPortal();
+}
+
+void handleResetWifi(WebServer &server) {
+  handleSettingsGet(server, "WiFi credentials cleared. Starting setup AP.");
+  pendingWifiReset = true;
+}
+
+void handleSettingsNotFound(WebServer &server) {
+  server.send(404, "text/plain", "Not found");
 }
 
 void startBuzzer() {
@@ -406,7 +611,6 @@ void drawDisplay() {
 
   if (menuActive) {
     display.setTextSize(1);
-    display.println("Menu");
     display.print(menuIndex == 0 ? "> " : "  ");
     display.print("Boot WiFi:");
     display.println(wifiEnabled ? "on" : "off");
@@ -424,13 +628,16 @@ void drawDisplay() {
     display.println(toneTestActive ? kToneTestLabel[toneTestPlayingIndex]
                                    : kToneTestLabel[toneTestPatternIndex]);
     display.print(menuIndex == 5 ? "> " : "  ");
+    display.println("Reset WiFi");
+    display.print(menuIndex == 6 ? "> " : "  ");
     display.println("Deep sleep");
     if (menuIndex == 4) {
       display.println("A play next");
+    } else if (menuIndex == 5) {
+      display.println("A reset B/C sel");
     } else {
-      display.println(menuIndex == 5 ? "A sleep" : "A change");
+      display.println(menuIndex == 6 ? "A sleep B/C sel" : "A chg B/C sel");
     }
-    display.println("B/C sel Hold A exit");
     display.display();
     return;
   }
@@ -487,6 +694,8 @@ void drawDisplay() {
   display.print("WiFi: ");
   if (!wifiEnabled) {
     display.println("off");
+  } else if (directSettingsMode) {
+    display.println("AP 192.168.4.1");
   } else if (wifiPortalRunning) {
     display.println(kConfigPortalSsid);
   } else {
@@ -507,6 +716,85 @@ void configureWifiManager() {
   wifiManager.setConfigPortalTimeout(kWifiPortalTimeoutMs / 1000);
   wifiManager.setConfigPortalBlocking(false);
   wifiManager.preloadWiFi(kWifiSsid, kWifiPassword);
+  wifiManager.addParameter(&noRouterLink);
+}
+
+void configureSettingsRoutes() {
+  if (settingsRoutesConfigured) {
+    return;
+  }
+
+  settingsServer.on("/", HTTP_GET, []() { handleSettingsGet(settingsServer); });
+  settingsServer.on("/save", HTTP_POST, []() { handleSettingsSave(settingsServer); });
+  settingsServer.on("/zero", HTTP_POST, []() { handleSettingsZero(settingsServer); });
+  settingsServer.on("/clear-zero", HTTP_POST, []() { handleClearZero(settingsServer); });
+  settingsServer.on("/tone-test", HTTP_POST, []() { handleToneTest(settingsServer); });
+  settingsServer.on("/direct-now", HTTP_POST, []() { handleDirectNow(settingsServer); });
+  settingsServer.on("/reset-wifi", HTTP_POST, []() { handleResetWifi(settingsServer); });
+  settingsServer.onNotFound([]() { handleSettingsNotFound(settingsServer); });
+
+  apSettingsServer.on("/", HTTP_GET, []() { handleSettingsGet(apSettingsServer); });
+  apSettingsServer.on("/save", HTTP_POST, []() { handleSettingsSave(apSettingsServer); });
+  apSettingsServer.on("/zero", HTTP_POST, []() { handleSettingsZero(apSettingsServer); });
+  apSettingsServer.on("/clear-zero", HTTP_POST, []() { handleClearZero(apSettingsServer); });
+  apSettingsServer.on("/tone-test", HTTP_POST, []() { handleToneTest(apSettingsServer); });
+  apSettingsServer.on("/direct-now", HTTP_POST, []() { handleDirectNow(apSettingsServer); });
+  apSettingsServer.on("/reset-wifi", HTTP_POST, []() { handleResetWifi(apSettingsServer); });
+  apSettingsServer.onNotFound([]() { handleSettingsNotFound(apSettingsServer); });
+
+  settingsRoutesConfigured = true;
+}
+
+void startSettingsServer() {
+  configureSettingsRoutes();
+  if (!settingsServerStarted) {
+    settingsServer.begin();
+    settingsServerStarted = true;
+    Serial.print("Settings server: ");
+    Serial.println(settingsUrl());
+  }
+}
+
+void stopSettingsServer() {
+  if (settingsServerStarted) {
+    settingsServer.stop();
+    settingsServerStarted = false;
+  }
+}
+
+void startApSettingsServer() {
+  configureSettingsRoutes();
+  if (!apSettingsServerStarted) {
+    apSettingsServer.begin();
+    apSettingsServerStarted = true;
+    Serial.print("AP settings server: ");
+    Serial.println(settingsUrl());
+  }
+}
+
+void stopApSettingsServer() {
+  if (apSettingsServerStarted) {
+    apSettingsServer.stop();
+    apSettingsServerStarted = false;
+  }
+}
+
+void serviceSettingsServers() {
+  if (settingsServerStarted) {
+    settingsServer.handleClient();
+  }
+  if (apSettingsServerStarted) {
+    apSettingsServer.handleClient();
+  }
+
+  if (pendingWifiReset) {
+    pendingWifiReset = false;
+    resetWifiCredentials();
+  }
+  if (pendingRestart) {
+    delay(500);
+    ESP.restart();
+  }
 }
 
 void startWifiConnection() {
@@ -519,6 +807,7 @@ void startWifiConnection() {
     wifiManager.stopConfigPortal();
     wifiPortalRunning = false;
   }
+  stopApSettingsServer();
 
   WiFi.mode(WIFI_STA);
   WiFi.setHostname(kHostname);
@@ -538,6 +827,7 @@ void startWifiConnection() {
 }
 
 void startWifiPortal() {
+  stopSettingsServer();
   WiFi.disconnect(false);
   WiFi.mode(WIFI_AP_STA);
   Serial.print("Starting setup AP: ");
@@ -546,6 +836,21 @@ void startWifiPortal() {
   wifiPortalRunning = wifiManager.getConfigPortalActive();
   wifiPortalStartMs = millis();
   wifiConnectInProgress = false;
+  startApSettingsServer();
+}
+
+void startDirectSettingsAp() {
+  stopApSettingsServer();
+  wifiManager.stopConfigPortal();
+  wifiPortalRunning = false;
+  wifiConnectInProgress = false;
+  otaStarted = false;
+  WiFi.disconnect(false);
+  WiFi.mode(WIFI_AP);
+  WiFi.softAP(kConfigPortalSsid, kConfigPortalPassword);
+  startSettingsServer();
+  Serial.print("Direct AP mode active at ");
+  Serial.println(settingsUrl());
 }
 
 void startOta() {
@@ -584,6 +889,8 @@ void disableWifi() {
   wifiConnectInProgress = false;
   wifiPortalRunning = false;
   wifiManager.stopConfigPortal();
+  stopSettingsServer();
+  stopApSettingsServer();
   WiFi.disconnect(true);
   WiFi.mode(WIFI_OFF);
 }
@@ -601,6 +908,13 @@ void serviceWifi() {
     return;
   }
 
+  if (directSettingsMode) {
+    if (!settingsServerStarted) {
+      startDirectSettingsAp();
+    }
+    return;
+  }
+
   if (wifiPortalRunning) {
     wifiManager.process();
     if (WiFi.status() == WL_CONNECTED) {
@@ -611,6 +925,7 @@ void serviceWifi() {
       Serial.print("IP address: ");
       Serial.println(WiFi.localIP());
       startOta();
+      startSettingsServer();
       return;
     }
 
@@ -618,6 +933,7 @@ void serviceWifi() {
         millis() - wifiPortalStartMs >= kWifiPortalTimeoutMs) {
       wifiManager.stopConfigPortal();
       wifiPortalRunning = false;
+      stopApSettingsServer();
       lastWifiRetryMs = millis();
       Serial.println("WiFi setup AP closed; continuing offline");
     }
@@ -628,6 +944,7 @@ void serviceWifi() {
     wifiPortalRunning = false;
     wifiConnectInProgress = false;
     startOta();
+    startSettingsServer();
     return;
   }
 
@@ -795,6 +1112,10 @@ void serviceButtons() {
     } else if (menuActive) {
       if (menuIndex == 0) {
         wifiEnabled = !wifiEnabled;
+        if (!wifiEnabled) {
+          directSettingsMode = false;
+          saveBoolSetting(kPrefDirectSettings, false);
+        }
         saveBoolSetting(kPrefWifi, wifiEnabled);
         if (wifiEnabled) {
           enableWifi();
@@ -815,9 +1136,12 @@ void serviceButtons() {
         }
       } else if (menuIndex == 3) {
         varioResponseIndex = (varioResponseIndex + 1) % kVarioResponseCount;
+        saveTuningSettings();
       } else if (menuIndex == 4) {
         startToneTest();
       } else if (menuIndex == 5) {
+        resetWifiCredentials();
+      } else if (menuIndex == 6) {
         enterDeepSleep();
       }
     } else {
@@ -830,6 +1154,7 @@ void serviceButtons() {
       menuIndex = (menuIndex + kMenuItemCount - 1) % kMenuItemCount;
     } else {
       colorScaleFt = clampFloat(colorScaleFt / 1.5F, kMinColorScaleFt, kMaxColorScaleFt);
+      saveTuningSettings();
     }
   }
 
@@ -838,6 +1163,7 @@ void serviceButtons() {
       menuIndex = (menuIndex + 1) % kMenuItemCount;
     } else {
       colorScaleFt = clampFloat(colorScaleFt * 1.5F, kMinColorScaleFt, kMaxColorScaleFt);
+      saveTuningSettings();
     }
   }
 
@@ -882,6 +1208,7 @@ void loop() {
   if (wifiEnabled && otaStarted) {
     ArduinoOTA.handle();
   }
+  serviceSettingsServers();
   serviceButtons();
   updateVarioAudio();
 
