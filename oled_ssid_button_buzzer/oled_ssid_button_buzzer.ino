@@ -60,6 +60,8 @@ constexpr uint32_t kMenuLongPressMs = 800;
 constexpr uint8_t kMenuItemCount = 6;
 constexpr uint8_t kToneTestCount = 4;
 constexpr uint32_t kToneTestDurationMs = 3000;
+constexpr uint32_t kBmpWarmupMs = 5000;
+constexpr uint32_t kBmpRetryMs = 2000;
 constexpr uint32_t kWifiRetryMs = 30000;
 const char *const kToneTestLabel[] = {"Ascent", "Fast up", "Descent", "Fast down"};
 
@@ -86,11 +88,14 @@ bool sinkAudioActive = false;
 bool liftBeepOn = false;
 bool varioRateInitialized = false;
 bool toneTestActive = false;
+bool readyBeepActive = false;
+bool bmpWarmupComplete = false;
 bool wifiPortalRunning = false;
 uint8_t menuIndex = 0;
 uint8_t varioResponseIndex = 1;
 uint8_t toneTestPatternIndex = 0;
 uint8_t toneTestPlayingIndex = 0;
+uint8_t readyBeepCount = 0;
 
 float altitudeFt = 0.0F;
 float smoothedAltitudeFt = 0.0F;
@@ -112,6 +117,9 @@ uint32_t liftPhaseStartMs = 0;
 uint32_t buttonAPressStartMs = 0;
 uint32_t currentToneHz = 0;
 uint32_t toneTestStartMs = 0;
+uint32_t bmpWarmupStartMs = 0;
+uint32_t lastBmpInitAttemptMs = 0;
+uint32_t readyBeepPhaseStartMs = 0;
 uint32_t lastWifiRetryMs = 0;
 
 void disableWifi();
@@ -182,7 +190,7 @@ void startBuzzer() {
 }
 
 void startToneTest() {
-  if (!audioEnabled) {
+  if (!audioEnabled || !bmpWarmupComplete) {
     return;
   }
 
@@ -194,6 +202,44 @@ void startToneTest() {
   sinkAudioActive = false;
   liftBeepOn = false;
   setTone(0);
+}
+
+void startReadyBeeps() {
+  if (!audioEnabled) {
+    return;
+  }
+
+  readyBeepActive = true;
+  readyBeepCount = 0;
+  readyBeepPhaseStartMs = millis();
+  setTone(1040);
+}
+
+bool updateReadyBeeps() {
+  if (!readyBeepActive) {
+    return false;
+  }
+
+  const uint32_t now = millis();
+  const bool beepOn = currentToneHz > 0;
+  const uint32_t phaseMs = beepOn ? 90 : 120;
+  if (now - readyBeepPhaseStartMs < phaseMs) {
+    return true;
+  }
+
+  readyBeepPhaseStartMs = now;
+  if (beepOn) {
+    setTone(0);
+    readyBeepCount++;
+    if (readyBeepCount >= 3) {
+      readyBeepActive = false;
+      return false;
+    }
+  } else {
+    setTone(1040);
+  }
+
+  return true;
 }
 
 bool updateToneTest() {
@@ -235,11 +281,15 @@ bool updateToneTest() {
 void updateVarioAudio() {
   const uint32_t now = millis();
 
+  if (updateReadyBeeps()) {
+    return;
+  }
+
   if (updateToneTest()) {
     return;
   }
 
-  if (menuActive || !audioEnabled || !varioRateInitialized) {
+  if (menuActive || !audioEnabled || !bmpWarmupComplete || !varioRateInitialized) {
     setTone(0);
     liftAudioActive = false;
     sinkAudioActive = false;
@@ -343,7 +393,7 @@ void drawDisplay() {
     display.print("Boot LED:");
     display.println(neopixelEnabled ? "on" : "off");
     display.print(menuIndex == 2 ? "> " : "  ");
-    display.print("Sound:");
+    display.print("Boot Buzz:");
     display.println(audioEnabled ? "on" : "off");
     display.print(menuIndex == 3 ? "> " : "  ");
     display.print("Response: ");
@@ -400,9 +450,13 @@ void drawDisplay() {
   display.println(" ft");
 
   display.print("Vario: ");
-  display.print(verticalSpeedMps, 2);
-  display.print(" ");
-  display.println(kVarioResponseLabel[varioResponseIndex]);
+  if (!bmpWarmupComplete) {
+    display.println("warming");
+  } else {
+    display.print(verticalSpeedMps, 2);
+    display.print(" ");
+    display.println(kVarioResponseLabel[varioResponseIndex]);
+  }
 
   display.print("BMP: ");
   display.print(bmpReady ? "ok" : "missing");
@@ -523,9 +577,8 @@ void serviceWifi() {
   }
 }
 
-void startSensors() {
-  Wire.begin();
-
+void startBmp() {
+  lastBmpInitAttemptMs = millis();
   bmpReady = bmp.begin(BMP5XX_ALTERNATIVE_ADDRESS, &Wire);
   if (bmpReady) {
     bmp.setTemperatureOversampling(BMP5XX_OVERSAMPLING_2X);
@@ -534,8 +587,18 @@ void startSensors() {
     bmp.setOutputDataRate(BMP5XX_ODR_50_HZ);
     bmp.setPowerMode(BMP5XX_POWERMODE_NORMAL);
     bmp.enablePressure(true);
+    bmpWarmupStartMs = millis();
+    bmpWarmupComplete = false;
+    altitudeFilterInitialized = false;
+    varioRateInitialized = false;
+    verticalSpeedMps = 0.0F;
+    Serial.println("BMP ready; warming up");
+  } else {
+    Serial.println("BMP missing; will retry");
   }
+}
 
+void startSht() {
   shtReady = sht4.begin();
   if (shtReady) {
     sht4.setPrecision(SHT4X_MED_PRECISION);
@@ -543,7 +606,32 @@ void startSensors() {
   }
 }
 
+void startSensors() {
+  Wire.begin();
+  startBmp();
+  startSht();
+}
+
+void completeBmpWarmup() {
+  baselineSmoothedAltitudeFt = smoothedAltitudeFt;
+  previousVarioAltitudeFt = smoothedAltitudeFt;
+  displayAltitudeFt = 0.0F;
+  verticalSpeedMps = 0.0F;
+  lastVarioRateUpdateMs = millis();
+  varioRateInitialized = true;
+  bmpWarmupComplete = true;
+  liftAudioActive = false;
+  sinkAudioActive = false;
+  liftBeepOn = false;
+  startReadyBeeps();
+  Serial.println("BMP warmup complete; altitude zeroed");
+}
+
 void readSensors() {
+  if (!bmpReady && millis() - lastBmpInitAttemptMs >= kBmpRetryMs) {
+    startBmp();
+  }
+
   if (bmpReady && bmp.performReading()) {
     const uint32_t now = millis();
     altitudeFt = bmp.readAltitude(kSeaLevelPressureHpa) * kMetersToFeet;
@@ -556,22 +644,21 @@ void readSensors() {
     } else {
       smoothedAltitudeFt += kAltitudeSmoothingAlpha * (altitudeFt - smoothedAltitudeFt);
 
-      const uint32_t dtMs = now - lastVarioRateUpdateMs;
-      if (dtMs > 0) {
+      if (!bmpWarmupComplete && now - bmpWarmupStartMs >= kBmpWarmupMs) {
+        completeBmpWarmup();
+      } else if (bmpWarmupComplete) {
+        const uint32_t dtMs = now - lastVarioRateUpdateMs;
+        if (dtMs > 0) {
         const float dtSeconds = dtMs / 1000.0F;
         const float measuredMps =
           (smoothedAltitudeFt - previousVarioAltitudeFt) * kFeetToMeters / dtSeconds;
 
-        if (!varioRateInitialized) {
-          verticalSpeedMps = measuredMps;
-          varioRateInitialized = true;
-        } else {
           const float responseAlpha = kVarioResponseAlpha[varioResponseIndex];
           verticalSpeedMps += responseAlpha * (measuredMps - verticalSpeedMps);
-        }
 
-        previousVarioAltitudeFt = smoothedAltitudeFt;
-        lastVarioRateUpdateMs = now;
+          previousVarioAltitudeFt = smoothedAltitudeFt;
+          lastVarioRateUpdateMs = now;
+        }
       }
     }
     displayAltitudeFt = smoothedAltitudeFt - baselineSmoothedAltitudeFt;
@@ -652,6 +739,7 @@ void serviceButtons() {
         if (!audioEnabled) {
           setTone(0);
           toneTestActive = false;
+          readyBeepActive = false;
         }
       } else if (menuIndex == 3) {
         varioResponseIndex = (varioResponseIndex + 1) % kVarioResponseCount;
