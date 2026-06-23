@@ -19,8 +19,6 @@
 #endif
 
 namespace {
-const char *const kWifiSsid = "helloworld";
-const char *const kWifiPassword = "allyourbase69";
 const char *const kHostname = "vario-feather-v2";
 const char *const kConfigPortalSsid = "VarioFeatherSetup";
 const char *const kConfigPortalPassword = "configureme";
@@ -906,9 +904,11 @@ void startWifiConnection() {
     Serial.println(WiFi.SSID());
     WiFi.begin();
   } else {
-    Serial.print("Starting WiFi with default SSID: ");
-    Serial.println(kWifiSsid);
-    WiFi.begin(kWifiSsid, kWifiPassword);
+    Serial.println("No saved WiFi SSID; starting setup AP");
+    wifiSetupRequired = true;
+    saveBoolSetting(kPrefWifiSetupRequired, true);
+    startWifiPortal();
+    return;
   }
 
   wifiConnectInProgress = true;
