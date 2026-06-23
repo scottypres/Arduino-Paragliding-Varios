@@ -1132,7 +1132,11 @@ void readSensors() {
     startBmp();
   }
 
+  bool bmpReadOk = false;
+  float bmpTemperatureF = NAN;
   if (bmpReady && bmp.performReading()) {
+    bmpReadOk = true;
+    bmpTemperatureF = bmp.temperature * 9.0F / 5.0F + 32.0F;
     const uint32_t now = millis();
     altitudeFt = bmp.readAltitude(kSeaLevelPressureHpa) * kMetersToFeet;
     if (!altitudeFilterInitialized) {
@@ -1166,13 +1170,18 @@ void readSensors() {
     displayAltitudeFt = smoothedAltitudeFt - baselineSmoothedAltitudeFt;
   }
 
+  bool shtTempReadOk = false;
   if (shtReady) {
     sensors_event_t humidity;
     sensors_event_t temp;
     if (sht4.getEvent(&humidity, &temp)) {
       temperatureF = temp.temperature * 9.0F / 5.0F + 32.0F;
       humidityPercent = humidity.relative_humidity;
+      shtTempReadOk = true;
     }
+  }
+  if (!shtTempReadOk) {
+    temperatureF = bmpReadOk ? bmpTemperatureF : NAN;
   }
 
   readBattery();
