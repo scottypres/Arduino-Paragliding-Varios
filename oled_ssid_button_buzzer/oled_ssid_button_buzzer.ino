@@ -12,6 +12,10 @@
 #include "esp_sleep.h"
 #include "driver/rtc_io.h"
 
+#ifndef BAT_VOLT_PIN
+#define BAT_VOLT_PIN BATT_MONITOR
+#endif
+
 namespace {
 const char *const kWifiSsid = "helloworld";
 const char *const kWifiPassword = "allyourbase69";
