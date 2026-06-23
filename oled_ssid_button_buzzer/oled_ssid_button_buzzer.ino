@@ -29,13 +29,11 @@ constexpr uint8_t kBuzzerPin = 13;
 constexpr uint8_t kBuzzerResolutionBits = 8;
 const char *const kPrefsNamespace = "vario";
 const char *const kPrefWifi = "bootWifi";
-const char *const kPrefPixel = "bootPixel";
 const char *const kPrefAudio = "bootAudio";
 const char *const kPrefStartupBeeps = "startBeeps";
 const char *const kPrefBuzzerVolume = "buzzVol";
 const char *const kPrefDirectSettings = "directAP";
 const char *const kPrefResponse = "response";
-const char *const kPrefColorScale = "colorFt";
 const char *const kPrefHasAltitudeZero = "hasZero";
 const char *const kPrefAltitudeZeroFt = "zeroFt";
 
@@ -46,8 +44,6 @@ constexpr uint8_t kButtonC = 14;
 constexpr float kMetersToFeet = 3.28084F;
 constexpr float kFeetToMeters = 1.0F / kMetersToFeet;
 constexpr float kSeaLevelPressureHpa = 1013.25F;
-constexpr float kMinColorScaleFt = 0.1F;
-constexpr float kMaxColorScaleFt = 1000.0F;
 constexpr float kAltitudeSmoothingAlpha = 0.25F;
 constexpr float kVarioResponseAlpha[] = {0.18F, 0.32F, 0.50F, 0.72F};
 const char *const kVarioResponseLabel[] = {"Smooth", "Normal", "Quick", "Direct"};
@@ -67,7 +63,7 @@ constexpr uint8_t kDefaultBuzzerVolumePercent = 40;
 constexpr uint8_t kMinBuzzerVolumePercent = 5;
 constexpr uint8_t kMaxBuzzerVolumePercent = 100;
 constexpr uint32_t kMenuLongPressMs = 800;
-constexpr uint8_t kMenuItemCount = 10;
+constexpr uint8_t kMenuItemCount = 9;
 constexpr uint8_t kMenuVisibleRows = 8;
 constexpr uint8_t kToneTestCount = 4;
 constexpr uint32_t kToneTestDurationMs = 3000;
@@ -99,7 +95,6 @@ bool lastC = HIGH;
 bool altitudeFilterInitialized = false;
 bool wifiEnabled = true;
 bool otaStarted = false;
-bool neopixelEnabled = true;
 bool audioEnabled = true;
 bool startupBeepsEnabled = true;
 bool menuActive = false;
@@ -136,7 +131,6 @@ float displayAltitudeFt = 0.0F;
 float verticalSpeedMps = 0.0F;
 float temperatureF = NAN;
 float humidityPercent = NAN;
-float colorScaleFt = 100.0F;
 float batteryVolts = NAN;
 float batteryPercent = NAN;
 
@@ -160,7 +154,6 @@ void startWifiPortal();
 void startDirectSettingsAp();
 void stopSettingsServer();
 void stopApSettingsServer();
-void updatePixel();
 void startToneTest();
 void requestDisplayRefresh();
 
@@ -168,14 +161,9 @@ float clampFloat(float value, float low, float high) {
   return min(max(value, low), high);
 }
 
-void setPixelColor(uint8_t red, uint8_t green, uint8_t blue) {
-  if (!neopixelEnabled) {
-    red = 0;
-    green = 0;
-    blue = 0;
-  }
+void disableOnboardPixel() {
 #ifdef RGB_BUILTIN
-  rgbLedWrite(RGB_BUILTIN, red, green, blue);
+  rgbLedWrite(RGB_BUILTIN, 0, 0, 0);
 #endif
 }
 
@@ -226,7 +214,6 @@ void setTone(uint32_t frequencyHz) {
 void loadSettings() {
   prefs.begin(kPrefsNamespace, false);
   wifiEnabled = prefs.getBool(kPrefWifi, true);
-  neopixelEnabled = prefs.getBool(kPrefPixel, true);
   audioEnabled = prefs.getBool(kPrefAudio, true);
   startupBeepsEnabled = prefs.getBool(kPrefStartupBeeps, true);
   buzzerVolumePercent =
@@ -238,9 +225,6 @@ void loadSettings() {
   if (varioResponseIndex >= kVarioResponseCount) {
     varioResponseIndex = 1;
   }
-  colorScaleFt = clampFloat(prefs.getFloat(kPrefColorScale, colorScaleFt),
-                            kMinColorScaleFt,
-                            kMaxColorScaleFt);
   altitudeZeroSaved = prefs.getBool(kPrefHasAltitudeZero, false);
   baselineSmoothedAltitudeFt = prefs.getFloat(kPrefAltitudeZeroFt, 0.0F);
   if (directSettingsMode) {
@@ -265,7 +249,6 @@ void saveAltitudeZero() {
 
 void saveTuningSettings() {
   prefs.putUChar(kPrefResponse, varioResponseIndex);
-  prefs.putFloat(kPrefColorScale, colorScaleFt);
   prefs.putUChar(kPrefBuzzerVolume, buzzerVolumePercent);
 }
 
@@ -392,9 +375,7 @@ String settingsPage(const String &message = "") {
   html += F("> Boot WiFi</label><label><input type='checkbox' name='direct'");
   html += checked(directSettingsMode);
   html += F("> Direct AP / no-router mode</label></div>");
-  html += F("<div class='row'><label><input type='checkbox' name='led'");
-  html += checked(neopixelEnabled);
-  html += F("> NeoPixel enabled</label><label><input type='checkbox' name='buzz'");
+  html += F("<div class='row'><label><input type='checkbox' name='buzz'");
   html += checked(audioEnabled);
   html += F("> Buzzer enabled</label><label><input type='checkbox' name='startupBeeps'");
   html += checked(startupBeepsEnabled);
@@ -415,9 +396,7 @@ String settingsPage(const String &message = "") {
     html += kVarioResponseLabel[i];
     html += F("</option>");
   }
-  html += F("</select></label><label>Color scale ft <input name='color' type='number' min='0.1' max='1000' step='0.1' value='");
-  html += String(colorScaleFt, 1);
-  html += F("'></label></div><button type='submit'>Save settings</button></form>");
+  html += F("</select></label></div><button type='submit'>Save settings</button></form>");
   html += F("<form method='POST' action='/zero'><button>Set altitude zero</button></form>");
   html += F("<form method='POST' action='/clear-zero'><button>Clear saved altitude zero</button></form>");
   html += F("<form method='POST' action='/tone-test'><button>Play tone test</button></form>");
@@ -437,7 +416,6 @@ void handleSettingsSave(WebServer &server) {
   if (directSettingsMode) {
     wifiEnabled = true;
   }
-  neopixelEnabled = server.hasArg("led");
   audioEnabled = server.hasArg("buzz");
   if (server.hasArg("response")) {
     varioResponseIndex = constrain(server.arg("response").toInt(), 0, kVarioResponseCount - 1);
@@ -448,17 +426,11 @@ void handleSettingsSave(WebServer &server) {
                                     kMinBuzzerVolumePercent,
                                     kMaxBuzzerVolumePercent);
   }
-  if (server.hasArg("color")) {
-    colorScaleFt = clampFloat(server.arg("color").toFloat(), kMinColorScaleFt, kMaxColorScaleFt);
-  }
-
   saveBoolSetting(kPrefWifi, wifiEnabled);
-  saveBoolSetting(kPrefPixel, neopixelEnabled);
   saveBoolSetting(kPrefAudio, audioEnabled);
   saveBoolSetting(kPrefStartupBeeps, startupBeepsEnabled);
   saveBoolSetting(kPrefDirectSettings, directSettingsMode);
   saveTuningSettings();
-  updatePixel();
   if (!audioEnabled) {
     setTone(0);
     toneTestActive = false;
@@ -691,32 +663,6 @@ void updateVarioAudio() {
   setTone(0);
 }
 
-void updatePixel() {
-  if (!neopixelEnabled) {
-    setPixelColor(0, 0, 0);
-    return;
-  }
-
-  const float normalized = clampFloat(displayAltitudeFt / colorScaleFt, -1.0F, 1.0F);
-
-  uint8_t red = 0;
-  uint8_t green = 12;
-  uint8_t blue = 0;
-
-  if (normalized > 0.0F) {
-    red = static_cast<uint8_t>(normalized * 80.0F);
-    green = static_cast<uint8_t>((1.0F - normalized) * 30.0F);
-    blue = static_cast<uint8_t>((1.0F - normalized) * 20.0F);
-  } else if (normalized < 0.0F) {
-    const float down = -normalized;
-    red = static_cast<uint8_t>((1.0F - down) * 20.0F);
-    green = static_cast<uint8_t>((1.0F - down) * 30.0F);
-    blue = static_cast<uint8_t>(down * 80.0F);
-  }
-
-  setPixelColor(red, green, blue);
-}
-
 void readBattery() {
   uint32_t millivolts = analogReadMilliVolts(BAT_VOLT_PIN);
   batteryVolts = millivolts * 2.0F / 1000.0F;
@@ -732,23 +678,21 @@ String menuItemText(uint8_t index) {
     case 0:
       return String("Boot WiFi:") + boolText(wifiEnabled);
     case 1:
-      return String("Boot LED:") + boolText(neopixelEnabled);
-    case 2:
       return String("Boot Buzz:") + boolText(audioEnabled);
-    case 3:
+    case 2:
       return String("Start beep:") + boolText(startupBeepsEnabled);
-    case 4:
+    case 3:
       return String("Volume:") + String(buzzerVolumePercent) + "%";
-    case 5:
+    case 4:
       return String("Response:") + kVarioResponseLabel[varioResponseIndex];
-    case 6:
+    case 5:
       return String("Test:") + (toneTestActive ? kToneTestLabel[toneTestPlayingIndex]
                                                : kToneTestLabel[toneTestPatternIndex]);
-    case 7:
+    case 6:
       return "Reset WiFi";
-    case 8:
+    case 7:
       return sketchMenuSummary();
-    case 9:
+    case 8:
       return "Deep sleep";
   }
   return "";
@@ -1004,11 +948,11 @@ void startOta() {
   ArduinoOTA
     .onStart([]() {
       Serial.println("OTA update started");
-      setPixelColor(40, 20, 0);
+      disableOnboardPixel();
     })
     .onEnd([]() {
       Serial.println("\nOTA update finished");
-      setPixelColor(0, 40, 0);
+      disableOnboardPixel();
     })
     .onProgress([](unsigned int progress, unsigned int total) {
       if (millis() - lastOtaProgressMs > 500) {
@@ -1018,7 +962,7 @@ void startOta() {
     })
     .onError([](ota_error_t error) {
       Serial.printf("OTA error[%u]\n", error);
-      setPixelColor(80, 0, 0);
+      disableOnboardPixel();
     });
   ArduinoOTA.begin();
   otaStarted = true;
@@ -1208,7 +1152,7 @@ void readSensors() {
   }
 
   readBattery();
-  updatePixel();
+  disableOnboardPixel();
 }
 
 void enterDeepSleep() {
@@ -1223,7 +1167,7 @@ void enterDeepSleep() {
   display.display();
 
   disableWifi();
-  setPixelColor(0, 0, 0);
+  disableOnboardPixel();
 
   rtc_gpio_pullup_en(static_cast<gpio_num_t>(kButtonA));
   rtc_gpio_pulldown_dis(static_cast<gpio_num_t>(kButtonA));
@@ -1269,10 +1213,6 @@ void serviceButtons() {
           disableWifi();
         }
       } else if (menuIndex == 1) {
-        neopixelEnabled = !neopixelEnabled;
-        saveBoolSetting(kPrefPixel, neopixelEnabled);
-        updatePixel();
-      } else if (menuIndex == 2) {
         audioEnabled = !audioEnabled;
         saveBoolSetting(kPrefAudio, audioEnabled);
         if (!audioEnabled) {
@@ -1280,14 +1220,14 @@ void serviceButtons() {
           toneTestActive = false;
           readyBeepActive = false;
         }
-      } else if (menuIndex == 3) {
+      } else if (menuIndex == 2) {
         startupBeepsEnabled = !startupBeepsEnabled;
         saveBoolSetting(kPrefStartupBeeps, startupBeepsEnabled);
         if (!startupBeepsEnabled) {
           readyBeepActive = false;
           setTone(0);
         }
-      } else if (menuIndex == 4) {
+      } else if (menuIndex == 3) {
         buzzerVolumePercent += 10;
         if (buzzerVolumePercent > kMaxBuzzerVolumePercent) {
           buzzerVolumePercent = kMinBuzzerVolumePercent;
@@ -1296,16 +1236,16 @@ void serviceButtons() {
         if (toneOn) {
           ledcWrite(kBuzzerPin, buzzerDuty());
         }
-      } else if (menuIndex == 5) {
+      } else if (menuIndex == 4) {
         varioResponseIndex = (varioResponseIndex + 1) % kVarioResponseCount;
         saveTuningSettings();
-      } else if (menuIndex == 6) {
+      } else if (menuIndex == 5) {
         startToneTest();
-      } else if (menuIndex == 7) {
+      } else if (menuIndex == 6) {
         resetWifiCredentials();
-      } else if (menuIndex == 8) {
+      } else if (menuIndex == 7) {
         // Memory is display-only.
-      } else if (menuIndex == 9) {
+      } else if (menuIndex == 8) {
         enterDeepSleep();
       }
       requestDisplayRefresh();
@@ -1319,9 +1259,6 @@ void serviceButtons() {
     if (menuActive) {
       menuIndex = (menuIndex + kMenuItemCount - 1) % kMenuItemCount;
       requestDisplayRefresh();
-    } else {
-      colorScaleFt = clampFloat(colorScaleFt / 1.5F, kMinColorScaleFt, kMaxColorScaleFt);
-      saveTuningSettings();
     }
   }
 
@@ -1329,9 +1266,6 @@ void serviceButtons() {
     if (menuActive) {
       menuIndex = (menuIndex + 1) % kMenuItemCount;
       requestDisplayRefresh();
-    } else {
-      colorScaleFt = clampFloat(colorScaleFt * 1.5F, kMinColorScaleFt, kMaxColorScaleFt);
-      saveTuningSettings();
     }
   }
 
@@ -1353,7 +1287,7 @@ void setup() {
   startBuzzer();
   analogSetPinAttenuation(BAT_VOLT_PIN, ADC_11db);
 
-  setPixelColor(0, 0, 20);
+  disableOnboardPixel();
 
   display.begin(0x3C, true);
   display.setRotation(1);
