@@ -30,6 +30,8 @@ const char *const kPrefsNamespace = "vario";
 const char *const kPrefWifi = "bootWifi";
 const char *const kPrefPixel = "bootPixel";
 const char *const kPrefAudio = "bootAudio";
+const char *const kPrefHasAltitudeZero = "hasZero";
+const char *const kPrefAltitudeZeroFt = "zeroFt";
 
 constexpr uint8_t kButtonA = 15;
 constexpr uint8_t kButtonB = 32;
@@ -92,6 +94,7 @@ bool varioRateInitialized = false;
 bool toneTestActive = false;
 bool readyBeepActive = false;
 bool bmpWarmupComplete = false;
+bool altitudeZeroSaved = false;
 bool wifiConnectInProgress = false;
 bool wifiPortalRunning = false;
 uint8_t menuIndex = 0;
@@ -180,10 +183,23 @@ void loadSettings() {
   wifiEnabled = prefs.getBool(kPrefWifi, true);
   neopixelEnabled = prefs.getBool(kPrefPixel, true);
   audioEnabled = prefs.getBool(kPrefAudio, true);
+  altitudeZeroSaved = prefs.getBool(kPrefHasAltitudeZero, false);
+  baselineSmoothedAltitudeFt = prefs.getFloat(kPrefAltitudeZeroFt, 0.0F);
 }
 
 void saveBoolSetting(const char *key, bool value) {
   prefs.putBool(key, value);
+}
+
+void saveAltitudeZero() {
+  baselineSmoothedAltitudeFt = smoothedAltitudeFt;
+  displayAltitudeFt = 0.0F;
+  altitudeZeroSaved = true;
+  prefs.putFloat(kPrefAltitudeZeroFt, baselineSmoothedAltitudeFt);
+  prefs.putBool(kPrefHasAltitudeZero, true);
+  Serial.print("Altitude zero saved at ");
+  Serial.print(baselineSmoothedAltitudeFt, 2);
+  Serial.println(" ft");
 }
 
 void startBuzzer() {
@@ -664,9 +680,11 @@ void startSensors() {
 }
 
 void completeBmpWarmup() {
-  baselineSmoothedAltitudeFt = smoothedAltitudeFt;
+  if (!altitudeZeroSaved) {
+    baselineSmoothedAltitudeFt = smoothedAltitudeFt;
+  }
   previousVarioAltitudeFt = smoothedAltitudeFt;
-  displayAltitudeFt = 0.0F;
+  displayAltitudeFt = smoothedAltitudeFt - baselineSmoothedAltitudeFt;
   verticalSpeedMps = 0.0F;
   lastVarioRateUpdateMs = millis();
   varioRateInitialized = true;
@@ -675,7 +693,8 @@ void completeBmpWarmup() {
   sinkAudioActive = false;
   liftBeepOn = false;
   startReadyBeeps();
-  Serial.println("BMP warmup complete; altitude zeroed");
+  Serial.println(altitudeZeroSaved ? "BMP warmup complete; saved altitude zero restored"
+                                   : "BMP warmup complete; using temporary altitude zero");
 }
 
 void readSensors() {
@@ -689,7 +708,9 @@ void readSensors() {
     if (!altitudeFilterInitialized) {
       smoothedAltitudeFt = altitudeFt;
       previousVarioAltitudeFt = smoothedAltitudeFt;
-      baselineSmoothedAltitudeFt = smoothedAltitudeFt;
+      if (!altitudeZeroSaved) {
+        baselineSmoothedAltitudeFt = smoothedAltitudeFt;
+      }
       lastVarioRateUpdateMs = now;
       altitudeFilterInitialized = true;
     } else {
@@ -800,8 +821,7 @@ void serviceButtons() {
         enterDeepSleep();
       }
     } else {
-      baselineSmoothedAltitudeFt = smoothedAltitudeFt;
-      displayAltitudeFt = 0.0F;
+      saveAltitudeZero();
     }
   }
 
