@@ -1,0 +1,18 @@
+Ant Display tactile button footprint source
+
+Local source project:
+C:\Users\Scott\Documents\GitHub\antPID\Ant_Display\kicad\Ant_Display\Ant_Display.kicad_pcb
+
+Copied footprint:
+Button_Switch_THT:SW_PUSH_6mm_H5mm
+
+Copied button nets:
+SW1 BACK  -> BTN_BACK_GPIO3 / GND
+SW2 NEXT  -> BTN_NEXT_GPIO4 / GND
+SW3 DOWN  -> BTN_DOWN_GPIO5 / GND
+SW4 UP    -> BTN_UP_GPIO21 / GND
+
+Copied pad geometry:
+Four through-hole pads, duplicate pad numbers 1/1 and 2/2.
+Pad coordinates are (0,0), (6.5,0), (0,4.5), and (6.5,4.5).
+Pad size is 3.0 mm, drill is 1.2 mm, on both copper and mask layers.

@@ -13,14 +13,38 @@ const char *const kConfigPortalSsid = "VarioFeatherSetup";
 const char *const kConfigPortalPassword = "configureme";
 
 constexpr uint8_t kBuzzerPin = 13;
+constexpr uint8_t kDifferentialBuzzerPinA = A6;
+constexpr uint8_t kDifferentialBuzzerPinB = A7;
+constexpr bool kD13BuzzerEnabled = false;
+constexpr uint8_t kBuzzerChannel = 0;
 constexpr uint32_t kBuzzerToneHz = 4000;
 constexpr uint32_t kBuzzerPeriodMs = 5000;
 constexpr uint32_t kBuzzerOnMs = 500;
 constexpr uint8_t kBuzzerResolutionBits = 8;
+constexpr uint32_t kDifferentialHalfPeriodUs = 125;
 
 uint32_t lastOtaProgressMs = 0;
 uint32_t buzzerCycleStartMs = 0;
 bool buzzerOn = false;
+
+void silenceDifferentialBuzzer() {
+  digitalWrite(kDifferentialBuzzerPinA, LOW);
+  digitalWrite(kDifferentialBuzzerPinB, LOW);
+}
+
+void playDifferentialBuzzer(uint32_t durationMs) {
+  const uint32_t startMs = millis();
+  while (millis() - startMs < durationMs) {
+    digitalWrite(kDifferentialBuzzerPinA, HIGH);
+    digitalWrite(kDifferentialBuzzerPinB, LOW);
+    delayMicroseconds(kDifferentialHalfPeriodUs);
+
+    digitalWrite(kDifferentialBuzzerPinA, LOW);
+    digitalWrite(kDifferentialBuzzerPinB, HIGH);
+    delayMicroseconds(kDifferentialHalfPeriodUs);
+  }
+  silenceDifferentialBuzzer();
+}
 
 void setBuzzer(bool enabled) {
   if (enabled == buzzerOn) {
@@ -28,10 +52,20 @@ void setBuzzer(bool enabled) {
   }
 
   if (enabled) {
-    ledcWriteTone(kBuzzerPin, kBuzzerToneHz);
-  } else {
-    ledcWriteTone(kBuzzerPin, 0);
+    if (kD13BuzzerEnabled) {
+      ledcWriteTone(kBuzzerPin, kBuzzerToneHz);
+    }
+    playDifferentialBuzzer(kBuzzerOnMs);
+    if (kD13BuzzerEnabled) {
+      ledcWriteTone(kBuzzerPin, 0);
+    }
     digitalWrite(kBuzzerPin, LOW);
+  } else {
+    if (kD13BuzzerEnabled) {
+      ledcWriteTone(kBuzzerPin, 0);
+    }
+    digitalWrite(kBuzzerPin, LOW);
+    silenceDifferentialBuzzer();
   }
 
   buzzerOn = enabled;
@@ -39,9 +73,13 @@ void setBuzzer(bool enabled) {
 
 void startBuzzer() {
   pinMode(kBuzzerPin, OUTPUT);
+  pinMode(kDifferentialBuzzerPinA, OUTPUT);
+  pinMode(kDifferentialBuzzerPinB, OUTPUT);
   digitalWrite(kBuzzerPin, LOW);
-  if (!ledcAttach(kBuzzerPin, kBuzzerToneHz, kBuzzerResolutionBits)) {
-    Serial.println("Buzzer PWM setup failed");
+  digitalWrite(kDifferentialBuzzerPinA, LOW);
+  digitalWrite(kDifferentialBuzzerPinB, LOW);
+  if (kD13BuzzerEnabled && !ledcAttachChannel(kBuzzerPin, kBuzzerToneHz, kBuzzerResolutionBits, kBuzzerChannel)) {
+    Serial.println("D13 buzzer PWM setup failed");
   }
   buzzerCycleStartMs = millis();
 }

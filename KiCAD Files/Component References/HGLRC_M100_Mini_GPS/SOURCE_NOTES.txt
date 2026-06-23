@@ -1,0 +1,16 @@
+HGLRC M100_MINI GPS reference sources
+
+Official product page:
+https://www.hglrc.com/products/hglrc-m100_mini-gps
+- Size: 15 x 15 x 5.2 mm
+- Input: 3.3V-5V per product page
+- M10 chip, 72 channels, 115200 bps, 10Hz, UBLOX-compatible protocol
+
+Manual PDF saved in this folder:
+M100minigpsManual.pdf
+- Wiring/pad order shown as RX TX 5V GND on the manual graphic
+- English parameter table lists power supply as 5V, size 15 x 15 x 5.2 mm, output protocol UBLOX, 115200 bps, 10Hz
+
+STEP model search result:
+https://grabcad.com/library/hglrc-m100-mini-gps-1
+- Search result identifies HGLRC M100_MINI.step, but GrabCAD download requires an interactive account/session from the saved page.
