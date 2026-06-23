@@ -63,7 +63,7 @@ constexpr uint32_t kMaxToneHz = 1800;
 constexpr uint32_t kToneQuantizeHz = 10;
 constexpr uint8_t kBuzzerDuty = 96;
 constexpr uint32_t kMenuLongPressMs = 800;
-constexpr uint8_t kMenuItemCount = 7;
+constexpr uint8_t kMenuItemCount = 8;
 constexpr uint8_t kToneTestCount = 4;
 constexpr uint32_t kToneTestDurationMs = 3000;
 constexpr uint32_t kBmpWarmupMs = 5000;
@@ -265,6 +265,36 @@ String settingsUrl() {
   return "offline";
 }
 
+String formatBytes(uint32_t bytes) {
+  if (bytes >= 1048576UL) {
+    return String(bytes / 1048576.0F, 2) + " MB";
+  }
+  return String(bytes / 1024.0F, 0) + " KB";
+}
+
+uint8_t percentOf(uint32_t value, uint32_t total) {
+  if (total == 0) {
+    return 0;
+  }
+  return static_cast<uint8_t>((static_cast<uint64_t>(value) * 100ULL) / total);
+}
+
+uint32_t sketchCapacityBytes() {
+  return ESP.getSketchSize() + ESP.getFreeSketchSpace();
+}
+
+String sketchFreeSummary() {
+  const uint32_t freeBytes = ESP.getFreeSketchSpace();
+  const uint32_t totalBytes = sketchCapacityBytes();
+  return formatBytes(freeBytes) + " (" + String(percentOf(freeBytes, totalBytes)) + "%)";
+}
+
+String sketchMenuSummary() {
+  const uint32_t freeKb = ESP.getFreeSketchSpace() / 1024UL;
+  const uint8_t freePercent = percentOf(ESP.getFreeSketchSpace(), sketchCapacityBytes());
+  return String("Mem:") + String(freeKb) + "KB " + String(freePercent) + "%";
+}
+
 String checked(bool value) {
   return value ? " checked" : "";
 }
@@ -295,6 +325,18 @@ String settingsPage(const String &message = "") {
   html += isnan(batteryPercent) ? String("--") : String(batteryPercent, 0);
   html += F("%<br>Settings URL ");
   html += settingsUrl();
+  html += F("<br>Sketch free ");
+  html += sketchFreeSummary();
+  html += F(" of ");
+  html += formatBytes(sketchCapacityBytes());
+  html += F("<br>Sketch used ");
+  html += formatBytes(ESP.getSketchSize());
+  html += F("<br>Flash chip ");
+  html += formatBytes(ESP.getFlashChipSize());
+  html += F("<br>Heap free ");
+  html += formatBytes(ESP.getFreeHeap());
+  html += F(" of ");
+  html += formatBytes(ESP.getHeapSize());
   html += F("</p><form method='POST' action='/save'>");
   html += F("<div class='row'><label><input type='checkbox' name='bootWifi'");
   html += checked(wifiEnabled);
@@ -630,14 +672,9 @@ void drawDisplay() {
     display.print(menuIndex == 5 ? "> " : "  ");
     display.println("Reset WiFi");
     display.print(menuIndex == 6 ? "> " : "  ");
+    display.println(sketchMenuSummary());
+    display.print(menuIndex == 7 ? "> " : "  ");
     display.println("Deep sleep");
-    if (menuIndex == 4) {
-      display.println("A play next");
-    } else if (menuIndex == 5) {
-      display.println("A reset B/C sel");
-    } else {
-      display.println(menuIndex == 6 ? "A sleep B/C sel" : "A chg B/C sel");
-    }
     display.display();
     return;
   }
@@ -1142,6 +1179,8 @@ void serviceButtons() {
       } else if (menuIndex == 5) {
         resetWifiCredentials();
       } else if (menuIndex == 6) {
+        // Memory is display-only.
+      } else if (menuIndex == 7) {
         enterDeepSleep();
       }
     } else {
