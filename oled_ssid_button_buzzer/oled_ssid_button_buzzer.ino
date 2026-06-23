@@ -21,7 +21,6 @@
 namespace {
 const char *const kHostname = "vario-feather-v2";
 const char *const kConfigPortalSsid = "VarioFeatherSetup";
-const char *const kConfigPortalPassword = "configureme";
 
 constexpr uint8_t kBuzzerPin = 13;
 constexpr uint8_t kBuzzerResolutionBits = 8;
@@ -944,7 +943,7 @@ void startWifiPortal() {
   WiFi.setHostname(kHostname);
   Serial.print("Starting setup AP: ");
   Serial.println(kConfigPortalSsid);
-  const bool portalStarted = wifiManager.startConfigPortal(kConfigPortalSsid, kConfigPortalPassword);
+  const bool portalStarted = wifiManager.startConfigPortal(kConfigPortalSsid);
   wifiPortalRunning = wifiManager.getConfigPortalActive() || portalStarted;
   wifiPortalStartMs = millis();
   wifiConnectInProgress = false;
@@ -964,7 +963,7 @@ void startDirectSettingsAp() {
   otaStarted = false;
   WiFi.disconnect(false);
   WiFi.mode(WIFI_AP);
-  WiFi.softAP(kConfigPortalSsid, kConfigPortalPassword);
+  WiFi.softAP(kConfigPortalSsid);
   startSettingsServer();
   Serial.print("Direct AP mode active at ");
   Serial.println(settingsUrl());
