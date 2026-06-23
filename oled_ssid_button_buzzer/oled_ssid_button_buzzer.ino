@@ -3,6 +3,7 @@
 #include <ESPmDNS.h>
 #include <NetworkUdp.h>
 #include <ArduinoOTA.h>
+#include <Preferences.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SH110X.h>
@@ -24,24 +25,49 @@ const char *const kConfigPortalSsid = "VarioFeatherSetup";
 const char *const kConfigPortalPassword = "configureme";
 
 constexpr uint8_t kBuzzerPin = 13;
-constexpr uint32_t kBuzzerToneHz = 4000;
 constexpr uint8_t kBuzzerResolutionBits = 8;
+const char *const kPrefsNamespace = "vario";
+const char *const kPrefWifi = "bootWifi";
+const char *const kPrefPixel = "bootPixel";
+const char *const kPrefAudio = "bootAudio";
 
 constexpr uint8_t kButtonA = 15;
 constexpr uint8_t kButtonB = 32;
 constexpr uint8_t kButtonC = 14;
 
 constexpr float kMetersToFeet = 3.28084F;
+constexpr float kFeetToMeters = 1.0F / kMetersToFeet;
 constexpr float kSeaLevelPressureHpa = 1013.25F;
 constexpr float kMinColorScaleFt = 0.1F;
 constexpr float kMaxColorScaleFt = 1000.0F;
 constexpr float kAltitudeSmoothingAlpha = 0.25F;
+constexpr float kVarioResponseAlpha[] = {0.18F, 0.32F, 0.50F, 0.72F};
+const char *const kVarioResponseLabel[] = {"Smooth", "Normal", "Quick", "Direct"};
+constexpr uint8_t kVarioResponseCount = sizeof(kVarioResponseAlpha) / sizeof(kVarioResponseAlpha[0]);
+constexpr float kLiftThresholdMps = 0.18F;
+constexpr float kLiftOffThresholdMps = 0.08F;
+constexpr float kSinkThresholdMps = -1.80F;
+constexpr float kSinkOffThresholdMps = -1.40F;
+constexpr uint32_t kLiftFreqBaseHz = 720;
+constexpr uint32_t kLiftFreqIncrementHzPerMps = 170;
+constexpr uint32_t kSinkFreqBaseHz = 360;
+constexpr uint32_t kSinkFreqDecrementHzPerMps = 45;
+constexpr uint32_t kMinToneHz = 130;
+constexpr uint32_t kMaxToneHz = 1800;
+constexpr uint32_t kToneQuantizeHz = 10;
+constexpr uint8_t kBuzzerDuty = 96;
 constexpr uint32_t kMenuLongPressMs = 800;
-constexpr uint8_t kMenuItemCount = 3;
+constexpr uint8_t kMenuItemCount = 6;
+constexpr uint8_t kToneTestCount = 4;
+constexpr uint32_t kToneTestDurationMs = 3000;
+constexpr uint32_t kWifiRetryMs = 30000;
+const char *const kToneTestLabel[] = {"Ascent", "Fast up", "Descent", "Fast down"};
 
 Adafruit_SH1107 display = Adafruit_SH1107(64, 128, &Wire);
 Adafruit_SHT4x sht4 = Adafruit_SHT4x();
 Adafruit_BMP5xx bmp;
+Preferences prefs;
+WiFiManager wifiManager;
 
 bool bmpReady = false;
 bool shtReady = false;
@@ -52,14 +78,26 @@ bool altitudeFilterInitialized = false;
 bool wifiEnabled = true;
 bool otaStarted = false;
 bool neopixelEnabled = true;
+bool audioEnabled = true;
 bool menuActive = false;
-bool buzzerOn = false;
+bool toneOn = false;
+bool liftAudioActive = false;
+bool sinkAudioActive = false;
+bool liftBeepOn = false;
+bool varioRateInitialized = false;
+bool toneTestActive = false;
+bool wifiPortalRunning = false;
 uint8_t menuIndex = 0;
+uint8_t varioResponseIndex = 1;
+uint8_t toneTestPatternIndex = 0;
+uint8_t toneTestPlayingIndex = 0;
 
 float altitudeFt = 0.0F;
 float smoothedAltitudeFt = 0.0F;
+float previousVarioAltitudeFt = 0.0F;
 float baselineSmoothedAltitudeFt = 0.0F;
 float displayAltitudeFt = 0.0F;
+float verticalSpeedMps = 0.0F;
 float temperatureF = NAN;
 float humidityPercent = NAN;
 float colorScaleFt = 100.0F;
@@ -69,7 +107,14 @@ float batteryPercent = NAN;
 uint32_t lastSensorReadMs = 0;
 uint32_t lastDisplayUpdateMs = 0;
 uint32_t lastOtaProgressMs = 0;
+uint32_t lastVarioRateUpdateMs = 0;
+uint32_t liftPhaseStartMs = 0;
 uint32_t buttonAPressStartMs = 0;
+uint32_t currentToneHz = 0;
+uint32_t toneTestStartMs = 0;
+uint32_t lastWifiRetryMs = 0;
+
+void disableWifi();
 
 float clampFloat(float value, float low, float high) {
   return min(max(value, low), high);
@@ -86,27 +131,169 @@ void setPixelColor(uint8_t red, uint8_t green, uint8_t blue) {
 #endif
 }
 
-void setBuzzer(bool enabled) {
-  if (enabled == buzzerOn) {
+uint32_t clampFrequency(uint32_t value) {
+  return min(max(value, kMinToneHz), kMaxToneHz);
+}
+
+uint32_t quantizeFrequency(uint32_t value) {
+  value = clampFrequency(value);
+  return ((value + kToneQuantizeHz / 2) / kToneQuantizeHz) * kToneQuantizeHz;
+}
+
+void setTone(uint32_t frequencyHz) {
+  if (!audioEnabled) {
+    frequencyHz = 0;
+  }
+
+  frequencyHz = frequencyHz > 0 ? quantizeFrequency(frequencyHz) : 0;
+  if (frequencyHz == currentToneHz) {
     return;
   }
 
-  if (enabled) {
-    ledcWriteTone(kBuzzerPin, kBuzzerToneHz);
+  if (frequencyHz > 0) {
+    ledcWriteTone(kBuzzerPin, frequencyHz);
+    ledcWrite(kBuzzerPin, kBuzzerDuty);
   } else {
     ledcWriteTone(kBuzzerPin, 0);
     digitalWrite(kBuzzerPin, LOW);
   }
 
-  buzzerOn = enabled;
+  currentToneHz = frequencyHz;
+  toneOn = frequencyHz > 0;
+}
+
+void loadSettings() {
+  prefs.begin(kPrefsNamespace, false);
+  wifiEnabled = prefs.getBool(kPrefWifi, true);
+  neopixelEnabled = prefs.getBool(kPrefPixel, true);
+  audioEnabled = prefs.getBool(kPrefAudio, true);
+}
+
+void saveBoolSetting(const char *key, bool value) {
+  prefs.putBool(key, value);
 }
 
 void startBuzzer() {
   pinMode(kBuzzerPin, OUTPUT);
   digitalWrite(kBuzzerPin, LOW);
-  if (!ledcAttach(kBuzzerPin, kBuzzerToneHz, kBuzzerResolutionBits)) {
+  if (!ledcAttach(kBuzzerPin, kLiftFreqBaseHz, kBuzzerResolutionBits)) {
     Serial.println("Buzzer PWM setup failed");
   }
+}
+
+void startToneTest() {
+  if (!audioEnabled) {
+    return;
+  }
+
+  toneTestPlayingIndex = toneTestPatternIndex;
+  toneTestPatternIndex = (toneTestPatternIndex + 1) % kToneTestCount;
+  toneTestStartMs = millis();
+  toneTestActive = true;
+  liftAudioActive = false;
+  sinkAudioActive = false;
+  liftBeepOn = false;
+  setTone(0);
+}
+
+bool updateToneTest() {
+  if (!toneTestActive) {
+    return false;
+  }
+
+  const uint32_t elapsedMs = millis() - toneTestStartMs;
+  if (elapsedMs >= kToneTestDurationMs) {
+    toneTestActive = false;
+    setTone(0);
+    return false;
+  }
+
+  switch (toneTestPlayingIndex) {
+    case 0: {
+      const uint32_t cycleMs = 620;
+      setTone(elapsedMs % cycleMs < 145 ? 860 : 0);
+      break;
+    }
+    case 1: {
+      const uint32_t cycleMs = 215;
+      setTone(elapsedMs % cycleMs < 82 ? 1320 : 0);
+      break;
+    }
+    case 2:
+      setTone(320);
+      break;
+    case 3: {
+      const uint32_t cycleMs = 430;
+      setTone(elapsedMs % cycleMs < 310 ? 220 : 0);
+      break;
+    }
+  }
+
+  return true;
+}
+
+void updateVarioAudio() {
+  const uint32_t now = millis();
+
+  if (updateToneTest()) {
+    return;
+  }
+
+  if (menuActive || !audioEnabled || !varioRateInitialized) {
+    setTone(0);
+    liftAudioActive = false;
+    sinkAudioActive = false;
+    liftBeepOn = false;
+    return;
+  }
+
+  if (!liftAudioActive && verticalSpeedMps >= kLiftThresholdMps) {
+    liftAudioActive = true;
+    sinkAudioActive = false;
+    liftBeepOn = true;
+    liftPhaseStartMs = now;
+  } else if (liftAudioActive && verticalSpeedMps < kLiftOffThresholdMps) {
+    liftAudioActive = false;
+    liftBeepOn = false;
+  }
+
+  if (!sinkAudioActive && verticalSpeedMps <= kSinkThresholdMps) {
+    sinkAudioActive = true;
+    liftAudioActive = false;
+    liftBeepOn = false;
+  } else if (sinkAudioActive && verticalSpeedMps > kSinkOffThresholdMps) {
+    sinkAudioActive = false;
+  }
+
+  if (liftAudioActive) {
+    const float climb = clampFloat(verticalSpeedMps, 0.0F, 8.0F);
+    const uint32_t frequency =
+      quantizeFrequency(kLiftFreqBaseHz + static_cast<uint32_t>(climb * kLiftFreqIncrementHzPerMps));
+    const uint32_t beepMs =
+      static_cast<uint32_t>(clampFloat(155.0F - climb * 15.0F, 65.0F, 155.0F));
+    const uint32_t pauseMs =
+      static_cast<uint32_t>(clampFloat(560.0F - climb * 75.0F, 95.0F, 560.0F));
+    const uint32_t phaseMs = liftBeepOn ? beepMs : pauseMs;
+
+    if (now - liftPhaseStartMs >= phaseMs) {
+      liftBeepOn = !liftBeepOn;
+      liftPhaseStartMs = now;
+    }
+
+    setTone(liftBeepOn ? frequency : 0);
+    return;
+  }
+
+  if (sinkAudioActive) {
+    const float sink = clampFloat(-verticalSpeedMps, 0.0F, 8.0F);
+    const uint32_t frequency =
+      quantizeFrequency(kSinkFreqBaseHz -
+                        min(static_cast<uint32_t>(sink * kSinkFreqDecrementHzPerMps), 180UL));
+    setTone(frequency);
+    return;
+  }
+
+  setTone(0);
 }
 
 void updatePixel() {
@@ -149,19 +336,30 @@ void drawDisplay() {
   if (menuActive) {
     display.setTextSize(1);
     display.println("Menu");
-    display.println();
     display.print(menuIndex == 0 ? "> " : "  ");
-    display.print("WiFi: ");
+    display.print("Boot WiFi:");
     display.println(wifiEnabled ? "on" : "off");
     display.print(menuIndex == 1 ? "> " : "  ");
-    display.print("NeoPixel: ");
+    display.print("Boot LED:");
     display.println(neopixelEnabled ? "on" : "off");
     display.print(menuIndex == 2 ? "> " : "  ");
+    display.print("Sound:");
+    display.println(audioEnabled ? "on" : "off");
+    display.print(menuIndex == 3 ? "> " : "  ");
+    display.print("Response: ");
+    display.println(kVarioResponseLabel[varioResponseIndex]);
+    display.print(menuIndex == 4 ? "> " : "  ");
+    display.print("Test: ");
+    display.println(toneTestActive ? kToneTestLabel[toneTestPlayingIndex]
+                                   : kToneTestLabel[toneTestPatternIndex]);
+    display.print(menuIndex == 5 ? "> " : "  ");
     display.println("Deep sleep");
-    display.println();
-    display.println(menuIndex == 2 ? "A sleep" : "A toggle");
-    display.println("B/C select");
-    display.println("Hold A exit");
+    if (menuIndex == 4) {
+      display.println("A play next");
+    } else {
+      display.println(menuIndex == 5 ? "A sleep" : "A change");
+    }
+    display.println("B/C sel Hold A exit");
     display.display();
     return;
   }
@@ -201,6 +399,11 @@ void drawDisplay() {
   display.print(colorScaleFt, colorScaleFt < 10.0F ? 1 : 0);
   display.println(" ft");
 
+  display.print("Vario: ");
+  display.print(verticalSpeedMps, 2);
+  display.print(" ");
+  display.println(kVarioResponseLabel[varioResponseIndex]);
+
   display.print("BMP: ");
   display.print(bmpReady ? "ok" : "missing");
   display.print(" SHT: ");
@@ -209,6 +412,8 @@ void drawDisplay() {
   display.print("WiFi: ");
   if (!wifiEnabled) {
     display.println("off");
+  } else if (wifiPortalRunning) {
+    display.println(kConfigPortalSsid);
   } else {
     display.println(WiFi.status() == WL_CONNECTED ? WiFi.localIP().toString() : "offline");
   }
@@ -218,39 +423,40 @@ void drawDisplay() {
   display.display();
 }
 
-void connectWifi() {
+void configureWifiManager() {
+  wifiManager.setDebugOutput(true);
+  wifiManager.setHostname(kHostname);
+  wifiManager.setConnectTimeout(10);
+  wifiManager.setConnectRetries(2);
+  wifiManager.setSaveConnectTimeout(20);
+  wifiManager.setConfigPortalTimeout(300);
+  wifiManager.setConfigPortalBlocking(false);
+  wifiManager.preloadWiFi(kWifiSsid, kWifiPassword);
+}
+
+void beginWifi() {
+  if (!wifiEnabled) {
+    disableWifi();
+    return;
+  }
+
   WiFi.mode(WIFI_STA);
   WiFi.setHostname(kHostname);
-  WiFi.begin(kWifiSsid, kWifiPassword);
 
-  Serial.printf("Connecting to WiFi SSID: %s\n", kWifiSsid);
-  const uint32_t startMs = millis();
-  while (WiFi.status() != WL_CONNECTED && millis() - startMs < 30000) {
-    setBuzzer(digitalRead(kButtonB) == LOW);
-    delay(10);
-  }
-  setBuzzer(false);
+  Serial.println("Starting WiFiManager");
+  const bool connected = wifiManager.autoConnect(kConfigPortalSsid, kConfigPortalPassword);
+  wifiPortalRunning = !connected && WiFi.status() != WL_CONNECTED;
+  lastWifiRetryMs = millis();
 
-  if (WiFi.status() == WL_CONNECTED) {
+  if (connected || WiFi.status() == WL_CONNECTED) {
+    wifiPortalRunning = false;
     Serial.print("Connected to SSID: ");
     Serial.println(WiFi.SSID());
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
-    return;
-  }
-
-  Serial.println("Requested WiFi failed; starting setup portal");
-  WiFi.disconnect(false);
-
-  WiFiManager wm;
-  wm.setDebugOutput(true);
-  wm.setHostname(kHostname);
-  wm.setConnectTimeout(20);
-  wm.setConfigPortalTimeout(180);
-  wm.preloadWiFi(kWifiSsid, kWifiPassword);
-
-  if (!wm.autoConnect(kConfigPortalSsid, kConfigPortalPassword)) {
-    ESP.restart();
+  } else {
+    Serial.print("WiFi offline; setup AP active as ");
+    Serial.println(kConfigPortalSsid);
   }
 }
 
@@ -287,13 +493,34 @@ void startOta() {
 void disableWifi() {
   ArduinoOTA.end();
   otaStarted = false;
+  wifiPortalRunning = false;
   WiFi.disconnect(true);
   WiFi.mode(WIFI_OFF);
 }
 
 void enableWifi() {
-  connectWifi();
+  beginWifi();
   startOta();
+}
+
+void serviceWifi() {
+  if (!wifiEnabled) {
+    return;
+  }
+
+  if (wifiPortalRunning) {
+    wifiPortalRunning = wifiManager.process();
+  }
+
+  if (WiFi.status() == WL_CONNECTED) {
+    wifiPortalRunning = false;
+    startOta();
+    return;
+  }
+
+  if (!wifiPortalRunning && millis() - lastWifiRetryMs >= kWifiRetryMs) {
+    beginWifi();
+  }
 }
 
 void startSensors() {
@@ -318,13 +545,34 @@ void startSensors() {
 
 void readSensors() {
   if (bmpReady && bmp.performReading()) {
+    const uint32_t now = millis();
     altitudeFt = bmp.readAltitude(kSeaLevelPressureHpa) * kMetersToFeet;
     if (!altitudeFilterInitialized) {
       smoothedAltitudeFt = altitudeFt;
+      previousVarioAltitudeFt = smoothedAltitudeFt;
       baselineSmoothedAltitudeFt = smoothedAltitudeFt;
+      lastVarioRateUpdateMs = now;
       altitudeFilterInitialized = true;
     } else {
       smoothedAltitudeFt += kAltitudeSmoothingAlpha * (altitudeFt - smoothedAltitudeFt);
+
+      const uint32_t dtMs = now - lastVarioRateUpdateMs;
+      if (dtMs > 0) {
+        const float dtSeconds = dtMs / 1000.0F;
+        const float measuredMps =
+          (smoothedAltitudeFt - previousVarioAltitudeFt) * kFeetToMeters / dtSeconds;
+
+        if (!varioRateInitialized) {
+          verticalSpeedMps = measuredMps;
+          varioRateInitialized = true;
+        } else {
+          const float responseAlpha = kVarioResponseAlpha[varioResponseIndex];
+          verticalSpeedMps += responseAlpha * (measuredMps - verticalSpeedMps);
+        }
+
+        previousVarioAltitudeFt = smoothedAltitudeFt;
+        lastVarioRateUpdateMs = now;
+      }
     }
     displayAltitudeFt = smoothedAltitudeFt - baselineSmoothedAltitudeFt;
   }
@@ -377,8 +625,6 @@ void serviceButtons() {
   const bool b = digitalRead(kButtonB);
   const bool c = digitalRead(kButtonC);
 
-  setBuzzer(b == LOW);
-
   if (lastA == HIGH && a == LOW) {
     buttonAPressStartMs = millis();
   }
@@ -390,6 +636,7 @@ void serviceButtons() {
     } else if (menuActive) {
       if (menuIndex == 0) {
         wifiEnabled = !wifiEnabled;
+        saveBoolSetting(kPrefWifi, wifiEnabled);
         if (wifiEnabled) {
           enableWifi();
         } else {
@@ -397,8 +644,20 @@ void serviceButtons() {
         }
       } else if (menuIndex == 1) {
         neopixelEnabled = !neopixelEnabled;
+        saveBoolSetting(kPrefPixel, neopixelEnabled);
         updatePixel();
       } else if (menuIndex == 2) {
+        audioEnabled = !audioEnabled;
+        saveBoolSetting(kPrefAudio, audioEnabled);
+        if (!audioEnabled) {
+          setTone(0);
+          toneTestActive = false;
+        }
+      } else if (menuIndex == 3) {
+        varioResponseIndex = (varioResponseIndex + 1) % kVarioResponseCount;
+      } else if (menuIndex == 4) {
+        startToneTest();
+      } else if (menuIndex == 5) {
         enterDeepSleep();
       }
     } else {
@@ -433,6 +692,8 @@ void setup() {
   Serial.begin(115200);
   delay(250);
 
+  loadSettings();
+
   pinMode(kButtonA, INPUT_PULLUP);
   pinMode(kButtonB, INPUT_PULLUP);
   pinMode(kButtonC, INPUT_PULLUP);
@@ -450,15 +711,23 @@ void setup() {
   readSensors();
   drawDisplay();
 
-  connectWifi();
-  startOta();
+  configureWifiManager();
+  if (wifiEnabled) {
+    beginWifi();
+    startOta();
+  } else {
+    disableWifi();
+  }
 }
 
 void loop() {
+  serviceWifi();
+
   if (wifiEnabled && otaStarted) {
     ArduinoOTA.handle();
   }
   serviceButtons();
+  updateVarioAudio();
 
   if (millis() - lastSensorReadMs >= 100) {
     lastSensorReadMs = millis();
