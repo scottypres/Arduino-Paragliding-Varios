@@ -33,6 +33,7 @@ const char *const kPrefAudio = "bootAudio";
 const char *const kPrefStartupBeeps = "startBeeps";
 const char *const kPrefBuzzerVolume = "buzzVol";
 const char *const kPrefDirectSettings = "directAP";
+const char *const kPrefWifiSetupRequired = "wifiSetup";
 const char *const kPrefResponse = "response";
 const char *const kPrefHasAltitudeZero = "hasZero";
 const char *const kPrefAltitudeZeroFt = "zeroFt";
@@ -67,6 +68,9 @@ constexpr uint8_t kMenuItemCount = 9;
 constexpr uint8_t kMenuVisibleRows = 8;
 constexpr uint8_t kToneTestCount = 4;
 constexpr uint32_t kToneTestDurationMs = 3000;
+constexpr uint32_t kSensorReadMs = 100;
+constexpr uint32_t kMenuSensorReadMs = 250;
+constexpr uint32_t kDisplayUpdateMs = 100;
 constexpr uint32_t kBmpWarmupMs = 5000;
 constexpr uint32_t kBmpRetryMs = 2000;
 constexpr uint32_t kWifiConnectTimeoutMs = 8000;
@@ -108,6 +112,7 @@ bool readyBeepActive = false;
 bool bmpWarmupComplete = false;
 bool altitudeZeroSaved = false;
 bool directSettingsMode = false;
+bool wifiSetupRequired = false;
 bool wifiConnectInProgress = false;
 bool wifiPortalRunning = false;
 bool settingsRoutesConfigured = false;
@@ -221,6 +226,7 @@ void loadSettings() {
               kMinBuzzerVolumePercent,
               kMaxBuzzerVolumePercent);
   directSettingsMode = prefs.getBool(kPrefDirectSettings, false);
+  wifiSetupRequired = prefs.getBool(kPrefWifiSetupRequired, false);
   varioResponseIndex = prefs.getUChar(kPrefResponse, varioResponseIndex);
   if (varioResponseIndex >= kVarioResponseCount) {
     varioResponseIndex = 1;
@@ -229,6 +235,7 @@ void loadSettings() {
   baselineSmoothedAltitudeFt = prefs.getFloat(kPrefAltitudeZeroFt, 0.0F);
   if (directSettingsMode) {
     wifiEnabled = true;
+    wifiSetupRequired = false;
   }
 }
 
@@ -415,6 +422,7 @@ void handleSettingsSave(WebServer &server) {
   directSettingsMode = server.hasArg("direct");
   if (directSettingsMode) {
     wifiEnabled = true;
+    wifiSetupRequired = false;
   }
   audioEnabled = server.hasArg("buzz");
   if (server.hasArg("response")) {
@@ -430,6 +438,7 @@ void handleSettingsSave(WebServer &server) {
   saveBoolSetting(kPrefAudio, audioEnabled);
   saveBoolSetting(kPrefStartupBeeps, startupBeepsEnabled);
   saveBoolSetting(kPrefDirectSettings, directSettingsMode);
+  saveBoolSetting(kPrefWifiSetupRequired, wifiSetupRequired);
   saveTuningSettings();
   if (!audioEnabled) {
     setTone(0);
@@ -461,8 +470,10 @@ void handleToneTest(WebServer &server) {
 void handleDirectNow(WebServer &server) {
   directSettingsMode = true;
   wifiEnabled = true;
+  wifiSetupRequired = false;
   saveBoolSetting(kPrefDirectSettings, true);
   saveBoolSetting(kPrefWifi, true);
+  saveBoolSetting(kPrefWifiSetupRequired, false);
   handleSettingsGet(server, "Direct AP mode saved. Restarting into no-router mode.");
   pendingRestart = true;
 }
@@ -476,13 +487,15 @@ void resetWifiCredentials() {
   wifiConnectInProgress = false;
   stopSettingsServer();
   stopApSettingsServer();
+  wifiManager.resetSettings();
   WiFi.disconnect(true, true);
   WiFi.mode(WIFI_OFF);
   delay(100);
-  wifiManager.resetSettings();
   directSettingsMode = false;
+  wifiSetupRequired = true;
   wifiEnabled = true;
   saveBoolSetting(kPrefDirectSettings, false);
+  saveBoolSetting(kPrefWifiSetupRequired, true);
   saveBoolSetting(kPrefWifi, true);
   lastWifiRetryMs = 0;
   startWifiPortal();
@@ -787,7 +800,6 @@ void configureWifiManager() {
   wifiManager.setSaveConnectTimeout(20);
   wifiManager.setConfigPortalTimeout(kWifiPortalTimeoutMs / 1000);
   wifiManager.setConfigPortalBlocking(false);
-  wifiManager.preloadWiFi(kWifiSsid, kWifiPassword);
   wifiManager.addParameter(&noRouterLink);
 }
 
@@ -872,6 +884,12 @@ void serviceSettingsServers() {
 void startWifiConnection() {
   if (!wifiEnabled) {
     disableWifi();
+    return;
+  }
+
+  if (wifiSetupRequired) {
+    Serial.println("WiFi setup required; starting setup AP");
+    startWifiPortal();
     return;
   }
 
@@ -1006,6 +1024,8 @@ void serviceWifi() {
     if (WiFi.status() == WL_CONNECTED) {
       wifiPortalRunning = false;
       wifiConnectInProgress = false;
+      wifiSetupRequired = false;
+      saveBoolSetting(kPrefWifiSetupRequired, false);
       Serial.print("Connected to SSID: ");
       Serial.println(WiFi.SSID());
       Serial.print("IP address: ");
@@ -1031,6 +1051,10 @@ void serviceWifi() {
   if (WiFi.status() == WL_CONNECTED) {
     wifiPortalRunning = false;
     wifiConnectInProgress = false;
+    if (wifiSetupRequired) {
+      wifiSetupRequired = false;
+      saveBoolSetting(kPrefWifiSetupRequired, false);
+    }
     startOta();
     startSettingsServer();
     requestDisplayRefresh();
@@ -1307,22 +1331,28 @@ void setup() {
 void loop() {
   serviceButtons();
   serviceWifi();
+  serviceButtons();
 
   if (wifiEnabled && otaStarted) {
     ArduinoOTA.handle();
   }
   serviceSettingsServers();
+  serviceButtons();
   updateVarioAudio();
 
-  if (millis() - lastSensorReadMs >= 100) {
+  const uint32_t now = millis();
+  const uint32_t sensorIntervalMs = menuActive ? kMenuSensorReadMs : kSensorReadMs;
+  if (now - lastSensorReadMs >= sensorIntervalMs) {
     lastSensorReadMs = millis();
     readSensors();
+    serviceButtons();
   }
 
-  if (displayNeedsRefresh || millis() - lastDisplayUpdateMs >= 100) {
+  if (displayNeedsRefresh || (!menuActive && now - lastDisplayUpdateMs >= kDisplayUpdateMs)) {
     lastDisplayUpdateMs = millis();
     drawDisplay();
+    serviceButtons();
   }
 
-  delay(5);
+  delay(1);
 }
