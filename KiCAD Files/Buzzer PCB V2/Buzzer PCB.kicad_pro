@@ -40,8 +40,8 @@
         "other_text_upright": false,
         "pads": {
           "drill": 0.8,
-          "height": 2.25,
-          "width": 1.6
+          "height": 2.0,
+          "width": 1.5
         },
         "silk_line_width": 0.1,
         "silk_text_italic": false,
@@ -257,7 +257,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": ""
+      "sch_revision": "V2"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -662,13 +662,18 @@
       {
         "filename": "Buzzer PCB.kicad_sch",
         "name": "Buzzer PCB",
-        "uuid": "00000000-0000-0000-0000-000000000000"
+        "uuid": "1b4b1935-b674-4f7b-922d-e131a48a660a"
       }
     ],
     "used_designators": "",
     "variants": []
   },
-  "sheets": [],
+  "sheets": [
+    [
+      "1b4b1935-b674-4f7b-922d-e131a48a660a",
+      "Buzzer PCB"
+    ]
+  ],
   "text_variables": {},
   "tuning_profiles": {
     "meta": {

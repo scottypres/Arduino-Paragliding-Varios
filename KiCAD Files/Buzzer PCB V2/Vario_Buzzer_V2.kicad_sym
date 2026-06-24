@@ -14,4 +14,234 @@
 (symbol "Buzzer_2" (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (property "Reference" "BZ" (at 0 6.35 0) (effects (font (size 1.27 1.27)))) (property "Value" "Buzzer_2" (at 0 -6.35 0) (effects (font (size 1.27 1.27)))) (property "Footprint" "" (at 0 0 0) (hide yes) (effects (font (size 1.27 1.27)))) (property "Datasheet" "" (at 0 0 0) (hide yes) (effects (font (size 1.27 1.27)))) (property "Description" "Passive buzzer" (at 0 0 0) (hide yes) (effects (font (size 1.27 1.27)))) (symbol "Buzzer_2_0_1" (rectangle (start -8.89 3.81) (end 7.62 -3.81) (stroke (width 0.254) (type default)) (fill (type background)))) (symbol "Buzzer_2_1_1" (pin passive line (at -12.7 1.27 0) (length 3.81) (name "+" (effects (font (size 1.27 1.27)))) (number "1" (effects (font (size 1.27 1.27))))) (pin passive line (at -12.7 -1.27 0) (length 3.81) (name "-" (effects (font (size 1.27 1.27)))) (number "2" (effects (font (size 1.27 1.27)))))) (embedded_fonts no))
 (symbol "NPN_EBC_3" (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (property "Reference" "Q" (at 0 7.62 0) (effects (font (size 1.27 1.27)))) (property "Value" "NPN_EBC_3" (at 0 -7.62 0) (effects (font (size 1.27 1.27)))) (property "Footprint" "" (at 0 0 0) (hide yes) (effects (font (size 1.27 1.27)))) (property "Datasheet" "" (at 0 0 0) (hide yes) (effects (font (size 1.27 1.27)))) (property "Description" "NPN transistor E-B-C" (at 0 0 0) (hide yes) (effects (font (size 1.27 1.27)))) (symbol "NPN_EBC_3_0_1" (rectangle (start -8.89 5.08) (end 7.62 -5.08) (stroke (width 0.254) (type default)) (fill (type background)))) (symbol "NPN_EBC_3_1_1" (pin passive line (at -12.7 2.54 0) (length 3.81) (name "E" (effects (font (size 1.27 1.27)))) (number "1" (effects (font (size 1.27 1.27))))) (pin passive line (at -12.7 0 0) (length 3.81) (name "B" (effects (font (size 1.27 1.27)))) (number "2" (effects (font (size 1.27 1.27))))) (pin passive line (at -12.7 -2.54 0) (length 3.81) (name "C" (effects (font (size 1.27 1.27)))) (number "3" (effects (font (size 1.27 1.27)))))) (embedded_fonts no))
 (symbol "SPDT_Switch_3" (exclude_from_sim no) (in_bom yes) (on_board yes) (in_pos_files yes) (property "Reference" "SW" (at 0 7.62 0) (effects (font (size 1.27 1.27)))) (property "Value" "SPDT_Switch_3" (at 0 -7.62 0) (effects (font (size 1.27 1.27)))) (property "Footprint" "" (at 0 0 0) (hide yes) (effects (font (size 1.27 1.27)))) (property "Datasheet" "" (at 0 0 0) (hide yes) (effects (font (size 1.27 1.27)))) (property "Description" "SPDT slide switch" (at 0 0 0) (hide yes) (effects (font (size 1.27 1.27)))) (symbol "SPDT_Switch_3_0_1" (rectangle (start -8.89 5.08) (end 7.62 -5.08) (stroke (width 0.254) (type default)) (fill (type background)))) (symbol "SPDT_Switch_3_1_1" (pin passive line (at -12.7 2.54 0) (length 3.81) (name "ON" (effects (font (size 1.27 1.27)))) (number "1" (effects (font (size 1.27 1.27))))) (pin passive line (at -12.7 0 0) (length 3.81) (name "COM" (effects (font (size 1.27 1.27)))) (number "2" (effects (font (size 1.27 1.27))))) (pin passive line (at -12.7 -2.54 0) (length 3.81) (name "NC" (effects (font (size 1.27 1.27)))) (number "3" (effects (font (size 1.27 1.27)))))) (embedded_fonts no))
+  (symbol "M16968_OLED_RotaryKnob_9"
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (property "Reference" "J"
+      (at 2.54 0 0)
+      (effects
+        (font (size 1.27 1.27))
+      )
+    )
+    (property "Value" "M16968_OLED_RotaryKnob_9"
+      (at 0 -2.54 0)
+      (effects
+        (font (size 1.27 1.27))
+      )
+    )
+    (property "Footprint" "Vario_Buzzer_V2:OLED_M16968_59x35_9Pin"
+      (at 0 -5.08 0)
+      (effects
+        (font (size 1.27 1.27))
+      )
+      (hide yes)
+    )
+    (property "Datasheet" "~"
+      (at 0 -7.62 0)
+      (effects
+        (font (size 1.27 1.27))
+      )
+      (hide yes)
+    )
+    (property "Description" "M16968 OLED display + rotary encoder + BACK/CONFIRM buttons module, 9-pin 2.54mm header"
+      (at 0 -10.16 0)
+      (effects
+        (font (size 1.27 1.27))
+      )
+      (hide yes)
+    )
+    (property "ki_keywords" "OLED rotary encoder module M16968"
+      (at 0 0 0)
+      (effects
+        (font (size 1.27 1.27))
+      )
+      (hide yes)
+    )
+    (symbol "M16968_OLED_RotaryKnob_9_0_1"
+      (rectangle
+        (start 0 11.43)
+        (end 15.24 -11.43)
+        (stroke (width 0.254) (type default))
+        (fill (type background))
+      )
+    )
+    (symbol "M16968_OLED_RotaryKnob_9_1_1"
+      (pin power_in line
+        (at -2.54 10.16 0)
+        (length 2.54)
+        (name "3v3"
+          (effects (font (size 1.27 1.27)))
+        )
+        (number "1"
+          (effects (font (size 1.27 1.27)))
+        )
+      )
+      (pin power_in line
+        (at -2.54 7.62 0)
+        (length 2.54)
+        (name "GND"
+          (effects (font (size 1.27 1.27)))
+        )
+        (number "2"
+          (effects (font (size 1.27 1.27)))
+        )
+      )
+      (pin passive line
+        (at -2.54 5.08 0)
+        (length 2.54)
+        (name "BACK"
+          (effects (font (size 1.27 1.27)))
+        )
+        (number "3"
+          (effects (font (size 1.27 1.27)))
+        )
+      )
+      (pin passive line
+        (at -2.54 2.54 0)
+        (length 2.54)
+        (name "ENC_B"
+          (effects (font (size 1.27 1.27)))
+        )
+        (number "4"
+          (effects (font (size 1.27 1.27)))
+        )
+      )
+      (pin passive line
+        (at -2.54 0 0)
+        (length 2.54)
+        (name "ENC_A"
+          (effects (font (size 1.27 1.27)))
+        )
+        (number "5"
+          (effects (font (size 1.27 1.27)))
+        )
+      )
+      (pin passive line
+        (at -2.54 -2.54 0)
+        (length 2.54)
+        (name "ENC_PUSH"
+          (effects (font (size 1.27 1.27)))
+        )
+        (number "6"
+          (effects (font (size 1.27 1.27)))
+        )
+      )
+      (pin bidirectional line
+        (at -2.54 -5.08 0)
+        (length 2.54)
+        (name "OLED_SCL"
+          (effects (font (size 1.27 1.27)))
+        )
+        (number "7"
+          (effects (font (size 1.27 1.27)))
+        )
+      )
+      (pin bidirectional line
+        (at -2.54 -7.62 0)
+        (length 2.54)
+        (name "OLED_SDA"
+          (effects (font (size 1.27 1.27)))
+        )
+        (number "8"
+          (effects (font (size 1.27 1.27)))
+        )
+      )
+      (pin passive line
+        (at -2.54 -10.16 0)
+        (length 2.54)
+        (name "CONFIRM"
+          (effects (font (size 1.27 1.27)))
+        )
+        (number "9"
+          (effects (font (size 1.27 1.27)))
+        )
+      )
+    )
+  )
+  (symbol "Comidox_5V_Booster_3"
+    (exclude_from_sim no)
+    (in_bom yes)
+    (on_board yes)
+    (property "Reference" "U"
+      (at 2.54 0 0)
+      (effects
+        (font (size 1.27 1.27))
+      )
+    )
+    (property "Value" "Comidox_5V_Booster_3"
+      (at 0 -2.54 0)
+      (effects
+        (font (size 1.27 1.27))
+      )
+    )
+    (property "Footprint" "Vario_Buzzer_V2:Comidox_5V_Booster_10.75x10.75_3Pin"
+      (at 0 -5.08 0)
+      (effects
+        (font (size 1.27 1.27))
+      )
+      (hide yes)
+    )
+    (property "Datasheet" "~"
+      (at 0 -7.62 0)
+      (effects
+        (font (size 1.27 1.27))
+      )
+      (hide yes)
+    )
+    (property "Description" "Comidox 5V boost converter module, 3-pin (Vin/GND/Vout)"
+      (at 0 -10.16 0)
+      (effects
+        (font (size 1.27 1.27))
+      )
+      (hide yes)
+    )
+    (property "ki_keywords" "boost converter 5V step-up Comidox"
+      (at 0 0 0)
+      (effects
+        (font (size 1.27 1.27))
+      )
+      (hide yes)
+    )
+    (symbol "Comidox_5V_Booster_3_0_1"
+      (rectangle
+        (start 0 5.08)
+        (end 7.62 -5.08)
+        (stroke (width 0.254) (type default))
+        (fill (type background))
+      )
+    )
+    (symbol "Comidox_5V_Booster_3_1_1"
+      (pin power_in line
+        (at -2.54 2.54 0)
+        (length 2.54)
+        (name "Vin"
+          (effects (font (size 1.27 1.27)))
+        )
+        (number "1"
+          (effects (font (size 1.27 1.27)))
+        )
+      )
+      (pin power_in line
+        (at -2.54 -2.54 0)
+        (length 2.54)
+        (name "GND"
+          (effects (font (size 1.27 1.27)))
+        )
+        (number "2"
+          (effects (font (size 1.27 1.27)))
+        )
+      )
+      (pin power_out line
+        (at 10.16 0 180)
+        (length 2.54)
+        (name "Vout"
+          (effects (font (size 1.27 1.27)))
+        )
+        (number "3"
+          (effects (font (size 1.27 1.27)))
+        )
+      )
+    )
+  )
 )

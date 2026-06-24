@@ -16,8 +16,20 @@
 	(pad "4" thru_hole circle (at 1.27 7.2) (size 1.8 1.8) (drill 1) (layers "*.Cu" "*.Mask") (remove_unused_layers no) (pinfunction "MOSI") (pintype "passive") (uuid "c164b26a-c7f7-466f-a9ce-385865396046"))
 	(pad "5" thru_hole circle (at 3.81 7.2) (size 1.8 1.8) (drill 1) (layers "*.Cu" "*.Mask") (remove_unused_layers no) (pinfunction "CS") (pintype "passive") (uuid "344824d0-bcab-4ca7-8452-b8f3b2b19b15"))
 	(pad "6" thru_hole circle (at 6.35 7.2) (size 1.8 1.8) (drill 1) (layers "*.Cu" "*.Mask") (remove_unused_layers no) (pinfunction "3V3") (pintype "passive") (uuid "6e856f5d-f91b-42eb-83d2-9a3a088ae5b8"))
-	(pad "" np_thru_hole circle (at -7.1 3.95) (size 2.5 2.5) (drill 2.5) (layers "*.Cu" "*.Mask") (uuid "a1111111-0000-4000-8000-000000000001"))
-	(pad "" np_thru_hole circle (at 7.4 3.95) (size 2.5 2.5) (drill 2.5) (layers "*.Cu" "*.Mask") (uuid "a1111111-0000-4000-8000-000000000002"))
+	(pad "MH1" np_thru_hole circle
+			(at -7.1 3.95)
+			(size 2.5 2.5)
+			(drill 2.5)
+			(layers "*.Cu" "*.Mask")
+			(uuid "a1111111-0000-4000-8000-000000000001")
+		)
+	(pad "MH2" np_thru_hole circle
+			(at 7.4 3.95)
+			(size 2.5 2.5)
+			(drill 2.5)
+			(layers "*.Cu" "*.Mask")
+			(uuid "a1111111-0000-4000-8000-000000000002")
+		)
 	(model "${KIPRJMOD}/../Component References/WWZMDiB SD TF Card Adaptor - SPI - Arduino.step"
 		(offset (xyz 0 0 0)) (scale (xyz 1 1 1)) (rotate (xyz 0 0 0)))
 	(embedded_fonts no)
