@@ -1,0 +1,3079 @@
+(export
+	(version "E")
+	(design
+		(source "/Users/scottpresbrey/Documents/GitHub/Vario_Adafruit_Featherwing/KiCAD Files/Buzzer PCB V2/Buzzer PCB.kicad_sch")
+		(date "2026-06-23T23:51:19")
+		(tool "Eeschema 10.0.3")
+		(sheet
+			(number "1")
+			(name "/")
+			(tstamps "/")
+			(title_block
+				(title "SparkFun Thing Plus Vario Buzzer / Sensor Interposer PCB V2")
+				(company)
+				(rev "V2")
+				(date "2026-06-22")
+				(source "Buzzer PCB.kicad_sch")
+				(comment
+					(number "1")
+					(value "SparkFun Thing Plus + M16968 OLED/rotary replacement; placement only, no traces")
+				)
+				(comment
+					(number "2")
+					(value "")
+				)
+				(comment
+					(number "3")
+					(value "")
+				)
+				(comment
+					(number "4")
+					(value "")
+				)
+				(comment
+					(number "5")
+					(value "")
+				)
+				(comment
+					(number "6")
+					(value "")
+				)
+				(comment
+					(number "7")
+					(value "")
+				)
+				(comment
+					(number "8")
+					(value "")
+				)
+				(comment
+					(number "9")
+					(value "")
+				)
+			)
+		)
+	)
+	(components
+		(comp
+			(ref "BZ1")
+			(value "12085 Passive Buzzer 42R")
+			(footprint "Buzzer_Beeper:Buzzer_12x8.5mm_P7.62mm_Custom")
+			(fields
+				(field
+					(name "Footprint") "Buzzer_Beeper:Buzzer_12x8.5mm_P7.62mm_Custom")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Buzzer_2")
+				(description "Passive buzzer")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "314d1150-0cba-433a-8787-de3451346221")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "BZ2")
+			(value "12085 Passive Buzzer 42R")
+			(footprint "Buzzer_Beeper:Buzzer_12x8.5mm_P7.62mm_Custom")
+			(datasheet "~")
+			(fields
+				(field
+					(name "Footprint") "Buzzer_Beeper:Buzzer_12x8.5mm_P7.62mm_Custom")
+				(field
+					(name "Datasheet") "~")
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Buzzer_2")
+				(description "Passive buzzer")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "9b0fc087-3c5e-4721-978a-f6fe0ec1851d")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "BZ3")
+			(value "12085 Passive Buzzer 42R")
+			(footprint "Buzzer_Beeper:Buzzer_12x8.5mm_P7.62mm_Custom")
+			(datasheet "~")
+			(fields
+				(field
+					(name "Footprint") "Buzzer_Beeper:Buzzer_12x8.5mm_P7.62mm_Custom")
+				(field
+					(name "Datasheet") "~")
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Buzzer_2")
+				(description "Passive buzzer")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "7e5e854c-9745-4a50-b9ff-1309f5caa0a1")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C1")
+			(value "47-100uF ELEC")
+			(footprint "Capacitor_THT:CP_Radial_D5.0mm_P2.00mm")
+			(fields
+				(field
+					(name "Footprint") "Capacitor_THT:CP_Radial_D5.0mm_P2.00mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Capacitor_2")
+				(description "Capacitor")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "321dbd56-53d0-471a-9718-ad5bb4c9290a")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "C2")
+			(value "0.1uF CER")
+			(footprint "Vario_Buzzer_V2:Ceramic_Cap_0.1uF_P5.00mm_V1")
+			(fields
+				(field
+					(name "Footprint") "Vario_Buzzer_V2:Ceramic_Cap_0.1uF_P5.00mm_V1")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Capacitor_2")
+				(description "Capacitor")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "bf20361c-9048-4f6b-9ff4-6e1cd83c6869")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "D1")
+			(value "1N5819")
+			(footprint "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal")
+			(fields
+				(field
+					(name "Footprint") "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Diode_2")
+				(description "Diode")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "cf0b4612-e534-4520-b950-24fa03bee422")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "D2")
+			(value "1N5819")
+			(footprint "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal")
+			(datasheet "~")
+			(fields
+				(field
+					(name "Footprint") "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal")
+				(field
+					(name "Datasheet") "~")
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Diode_2")
+				(description "Diode")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "b3d6eb6a-73e3-43e6-9372-5b37e4a195b6")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "D3")
+			(value "1N5819")
+			(footprint "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal")
+			(datasheet "~")
+			(fields
+				(field
+					(name "Footprint") "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal")
+				(field
+					(name "Datasheet") "~")
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Diode_2")
+				(description "Diode")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "fff4226c-2fb7-42ab-ad8d-716899201639")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J1")
+			(value "2600mAh LiPo JST-PH bottom")
+			(footprint "Connector_JST:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal")
+			(fields
+				(field
+					(name "Footprint") "Connector_JST:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Conn_2")
+				(description "Two-pin connector")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "059f231b-167e-4d7d-8e70-3850f11b0f84")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J2")
+			(value "Legacy SW_BAT/GND out")
+			(footprint "Connector_JST:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal")
+			(fields
+				(field
+					(name "Footprint") "Connector_JST:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Conn_2")
+				(description "Two-pin connector")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "a1694611-df62-423c-a2e5-4c1123601609")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J3")
+			(value "Optional SD module 18x18 swapped")
+			(footprint "Vario_Buzzer_V2:SD_Module_18x18_6Pin_Back")
+			(fields
+				(field
+					(name "Footprint") "Vario_Buzzer_V2:SD_Module_18x18_6Pin_Back")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "SD_Module_6_Swapped")
+				(description "Optional SD module reversed pin order")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "f206f6ca-2774-4442-af95-5ed02acf2df5")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "5")
+						)
+						(pin
+							(num "6")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J4")
+			(value "Legacy D13 test pad")
+			(footprint "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical")
+			(fields
+				(field
+					(name "Footprint") "Connector_PinHeader_2.54mm:PinHeader_1x01_P2.54mm_Vertical")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Conn_2")
+				(description "Two-pin connector")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "39683131-a373-415d-acd4-8e6325368ed5")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J5")
+			(value "HGLRC M100 Mini GPS")
+			(footprint "Vario_Buzzer_V2:GPS_M100_15x15_4Pin_Back")
+			(fields
+				(field
+					(name "Footprint") "Vario_Buzzer_V2:GPS_M100_15x15_4Pin_Back")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "GPS_M100_4")
+				(description "HGLRC M100 Mini manual pin order")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "66bb50ba-c51b-438f-b376-0b8856866d17")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J6")
+			(value "BMP581/BMP5xx top pads")
+			(footprint "Vario_Buzzer_V2:Adafruit_BMP390_Breakout_Top")
+			(fields
+				(field
+					(name "Footprint") "Vario_Buzzer_V2:Adafruit_BMP390_Breakout_Top")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "BMP390_8")
+				(description "Adafruit BMP390/BMP5xx breakout pads")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "f2117911-44ec-4094-8842-83988e4a73ca")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "5")
+						)
+						(pin
+							(num "6")
+						)
+						(pin
+							(num "7")
+						)
+						(pin
+							(num "8")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J7")
+			(value "SHT41 top pads")
+			(footprint "Vario_Buzzer_V2:Adafruit_SHT41_Breakout_Top")
+			(fields
+				(field
+					(name "Footprint") "Vario_Buzzer_V2:Adafruit_SHT41_Breakout_Top")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "SHT41_5")
+				(description "Adafruit SHT41 breakout pads")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "0248e817-9020-4c33-85f7-e2bd35415643")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "5")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J10")
+			(value "SparkFun Thing Plus ESP32 WROOM-C USB-C")
+			(footprint "Vario_Buzzer_V2:SparkFun_Thing_Plus_ESP32_WROOM_C_Header")
+			(fields
+				(field
+					(name "Footprint") "Vario_Buzzer_V2:SparkFun_Thing_Plus_ESP32_WROOM_C_Header")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "SparkFun_Thing_Plus_ESP32_WROOM_C")
+				(description "SparkFun Thing Plus ESP32 WROOM-C USB-C 28-pin header")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "2cd896ab-6b13-45a1-bd7f-15a29bb62ee6")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "12")
+						)
+						(pin
+							(num "10")
+						)
+						(pin
+							(num "27")
+						)
+						(pin
+							(num "28")
+						)
+						(pin
+							(num "11")
+						)
+						(pin
+							(num "25")
+						)
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "16")
+						)
+						(pin
+							(num "17")
+						)
+						(pin
+							(num "18")
+						)
+						(pin
+							(num "15")
+						)
+						(pin
+							(num "14")
+						)
+						(pin
+							(num "9")
+						)
+						(pin
+							(num "6")
+						)
+						(pin
+							(num "5")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "13")
+						)
+						(pin
+							(num "7")
+						)
+						(pin
+							(num "8")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "24")
+						)
+						(pin
+							(num "23")
+						)
+						(pin
+							(num "22")
+						)
+						(pin
+							(num "21")
+						)
+						(pin
+							(num "20")
+						)
+						(pin
+							(num "19")
+						)
+						(pin
+							(num "26")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "J11")
+			(value "M16968 OLED + Rotary Knob")
+			(footprint "Vario_Buzzer_V2:OLED_M16968_59x35_9Pin")
+			(datasheet "~")
+			(fields
+				(field
+					(name "Footprint") "Vario_Buzzer_V2:OLED_M16968_59x35_9Pin")
+				(field
+					(name "Datasheet") "~")
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "M16968_OLED_RotaryKnob_9")
+				(description "M16968 OLED display + rotary encoder + BACK/CONFIRM buttons module, 9-pin 2.54mm header")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "OLED rotary encoder module M16968")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "be7c807b-ccf0-4007-8884-ebed776065ee")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+						(pin
+							(num "4")
+						)
+						(pin
+							(num "5")
+						)
+						(pin
+							(num "6")
+						)
+						(pin
+							(num "7")
+						)
+						(pin
+							(num "8")
+						)
+						(pin
+							(num "9")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "Q1")
+			(value "S8050")
+			(footprint "Package_TO_SOT_THT:TO-92_Inline_Wide_Formed")
+			(fields
+				(field
+					(name "Footprint") "Package_TO_SOT_THT:TO-92_Inline_Wide_Formed")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "NPN_EBC_3")
+				(description "NPN transistor E-B-C")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "576da021-ac25-4c4e-acbf-6541a5a9c555")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "Q2")
+			(value "S8050")
+			(footprint "Package_TO_SOT_THT:TO-92_Inline_Wide_Formed")
+			(datasheet "~")
+			(fields
+				(field
+					(name "Footprint") "Package_TO_SOT_THT:TO-92_Inline_Wide_Formed")
+				(field
+					(name "Datasheet") "~")
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "NPN_EBC_3")
+				(description "NPN transistor E-B-C")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "1dc3c5b9-c211-4877-938e-25a3d20cb457")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "Q3")
+			(value "S8050")
+			(footprint "Package_TO_SOT_THT:TO-92_Inline_Wide_Formed")
+			(datasheet "~")
+			(fields
+				(field
+					(name "Footprint") "Package_TO_SOT_THT:TO-92_Inline_Wide_Formed")
+				(field
+					(name "Datasheet") "~")
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "NPN_EBC_3")
+				(description "NPN transistor E-B-C")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "82e6c2a0-5905-4815-a92d-2e2d91bf15ce")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R1")
+			(value "470R")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+			(fields
+				(field
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Resistor_2")
+				(description "Resistor")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "9281f418-282f-4ddd-bfb2-d125403be3e8")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R2")
+			(value "100k")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+			(fields
+				(field
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Resistor_2")
+				(description "Resistor")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "d7610481-aea2-4c6f-af74-bacaa0b1a435")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R3")
+			(value "470R")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+			(datasheet "~")
+			(fields
+				(field
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+				(field
+					(name "Datasheet") "~")
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Resistor_2")
+				(description "Resistor")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "f7d07890-4a28-44ee-988a-33799f9274ad")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "R4")
+			(value "470R")
+			(footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+			(datasheet "~")
+			(fields
+				(field
+					(name "Footprint") "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal")
+				(field
+					(name "Datasheet") "~")
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Resistor_2")
+				(description "Resistor")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "ebf058f1-c3e4-46bc-8fd2-d618c7b12604")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "SW1")
+			(value "SS12D00G5 power switch")
+			(footprint "Button_Switch_THT:SS12D00G5_Custom")
+			(fields
+				(field
+					(name "Footprint") "Button_Switch_THT:SS12D00G5_Custom")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "SPDT_Switch_3")
+				(description "SPDT slide switch")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "8e9921de-5366-4055-8f17-e41c6f59de34")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U1")
+			(value "TP4057 USB-C charger")
+			(footprint "Vario_Buzzer_V2:TP4057_Module_12.2x18.5")
+			(fields
+				(field
+					(name "Footprint") "Vario_Buzzer_V2:TP4057_Module_12.2x18.5")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "TP4057_Charger_2")
+				(description "TP4057 module BAT pads only")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "059cc4ff-b377-413e-b87c-4212ab375d1e")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "U2")
+			(value "Comidox 5V Booster")
+			(footprint "Vario_Buzzer_V2:Comidox_5V_Booster_10.75x10.75_3Pin")
+			(datasheet "~")
+			(fields
+				(field
+					(name "Footprint") "Vario_Buzzer_V2:Comidox_5V_Booster_10.75x10.75_3Pin")
+				(field
+					(name "Datasheet") "~")
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Vario_Buzzer_V2")
+				(part "Comidox_5V_Booster_3")
+				(description "Comidox 5V boost converter module, 3-pin (Vin/GND/Vout)")
+			)
+			(property
+				(name "Sheetname")
+				(value "")
+			)
+			(property
+				(name "Sheetfile")
+				(value "Buzzer PCB.kicad_sch")
+			)
+			(property
+				(name "ki_keywords")
+				(value "boost converter 5V step-up Comidox")
+			)
+			(sheetpath
+				(names "/")
+				(tstamps "/")
+			)
+			(tstamps "6da7947d-a4ba-456a-a943-ce869648bb4a")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+						(pin
+							(num "2")
+						)
+						(pin
+							(num "3")
+						)
+					)
+				)
+			)
+		)
+	)
+	(groups)
+	(variants)
+	(libparts
+		(libpart
+			(lib "Vario_Buzzer_V2")
+			(part "BMP390_8")
+			(description "Adafruit BMP390/BMP5xx breakout pads")
+			(fields
+				(field
+					(name "Reference") "J")
+				(field
+					(name "Value") "BMP390_8")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Adafruit BMP390/BMP5xx breakout pads")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "VCC")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "3V3")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "GND")
+					(type "passive")
+				)
+				(pin
+					(num "4")
+					(name "SCK/SCL")
+					(type "passive")
+				)
+				(pin
+					(num "5")
+					(name "SDO/ADR")
+					(type "passive")
+				)
+				(pin
+					(num "6")
+					(name "SDI/SDA")
+					(type "passive")
+				)
+				(pin
+					(num "7")
+					(name "CS")
+					(type "passive")
+				)
+				(pin
+					(num "8")
+					(name "INT")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Vario_Buzzer_V2")
+			(part "Buzzer_2")
+			(description "Passive buzzer")
+			(fields
+				(field
+					(name "Reference") "BZ")
+				(field
+					(name "Value") "Buzzer_2")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Passive buzzer")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "+")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "-")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Vario_Buzzer_V2")
+			(part "Capacitor_2")
+			(description "Capacitor")
+			(fields
+				(field
+					(name "Reference") "C")
+				(field
+					(name "Value") "Capacitor_2")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Capacitor")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "+")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "-")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Vario_Buzzer_V2")
+			(part "Comidox_5V_Booster_3")
+			(description "Comidox 5V boost converter module, 3-pin (Vin/GND/Vout)")
+			(docs "~")
+			(fields
+				(field
+					(name "Reference") "U")
+				(field
+					(name "Value") "Comidox_5V_Booster_3")
+				(field
+					(name "Footprint") "Vario_Buzzer_V2:Comidox_5V_Booster_10.75x10.75_3Pin")
+				(field
+					(name "Datasheet") "~")
+				(field
+					(name "Description") "Comidox 5V boost converter module, 3-pin (Vin/GND/Vout)")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "Vin")
+					(type "power_in")
+				)
+				(pin
+					(num "2")
+					(name "GND")
+					(type "power_in")
+				)
+				(pin
+					(num "3")
+					(name "Vout")
+					(type "power_out")
+				)
+			)
+		)
+		(libpart
+			(lib "Vario_Buzzer_V2")
+			(part "Conn_2")
+			(description "Two-pin connector")
+			(fields
+				(field
+					(name "Reference") "J")
+				(field
+					(name "Value") "Conn_2")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Two-pin connector")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "+")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "-")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Vario_Buzzer_V2")
+			(part "Diode_2")
+			(description "Diode")
+			(fields
+				(field
+					(name "Reference") "D")
+				(field
+					(name "Value") "Diode_2")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Diode")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "K")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "A")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Vario_Buzzer_V2")
+			(part "GPS_M100_4")
+			(description "HGLRC M100 Mini manual pin order")
+			(fields
+				(field
+					(name "Reference") "J")
+				(field
+					(name "Value") "GPS_M100_4")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "HGLRC M100 Mini manual pin order")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "RX")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "TX")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "VCC")
+					(type "passive")
+				)
+				(pin
+					(num "4")
+					(name "GND")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Vario_Buzzer_V2")
+			(part "M16968_OLED_RotaryKnob_9")
+			(description "M16968 OLED display + rotary encoder + BACK/CONFIRM buttons module, 9-pin 2.54mm header")
+			(docs "~")
+			(fields
+				(field
+					(name "Reference") "J")
+				(field
+					(name "Value") "M16968_OLED_RotaryKnob_9")
+				(field
+					(name "Footprint") "Vario_Buzzer_V2:OLED_M16968_59x35_9Pin")
+				(field
+					(name "Datasheet") "~")
+				(field
+					(name "Description") "M16968 OLED display + rotary encoder + BACK/CONFIRM buttons module, 9-pin 2.54mm header")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "3v3")
+					(type "power_in")
+				)
+				(pin
+					(num "2")
+					(name "GND")
+					(type "power_in")
+				)
+				(pin
+					(num "3")
+					(name "BACK")
+					(type "passive")
+				)
+				(pin
+					(num "4")
+					(name "ENC_B")
+					(type "passive")
+				)
+				(pin
+					(num "5")
+					(name "ENC_A")
+					(type "passive")
+				)
+				(pin
+					(num "6")
+					(name "ENC_PUSH")
+					(type "passive")
+				)
+				(pin
+					(num "7")
+					(name "OLED_SCL")
+					(type "bidirectional")
+				)
+				(pin
+					(num "8")
+					(name "OLED_SDA")
+					(type "bidirectional")
+				)
+				(pin
+					(num "9")
+					(name "CONFIRM")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Vario_Buzzer_V2")
+			(part "NPN_EBC_3")
+			(description "NPN transistor E-B-C")
+			(fields
+				(field
+					(name "Reference") "Q")
+				(field
+					(name "Value") "NPN_EBC_3")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "NPN transistor E-B-C")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "E")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "B")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "C")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Vario_Buzzer_V2")
+			(part "Resistor_2")
+			(description "Resistor")
+			(fields
+				(field
+					(name "Reference") "R")
+				(field
+					(name "Value") "Resistor_2")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Resistor")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "1")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "2")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Vario_Buzzer_V2")
+			(part "SD_Module_6_Swapped")
+			(description "Optional SD module reversed pin order")
+			(fields
+				(field
+					(name "Reference") "J")
+				(field
+					(name "Value") "SD_Module_6_Swapped")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Optional SD module reversed pin order")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "GND")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "MISO")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "CLK")
+					(type "passive")
+				)
+				(pin
+					(num "4")
+					(name "MOSI")
+					(type "passive")
+				)
+				(pin
+					(num "5")
+					(name "CS")
+					(type "passive")
+				)
+				(pin
+					(num "6")
+					(name "3V3")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Vario_Buzzer_V2")
+			(part "SHT41_5")
+			(description "Adafruit SHT41 breakout pads")
+			(fields
+				(field
+					(name "Reference") "J")
+				(field
+					(name "Value") "SHT41_5")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "Adafruit SHT41 breakout pads")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "VCC")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "3V3")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "GND")
+					(type "passive")
+				)
+				(pin
+					(num "4")
+					(name "SCL")
+					(type "passive")
+				)
+				(pin
+					(num "5")
+					(name "SDA")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Vario_Buzzer_V2")
+			(part "SPDT_Switch_3")
+			(description "SPDT slide switch")
+			(fields
+				(field
+					(name "Reference") "SW")
+				(field
+					(name "Value") "SPDT_Switch_3")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "SPDT slide switch")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "ON")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "COM")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "NC")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Vario_Buzzer_V2")
+			(part "SparkFun_Thing_Plus_ESP32_WROOM_C")
+			(description "SparkFun Thing Plus ESP32 WROOM-C USB-C 28-pin header")
+			(docs "https://github.com/sparkfun/SparkFun_Thing_Plus_ESP32_WROOM_C")
+			(fields
+				(field
+					(name "Reference") "J")
+				(field
+					(name "Value") "SparkFun_Thing_Plus_ESP32_WROOM_C")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet") "https://github.com/sparkfun/SparkFun_Thing_Plus_ESP32_WROOM_C")
+				(field
+					(name "Description") "SparkFun Thing Plus ESP32 WROOM-C USB-C 28-pin header")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "SDA/ESP21")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "SCL/ESP22")
+					(type "passive")
+				)
+				(pin
+					(num "3")
+					(name "GPIO6/ESP14")
+					(type "passive")
+				)
+				(pin
+					(num "4")
+					(name "GPIO5/ESP32")
+					(type "passive")
+				)
+				(pin
+					(num "5")
+					(name "GPIO4/ESP15")
+					(type "passive")
+				)
+				(pin
+					(num "6")
+					(name "GPIO3/ESP33")
+					(type "passive")
+				)
+				(pin
+					(num "7")
+					(name "GPIO2/ESP27")
+					(type "passive")
+				)
+				(pin
+					(num "8")
+					(name "GPIO1/ESP12")
+					(type "passive")
+				)
+				(pin
+					(num "9")
+					(name "D13/ESP13_STAT")
+					(type "passive")
+				)
+				(pin
+					(num "10")
+					(name "V_USB")
+					(type "passive")
+				)
+				(pin
+					(num "11")
+					(name "EN")
+					(type "passive")
+				)
+				(pin
+					(num "12")
+					(name "V_BATT")
+					(type "passive")
+				)
+				(pin
+					(num "13")
+					(name "FREEBIE/ESP4")
+					(type "passive")
+				)
+				(pin
+					(num "14")
+					(name "TX_ESP17")
+					(type "passive")
+				)
+				(pin
+					(num "15")
+					(name "RX_ESP16")
+					(type "passive")
+				)
+				(pin
+					(num "16")
+					(name "MISO/POCI_ESP19")
+					(type "passive")
+				)
+				(pin
+					(num "17")
+					(name "MOSI/PICO_ESP23")
+					(type "passive")
+				)
+				(pin
+					(num "18")
+					(name "SCK_ESP18")
+					(type "passive")
+				)
+				(pin
+					(num "19")
+					(name "A5/ESP35")
+					(type "passive")
+				)
+				(pin
+					(num "20")
+					(name "A4/ESP36")
+					(type "passive")
+				)
+				(pin
+					(num "21")
+					(name "A3/ESP39")
+					(type "passive")
+				)
+				(pin
+					(num "22")
+					(name "A2/ESP34")
+					(type "passive")
+				)
+				(pin
+					(num "23")
+					(name "A1/ESP25")
+					(type "passive")
+				)
+				(pin
+					(num "24")
+					(name "A0/ESP26")
+					(type "passive")
+				)
+				(pin
+					(num "25")
+					(name "GND")
+					(type "passive")
+				)
+				(pin
+					(num "26")
+					(name "AREF/NC")
+					(type "passive")
+				)
+				(pin
+					(num "27")
+					(name "3V3")
+					(type "passive")
+				)
+				(pin
+					(num "28")
+					(name "RESET")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Vario_Buzzer_V2")
+			(part "TP4057_Charger_2")
+			(description "TP4057 module BAT pads only")
+			(fields
+				(field
+					(name "Reference") "U")
+				(field
+					(name "Value") "TP4057_Charger_2")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "TP4057 module BAT pads only")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "BAT+")
+					(type "passive")
+				)
+				(pin
+					(num "2")
+					(name "BAT-")
+					(type "passive")
+				)
+			)
+		)
+	)
+	(libraries
+		(library
+			(logical "Vario_Buzzer_V2")
+			(uri "${KIPRJMOD}/Vario_Buzzer_V2.kicad_sym")
+		)
+	)
+	(nets
+		(net
+			(code "1")
+			(name "/3V3")
+			(class "Default")
+			(node
+				(ref "J11")
+				(pin "1")
+				(pinfunction "3v3_1")
+				(pintype "power_in")
+			)
+			(node
+				(ref "J3")
+				(pin "1")
+				(pinfunction "GND_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "J5")
+				(pin "2")
+				(pinfunction "TX_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "J6")
+				(pin "7")
+				(pinfunction "CS_7")
+				(pintype "passive")
+			)
+			(node
+				(ref "J6")
+				(pin "8")
+				(pinfunction "INT_8")
+				(pintype "passive")
+			)
+			(node
+				(ref "J7")
+				(pin "4")
+				(pinfunction "SCL_4")
+				(pintype "passive")
+			)
+			(node
+				(ref "J7")
+				(pin "5")
+				(pinfunction "SDA_5")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "2")
+			(name "/BAT_IN")
+			(class "Default")
+			(node
+				(ref "J1")
+				(pin "2")
+				(pinfunction "-_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "SW1")
+				(pin "2")
+				(pinfunction "COM_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "2")
+				(pinfunction "BAT-_2")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "3")
+			(name "/BOOST_5V")
+			(class "Default")
+			(node
+				(ref "BZ1")
+				(pin "2")
+				(pinfunction "-_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "BZ2")
+				(pin "2")
+				(pinfunction "-_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "BZ3")
+				(pin "2")
+				(pinfunction "-_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "D1")
+				(pin "2")
+				(pinfunction "A_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "D2")
+				(pin "2")
+				(pinfunction "A_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "D3")
+				(pin "2")
+				(pinfunction "A_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "U2")
+				(pin "3")
+				(pinfunction "Vout_3")
+				(pintype "power_out")
+			)
+		)
+		(net
+			(code "4")
+			(name "/BTN_BACK_GPIO3")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "19")
+				(pinfunction "A5/ESP35_19")
+				(pintype "passive")
+			)
+			(node
+				(ref "J11")
+				(pin "3")
+				(pinfunction "BACK_3")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "5")
+			(name "/BTN_DOWN_GPIO5")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "21")
+				(pinfunction "A3/ESP39_21")
+				(pintype "passive")
+			)
+			(node
+				(ref "J11")
+				(pin "5")
+				(pinfunction "ENC_A_5")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "6")
+			(name "/BTN_NEXT_GPIO4")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "20")
+				(pinfunction "A4/ESP36_20")
+				(pintype "passive")
+			)
+			(node
+				(ref "J11")
+				(pin "4")
+				(pinfunction "ENC_B_4")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "7")
+			(name "/BTN_UP_GPIO21")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "22")
+				(pinfunction "A2/ESP34_22")
+				(pintype "passive")
+			)
+			(node
+				(ref "J11")
+				(pin "6")
+				(pinfunction "ENC_PUSH_6")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "8")
+			(name "/BUZZER_BASE")
+			(class "Default")
+			(node
+				(ref "Q1")
+				(pin "2")
+				(pinfunction "B_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R1")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "R2")
+				(pin "2")
+				(pinfunction "2_2")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "9")
+			(name "/BUZZER_BASE2")
+			(class "Default")
+			(node
+				(ref "Q2")
+				(pin "2")
+				(pinfunction "B_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R3")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "10")
+			(name "/BUZZER_BASE3")
+			(class "Default")
+			(node
+				(ref "Q3")
+				(pin "2")
+				(pinfunction "B_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R4")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "11")
+			(name "/BUZZER_LOW")
+			(class "Default")
+			(node
+				(ref "BZ1")
+				(pin "1")
+				(pinfunction "+_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "D1")
+				(pin "1")
+				(pinfunction "K_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q1")
+				(pin "1")
+				(pinfunction "E_1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "12")
+			(name "/BUZZER_LOW2")
+			(class "Default")
+			(node
+				(ref "BZ2")
+				(pin "1")
+				(pinfunction "+_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "D2")
+				(pin "1")
+				(pinfunction "K_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q2")
+				(pin "1")
+				(pinfunction "E_1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "13")
+			(name "/BUZZER_LOW3")
+			(class "Default")
+			(node
+				(ref "BZ3")
+				(pin "1")
+				(pinfunction "+_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "D3")
+				(pin "1")
+				(pinfunction "K_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q3")
+				(pin "1")
+				(pinfunction "E_1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "14")
+			(name "/D13_BUZZER_GPIO13")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "15")
+				(pinfunction "RX_ESP16_15")
+				(pintype "passive")
+			)
+			(node
+				(ref "J4")
+				(pin "2")
+				(pinfunction "-_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R1")
+				(pin "2")
+				(pinfunction "2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R3")
+				(pin "2")
+				(pinfunction "2_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "R4")
+				(pin "2")
+				(pinfunction "2_2")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "15")
+			(name "/GND")
+			(class "Default")
+			(node
+				(ref "C1")
+				(pin "1")
+				(pinfunction "+_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "C2")
+				(pin "1")
+				(pinfunction "+_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "J1")
+				(pin "1")
+				(pinfunction "+_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "J11")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+			(node
+				(ref "J2")
+				(pin "1")
+				(pinfunction "+_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "J3")
+				(pin "6")
+				(pinfunction "3V3_6")
+				(pintype "passive")
+			)
+			(node
+				(ref "J5")
+				(pin "1")
+				(pinfunction "RX_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "J6")
+				(pin "6")
+				(pinfunction "SDI/SDA_6")
+				(pintype "passive")
+			)
+			(node
+				(ref "J7")
+				(pin "3")
+				(pinfunction "GND_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q1")
+				(pin "3")
+				(pinfunction "C_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q2")
+				(pin "3")
+				(pinfunction "C_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "Q3")
+				(pin "3")
+				(pinfunction "C_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "R2")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "SW1")
+				(pin "1")
+				(pinfunction "ON_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U1")
+				(pin "1")
+				(pinfunction "BAT+_1")
+				(pintype "passive")
+			)
+			(node
+				(ref "U2")
+				(pin "2")
+				(pinfunction "GND_2")
+				(pintype "power_in")
+			)
+		)
+		(net
+			(code "16")
+			(name "/GPS_RX_THING_TX")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "14")
+				(pinfunction "TX_ESP17_14")
+				(pintype "passive")
+			)
+			(node
+				(ref "J5")
+				(pin "4")
+				(pinfunction "GND_4")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "17")
+			(name "/GPS_TX_THING_RX")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "9")
+				(pinfunction "D13/ESP13_STAT_9")
+				(pintype "passive")
+			)
+			(node
+				(ref "J5")
+				(pin "3")
+				(pinfunction "VCC_3")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "18")
+			(name "/OLED_CONFIRM")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "13")
+				(pinfunction "FREEBIE/ESP4_13")
+				(pintype "passive")
+			)
+			(node
+				(ref "J11")
+				(pin "9")
+				(pinfunction "CONFIRM_9")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "19")
+			(name "/SCL")
+			(class "Default")
+			(node
+				(ref "J11")
+				(pin "7")
+				(pinfunction "OLED_SCL_7")
+				(pintype "bidirectional")
+			)
+			(node
+				(ref "J6")
+				(pin "5")
+				(pinfunction "SDO/ADR_5")
+				(pintype "passive")
+			)
+			(node
+				(ref "J7")
+				(pin "2")
+				(pinfunction "3V3_2")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "20")
+			(name "/SDA")
+			(class "Default")
+			(node
+				(ref "J11")
+				(pin "8")
+				(pinfunction "OLED_SDA_8")
+				(pintype "bidirectional")
+			)
+			(node
+				(ref "J6")
+				(pin "3")
+				(pinfunction "GND_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "J7")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "21")
+			(name "/SD_CS_GPIO2")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "23")
+				(pinfunction "A1/ESP25_23")
+				(pintype "passive")
+			)
+			(node
+				(ref "J3")
+				(pin "2")
+				(pinfunction "MISO_2")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "22")
+			(name "/SPI_MISO")
+			(class "Default")
+			(node
+				(ref "J3")
+				(pin "5")
+				(pinfunction "CS_5")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "23")
+			(name "/SPI_MOSI")
+			(class "Default")
+			(node
+				(ref "J3")
+				(pin "3")
+				(pinfunction "CLK_3")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "24")
+			(name "/SPI_SCK")
+			(class "Default")
+			(node
+				(ref "J3")
+				(pin "4")
+				(pinfunction "MOSI_4")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "25")
+			(name "/SW_BAT")
+			(class "Default")
+			(node
+				(ref "C1")
+				(pin "2")
+				(pinfunction "-_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "C2")
+				(pin "2")
+				(pinfunction "-_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "J2")
+				(pin "2")
+				(pinfunction "-_2")
+				(pintype "passive")
+			)
+			(node
+				(ref "SW1")
+				(pin "3")
+				(pinfunction "NC_3")
+				(pintype "passive")
+			)
+			(node
+				(ref "U2")
+				(pin "1")
+				(pinfunction "Vin_1")
+				(pintype "power_in")
+			)
+		)
+		(net
+			(code "26")
+			(name "unconnected-(J4-+-Pad1)")
+			(class "Default")
+			(node
+				(ref "J4")
+				(pin "1")
+				(pinfunction "+_1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "27")
+			(name "unconnected-(J6-3V3-Pad2)")
+			(class "Default")
+			(node
+				(ref "J6")
+				(pin "2")
+				(pinfunction "3V3_2")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "28")
+			(name "unconnected-(J6-SCK{slash}SCL-Pad4)")
+			(class "Default")
+			(node
+				(ref "J6")
+				(pin "4")
+				(pinfunction "SCK/SCL_4")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "29")
+			(name "unconnected-(J6-VCC-Pad1)")
+			(class "Default")
+			(node
+				(ref "J6")
+				(pin "1")
+				(pinfunction "VCC_1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "30")
+			(name "unconnected-(J10-3V3-Pad27)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "27")
+				(pinfunction "3V3_27")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "31")
+			(name "unconnected-(J10-A0{slash}ESP26-Pad24)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "24")
+				(pinfunction "A0/ESP26_24")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "32")
+			(name "unconnected-(J10-AREF{slash}NC-Pad26)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "26")
+				(pinfunction "AREF/NC_26")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "33")
+			(name "unconnected-(J10-EN-Pad11)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "11")
+				(pinfunction "EN_11")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "34")
+			(name "unconnected-(J10-GND-Pad25)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "25")
+				(pinfunction "GND_25")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "35")
+			(name "unconnected-(J10-GPIO1{slash}ESP12-Pad8)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "8")
+				(pinfunction "GPIO1/ESP12_8")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "36")
+			(name "unconnected-(J10-GPIO2{slash}ESP27-Pad7)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "7")
+				(pinfunction "GPIO2/ESP27_7")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "37")
+			(name "unconnected-(J10-GPIO3{slash}ESP33-Pad6)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "6")
+				(pinfunction "GPIO3/ESP33_6")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "38")
+			(name "unconnected-(J10-GPIO4{slash}ESP15-Pad5)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "5")
+				(pinfunction "GPIO4/ESP15_5")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "39")
+			(name "unconnected-(J10-GPIO5{slash}ESP32-Pad4)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "4")
+				(pinfunction "GPIO5/ESP32_4")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "40")
+			(name "unconnected-(J10-GPIO6{slash}ESP14-Pad3)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "3")
+				(pinfunction "GPIO6/ESP14_3")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "41")
+			(name "unconnected-(J10-MISO{slash}POCI_ESP19-Pad16)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "16")
+				(pinfunction "MISO/POCI_ESP19_16")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "42")
+			(name "unconnected-(J10-MOSI{slash}PICO_ESP23-Pad17)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "17")
+				(pinfunction "MOSI/PICO_ESP23_17")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "43")
+			(name "unconnected-(J10-RESET-Pad28)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "28")
+				(pinfunction "RESET_28")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "44")
+			(name "unconnected-(J10-SCK_ESP18-Pad18)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "18")
+				(pinfunction "SCK_ESP18_18")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "45")
+			(name "unconnected-(J10-SCL{slash}ESP22-Pad2)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "2")
+				(pinfunction "SCL/ESP22_2")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "46")
+			(name "unconnected-(J10-SDA{slash}ESP21-Pad1)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "1")
+				(pinfunction "SDA/ESP21_1")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "47")
+			(name "unconnected-(J10-V_BATT-Pad12)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "12")
+				(pinfunction "V_BATT_12")
+				(pintype "passive")
+			)
+		)
+		(net
+			(code "48")
+			(name "unconnected-(J10-V_USB-Pad10)")
+			(class "Default")
+			(node
+				(ref "J10")
+				(pin "10")
+				(pinfunction "V_USB_10")
+				(pintype "passive")
+			)
+		)
+	)
+)

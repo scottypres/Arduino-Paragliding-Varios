@@ -1,0 +1,75 @@
+** Drc report for Buzzer PCB.kicad_pcb **
+** Created on 2026-06-23T23:47:44 **
+** Report includes: Errors, Warnings, Exclusions **
+
+** Found 1 DRC violations **
+[invalid_outline]: Board has malformed outline (no edges found on Edge.Cuts layer)
+    Local override; error
+    @(0.0000 mm, 0.0000 mm): PCB
+
+** Found 0 unconnected pads **
+
+** Found 27 Footprint errors **
+[missing_footprint]: Missing footprint BZ1 (12085 Passive Buzzer 42R)
+    Local override; warning
+[missing_footprint]: Missing footprint BZ2 (12085 Passive Buzzer 42R)
+    Local override; warning
+[missing_footprint]: Missing footprint BZ3 (12085 Passive Buzzer 42R)
+    Local override; warning
+[missing_footprint]: Missing footprint C1 (47-100uF ELEC)
+    Local override; warning
+[missing_footprint]: Missing footprint C2 (0.1uF CER)
+    Local override; warning
+[missing_footprint]: Missing footprint D1 (1N5819)
+    Local override; warning
+[missing_footprint]: Missing footprint D2 (1N5819)
+    Local override; warning
+[missing_footprint]: Missing footprint D3 (1N5819)
+    Local override; warning
+[missing_footprint]: Missing footprint J1 (2600mAh LiPo JST-PH bottom)
+    Local override; warning
+[missing_footprint]: Missing footprint J2 (Legacy SW_BAT/GND out)
+    Local override; warning
+[missing_footprint]: Missing footprint J3 (Optional SD module 18x18 swapped)
+    Local override; warning
+[missing_footprint]: Missing footprint J4 (Legacy D13 test pad)
+    Local override; warning
+[missing_footprint]: Missing footprint J5 (HGLRC M100 Mini GPS)
+    Local override; warning
+[missing_footprint]: Missing footprint J6 (BMP581/BMP5xx top pads)
+    Local override; warning
+[missing_footprint]: Missing footprint J7 (SHT41 top pads)
+    Local override; warning
+[missing_footprint]: Missing footprint J10 (SparkFun Thing Plus ESP32 WROOM-C USB-C)
+    Local override; warning
+[missing_footprint]: Missing footprint J11 (M16968 OLED + Rotary Knob)
+    Local override; warning
+[missing_footprint]: Missing footprint Q1 (S8050)
+    Local override; warning
+[missing_footprint]: Missing footprint Q2 (S8050)
+    Local override; warning
+[missing_footprint]: Missing footprint Q3 (S8050)
+    Local override; warning
+[missing_footprint]: Missing footprint R1 (470R)
+    Local override; warning
+[missing_footprint]: Missing footprint R2 (100k)
+    Local override; warning
+[missing_footprint]: Missing footprint R3 (470R)
+    Local override; warning
+[missing_footprint]: Missing footprint R4 (470R)
+    Local override; warning
+[missing_footprint]: Missing footprint SW1 (SS12D00G5 power switch)
+    Local override; warning
+[missing_footprint]: Missing footprint U1 (TP4057 USB-C charger)
+    Local override; warning
+[missing_footprint]: Missing footprint U2 (Comidox 5V Booster)
+    Local override; warning
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **
