@@ -89,9 +89,9 @@
 		)
 		(capping no)
 		(filling no)
-		(aux_axis_origin 78.1 122.3)
+		(aux_axis_origin 61.993244 122.75)
 		(pcbplotparams
-			(layerselection 0x00000000_00000000_55555555_57555551)
+			(layerselection 0x00000000_00000000_55555555_57555570)
 			(plot_on_all_layers_selection 0x00000000_00000000_00000000_00000000)
 			(disableapertmacros no)
 			(usegerberextensions no)
@@ -108,7 +108,7 @@
 			(pdf_back_fp_property_popups yes)
 			(pdf_metadata yes)
 			(pdf_single_document no)
-			(dxfpolygonmode yes)
+			(dxfpolygonmode no)
 			(dxfimperialunits yes)
 			(dxfusepcbnewfont yes)
 			(psnegative no)
@@ -120,11 +120,11 @@
 			(sketchdnponfab yes)
 			(crossoutdnponfab yes)
 			(subtractmaskfromsilk no)
-			(outputformat 1)
+			(outputformat 3)
 			(mirror no)
 			(drillshape 0)
 			(scaleselection 1)
-			(outputdirectory "outputs")
+			(outputdirectory "DXFs/")
 		)
 	)
 	(footprint "Package_TO_SOT_THT:TO-92_Inline"
@@ -211,12 +211,6 @@
 		(path "/f448cba2-8b09-4fb5-887e-b1fc6a8e244c")
 		(sheetname "/")
 		(sheetfile "Buzzer PCB.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "2" "3" "1")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -337,7 +331,7 @@
 		(pad "1" thru_hole rect
 			(at -1.27 0)
 			(size 2 3)
-			(drill 0.75)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/GND")
@@ -348,7 +342,7 @@
 		(pad "2" thru_hole oval
 			(at 1.27 0)
 			(size 2 3)
-			(drill 0.75)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/BUZZER_BASE")
@@ -359,7 +353,7 @@
 		(pad "3" thru_hole oval
 			(at 3.81 0)
 			(size 2 3)
-			(drill 0.75)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/BUZZER_LOW")
@@ -476,17 +470,6 @@
 			(layer "F.SilkS")
 			(uuid "6d684052-5020-4573-8ee4-ad667097b9e2")
 		)
-		(fp_text user "header geometry from SparkFun Eagle J5"
-			(at -28.845 0 0)
-			(layer "F.SilkS")
-			(uuid "e2d7bf24-d707-47ca-8eb7-68b73c821269")
-			(effects
-				(font
-					(size 0.48 0.48)
-					(thickness 0.12)
-				)
-			)
-		)
 		(fp_text user "USB-C end"
 			(at -28.845 10.23 0)
 			(layer "F.SilkS")
@@ -505,6 +488,17 @@
 			(effects
 				(font
 					(size 0.72 0.72)
+					(thickness 0.12)
+				)
+			)
+		)
+		(fp_text user "header geometry from SparkFun Eagle J5"
+			(at -20.9 -0.15 0)
+			(layer "F.SilkS")
+			(uuid "e2d7bf24-d707-47ca-8eb7-68b73c821269")
+			(effects
+				(font
+					(size 0.48 0.48)
 					(thickness 0.12)
 				)
 			)
@@ -862,13 +856,13 @@
 	(footprint "Vario_Buzzer_V2:Ceramic_Cap_0.1uF_P5.00mm_V1"
 		(layer "F.Cu")
 		(uuid "2457f9bc-bb31-4d32-a9e2-4e637f636eb3")
-		(at 77.75 95 90)
+		(at 74.5 90 90)
 		(descr "0.1uF ceramic capacitor footprint copied from first Buzzer PCB C2 pad geometry: 5.00mm lead spacing, 1.6x3.0mm oval pads, 0.8mm drill.")
 		(tags "capacitor ceramic 0.1uF P5.00 v1")
 		(property "Reference" "C2"
 			(at 0 -3.2 90)
 			(layer "F.SilkS")
-			(uuid "a603c4dd-3b9c-4784-adcc-dcea6f463521")
+			(uuid "fac5c247-e511-48b9-87d1-d411ef283c68")
 			(effects
 				(font
 					(size 1 1)
@@ -879,7 +873,7 @@
 		(property "Value" "0.1uF CER"
 			(at 0 2.15 90)
 			(layer "F.SilkS")
-			(uuid "3bd5f50e-9e57-4464-813f-34c0fee42eba")
+			(uuid "32410821-fa85-45de-964e-16e609c88b55")
 			(effects
 				(font
 					(size 0.7 0.7)
@@ -891,7 +885,7 @@
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "b47a3be6-f3eb-4b88-8dd4-203785930c0f")
+			(uuid "f7b021cd-30dd-4d03-8ff8-7feb2304d732")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -902,7 +896,7 @@
 			(at 0 0 90)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "19b5c0c7-358d-476b-8edb-3c13cffd7d07")
+			(uuid "f342c44c-6dba-472b-9b25-72277d4d3a3b")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1710,7 +1704,7 @@
 		(property "Reference" "U1"
 			(at 0 -6.6 0)
 			(layer "F.SilkS")
-			(uuid "712209ac-fe4e-453b-8901-2180104e48a0")
+			(uuid "fa13f3cc-cf41-402b-9f43-5fcc3c9ac8d7")
 			(effects
 				(font
 					(size 1 1)
@@ -1722,7 +1716,7 @@
 			(at 0 14.4 0)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "be1a0efd-fd3d-40c9-84e1-77ecbf43f473")
+			(uuid "04a696d5-a3b8-493d-baba-9ae53cbb45db")
 			(effects
 				(font
 					(size 1 1)
@@ -1734,7 +1728,7 @@
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "d3c7f67e-f220-4002-9c93-8320d061bd70")
+			(uuid "16dff909-79d2-4c6f-a868-c08494e951ce")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1745,7 +1739,7 @@
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "618510f5-9402-46f6-9585-0a09a824e005")
+			(uuid "7b7e3c54-06b4-4d75-ae8c-0b9744fab3fa")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1755,12 +1749,6 @@
 		(path "/059cc4ff-b377-413e-b87c-4212ab375d1e")
 		(sheetname "/")
 		(sheetfile "Buzzer PCB.kicad_sch")
-		(units
-			(unit
-				(name "A")
-				(pins "1" "2")
-			)
-		)
 		(attr through_hole)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
@@ -1900,7 +1888,7 @@
 		(pad "1" thru_hole rect
 			(at 2.684 -4.5 180)
 			(size 2 2)
-			(drill 0.9)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/BAT_IN")
@@ -1911,7 +1899,7 @@
 		(pad "2" thru_hole oval
 			(at -2.684 -4.5 180)
 			(size 1.6 3)
-			(drill 0.9)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/GND")
@@ -1922,7 +1910,7 @@
 		(pad "3" thru_hole oval
 			(at -5.224 4.5 180)
 			(size 1.6 3)
-			(drill 0.9)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(uuid "72e3ea4e-b3f4-4b66-b063-457b6b2da5ff")
@@ -1930,7 +1918,7 @@
 		(pad "4" thru_hole oval
 			(at 5.224 4.5 180)
 			(size 1.6 3)
-			(drill 0.9)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(uuid "c01315bc-6d6e-4b61-8a79-513555909a98")
@@ -1938,7 +1926,7 @@
 		(pad "5" thru_hole oval
 			(at -5.224 -4.5 180)
 			(size 1.6 3)
-			(drill 0.9)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(uuid "ddca9d35-0384-4802-976d-e7afdff7881e")
@@ -1946,7 +1934,7 @@
 		(pad "6" thru_hole oval
 			(at 5.224 -4.5 180)
 			(size 1.6 3)
-			(drill 0.9)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(uuid "2aa7e5af-1f14-4bbc-b9cd-21acc8469090")
@@ -2174,7 +2162,7 @@
 		(pad "1" thru_hole rect
 			(at -1.27 0)
 			(size 2 3)
-			(drill 0.75)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/GND")
@@ -2185,7 +2173,7 @@
 		(pad "2" thru_hole oval
 			(at 1.27 0)
 			(size 2 3)
-			(drill 0.75)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/BUZZER_BASE3")
@@ -2196,7 +2184,7 @@
 		(pad "3" thru_hole oval
 			(at 3.81 0)
 			(size 2 3)
-			(drill 0.75)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/BUZZER_LOW3")
@@ -2324,7 +2312,7 @@
 			(uuid "cb076bdc-263c-40ca-848e-5d1897403a26")
 		)
 		(fp_text user "manual: RX TX VCC GND"
-			(at -7 -6.2 90)
+			(at -1.4 -3.1 90)
 			(layer "F.SilkS")
 			(uuid "444b2b6f-699e-46fd-84ab-4cf50896670f")
 			(effects
@@ -2336,7 +2324,7 @@
 			)
 		)
 		(fp_text user "FRONT HGLRC M100"
-			(at -7 6.2 90)
+			(at -1.5 5.4 90)
 			(layer "F.SilkS")
 			(uuid "4252df12-3fdb-48b0-a5c1-8d692c23bd98")
 			(effects
@@ -2603,7 +2591,7 @@
 		(pad "1" thru_hole rect
 			(at -1.27 0)
 			(size 2 3)
-			(drill 0.75)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/GND")
@@ -2614,7 +2602,7 @@
 		(pad "2" thru_hole oval
 			(at 1.27 0)
 			(size 2 3)
-			(drill 0.75)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/BUZZER_BASE2")
@@ -2625,7 +2613,7 @@
 		(pad "3" thru_hole oval
 			(at 3.81 0)
 			(size 2 3)
-			(drill 0.75)
+			(drill 0.8)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
 			(net "/BUZZER_LOW2")
@@ -2745,6 +2733,17 @@
 			(layer "F.SilkS")
 			(uuid "794bb926-c1bc-4461-a76d-dd9a7c69d31b")
 		)
+		(fp_text user "TOP; pins solder backside"
+			(at -5.7 3.46 0)
+			(layer "F.SilkS")
+			(uuid "feb64ee8-59ce-4797-84d1-c00eb52ce16b")
+			(effects
+				(font
+					(size 0.55 0.55)
+					(thickness 0.12)
+				)
+			)
+		)
 		(fp_text user "SHT41"
 			(at -12.1 -7.65 0)
 			(layer "F.SilkS")
@@ -2752,17 +2751,6 @@
 			(effects
 				(font
 					(size 0.72 0.72)
-					(thickness 0.12)
-				)
-			)
-		)
-		(fp_text user "TOP; pins solder backside"
-			(at -27.25 -14.75 0)
-			(layer "F.SilkS")
-			(uuid "feb64ee8-59ce-4797-84d1-c00eb52ce16b")
-			(effects
-				(font
-					(size 0.55 0.55)
 					(thickness 0.12)
 				)
 			)
@@ -3709,7 +3697,7 @@
 			(uuid "b0b66d3f-4527-4165-a060-93425cbc6a5c")
 		)
 		(fp_text user "TOP; pins solder backside"
-			(at -12.1 7.35 0)
+			(at -1.6 6.4 0)
 			(layer "F.SilkS")
 			(uuid "c89cca44-614b-4897-9ca1-ae9c1cdfb885")
 			(effects
@@ -3720,7 +3708,7 @@
 			)
 		)
 		(fp_text user "BMP390/BMP5xx"
-			(at -12.1 -7.65 0)
+			(at -6.5 3.7 0)
 			(layer "F.SilkS")
 			(uuid "9c9dc447-369a-45a5-9987-5ceed832522e")
 			(effects
@@ -5701,32 +5689,8 @@
 		(layer "Edge.Cuts")
 		(uuid "ef1d077c-6346-4a9b-8a0e-8a2abaefdbcb")
 	)
-	(gr_text "BTN nets copied from Ant Display: BACK GPIO3, NEXT GPIO4, DOWN GPIO5, UP net on FREEBIE/ESP4"
-		(at 37.5 75 0)
-		(layer "F.SilkS")
-		(uuid "d95cf323-9ee8-4df3-9877-865e64a3dbb5")
-		(effects
-			(font
-				(size 0.46 0.46)
-				(thickness 0.12)
-			)
-			(justify left)
-		)
-	)
-	(gr_text "C1 bulk, C2 decoupling on SW_BAT/GND"
-		(at 54 34.55 0)
-		(layer "F.SilkS")
-		(uuid "7ba73c49-7456-42fe-8743-869acbfdc439")
-		(effects
-			(font
-				(size 0.48 0.48)
-				(thickness 0.12)
-			)
-			(justify left)
-		)
-	)
 	(gr_text "R1 470R D13/GPIO13 to Q1 base"
-		(at 99.25 47 90)
+		(at 101.5 31 90)
 		(layer "F.SilkS")
 		(uuid "bd942c23-05d8-4fd9-be7c-e4ee0b1acf72")
 		(effects
@@ -5738,36 +5702,12 @@
 		)
 	)
 	(gr_text "R2 100k base to GND; Q1 S8050 E-B-C"
-		(at 105 49 90)
+		(at 109.2 32.8 90)
 		(layer "F.SilkS")
 		(uuid "43401163-974a-4adc-b95f-5c214aed0a31")
 		(effects
 			(font
 				(size 0.48 0.48)
-				(thickness 0.12)
-			)
-			(justify left)
-		)
-	)
-	(gr_text "U1 USB-C edge faces board left; BAT pads face right"
-		(at 37 46.25 0)
-		(layer "F.SilkS")
-		(uuid "c6cbe150-e8b7-40d2-8d7e-f1b27e30af35")
-		(effects
-			(font
-				(size 0.5 0.5)
-				(thickness 0.12)
-			)
-			(justify left)
-		)
-	)
-	(gr_text "J11 SparkFun Qwiic OLED 1.3in; J3 pins GND 3V3 SDA SCL"
-		(at 38 82.25 0)
-		(layer "F.SilkS")
-		(uuid "58a5aa48-8dc3-43e0-907d-70c8bc699eb0")
-		(effects
-			(font
-				(size 0.52 0.52)
 				(thickness 0.12)
 			)
 			(justify left)
@@ -5786,7 +5726,7 @@
 		)
 	)
 	(gr_text "PCB 90x50mm, 1.5mm FR4; drill set: 0.8/1/1.2/1.4/1.6/2/2.4/3/3.175mm"
-		(at 38 37.75 0)
+		(at 40.6 27.85 0)
 		(layer "F.SilkS")
 		(uuid "5bd38266-c3a0-4d11-816d-93ae458a2f48")
 		(effects
@@ -5798,7 +5738,7 @@
 		)
 	)
 	(gr_text "Vario Buzzer / Sensor Interposer V2 - SparkFun Thing Plus + Qwiic OLED, no traces"
-		(at 38 35.55 0)
+		(at 40.6 25.65 0)
 		(layer "F.SilkS")
 		(uuid "dd2d8e7f-7c93-49f8-8096-2c85c2ef32c9")
 		(effects
@@ -5942,20 +5882,28 @@
 		(uuid "3cb4f6a7-73bf-48ea-b80a-8c8159df6a86")
 	)
 	(segment
-		(start 79.5 106)
-		(end 78.5 107)
-		(width 1)
-		(layer "F.Cu")
-		(net "/GND")
-		(uuid "4a57773a-4d60-49ee-802c-ef70026194dc")
-	)
-	(segment
 		(start 186.96 99)
 		(end 186.96 101.75)
 		(width 0.5)
 		(layer "F.Cu")
 		(net "/GND")
 		(uuid "4bc7cd58-2fcc-49d2-aaf5-159a4aac236b")
+	)
+	(segment
+		(start 79.5 99.25)
+		(end 79.5 106)
+		(width 1)
+		(layer "F.Cu")
+		(net "/GND")
+		(uuid "4e8de176-89ba-4873-96ef-1d5f0bcb0c2e")
+	)
+	(segment
+		(start 74.5 92.5)
+		(end 74.5 94.25)
+		(width 1)
+		(layer "F.Cu")
+		(net "/GND")
+		(uuid "55b99333-246f-4a2f-bf44-99651ec51768")
 	)
 	(segment
 		(start 149.4375 54.375)
@@ -6006,20 +5954,20 @@
 		(uuid "637f7a83-f766-4e23-9d67-8c8be3fe7b32")
 	)
 	(segment
-		(start 78.5 107)
-		(end 72.342 107)
-		(width 1)
-		(layer "F.Cu")
-		(net "/GND")
-		(uuid "645fd9c4-6d5e-4b8b-a2ff-52eec8afbb7b")
-	)
-	(segment
 		(start 149.54 58.5)
 		(end 149.54 68.45)
 		(width 1)
 		(layer "F.Cu")
 		(net "/GND")
 		(uuid "655a4b0f-a10b-4ce4-9115-c73fc4c6699d")
+	)
+	(segment
+		(start 79.5 106)
+		(end 78.5 107)
+		(width 1)
+		(layer "F.Cu")
+		(net "/GND")
+		(uuid "6ade1edb-a965-44fa-92ee-bdc7b8b7ba69")
 	)
 	(segment
 		(start 167.24 58.25)
@@ -6078,6 +6026,14 @@
 		(uuid "866bb22f-d8e7-4ffd-90cd-b72c31659462")
 	)
 	(segment
+		(start 74.5 94.25)
+		(end 79.5 99.25)
+		(width 1)
+		(layer "F.Cu")
+		(net "/GND")
+		(uuid "8bf4eba9-6cd4-43b5-b042-9b07ebd13059")
+	)
+	(segment
 		(start 149.54 59.26)
 		(end 149.54 58.5)
 		(width 0.5)
@@ -6126,6 +6082,14 @@
 		(uuid "a2d7fdc1-5f06-47f5-86b0-7c9c8d178cee")
 	)
 	(segment
+		(start 78.5 107)
+		(end 72.342 107)
+		(width 1)
+		(layer "F.Cu")
+		(net "/GND")
+		(uuid "a506c4f6-fabb-46d6-af16-f1c1b453366f")
+	)
+	(segment
 		(start 167.24 65.74)
 		(end 167.25 65.75)
 		(width 1.5)
@@ -6166,6 +6130,14 @@
 		(uuid "bcec4c52-00c5-4dae-bb18-89767ebe6375")
 	)
 	(segment
+		(start 72.342 107)
+		(end 68.592 103.25)
+		(width 1)
+		(layer "F.Cu")
+		(net "/GND")
+		(uuid "bd430584-675a-4644-9fce-cc82fff167a4")
+	)
+	(segment
 		(start 157.5 48.51)
 		(end 149.26 48.51)
 		(width 1)
@@ -6198,14 +6170,6 @@
 		(uuid "cf7c8cdb-8f50-4f1e-873c-bf5316832966")
 	)
 	(segment
-		(start 72.342 107)
-		(end 68.592 103.25)
-		(width 1)
-		(layer "F.Cu")
-		(net "/GND")
-		(uuid "d0055563-7310-48cd-8f71-ec11d7a30c60")
-	)
-	(segment
 		(start 77 81)
 		(end 77 78.25)
 		(width 1)
@@ -6220,14 +6184,6 @@
 		(layer "F.Cu")
 		(net "/GND")
 		(uuid "d5340c5d-3290-4442-a46f-458a10cd1776")
-	)
-	(segment
-		(start 77.75 97.5)
-		(end 79.5 99.25)
-		(width 1)
-		(layer "F.Cu")
-		(net "/GND")
-		(uuid "d5775ee7-9c11-43db-b6b0-63c595df1f97")
 	)
 	(segment
 		(start 157.5 48.51)
@@ -6300,14 +6256,6 @@
 		(layer "F.Cu")
 		(net "/GND")
 		(uuid "f5bcef4c-2353-46f8-a7d6-bef261483da6")
-	)
-	(segment
-		(start 79.5 99.25)
-		(end 79.5 106)
-		(width 1)
-		(layer "F.Cu")
-		(net "/GND")
-		(uuid "fa484af2-1378-441f-bbf2-8e9265f0b045")
 	)
 	(segment
 		(start 149.4375 54.375)
@@ -7367,12 +7315,12 @@
 		(uuid "fb77fe44-d5fb-404a-a576-26174ba940d7")
 	)
 	(segment
-		(start 77.75 92.5)
-		(end 86.25 92.5)
+		(start 74.5 87.5)
+		(end 77.5 90.5)
 		(width 1)
 		(layer "F.Cu")
 		(net "/3V3")
-		(uuid "1f36bdcb-6e21-453f-b83a-11b9c750b390")
+		(uuid "2d66e261-82da-4929-9915-1e92fbe382e7")
 	)
 	(segment
 		(start 159.868427 121.51)
@@ -7397,6 +7345,22 @@
 		(layer "F.Cu")
 		(net "/3V3")
 		(uuid "33eeb179-210d-42f2-98c0-f316cd6bfc01")
+	)
+	(segment
+		(start 74.5 87.5)
+		(end 79.5 92.5)
+		(width 1)
+		(layer "F.Cu")
+		(net "/3V3")
+		(uuid "3e7b5ff5-0919-49ac-a604-0946a9c48c09")
+	)
+	(segment
+		(start 79.5 92.5)
+		(end 86.25 92.5)
+		(width 1)
+		(layer "F.Cu")
+		(net "/3V3")
+		(uuid "52b1f128-4ef1-423c-8377-6761757ad4e6")
 	)
 	(segment
 		(start 109.95 97.717768)
@@ -7477,14 +7441,6 @@
 		(layer "F.Cu")
 		(net "/3V3")
 		(uuid "a7acd452-a9cc-4bb3-ac6d-d4a45fc09d14")
-	)
-	(segment
-		(start 77.75 92.5)
-		(end 77.5 92.5)
-		(width 1)
-		(layer "F.Cu")
-		(net "/3V3")
-		(uuid "a87a3226-589d-4495-83a7-d200a70eba29")
 	)
 	(segment
 		(start 86.25 92.5)
