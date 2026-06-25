@@ -43,6 +43,6 @@
 		)
 	(fp_text user "pin1=3v3 ... pin9=CONFIRM" (at 0 16.6 0) (layer "F.SilkS") (effects (font (size 0.6 0.6) (thickness 0.12))))
 	(model "${KIPRJMOD}/../Component References/M16968 OLED and Rotary Knob.step"
-		(offset (xyz 0 0 0)) (scale (xyz 1 1 1)) (rotate (xyz 0 0 0)))
+		(offset (xyz -32.45 -17.65 0)) (scale (xyz 1 1 1)) (rotate (xyz 0 0 0)))
 	(embedded_fonts no)
 )

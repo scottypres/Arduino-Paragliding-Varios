@@ -476,17 +476,6 @@
 			(layer "F.SilkS")
 			(uuid "6d684052-5020-4573-8ee4-ad667097b9e2")
 		)
-		(fp_text user "SPARKFUN THING PLUS ESP32 WROOM-C"
-			(at -28.845 -10.23 0)
-			(layer "F.SilkS")
-			(uuid "7ec9afa9-014f-4109-be00-1ebd7875507b")
-			(effects
-				(font
-					(size 0.72 0.72)
-					(thickness 0.12)
-				)
-			)
-		)
 		(fp_text user "header geometry from SparkFun Eagle J5"
 			(at -28.845 0 0)
 			(layer "F.SilkS")
@@ -505,6 +494,17 @@
 			(effects
 				(font
 					(size 0.58 0.58)
+					(thickness 0.12)
+				)
+			)
+		)
+		(fp_text user "SPARKFUN THING PLUS ESP32 WROOM-C"
+			(at -25.75 -14 0)
+			(layer "F.SilkS")
+			(uuid "7ec9afa9-014f-4109-be00-1ebd7875507b")
+			(effects
+				(font
+					(size 0.72 0.72)
 					(thickness 0.12)
 				)
 			)
@@ -5774,7 +5774,7 @@
 		)
 	)
 	(gr_text "J10 SparkFun Thing Plus ESP32 WROOM-C, SparkFun Eagle header geometry"
-		(at 67 58.95 0)
+		(at 74 55.75 0)
 		(layer "F.SilkS")
 		(uuid "775674c9-a528-44ca-b40f-ec65341d65b8")
 		(effects
@@ -7047,6 +7047,14 @@
 		(uuid "31b7bd61-8c2d-4e22-a397-758b299dde3b")
 	)
 	(segment
+		(start 133.225 81.975)
+		(end 133.25 82)
+		(width 0.5)
+		(layer "F.Cu")
+		(net "/OLED_CONFIRM")
+		(uuid "3633bad7-fae2-4e05-a2f4-b3405ad9566c")
+	)
+	(segment
 		(start 99.75 81.5)
 		(end 99.75 76.25)
 		(width 0.5)
@@ -7061,6 +7069,14 @@
 		(layer "F.Cu")
 		(net "/OLED_CONFIRM")
 		(uuid "609aadad-b39f-4007-9333-a32cbd31f989")
+	)
+	(segment
+		(start 133.225 78.41)
+		(end 133.225 81.975)
+		(width 0.5)
+		(layer "F.Cu")
+		(net "/OLED_CONFIRM")
+		(uuid "75ec69c2-1084-4a64-b808-33560a87f4b5")
 	)
 	(segment
 		(start 99.75 76.25)

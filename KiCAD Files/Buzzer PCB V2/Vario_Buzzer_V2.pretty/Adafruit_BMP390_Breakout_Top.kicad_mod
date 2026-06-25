@@ -190,7 +190,7 @@
 		)
 		(model "${KIPRJMOD}/../Component References/6407 BMP581 Sensor - from BMP585 same BMP5xx board family.step"
 			(offset
-				(xyz 0 0 0)
+				(xyz -12.7 -8.89 0)
 			)
 			(scale
 				(xyz 1 1 1)
