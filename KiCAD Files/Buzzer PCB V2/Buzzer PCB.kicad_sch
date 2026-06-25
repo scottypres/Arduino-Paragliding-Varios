@@ -1810,190 +1810,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Vario_Buzzer_V2:SD_Module_6_Swapped"
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "J"
-				(at 0 11.43 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "SD_Module_6_Swapped"
-				(at 0 -11.43 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Optional SD module reversed pin order"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "SD_Module_6_Swapped_0_1"
-				(rectangle
-					(start -8.89 8.89)
-					(end 7.62 -8.89)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-			)
-			(symbol "SD_Module_6_Swapped_1_1"
-				(pin passive line
-					(at -12.7 6.35 0)
-					(length 3.81)
-					(name "GND"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -12.7 3.81 0)
-					(length 3.81)
-					(name "MISO"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -12.7 1.27 0)
-					(length 3.81)
-					(name "CLK"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -12.7 -1.27 0)
-					(length 3.81)
-					(name "MOSI"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -12.7 -3.81 0)
-					(length 3.81)
-					(name "CS"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -12.7 -6.35 0)
-					(length 3.81)
-					(name "3V3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Vario_Buzzer_V2:SHT41_5"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -3278,17 +3094,6 @@
 		)
 		(uuid "34d62a90-5c08-458b-b766-8d80d6849605")
 	)
-	(text "SparkFun Thing Plus pinout and module outline are from SparkFun Eagle hardware. Onboard microSD exists; J3 is optional external SPI SD using GPIO2 as CS."
-		(exclude_from_sim no)
-		(at 76.01 48.9 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "ccb78e3b-83db-4f70-a69d-aa2cd71706a7")
-	)
 	(text "Three 5V boosted buzzer channels use separate S8050 transistors; copied JST/slide-switch footprints are preserved and PCB remains placement-only with no traces."
 		(exclude_from_sim no)
 		(at 76.01 66.9 0)
@@ -3305,16 +3110,76 @@
 		(uuid "11546b87-1ab3-4176-a33f-2d6eed1c8232")
 	)
 	(no_connect
+		(at 93.98 133.35)
+		(uuid "176906fd-65c7-48a3-b3cd-8fea74b2bbca")
+	)
+	(no_connect
 		(at 62.23 223.52)
 		(uuid "22c78670-ed1b-4d1a-92ae-15fcb2051ada")
+	)
+	(no_connect
+		(at 93.98 146.05)
+		(uuid "25ea9371-d7ae-4ffb-a67d-aa66b5b145c6")
+	)
+	(no_connect
+		(at 225.31 138.36)
+		(uuid "28b854da-3033-4493-84ea-308046b71f93")
+	)
+	(no_connect
+		(at 36.83 138.43)
+		(uuid "c83961db-2f9f-4444-9f81-f98428cb2725")
+	)
+	(no_connect
+		(at 36.83 140.97)
+		(uuid "268d53b1-c0f0-4a9f-b6e1-4eb9ce593e40")
+	)
+	(no_connect
+		(at 36.83 143.51)
+		(uuid "ad481d78-7252-4850-abca-c528cd5c7585")
+	)
+	(no_connect
+		(at 93.98 153.67)
+		(uuid "6fac2cab-7985-4562-9ca4-db1593522079")
+	)
+	(no_connect
+		(at 34.7 93.21)
+		(uuid "2ddf1962-252c-4533-b4bc-19b102a5ce89")
+	)
+	(no_connect
+		(at 36.83 128.27)
+		(uuid "47754fc7-e4f7-446d-8cae-f5000f7fcf6b")
 	)
 	(no_connect
 		(at 59.45 191.17)
 		(uuid "5624052b-3814-4035-9a97-2ac747cae547")
 	)
 	(no_connect
+		(at 93.98 166.37)
+		(uuid "59643d8b-1ef5-4562-8cb1-480863df53e4")
+	)
+	(no_connect
+		(at 93.98 135.89)
+		(uuid "732dca2e-eb51-42a4-9cde-ed1b112baaa1")
+	)
+	(no_connect
+		(at 36.83 120.65)
+		(uuid "7f0a5909-e211-492f-a80b-44b21cb93fd5")
+	)
+	(no_connect
+		(at 93.98 148.59)
+		(uuid "9ed914a5-7e1b-4c61-b955-7ad014b39df0")
+	)
+	(no_connect
+		(at 225.31 106.55)
+		(uuid "a51ea942-2812-4ff2-b2ec-9bf1164af6e3")
+	)
+	(no_connect
 		(at 225.31 114.17)
 		(uuid "aaf6de68-e575-47cd-b1cc-78f9672605a4")
+	)
+	(no_connect
+		(at 93.98 138.43)
+		(uuid "c2b56b6c-f0de-43c8-999f-56b169c111b1")
 	)
 	(no_connect
 		(at 225.31 119.25)
@@ -3325,52 +3190,8 @@
 		(uuid "e37f18f9-c43f-4072-aaf9-7a30b6c5ca3a")
 	)
 	(no_connect
-		(at 34.7 93.21)
-		(uuid "2ddf1962-252c-4533-b4bc-19b102a5ce89")
-	)
-	(no_connect
-		(at 36.83 120.65)
-		(uuid "7f0a5909-e211-492f-a80b-44b21cb93fd5")
-	)
-	(no_connect
 		(at 36.83 125.73)
 		(uuid "fcf36353-c79e-441f-86f3-4cd550604b46")
-	)
-	(no_connect
-		(at 36.83 128.27)
-		(uuid "47754fc7-e4f7-446d-8cae-f5000f7fcf6b")
-	)
-	(no_connect
-		(at 93.98 133.35)
-		(uuid "176906fd-65c7-48a3-b3cd-8fea74b2bbca")
-	)
-	(no_connect
-		(at 93.98 135.89)
-		(uuid "732dca2e-eb51-42a4-9cde-ed1b112baaa1")
-	)
-	(no_connect
-		(at 93.98 138.43)
-		(uuid "c2b56b6c-f0de-43c8-999f-56b169c111b1")
-	)
-	(no_connect
-		(at 93.98 146.05)
-		(uuid "25ea9371-d7ae-4ffb-a67d-aa66b5b145c6")
-	)
-	(no_connect
-		(at 93.98 148.59)
-		(uuid "9ed914a5-7e1b-4c61-b955-7ad014b39df0")
-	)
-	(no_connect
-		(at 93.98 166.37)
-		(uuid "59643d8b-1ef5-4562-8cb1-480863df53e4")
-	)
-	(no_connect
-		(at 225.31 106.55)
-		(uuid "a51ea942-2812-4ff2-b2ec-9bf1164af6e3")
-	)
-	(no_connect
-		(at 225.31 138.36)
-		(uuid "28b854da-3033-4493-84ea-308046b71f93")
 	)
 	(wire
 		(pts
@@ -3381,16 +3202,6 @@
 			(type default)
 		)
 		(uuid "0267e2f5-a275-47c5-82a6-3a9a8fb3c601")
-	)
-	(wire
-		(pts
-			(xy 189.23 151.13) (xy 187.96 148.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3274e5dc-a680-4263-b91d-4cfad5a9690d")
 	)
 	(wire
 		(pts
@@ -3444,26 +3255,6 @@
 	)
 	(wire
 		(pts
-			(xy 220.23 54.55) (xy 225.31 54.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1ca28e65-f108-4624-bef1-d3e0d9c3d7cd")
-	)
-	(wire
-		(pts
-			(xy 220.23 67.25) (xy 225.31 67.25)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1e51ff5a-bc4a-4885-91ac-4717f1d4e644")
-	)
-	(wire
-		(pts
 			(xy 24.13 146.05) (xy 36.83 146.05)
 		)
 		(stroke
@@ -3494,13 +3285,13 @@
 	)
 	(wire
 		(pts
-			(xy 26.67 140.97) (xy 36.83 140.97)
+			(xy 189.23 151.13) (xy 187.96 148.59)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "3920c73d-f9db-47ca-b16d-7a1088aa67af")
+		(uuid "3274e5dc-a680-4263-b91d-4cfad5a9690d")
 	)
 	(wire
 		(pts
@@ -3674,36 +3465,6 @@
 	)
 	(wire
 		(pts
-			(xy 31.75 123.19) (xy 36.83 123.19)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8698025b-4773-4ecb-8ddb-d54e6c3485e2")
-	)
-	(wire
-		(pts
-			(xy 220.23 64.71) (xy 225.31 64.71)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7337fe6e-9a4d-41f0-81b8-699d7c9f7eb7")
-	)
-	(wire
-		(pts
-			(xy 220.23 57.09) (xy 225.31 57.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "73a4aef8-62a7-48c5-aede-4434f023a702")
-	)
-	(wire
-		(pts
 			(xy 158.75 224.79) (xy 165.1 218.44)
 		)
 		(stroke
@@ -3741,6 +3502,16 @@
 			(type default)
 		)
 		(uuid "8194ba74-bff4-49bb-9588-a698acfa12c4")
+	)
+	(wire
+		(pts
+			(xy 31.75 123.19) (xy 36.83 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8698025b-4773-4ecb-8ddb-d54e6c3485e2")
 	)
 	(wire
 		(pts
@@ -3804,16 +3575,6 @@
 	)
 	(wire
 		(pts
-			(xy 220.23 59.63) (xy 225.31 59.63)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a94c84bf-5bc3-4cdd-9be8-c74f843e7770")
-	)
-	(wire
-		(pts
 			(xy 29.62 64.48) (xy 34.7 64.48)
 		)
 		(stroke
@@ -3851,16 +3612,6 @@
 			(type default)
 		)
 		(uuid "be6c99ae-8468-4043-b3b1-0d1362dad7bc")
-	)
-	(wire
-		(pts
-			(xy 26.67 138.43) (xy 36.83 138.43)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bf3cd2b3-d625-4e80-b9d8-7a801c7f011e")
 	)
 	(wire
 		(pts
@@ -3934,16 +3685,6 @@
 	)
 	(wire
 		(pts
-			(xy 100.33 153.67) (xy 93.98 153.67)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "cf86767d-7b2e-4184-8bfd-7899e5196547")
-	)
-	(wire
-		(pts
 			(xy 31.75 133.35) (xy 36.83 133.35)
 		)
 		(stroke
@@ -3951,16 +3692,6 @@
 			(type default)
 		)
 		(uuid "d056b030-4e5f-4878-b460-fb5ec50468c1")
-	)
-	(wire
-		(pts
-			(xy 220.23 62.17) (xy 225.31 62.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d271213f-6421-41dd-80b9-3b41fb50e988")
 	)
 	(wire
 		(pts
@@ -4064,16 +3795,6 @@
 	)
 	(wire
 		(pts
-			(xy 27.94 143.51) (xy 36.83 143.51)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f8870ae1-84c0-45c4-a177-9338f1d98951")
-	)
-	(wire
-		(pts
 			(xy 54.37 193.71) (xy 59.45 193.71)
 		)
 		(stroke
@@ -4139,15 +3860,6 @@
 			(justify left bottom)
 		)
 		(uuid "07ad8a9a-1d46-4df3-a349-d8c7a6bb1d33")
-	)
-	(label "SPI_MOSI"
-		(at 26.67 140.97 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "07da0759-3f06-4664-be0f-35477df959a4")
 	)
 	(label "GND"
 		(at 220.23 109.09 0)
@@ -4224,15 +3936,6 @@
 		)
 		(uuid "14b38626-a3ba-4481-aa83-e482503b7aed")
 	)
-	(label "SPI_SCK"
-		(at 27.94 143.51 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "14c5bea6-e1d5-4f11-ac02-a02970315454")
-	)
 	(label "GND"
 		(at 187.96 143.51 0)
 		(effects
@@ -4242,24 +3945,6 @@
 			(justify left bottom)
 		)
 		(uuid "1a41a01c-af81-48d8-9398-415ce4ee838f")
-	)
-	(label "SD_CS_GPIO2"
-		(at 100.33 153.67 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "1b117d90-f8d8-4f03-9fdf-ccce5c534c79")
-	)
-	(label "SD_CS_GPIO2"
-		(at 220.23 64.71 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "1b792c5a-d9c9-4052-8304-e6d3cacacfef")
 	)
 	(label "BUZZER_BASE3"
 		(at 198.12 217.17 0)
@@ -4309,15 +3994,6 @@
 			(justify right bottom)
 		)
 		(uuid "2069711a-95d0-4687-bdd6-aca49e424773")
-	)
-	(label "SPI_MOSI"
-		(at 220.23 62.17 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "231e4ef2-6a1e-404e-9521-fba7aff10835")
 	)
 	(label "GPS_TX_THING_RX"
 		(at 24.13 146.05 0)
@@ -4452,15 +4128,6 @@
 			(justify left bottom)
 		)
 		(uuid "5036d28e-45d6-4654-8b72-363c196fd963")
-	)
-	(label "3V3"
-		(at 220.23 67.25 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "50c2cd5e-ce5c-4a94-badb-91f22a14aedf")
 	)
 	(label "BOOST_5V"
 		(at 158.34 240.8 180)
@@ -4734,15 +4401,6 @@
 		)
 		(uuid "99a769ea-ee99-40ed-8147-79f5b35db307")
 	)
-	(label "GND"
-		(at 220.23 54.55 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "9ef894eb-3e76-4dc5-a213-53e7b84b7d6b")
-	)
 	(label "BOOST_5V"
 		(at 163.83 203.2 180)
 		(effects
@@ -4819,24 +4477,6 @@
 			(justify left bottom)
 		)
 		(uuid "b7d3f2b2-67b0-4312-9389-d6674e9153b0")
-	)
-	(label "SPI_SCK"
-		(at 220.23 59.63 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "bbf6bec5-9c16-404f-bd86-c6164461f360")
-	)
-	(label "SPI_MISO"
-		(at 26.67 138.43 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "bc7a9a6b-d937-4f63-9dfc-748aa82cc718")
 	)
 	(label "SDA"
 		(at 220.23 116.71 0)
@@ -5020,15 +4660,6 @@
 		)
 		(uuid "f17b63b5-63e8-4069-859a-516ad3f2bd4a")
 	)
-	(label "SPI_MISO"
-		(at 220.23 57.09 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "f539dd8e-12c4-401b-8a11-4c5ba2789bb8")
-	)
 	(label "SDA"
 		(at 220.23 145.98 0)
 		(effects
@@ -5057,234 +4688,6 @@
 			(justify left bottom)
 		)
 		(uuid "fce36132-4613-46ad-b816-271ff53f755e")
-	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 31.75 123.19 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "abe53b6f-3e9e-46f6-8137-338dd998dacb")
-		(property "Reference" "#FLG01"
-			(at 34.29 120.65 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 34.29 127 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 31.75 123.19 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 31.75 123.19 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 31.75 123.19 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "a87d9424-7abc-4dff-8e36-3c69717b513b")
-		)
-		(instances
-			(project "Buzzer PCB"
-				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
-					(reference "#FLG01")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 31.75 130.81 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "b6650a3a-053c-42c0-8822-35fe61ead32f")
-		(property "Reference" "#FLG02"
-			(at 34.29 128.27 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 34.29 134.62 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 31.75 130.81 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 31.75 130.81 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 31.75 130.81 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "204f7b36-a305-4c41-b5ad-e3400e9c52b7")
-		)
-		(instances
-			(project "Buzzer PCB"
-				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
-					(reference "#FLG02")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:PWR_FLAG")
-		(at 31.75 118.11 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "97eb6ec4-fb18-44d2-a03d-6c57d84a0c4d")
-		(property "Reference" "#FLG03"
-			(at 34.29 115.57 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "PWR_FLAG"
-			(at 34.29 121.92 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 31.75 118.11 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 31.75 118.11 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 31.75 118.11 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "e791affe-009e-4621-a3c8-d5bef451546e")
-		)
-		(instances
-			(project "Buzzer PCB"
-				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
-					(reference "#FLG03")
-					(unit 1)
-				)
-			)
-		)
 	)
 	(symbol
 		(lib_id "Vario_Buzzer_V2:SHT41_5")
@@ -6872,6 +6275,82 @@
 		)
 	)
 	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 31.75 118.11 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "97eb6ec4-fb18-44d2-a03d-6c57d84a0c4d")
+		(property "Reference" "#FLG03"
+			(at 34.29 115.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 34.29 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 31.75 118.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 31.75 118.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 31.75 118.11 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "e791affe-009e-4621-a3c8-d5bef451546e")
+		)
+		(instances
+			(project "Buzzer PCB"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "#FLG03")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Diode:1N5819")
 		(at 168.5 234.45 0)
 		(unit 1)
@@ -7190,6 +6669,158 @@
 		)
 	)
 	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 31.75 123.19 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "abe53b6f-3e9e-46f6-8137-338dd998dacb")
+		(property "Reference" "#FLG01"
+			(at 34.29 120.65 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 34.29 127 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 31.75 123.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 31.75 123.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 31.75 123.19 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "a87d9424-7abc-4dff-8e36-3c69717b513b")
+		)
+		(instances
+			(project "Buzzer PCB"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "#FLG01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 31.75 130.81 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "b6650a3a-053c-42c0-8822-35fe61ead32f")
+		(property "Reference" "#FLG02"
+			(at 34.29 128.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 34.29 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 31.75 130.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 31.75 130.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 31.75 130.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "204f7b36-a305-4c41-b5ad-e3400e9c52b7")
+		)
+		(instances
+			(project "Buzzer PCB"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "#FLG02")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Vario_Buzzer_V2:M16968_OLED_RotaryKnob_9")
 		(at 168.01 104.9 0)
 		(unit 1)
@@ -7284,96 +6915,6 @@
 			(project "Buzzer PCB"
 				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
 					(reference "J11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Vario_Buzzer_V2:SD_Module_6_Swapped")
-		(at 238.01 60.9 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "f206f6ca-2774-4442-af95-5ed02acf2df5")
-		(property "Reference" "J3"
-			(at 238.01 67.25 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "Optional SD module 18x18 swapped"
-			(at 236.572 48.268 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Vario_Buzzer_V2:SD_Module_18x18_6Pin_Back"
-			(at 238.01 60.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 58.01 24.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 238.01 60.9 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "7cf5fd6a-e605-4f92-8e2e-1b09def2a1e7")
-		)
-		(pin "2"
-			(uuid "21d077aa-41f8-49b3-b22e-5e2caab81c6a")
-		)
-		(pin "3"
-			(uuid "3b4a4db5-edf6-4bbf-93c1-579d1dfdf9b0")
-		)
-		(pin "4"
-			(uuid "b055e5d3-02a7-49bc-8861-c35930cbf683")
-		)
-		(pin "5"
-			(uuid "62df3a15-be2f-412f-94cb-c838ac59ab2a")
-		)
-		(pin "6"
-			(uuid "bec3f18d-2840-46cd-a687-26f2b67f54bb")
-		)
-		(instances
-			(project "Buzzer PCB"
-				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
-					(reference "J3")
 					(unit 1)
 				)
 			)
