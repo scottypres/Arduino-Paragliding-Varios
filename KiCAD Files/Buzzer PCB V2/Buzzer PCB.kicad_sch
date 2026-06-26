@@ -6134,7 +6134,7 @@
 				)
 			)
 		)
-		(property "Value" "SS12D00G5 power switch"
+		(property "Value" "SS12F44G3 power switch"
 			(at 47.4 89.4 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6144,7 +6144,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Button_Switch_THT:SS12D00G5_Custom"
+		(property "Footprint" "Vario_Buzzer_V2:SS12F44G3_5.9x12.25_P3.00"
 			(at 47.4 95.75 0)
 			(hide yes)
 			(show_name no)
