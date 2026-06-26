@@ -39,9 +39,9 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.8,
-          "height": 3.0,
-          "width": 2.0
+          "drill": 3.175,
+          "height": 3.175,
+          "width": 3.175
         },
         "silk_line_width": 0.1,
         "silk_text_italic": false,
@@ -542,7 +542,7 @@
     "last_paths": {
       "idf": "",
       "netlist": "",
-      "plot": "DXFs/",
+      "plot": "FlatCAM/",
       "specctra_dsn": "",
       "vrml": ""
     },

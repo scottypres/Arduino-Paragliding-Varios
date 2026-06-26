@@ -3061,7 +3061,7 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "HGLRC M100 footprint uses manual pad order RX TX VCC GND; VCC is tied to 3V3 per HGLRC 3.3V-5V product spec."
+	(text "External M100 GPS plugs into SparkFun onboard Qwiic socket as UART: GPIO21/SDA=GPS TX into ESP RX, GPIO22/SCL=GPS RX from ESP TX."
 		(exclude_from_sim no)
 		(at 76.01 60.9 0)
 		(effects
@@ -3072,7 +3072,7 @@
 		)
 		(uuid "0d07d82b-a252-4cac-b63e-431443e1f13d")
 	)
-	(text "M16968 rotary button/encoder net names replace standalone tactile switches; PUSH/UP is routed to Thing FREEBIE/ESP4 to keep SDA free for I2C."
+	(text "I2C bus moved off SparkFun Qwiic pins: SDA uses ESP33, SCL uses ESP32; onboard legacy M100 footprint nets are unused."
 		(exclude_from_sim no)
 		(at 76.01 54.9 0)
 		(effects
@@ -3083,7 +3083,7 @@
 		)
 		(uuid "1d59b588-6136-4267-9acb-34748d50c708")
 	)
-	(text "SparkFun Thing Plus and M16968 OLED/rotary module replace the Feather/FeatherWing. OLED uses direct 3V3/GND/SDA/SCL pads; rotary controls replace standalone tactile switches."
+	(text "SparkFun Thing Plus and M16968 OLED/rotary module replace the Feather/FeatherWing. OLED/SHT/BMP share relocated SDA/SCL; rotary controls replace standalone tactile switches."
 		(exclude_from_sim no)
 		(at 76.01 42.9 0)
 		(effects
@@ -3110,7 +3110,7 @@
 		(uuid "11546b87-1ab3-4176-a33f-2d6eed1c8232")
 	)
 	(no_connect
-		(at 93.98 133.35)
+		(at 36.83 146.05)
 		(uuid "176906fd-65c7-48a3-b3cd-8fea74b2bbca")
 	)
 	(no_connect
@@ -3126,8 +3126,12 @@
 		(uuid "28b854da-3033-4493-84ea-308046b71f93")
 	)
 	(no_connect
-		(at 36.83 138.43)
+		(at 36.83 148.59)
 		(uuid "c83961db-2f9f-4444-9f81-f98428cb2725")
+	)
+	(no_connect
+		(at 36.83 138.43)
+		(uuid "d17f1c64-5bf1-4450-a766-c6ac6c767ad1")
 	)
 	(no_connect
 		(at 36.83 140.97)
@@ -3176,10 +3180,6 @@
 	(no_connect
 		(at 225.31 114.17)
 		(uuid "aaf6de68-e575-47cd-b1cc-78f9672605a4")
-	)
-	(no_connect
-		(at 93.98 138.43)
-		(uuid "c2b56b6c-f0de-43c8-999f-56b169c111b1")
 	)
 	(no_connect
 		(at 225.31 119.25)
@@ -3255,7 +3255,7 @@
 	)
 	(wire
 		(pts
-			(xy 24.13 146.05) (xy 36.83 146.05)
+			(xy 102.87 133.35) (xy 93.98 133.35)
 		)
 		(stroke
 			(width 0)
@@ -3805,7 +3805,7 @@
 	)
 	(wire
 		(pts
-			(xy 24.13 148.59) (xy 36.83 148.59)
+			(xy 102.87 138.43) (xy 93.98 138.43)
 		)
 		(stroke
 			(width 0)
@@ -3833,8 +3833,8 @@
 		)
 		(uuid "01285573-d493-49b7-b5b5-77ca1f0ff6e8")
 	)
-	(label "GPS_RX_THING_TX"
-		(at 24.13 148.59 0)
+	(label "SDA"
+		(at 102.87 133.35 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3879,7 +3879,7 @@
 		)
 		(uuid "0aab4388-f8ac-4a9f-98d6-6fe3ee5e9fb4")
 	)
-	(label "SDA"
+	(label "GPS_TX_THING_RX"
 		(at 31.75 133.35 0)
 		(effects
 			(font
@@ -3995,8 +3995,8 @@
 		)
 		(uuid "2069711a-95d0-4687-bdd6-aca49e424773")
 	)
-	(label "GPS_TX_THING_RX"
-		(at 24.13 146.05 0)
+	(label "SCL"
+		(at 102.87 138.43 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -4090,7 +4090,7 @@
 		)
 		(uuid "4a2fef69-c09c-4e8c-af52-82bb7d604f23")
 	)
-	(label "SCL"
+	(label "GPS_RX_THING_TX"
 		(at 31.75 135.89 0)
 		(effects
 			(font
@@ -4217,7 +4217,7 @@
 		)
 		(uuid "6058e8e4-e37f-4b4a-be74-54c7f4066ae6")
 	)
-	(label "GPS_TX_THING_RX"
+	(label "OLD_GPS_TX_UNUSED"
 		(at 220.23 81.63 0)
 		(effects
 			(font
@@ -4633,7 +4633,7 @@
 		)
 		(uuid "ea9e9cb5-80f3-4972-8c82-71898694629c")
 	)
-	(label "GPS_RX_THING_TX"
+	(label "OLD_GPS_RX_UNUSED"
 		(at 220.23 79.09 0)
 		(effects
 			(font
