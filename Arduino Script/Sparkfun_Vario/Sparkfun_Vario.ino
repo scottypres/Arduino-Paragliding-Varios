@@ -1,10 +1,23 @@
 #include <Arduino.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SH110X.h>
 #include <FS.h>
 #include <SD.h>
 #include <SPI.h>
-#include <SparkFun_Qwiic_OLED.h>
 #include <TinyGPSPlus.h>
+#include <WiFi.h>
 #include <Wire.h>
+
+#if __has_include("arduino_secrets.h")
+#include "arduino_secrets.h"
+#endif
+
+#ifndef WIFI_NETWORKS
+#define WIFI_NETWORKS {"", ""}
+#define WIFI_NETWORKS_CONFIGURED 0
+#else
+#define WIFI_NETWORKS_CONFIGURED 1
+#endif
 
 // SparkFun Thing Plus ESP32 WROOM-C pin mapping for this carrier board.
 constexpr uint8_t kQwiicPowerPin = 0;
@@ -35,8 +48,23 @@ constexpr uint32_t kDebounceMs = 35;
 constexpr uint32_t kDisplayRefreshMs = 200;
 constexpr const char *kGpsLogPath = "/gps_log.csv";
 constexpr uint8_t kBuzzerCount = sizeof(kBuzzerPins) / sizeof(kBuzzerPins[0]);
+constexpr uint32_t kWifiConnectTimeoutMs = 7000;
+constexpr uint8_t kOledAddress = 0x3C;
+constexpr int8_t kOledResetPin = -1;
+constexpr int16_t kOledWidth = 128;
+constexpr int16_t kOledHeight = 64;
 
-Qwiic1in3OLED oled;
+struct WifiNetwork {
+  const char *ssid;
+  const char *password;
+};
+
+const WifiNetwork kWifiNetworks[] = {
+    WIFI_NETWORKS
+};
+constexpr uint8_t kWifiNetworkCount = sizeof(kWifiNetworks) / sizeof(kWifiNetworks[0]);
+
+Adafruit_SH1106G oled(kOledWidth, kOledHeight, &Wire, kOledResetPin);
 TinyGPSPlus gps;
 HardwareSerial gpsSerial(1);
 
@@ -79,6 +107,7 @@ bool sdReady = false;
 bool gpsLoggingEnabled = false;
 bool gpsDisplayEnabled = true;
 bool buzzerEnabled = true;
+bool wifiReady = false;
 bool editingMenuItem = false;
 uint8_t selectedMenuItem = kMenuGpsLogging;
 uint8_t logRateIndex = 2;
@@ -305,7 +334,8 @@ void oledText(uint8_t row, const String &text) {
   if (!oledReady) {
     return;
   }
-  oled.text(0, row * 10, text.c_str());
+  oled.setCursor(0, row * 10);
+  oled.print(text);
 }
 
 void updateDisplay(bool force = false) {
@@ -319,7 +349,9 @@ void updateDisplay(bool force = false) {
   }
   lastDisplayMs = nowMs;
 
-  oled.erase();
+  oled.clearDisplay();
+  oled.setTextSize(1);
+  oled.setTextColor(SH110X_WHITE);
   String gpsStatus = "GPS ";
   gpsStatus += gps.location.isValid() ? "fix" : "no fix";
   gpsStatus += " sat:";
@@ -352,9 +384,11 @@ void updateDisplay(bool force = false) {
 
 void initDisplay() {
   Wire.begin(kI2cSdaPin, kI2cSclPin);
-  oledReady = oled.begin();
+  oledReady = oled.begin(kOledAddress, true);
   if (oledReady) {
-    oled.erase();
+    oled.clearDisplay();
+    oled.setTextSize(1);
+    oled.setTextColor(SH110X_WHITE);
     oledText(0, "SparkFun Vario");
     oledText(1, "Starting...");
     oled.display();
@@ -376,6 +410,44 @@ void initSdCard() {
       file.close();
     }
   }
+}
+
+void initWifi() {
+  if (!WIFI_NETWORKS_CONFIGURED) {
+    wifiReady = false;
+    WiFi.mode(WIFI_OFF);
+    Serial.println("WiFi credentials not configured");
+    return;
+  }
+
+  WiFi.mode(WIFI_STA);
+
+  for (uint8_t index = 0; index < kWifiNetworkCount; index++) {
+    Serial.print("Connecting WiFi: ");
+    Serial.println(kWifiNetworks[index].ssid);
+    WiFi.begin(kWifiNetworks[index].ssid, kWifiNetworks[index].password);
+
+    const uint32_t startMs = millis();
+    while (WiFi.status() != WL_CONNECTED && millis() - startMs < kWifiConnectTimeoutMs) {
+      serviceBuzzers();
+      serviceGps();
+      delay(10);
+    }
+
+    if (WiFi.status() == WL_CONNECTED) {
+      wifiReady = true;
+      Serial.print("WiFi connected: ");
+      Serial.println(WiFi.localIP());
+      return;
+    }
+
+    WiFi.disconnect(true);
+    delay(100);
+  }
+
+  wifiReady = false;
+  WiFi.mode(WIFI_OFF);
+  Serial.println("WiFi not connected");
 }
 
 void serviceGps() {
@@ -439,6 +511,7 @@ void setup() {
   gpsSerial.begin(kGpsBaud, SERIAL_8N1, kGpsRxPin, kGpsTxPin);
   initDisplay();
   initSdCard();
+  initWifi();
   updateDisplay(true);
 }
 

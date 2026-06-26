@@ -1,3 +1,6 @@
 
 # Machine-specific MCP config (absolute paths)
 .mcp.json
+
+# Local Arduino WiFi credentials
+Arduino Script/**/arduino_secrets.h
