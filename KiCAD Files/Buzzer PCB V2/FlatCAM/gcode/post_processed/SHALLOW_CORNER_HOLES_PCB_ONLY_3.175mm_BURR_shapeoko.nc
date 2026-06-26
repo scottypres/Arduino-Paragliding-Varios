@@ -1,6 +1,6 @@
 %
 (; SHAPEOKO POSTPROCESSED v1)
-( Source: DEEP_CORNER_HOLES.nc )
+( Source: SHALLOW_CORNER_HOLES_PCB_ONLY_3.175mm_BURR.nc )
 ( Stripped: M30 only - kept T#/M6/M0/M1/MSG for Shapeoko/Carbide Motion )
 ( Wrapped with Shapeoko start/end blocks - mirrors 1001.nc structure )
 G90        ( absolute positioning )
@@ -18,7 +18,7 @@ M5         ( ensure spindle off at start )
 (Type: G-code from Geometry)
 (Units: MM)
 
-(Created on Friday, 26 June 2026 at 04:54)
+(Created on Friday, 26 June 2026 at 04:55)
 
 (This preprocessor is used with a motion controller loaded with GRBL firmware.)
 (It is configured to be compatible with almost any version of GRBL firmware.)
@@ -34,10 +34,13 @@ M5         ( ensure spindle off at start )
 (Tool: 1 -> Feedrate Rapids: 1500)
 
 (Z_CUT: )
-(Tool: 1 -> Z_Cut: -9.0)
+(Tool: 1 -> Z_Cut: -1.7)
 
 (Tools Offset: )
 (Tool: 1 -> Offset Z: 0.0)
+
+(DEPTH_PER_CUT: )
+(Tool: 1 -> DeptPerCut: 0.7)
 
 (Z_MOVE: )
 (Tool: 1 -> Z_Move: 2)
@@ -74,19 +77,43 @@ G00 Z40.0000
 G01 F300.00
 M03
 G00 X131.4809 Y65.8000
-G01 Z-9.0000
+G01 Z-0.7000
+G01 Z0
+G00 Z2.0000
+G01 Z-1.4000
+G01 Z0
+G00 Z2.0000
+G01 Z-1.7000
 G01 Z0
 G00 Z2.0000
 G00 X131.4809 Y0.0000
-G01 Z-9.0000
+G01 Z-0.7000
+G01 Z0
+G00 Z2.0000
+G01 Z-1.4000
+G01 Z0
+G00 Z2.0000
+G01 Z-1.7000
 G01 Z0
 G00 Z2.0000
 G00 X-0.0001 Y0.0000
-G01 Z-9.0000
+G01 Z-0.7000
+G01 Z0
+G00 Z2.0000
+G01 Z-1.4000
+G01 Z0
+G00 Z2.0000
+G01 Z-1.7000
 G01 Z0
 G00 Z2.0000
 G00 X-0.0001 Y65.8000
-G01 Z-9.0000
+G01 Z-0.7000
+G01 Z0
+G00 Z2.0000
+G01 Z-1.4000
+G01 Z0
+G00 Z2.0000
+G01 Z-1.7000
 G01 Z0
 G00 Z2.0000
 M05

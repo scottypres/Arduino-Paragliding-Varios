@@ -91,7 +91,7 @@
 		(filling no)
 		(aux_axis_origin 61.5 118.3)
 		(pcbplotparams
-			(layerselection 0x00000000_00000000_55557555_55555550)
+			(layerselection 0x00000000_00000000_55557555_57555555)
 			(plot_on_all_layers_selection 0x00000000_00000000_00000000_00000000)
 			(disableapertmacros no)
 			(usegerberextensions no)
