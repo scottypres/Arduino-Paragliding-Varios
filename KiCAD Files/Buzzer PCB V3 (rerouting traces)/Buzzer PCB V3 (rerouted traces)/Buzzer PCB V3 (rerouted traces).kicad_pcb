@@ -3002,7 +3002,7 @@
 		(property "Reference" "REF**"
 			(at 0 -14.5 0)
 			(layer "F.SilkS")
-			(uuid "7a546bd1-2b78-4896-93a4-2030f9b3c237")
+			(uuid "47af95eb-5f5e-47c3-8870-60f58fa851c5")
 			(effects
 				(font
 					(size 1 1)
@@ -3013,7 +3013,7 @@
 		(property "Value" "SparkFun 6DoF LSM6DSV16X Qwiic"
 			(at 0 15.25 0)
 			(layer "F.Fab")
-			(uuid "773c2dfe-dc31-41de-b01d-0611d9734335")
+			(uuid "3ef775f8-92e9-4461-b105-801232d3d0a4")
 			(effects
 				(font
 					(size 1 1)
@@ -3025,7 +3025,7 @@
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "01e67eb2-cdda-405a-8c82-a2791ac01e31")
+			(uuid "eab5f936-5e4c-4e7e-848b-9416c337d273")
 			(effects
 				(font
 					(size 1 1)
@@ -3037,7 +3037,7 @@
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "a0a30fe5-edd8-4171-93e7-309a6e2729c3")
+			(uuid "f203a12c-4e3a-4894-a4fe-b84c97294879")
 			(effects
 				(font
 					(size 1 1)
@@ -3148,13 +3148,6 @@
 					(thickness 0.1)
 				)
 			)
-		)
-		(pad "" np_thru_hole circle
-			(at 10.16 -10.16)
-			(size 3.175 3.175)
-			(drill 3.175)
-			(layers "*.Cu" "*.Mask")
-			(uuid "c7582ba9-f323-4ba2-aa14-e1ae3e8c2d09")
 		)
 		(pad "" np_thru_hole circle
 			(at 10.16 10.16)
