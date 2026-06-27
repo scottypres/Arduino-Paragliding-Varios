@@ -11,7 +11,7 @@
 				)
 			)
 		)
-		(property "Value" "SHT41 top module"
+		(property "Value" "SHT41 mechanical only"
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -33,7 +33,7 @@
 				)
 			)
 		)
-		(property "Description" "Adafruit 5776 EagleCAD geometry"
+		(property "Description" "Mechanical-only SHT41 placement; sensor connects off-board through BMP/Qwiic, mounting holes retained."
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
@@ -44,7 +44,7 @@
 				)
 			)
 		)
-		(attr through_hole)
+		(attr board_only exclude_from_pos_files exclude_from_bom)
 		(duplicate_pad_numbers_are_jumpers no)
 		(fp_line
 			(start 12.7 -8.89)
@@ -97,7 +97,7 @@
 				)
 			)
 		)
-		(fp_text user "TOP; pins solder backside"
+		(fp_text user "MECH ONLY; Qwiic via BMP"
 			(at -12.1 7.35 0)
 			(layer "F.SilkS")
 			(uuid "054eeaca-1cbf-4f1e-ac62-5914aeb36a8f")
@@ -108,55 +108,33 @@
 				)
 			)
 		)
-		(pad "1" thru_hole circle
-			(at 5.08 -6.35)
-			(size 1.8 1.8)
-			(drill 1)
+		(pad "" np_thru_hole circle
+			(at -10.16 -6.35)
+			(size 2.6 2.6)
+			(drill 2.6)
 			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(pinfunction "VCC")
-			(pintype "passive")
-			(uuid "801ebc84-920e-437e-a274-92bc912914db")
+			(uuid "2af91ede-e0e1-4492-bd86-c49de4b43a85")
 		)
-		(pad "2" thru_hole circle
-			(at 2.54 -6.35)
-			(size 1.8 1.8)
-			(drill 1)
+		(pad "" np_thru_hole circle
+			(at -10.16 6.35)
+			(size 2.6 2.6)
+			(drill 2.6)
 			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(pinfunction "3V3")
-			(pintype "passive")
-			(uuid "80f9619b-a042-48e1-b311-89974b668b72")
+			(uuid "a057a3f4-b4f5-40eb-b4b1-272ce6bdcbb4")
 		)
-		(pad "3" thru_hole circle
-			(at 0 -6.35)
-			(size 1.8 1.8)
-			(drill 1)
+		(pad "" np_thru_hole circle
+			(at 10.16 -6.35)
+			(size 2.6 2.6)
+			(drill 2.6)
 			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(pinfunction "GND")
-			(pintype "passive")
-			(uuid "ad5232d4-8d83-4969-804e-9e3d9a931e5c")
+			(uuid "8b498128-cbf4-4c00-9011-31c258bacf65")
 		)
-		(pad "4" thru_hole circle
-			(at -2.54 -6.35)
-			(size 1.8 1.8)
-			(drill 1)
+		(pad "" np_thru_hole circle
+			(at 10.16 6.35)
+			(size 2.6 2.6)
+			(drill 2.6)
 			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(pinfunction "SCL")
-			(pintype "passive")
-			(uuid "f792261c-8b06-4469-904e-b3b733415157")
-		)
-		(pad "5" thru_hole circle
-			(at -5.08 -6.35)
-			(size 1.8 1.8)
-			(drill 1)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers no)
-			(pinfunction "SDA")
-			(pintype "passive")
-			(uuid "583d9490-c19c-4dea-8c8a-60dc05a169e0")
+			(uuid "5e5c627c-30de-4ce1-ad67-427234ea1fff")
 		)
 		(model "${KIPRJMOD}/../Component References/5776 SHT41 Sensor - from SHT45 same SHT4x board family.step"
 			(offset

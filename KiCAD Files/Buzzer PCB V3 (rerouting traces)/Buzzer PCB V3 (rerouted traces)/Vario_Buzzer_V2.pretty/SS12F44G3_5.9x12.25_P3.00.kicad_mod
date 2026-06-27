@@ -3,7 +3,7 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "SS12F44G3 slide switch, 12.25x5.9mm body, five centered lengthwise holes at 3.00mm pitch. Center three pads are active; outer two are PTH stability holes.")
+	(descr "SS12F44G3 slide switch, 12.25x5.9mm body, five centered lengthwise holes at 3.00mm pitch. Center three pads are active; outer two are unplated solder-side stability tabs.")
 	(tags "SS12F44G3 slide switch SPDT power 12.25x5.9 P3.00")
 	(property "Reference" "SW"
 		(at 0 -4.05 0)
@@ -129,11 +129,11 @@
 		)
 		(uuid "9dce2ee1-bfe2-43dd-bd29-820a661a4343")
 	)
-	(pad "" thru_hole oval
+	(pad "" np_thru_hole oval
 		(at -6 0)
 		(size 2 2.6)
 		(drill 1.2)
-		(layers "*.Cu" "*.Mask")
+		(layers "B.Cu" "B.Mask")
 		(remove_unused_layers no)
 		(uuid "9ed6ecaa-981c-48bd-bbb2-67e755b33452")
 	)
@@ -167,11 +167,11 @@
 		(pintype "passive")
 		(uuid "6f2c182b-c038-4d43-9a8c-27d7ec85508f")
 	)
-	(pad "" thru_hole oval
+	(pad "" np_thru_hole oval
 		(at 6 0)
 		(size 2 2.6)
 		(drill 1.2)
-		(layers "*.Cu" "*.Mask")
+		(layers "B.Cu" "B.Mask")
 		(remove_unused_layers no)
 		(uuid "3c611d3f-45a6-4823-a064-2c47cbb24de8")
 	)

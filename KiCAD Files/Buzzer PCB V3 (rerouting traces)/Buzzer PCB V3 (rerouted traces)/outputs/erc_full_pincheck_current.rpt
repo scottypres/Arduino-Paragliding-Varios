@@ -1,0 +1,165 @@
+ERC report (2026-06-25T17:01:24, Encoding UTF8)
+Report includes: Errors, Warnings, Exclusions
+
+***** Sheet /
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(29.62 mm, 64.48 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(29.62 mm, 67.02 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(29.62 mm, 78.48 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(29.62 mm, 81.02 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(29.62 mm, 95.75 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(29.62 mm, 98.29 mm): Horizontal Wire, length 5.08 mm
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(31.75 mm, 133.35 mm): Label 'GPS_TX_THING_RX'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(31.75 mm, 135.89 mm): Label 'GPS_RX_THING_TX'
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(34.70 mm, 64.48 mm): Symbol U1 Pin 1 [BAT+, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(34.70 mm, 78.48 mm): Symbol J1 Pin 1 [+, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(34.70 mm, 93.21 mm): Symbol SW1 Pin 1 [ON, Passive, Line]
+[footprint_link_issues]: Footprint 'SS12D00G5_Custom' not found in library 'Button_Switch_THT'
+    ; warning
+    @(47.40 mm, 95.75 mm): Symbol SW1 [SPDT_Switch_3]
+[lib_symbol_mismatch]: Symbol 'SparkFun_Thing_Plus_ESP32_WROOM_C' doesn't match copy in library 'Vario_Buzzer_V2'
+    ; warning
+    @(49.53 mm, 148.59 mm): Symbol J10 [SparkFun_Thing_Plus_ESP32_WROOM_C]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(54.37 mm, 193.71 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(54.37 mm, 198.79 mm): Horizontal Wire, length 5.08 mm
+[lib_symbol_mismatch]: Symbol 'Comidox_5V_Booster_3' doesn't match copy in library 'Vario_Buzzer_V2'
+    ; warning
+    @(57.15 mm, 194.31 mm): Symbol U2 [Comidox_5V_Booster_3]
+[footprint_link_issues]: Footprint 'Buzzer_12x8.5mm_P7.62mm_Custom' not found in library 'Buzzer_Beeper'
+    ; warning
+    @(58.42 mm, 257.81 mm): Symbol BZ3 [Buzzer_2]
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(59.45 mm, 191.17 mm): No Connect
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(54.37 mm, 193.71 mm): Horizontal Wire, length 5.08 mm
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(59.45 mm, 196.25 mm): No Connect
+[unconnected_wire_endpoint]: Unconnected wire endpoint
+    ; warning
+    @(54.37 mm, 198.79 mm): Horizontal Wire, length 5.08 mm
+[footprint_link_issues]: Footprint 'Buzzer_12x8.5mm_P7.62mm_Custom' not found in library 'Buzzer_Beeper'
+    ; warning
+    @(59.69 mm, 226.06 mm): Symbol BZ1 [Buzzer_2]
+[footprint_link_issues]: Footprint 'Buzzer_12x8.5mm_P7.62mm_Custom' not found in library 'Buzzer_Beeper'
+    ; warning
+    @(60.96 mm, 243.84 mm): Symbol BZ2 [Buzzer_2]
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(62.23 mm, 223.52 mm): No Connect
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(100.74 mm, 211.32 mm): Horizontal Wire, length 6.35 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(107.09 mm, 211.32 mm): Symbol Q2 Pin 1 [E, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(117.25 mm, 216.40 mm): Horizontal Wire, length 2.54 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(158.34 mm, 240.80 mm): Wire, length 8.98 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(164.69 mm, 234.45 mm): Symbol D3 Pin 1 [K, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(165.47 mm, 94.74 mm): Symbol J11 Pin 1 [3v3, Power input, Line]
+[lib_symbol_mismatch]: Symbol 'M16968_OLED_RotaryKnob_9' doesn't match copy in library 'Vario_Buzzer_V2'
+    ; warning
+    @(168.01 mm, 104.90 mm): Symbol J11 [M16968_OLED_RotaryKnob_9]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(172.31 mm, 235.72 mm): Vertical Wire, length 1.27 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(178.66 mm, 235.72 mm): Horizontal Wire, length 6.35 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(178.66 mm, 240.80 mm): Vertical Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(220.23 mm, 79.09 mm): Horizontal Wire, length 5.08 mm
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(220.23 mm, 79.09 mm): Label 'OLD_GPS_RX_UNUSED'
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(220.23 mm, 81.63 mm): Horizontal Wire, length 5.08 mm
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(220.23 mm, 81.63 mm): Label 'OLD_GPS_TX_UNUSED'
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(220.23 mm, 84.17 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(220.23 mm, 86.71 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(220.23 mm, 104.01 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(220.23 mm, 109.09 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(220.23 mm, 111.63 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(220.23 mm, 116.71 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(220.23 mm, 135.82 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(220.23 mm, 140.90 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(220.23 mm, 143.44 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(220.23 mm, 145.98 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(225.31 mm, 79.09 mm): Symbol J5 Pin 1 [RX, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(225.31 mm, 104.01 mm): Symbol J6 Pin 1 [VCC, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(225.31 mm, 135.82 mm): Symbol J7 Pin 1 [VCC, Passive, Line]
+
+ ** ERC messages: 51  Errors 0  Warnings 51
+
+ ** Ignored checks:
+    - Global label only appears once in the schematic
+    - Four connection points are joined together
+    - SPICE model issue
+    - Assigned footprint doesn't match footprint filters

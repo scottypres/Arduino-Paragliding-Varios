@@ -1,0 +1,13 @@
+profiles:
+  feather-v2:
+    fqbn: esp32:esp32:adafruit_feather_esp32_v2
+    platforms:
+      - platform: esp32:esp32 (3.3.10)
+    libraries:
+      - Adafruit SH110X (2.1.14)
+      - Adafruit SHT4x Library (1.0.5)
+      - Adafruit BMP5xx Library (1.0.2)
+      - Adafruit GFX Library (1.12.6)
+      - Adafruit BusIO (1.17.4)
+      - Adafruit Unified Sensor (1.1.15)
+      - WiFiManager (2.0.17)

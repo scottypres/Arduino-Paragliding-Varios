@@ -1,0 +1,702 @@
+** Drc report for Buzzer PCB.kicad_pcb **
+** Created on 2026-06-24T04:35:14 **
+** Report includes: Errors, Warnings **
+
+** Found 116 DRC violations **
+[clearance]: Clearance violation (netclass 'Default' clearance 0.5000 mm; actual 0.2200 mm)
+    Rule: netclass 'Default'; error
+    @(133.0000 mm, 25.0000 mm): PTH pad 1 [/BUZZER_LOW] of Q1
+    @(133.0000 mm, 23.7300 mm): PTH pad 2 [/BUZZER_BASE] of Q1
+[clearance]: Clearance violation (netclass 'Default' clearance 0.5000 mm; actual 0.2200 mm)
+    Rule: netclass 'Default'; error
+    @(133.0000 mm, 65.0000 mm): PTH pad 1 [/BUZZER_LOW] of Q3
+    @(133.0000 mm, 63.7300 mm): PTH pad 2 [/BUZZER_BASE3] of Q3
+[clearance]: Clearance violation (netclass 'Default' clearance 0.5000 mm; actual 0.2200 mm)
+    Rule: netclass 'Default'; error
+    @(133.0000 mm, 23.7300 mm): PTH pad 2 [/BUZZER_BASE] of Q1
+    @(133.0000 mm, 22.4600 mm): PTH pad 3 [/GND] of Q1
+[clearance]: Clearance violation (netclass 'Default' clearance 0.5000 mm; actual 0.2200 mm)
+    Rule: netclass 'Default'; error
+    @(133.0000 mm, 63.7300 mm): PTH pad 2 [/BUZZER_BASE3] of Q3
+    @(133.0000 mm, 62.4600 mm): PTH pad 3 [/GND] of Q3
+[clearance]: Clearance violation (netclass 'Default' clearance 0.5000 mm; actual 0.2200 mm)
+    Rule: netclass 'Default'; error
+    @(133.0000 mm, 45.0000 mm): PTH pad 1 [/BUZZER_LOW] of Q2
+    @(133.0000 mm, 43.7300 mm): PTH pad 2 [/BUZZER_BASE2] of Q2
+[clearance]: Clearance violation (netclass 'Default' clearance 0.5000 mm; actual 0.2200 mm)
+    Rule: netclass 'Default'; error
+    @(133.0000 mm, 43.7300 mm): PTH pad 2 [/BUZZER_BASE2] of Q2
+    @(133.0000 mm, 42.4600 mm): PTH pad 3 [/GND] of Q2
+[invalid_outline]: Board has malformed outline (no edges found on Edge.Cuts layer)
+    Local override; error
+    @(0.0000 mm, 0.0000 mm): PCB
+[lib_footprint_mismatch]: Footprint 'Ceramic_Cap_0.1uF_P5.00mm_V1' does not match copy in library 'Vario_Buzzer_V2'
+    Local override; warning
+    @(43.0000 mm, 53.0000 mm): Footprint C2
+[lib_footprint_mismatch]: Footprint 'D_DO-41_SOD81_P10.16mm_Horizontal' does not match copy in library 'Diode_THT'
+    Local override; warning
+    @(154.0000 mm, 35.0000 mm): Footprint D2
+[lib_footprint_issues]: Footprint 'SS12D00G5_Custom' not found in library 'Button_Switch_THT'
+    Local override; warning
+    @(30.0000 mm, 11.0000 mm): Footprint SW1
+[lib_footprint_mismatch]: Footprint 'TP4057_Module_12.2x18.5' does not match copy in library 'Vario_Buzzer_V2'
+    Local override; warning
+    @(15.0000 mm, 10.0000 mm): Footprint U1
+[lib_footprint_issues]: Footprint 'Buzzer_12x8.5mm_P7.62mm_Custom' not found in library 'Buzzer_Beeper'
+    Local override; warning
+    @(154.0000 mm, 25.0000 mm): Footprint BZ1
+[lib_footprint_mismatch]: Footprint 'Adafruit_SHT41_Breakout_Top' does not match copy in library 'Vario_Buzzer_V2'
+    Local override; warning
+    @(24.0000 mm, 48.0000 mm): Footprint J7
+[lib_footprint_issues]: Footprint 'Buzzer_12x8.5mm_P7.62mm_Custom' not found in library 'Buzzer_Beeper'
+    Local override; warning
+    @(154.0000 mm, 65.0000 mm): Footprint BZ3
+[lib_footprint_mismatch]: Footprint 'CP_Radial_D5.0mm_P2.00mm' does not match copy in library 'Capacitor_THT'
+    Local override; warning
+    @(30.0000 mm, 22.0000 mm): Footprint C1
+[lib_footprint_issues]: Footprint 'Buzzer_12x8.5mm_P7.62mm_Custom' not found in library 'Buzzer_Beeper'
+    Local override; warning
+    @(154.0000 mm, 45.0000 mm): Footprint BZ2
+[lib_footprint_mismatch]: Footprint 'D_DO-41_SOD81_P10.16mm_Horizontal' does not match copy in library 'Diode_THT'
+    Local override; warning
+    @(154.0000 mm, 15.0000 mm): Footprint D1
+[lib_footprint_mismatch]: Footprint 'D_DO-41_SOD81_P10.16mm_Horizontal' does not match copy in library 'Diode_THT'
+    Local override; warning
+    @(154.0000 mm, 55.0000 mm): Footprint D3
+[lib_footprint_mismatch]: Footprint 'SD_Module_18x18_6Pin_Back' does not match copy in library 'Vario_Buzzer_V2'
+    Local override; warning
+    @(85.0000 mm, 8.0000 mm): Footprint J3
+[lib_footprint_mismatch]: Footprint 'JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal' does not match copy in library 'Connector_JST'
+    Local override; warning
+    @(3.0000 mm, 10.0000 mm): Footprint J1
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.4600 mm)
+    Rule: board setup constraints silk text height; warning
+    @(37.0000 mm, 49.0000 mm): PCB text 'BTN nets copied from Ant Display: BACK GPIO3, NEXT GPIO4, DOWN GPIO5, UP net on FREEBIE/ESP4' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.4800 mm)
+    Rule: board setup constraints silk text height; warning
+    @(18.0000 mm, 1.3000 mm): PCB text 'C1 bulk, C2 decoupling on SW_BAT/GND' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.4800 mm)
+    Rule: board setup constraints silk text height; warning
+    @(76.0000 mm, 28.5000 mm): PCB text 'R1 470R D13/GPIO13 to Q1 base' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.4800 mm)
+    Rule: board setup constraints silk text height; warning
+    @(80.0000 mm, 28.5000 mm): PCB text 'R2 100k base to GND; Q1 S8050 E-B-C' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(1.0000 mm, 13.0000 mm): PCB text 'U1 USB-C edge faces board left; BAT pads face right' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5200 mm)
+    Rule: board setup constraints silk text height; warning
+    @(2.0000 mm, 49.0000 mm): PCB text 'J11 SparkFun Qwiic OLED 1.3in; J3 pins GND 3V3 SDA SCL' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5500 mm)
+    Rule: board setup constraints silk text height; warning
+    @(31.0000 mm, 25.7000 mm): PCB text 'J10 SparkFun Thing Plus ESP32 WROOM-C, SparkFun Eagle header geometry' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5800 mm)
+    Rule: board setup constraints silk text height; warning
+    @(2.0000 mm, 4.5000 mm): PCB text 'PCB 90x50mm, 1.5mm FR4; drill set: 0.8/1/1.2/1.4/1.6/2/2.4/3/3.175mm' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(2.0000 mm, 2.3000 mm): PCB text 'Vario Buzzer / Sensor Interposer V2 - SparkFun Thing Plus + Qwiic OLED, no traces' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(73.0000 mm, 49.0000 mm): PCB text 'J5 HGLRC M100 manual pin order: RX TX VCC GND' on B.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5400 mm)
+    Rule: board setup constraints silk text height; warning
+    @(43.0000 mm, 22.0000 mm): PCB text 'Back side: optional external SD plus HGLRC M100' on B.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5400 mm)
+    Rule: board setup constraints silk text height; warning
+    @(72.0000 mm, 49.0000 mm): PCB text 'J1 bottom LiPo JST' on B.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7200 mm)
+    Rule: board setup constraints silk text height; warning
+    @(46.1550 mm, 24.7700 mm): Footprint text of J10 (SPARKFUN THING PLUS ESP32 WROOM-C)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.4800 mm)
+    Rule: board setup constraints silk text height; warning
+    @(46.1550 mm, 35.0000 mm): Footprint text of J10 (header geometry from SparkFun Eagle J5)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5800 mm)
+    Rule: board setup constraints silk text height; warning
+    @(46.1550 mm, 45.2300 mm): Footprint text of J10 (USB-C end)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(43.0000 mm, 55.1500 mm): Value field of C2 (0.1uF CER)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(120.0000 mm, 5.4000 mm): Footprint text of U2 (5V BOOST)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5500 mm)
+    Rule: board setup constraints silk text height; warning
+    @(120.0000 mm, 14.7000 mm): Footprint text of U2 (Vin GND Vout)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5500 mm)
+    Rule: board setup constraints silk text height; warning
+    @(15.0000 mm, -0.5500 mm): Footprint text of U1 (USB-C)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(15.0000 mm, 7.1500 mm): Footprint text of U1 (IN-      IN+)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(15.0000 mm, 10.2000 mm): Footprint text of U1 (TP4057)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(15.0000 mm, 13.0500 mm): Footprint text of U1 (OUT- BAT- BAT+ OUT+)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7200 mm)
+    Rule: board setup constraints silk text height; warning
+    @(16.3500 mm, 60.1000 mm): Footprint text of J7 (SHT41)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5500 mm)
+    Rule: board setup constraints silk text height; warning
+    @(31.3500 mm, 60.1000 mm): Footprint text of J7 (TOP; pins solder backside)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(75.0000 mm, 96.6000 mm): Footprint text of J11 (pin1=3v3 ... pin9=CONFIRM)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(30.0000 mm, 25.0500 mm): Value field of C1 (47-100uF ELEC)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7200 mm)
+    Rule: board setup constraints silk text height; warning
+    @(11.9000 mm, 72.3500 mm): Footprint text of J6 (BMP390/BMP5xx)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5500 mm)
+    Rule: board setup constraints silk text height; warning
+    @(11.9000 mm, 87.3500 mm): Footprint text of J6 (TOP; pins solder backside)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7200 mm)
+    Rule: board setup constraints silk text height; warning
+    @(76.5000 mm, 0.2000 mm): Footprint text of J3 (BACK SD)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.4800 mm)
+    Rule: board setup constraints silk text height; warning
+    @(76.5000 mm, 15.6000 mm): Footprint text of J3 (1 GND 2 MISO 3 CLK 4 MOSI 5 CS 6 3V3)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6200 mm)
+    Rule: board setup constraints silk text height; warning
+    @(38.0000 mm, 1.8000 mm): Footprint text of J5 (BACK HGLRC M100)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(38.0000 mm, 14.2000 mm): Footprint text of J5 (manual: RX TX VCC GND)
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(16.3500 mm, 60.1000 mm): Footprint text of J7 (SHT41)
+    @(15.1100 mm, 60.7000 mm): Segment of J7 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(8.9000 mm, 15.3760 mm): Segment of U1 on F.Silkscreen
+    @(1.0000 mm, 13.0000 mm): PCB text 'U1 USB-C edge faces board left; BAT pads face right' on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(15.0000 mm, 13.0500 mm): Footprint text of U1 (OUT- BAT- BAT+ OUT+)
+    @(1.0000 mm, 13.0000 mm): PCB text 'U1 USB-C edge faces board left; BAT pads face right' on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(1.0000 mm, 13.0000 mm): PCB text 'U1 USB-C edge faces board left; BAT pads face right' on F.Silkscreen
+    @(21.1000 mm, -1.4240 mm): Segment of U1 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(18.0000 mm, 1.3000 mm): PCB text 'C1 bulk, C2 decoupling on SW_BAT/GND' on F.Silkscreen
+    @(21.1000 mm, -1.4240 mm): Segment of U1 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(21.1000 mm, -1.4240 mm): Segment of U1 on F.Silkscreen
+    @(2.0000 mm, 2.3000 mm): PCB text 'Vario Buzzer / Sensor Interposer V2 - SparkFun Thing Plus + Qwiic OLED, no traces' on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(2.0000 mm, 4.5000 mm): PCB text 'PCB 90x50mm, 1.5mm FR4; drill set: 0.8/1/1.2/1.4/1.6/2/2.4/3/3.175mm' on F.Silkscreen
+    @(21.1000 mm, -1.4240 mm): Segment of U1 on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(31.0000 mm, 25.7000 mm): PCB text 'J10 SparkFun Thing Plus ESP32 WROOM-C, SparkFun Eagle header geometry' on F.Silkscreen
+    @(30.0000 mm, 25.0500 mm): Value field of C1 (47-100uF ELEC)
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(11.3000 mm, 88.8900 mm): Segment of J6 on F.Silkscreen
+    @(11.9000 mm, 72.3500 mm): Footprint text of J6 (BMP390/BMP5xx)
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(11.3000 mm, 88.8900 mm): Segment of J6 on F.Silkscreen
+    @(11.9000 mm, 87.3500 mm): Footprint text of J6 (TOP; pins solder backside)
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(45.1550 mm, 23.5700 mm): Segment of J10 on F.Silkscreen
+    @(76.0000 mm, 28.5000 mm): PCB text 'R1 470R D13/GPIO13 to Q1 base' on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(45.1550 mm, 23.5700 mm): Segment of J10 on F.Silkscreen
+    @(80.0000 mm, 28.5000 mm): PCB text 'R2 100k base to GND; Q1 S8050 E-B-C' on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(43.0000 mm, 49.8000 mm): Reference field of C2
+    @(37.0000 mm, 49.0000 mm): PCB text 'BTN nets copied from Ant Display: BACK GPIO3, NEXT GPIO4, DOWN GPIO5, UP net on FREEBIE/ESP4' on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(45.1550 mm, 46.4300 mm): Segment of J10 on F.Silkscreen
+    @(46.1550 mm, 24.7700 mm): Footprint text of J10 (SPARKFUN THING PLUS ESP32 WROOM-C)
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(45.1550 mm, 46.4300 mm): Segment of J10 on F.Silkscreen
+    @(31.0000 mm, 25.7000 mm): PCB text 'J10 SparkFun Thing Plus ESP32 WROOM-C, SparkFun Eagle header geometry' on F.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(45.1550 mm, 46.4300 mm): Segment of J10 on F.Silkscreen
+    @(46.1550 mm, 35.0000 mm): Footprint text of J10 (header geometry from SparkFun Eagle J5)
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(45.1550 mm, 46.4300 mm): Segment of J10 on F.Silkscreen
+    @(46.1550 mm, 45.2300 mm): Footprint text of J10 (USB-C end)
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(2.0000 mm, 49.0000 mm): PCB text 'J11 SparkFun Qwiic OLED 1.3in; J3 pins GND 3V3 SDA SCL' on F.Silkscreen
+    @(17.6500 mm, 48.0000 mm): PTH pad 3 [/GND] of J7
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(1.0000 mm, 13.0000 mm): PCB text 'U1 USB-C edge faces board left; BAT pads face right' on F.Silkscreen
+    @(2.0000 mm, 11.7500 mm): PTH pad 2 [/BAT_IN] of J1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(1.0000 mm, 13.0000 mm): PCB text 'U1 USB-C edge faces board left; BAT pads face right' on F.Silkscreen
+    @(4.0000 mm, 11.7500 mm): PTH pad 1 [/GND] of J1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(2.0000 mm, 4.5000 mm): PCB text 'PCB 90x50mm, 1.5mm FR4; drill set: 0.8/1/1.2/1.4/1.6/2/2.4/3/3.175mm' on F.Silkscreen
+    @(9.7760 mm, 5.5000 mm): PTH pad 4 [<no net>] of U1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(2.0000 mm, 4.5000 mm): PCB text 'PCB 90x50mm, 1.5mm FR4; drill set: 0.8/1/1.2/1.4/1.6/2/2.4/3/3.175mm' on F.Silkscreen
+    @(20.2240 mm, 5.5000 mm): PTH pad 3 [<no net>] of U1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(45.3500 mm, 97.6500 mm): Segment of J11 on F.Silkscreen
+    @(45.3500 mm, 94.7500 mm): NPTH pad of J11
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(45.3500 mm, 97.6500 mm): Segment of J11 on F.Silkscreen
+    @(45.5000 mm, 65.2500 mm): NPTH pad of J11
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(75.0000 mm, 63.4000 mm): Footprint text of J11 (M16968 OLED + KNOB)
+    @(75.6300 mm, 64.3600 mm): PTH pad 9 [/OLED_CONFIRM] of J11
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(75.0000 mm, 63.4000 mm): Footprint text of J11 (M16968 OLED + KNOB)
+    @(78.1700 mm, 64.3600 mm): PTH pad 8 [/SDA] of J11
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(75.0000 mm, 63.4000 mm): Footprint text of J11 (M16968 OLED + KNOB)
+    @(80.7100 mm, 64.3600 mm): PTH pad 7 [/SCL] of J11
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(76.0000 mm, 28.5000 mm): PCB text 'R1 470R D13/GPIO13 to Q1 base' on F.Silkscreen
+    @(76.9050 mm, 24.8400 mm): PTH pad 9 [/GPS_TX_THING_RX] of J10
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(80.0000 mm, 28.5000 mm): PCB text 'R2 100k base to GND; Q1 S8050 E-B-C' on F.Silkscreen
+    @(79.4450 mm, 24.8400 mm): PTH pad 8 [unconnected-(J10-GPIO1/ESP12-Pad8)] of J10
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(120.0000 mm, 14.7000 mm): Footprint text of U2 (Vin GND Vout)
+    @(122.5400 mm, 13.5000 mm): PTH pad 3 [/A] of U2
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(120.0000 mm, 14.7000 mm): Footprint text of U2 (Vin GND Vout)
+    @(117.4600 mm, 13.5000 mm): PTH pad 1 [/SW_BAT] of U2
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(120.0000 mm, 14.7000 mm): Footprint text of U2 (Vin GND Vout)
+    @(120.0000 mm, 13.5000 mm): PTH pad 2 [/GND] of U2
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(31.0000 mm, 25.7000 mm): PCB text 'J10 SparkFun Thing Plus ESP32 WROOM-C, SparkFun Eagle header geometry' on F.Silkscreen
+    @(47.6950 mm, 26.1100 mm): NPTH pad of J10
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(46.1550 mm, 24.7700 mm): Footprint text of J10 (SPARKFUN THING PLUS ESP32 WROOM-C)
+    @(47.6950 mm, 26.1100 mm): NPTH pad of J10
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(46.1550 mm, 45.2300 mm): Footprint text of J10 (USB-C end)
+    @(47.6950 mm, 43.8900 mm): NPTH pad of J10
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(104.6500 mm, 62.3500 mm): Segment of J11 on F.Silkscreen
+    @(104.6500 mm, 94.7500 mm): NPTH pad of J11
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(104.6500 mm, 62.3500 mm): Segment of J11 on F.Silkscreen
+    @(104.5000 mm, 65.2500 mm): NPTH pad of J11
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(151.4000 mm, 36.3000 mm): Segment of D2 on F.Silkscreen
+    @(150.0000 mm, 35.0000 mm): PTH pad 1 [/BUZZER_LOW] of D2
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(156.6000 mm, 33.7000 mm): Segment of D2 on F.Silkscreen
+    @(158.0000 mm, 35.0000 mm): PTH pad 2 [/A] of D2
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(151.4000 mm, 16.3000 mm): Segment of D1 on F.Silkscreen
+    @(150.0000 mm, 15.0000 mm): PTH pad 1 [/BUZZER_LOW] of D1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(156.6000 mm, 13.7000 mm): Segment of D1 on F.Silkscreen
+    @(158.0000 mm, 15.0000 mm): PTH pad 2 [/A] of D1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(151.4000 mm, 56.3000 mm): Segment of D3 on F.Silkscreen
+    @(150.0000 mm, 55.0000 mm): PTH pad 1 [/BUZZER_LOW] of D3
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(73.0000 mm, 49.0000 mm): PCB text 'J5 HGLRC M100 manual pin order: RX TX VCC GND' on B.Silkscreen
+    @(72.0000 mm, 49.0000 mm): PCB text 'J1 bottom LiPo JST' on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(76.0000 mm, 17.0000 mm): Segment of J3 on B.Silkscreen
+    @(76.5000 mm, 0.2000 mm): Footprint text of J3 (BACK SD)
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(76.0000 mm, 17.0000 mm): Segment of J3 on B.Silkscreen
+    @(76.5000 mm, 15.6000 mm): Footprint text of J3 (1 GND 2 MISO 3 CLK 4 MOSI 5 CS 6 3V3)
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(38.0000 mm, 1.8000 mm): Footprint text of J5 (BACK HGLRC M100)
+    @(37.5000 mm, 15.5000 mm): Segment of J5 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(38.0000 mm, 14.2000 mm): Footprint text of J5 (manual: RX TX VCC GND)
+    @(37.5000 mm, 15.5000 mm): Segment of J5 on B.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(76.5000 mm, 15.6000 mm): Footprint text of J3 (1 GND 2 MISO 3 CLK 4 MOSI 5 CS 6 3V3)
+    @(78.6500 mm, 15.2000 mm): PTH pad 1 [/3V3] of J3
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(76.5000 mm, 15.6000 mm): Footprint text of J3 (1 GND 2 MISO 3 CLK 4 MOSI 5 CS 6 3V3)
+    @(81.1900 mm, 15.2000 mm): PTH pad 2 [/SD_CS_GPIO2] of J3
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(76.5000 mm, 15.6000 mm): Footprint text of J3 (1 GND 2 MISO 3 CLK 4 MOSI 5 CS 6 3V3)
+    @(83.7300 mm, 15.2000 mm): PTH pad 3 [/SPI_MOSI] of J3
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(2.0000 mm, 12.9000 mm): Reference field of J1
+    @(2.0000 mm, 11.7500 mm): PTH pad 2 [/BAT_IN] of J1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(6.0000 mm, 11.5000 mm): Segment of J1 on B.Silkscreen
+    @(4.0000 mm, 11.7500 mm): PTH pad 1 [/GND] of J1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(6.0000 mm, 11.5000 mm): Segment of J1 on B.Silkscreen
+    @(2.0000 mm, 11.7500 mm): PTH pad 2 [/BAT_IN] of J1
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(38.0000 mm, 14.2000 mm): Footprint text of J5 (manual: RX TX VCC GND)
+    @(41.1900 mm, 13.7000 mm): PTH pad 1 [/GND] of J5
+[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    Local override; warning
+    @(73.0000 mm, 49.0000 mm): PCB text 'J5 HGLRC M100 manual pin order: RX TX VCC GND' on B.Silkscreen
+[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    Local override; warning
+    @(43.0000 mm, 22.0000 mm): PCB text 'Back side: optional external SD plus HGLRC M100' on B.Silkscreen
+[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    Local override; warning
+    @(72.0000 mm, 49.0000 mm): PCB text 'J1 bottom LiPo JST' on B.Silkscreen
+[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    Local override; warning
+    @(85.0000 mm, 8.0000 mm): Reference field of J3
+[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    Local override; warning
+    @(76.5000 mm, 0.2000 mm): Footprint text of J3 (BACK SD)
+[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    Local override; warning
+    @(76.5000 mm, 15.6000 mm): Footprint text of J3 (1 GND 2 MISO 3 CLK 4 MOSI 5 CS 6 3V3)
+[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    Local override; warning
+    @(2.0000 mm, 12.9000 mm): Reference field of J1
+[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    Local override; warning
+    @(45.0000 mm, 8.0000 mm): Reference field of J5
+[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    Local override; warning
+    @(38.0000 mm, 1.8000 mm): Footprint text of J5 (BACK HGLRC M100)
+[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    Local override; warning
+    @(38.0000 mm, 14.2000 mm): Footprint text of J5 (manual: RX TX VCC GND)
+
+** Found 69 unconnected pads **
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(133.0000 mm, 45.0000 mm): PTH pad 1 [/BUZZER_LOW] of Q2
+    @(150.5000 mm, 45.0000 mm): PTH pad 1 [/BUZZER_LOW] of BZ2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(133.0000 mm, 65.0000 mm): PTH pad 1 [/BUZZER_LOW] of Q3
+    @(150.5000 mm, 65.0000 mm): PTH pad 1 [/BUZZER_LOW] of BZ3
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(150.0000 mm, 35.0000 mm): PTH pad 1 [/BUZZER_LOW] of D2
+    @(150.5000 mm, 45.0000 mm): PTH pad 1 [/BUZZER_LOW] of BZ2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(150.0000 mm, 35.0000 mm): PTH pad 1 [/BUZZER_LOW] of D2
+    @(150.5000 mm, 25.0000 mm): PTH pad 1 [/BUZZER_LOW] of BZ1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(150.5000 mm, 25.0000 mm): PTH pad 1 [/BUZZER_LOW] of BZ1
+    @(150.0000 mm, 15.0000 mm): PTH pad 1 [/BUZZER_LOW] of D1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(150.5000 mm, 25.0000 mm): PTH pad 1 [/BUZZER_LOW] of BZ1
+    @(133.0000 mm, 25.0000 mm): PTH pad 1 [/BUZZER_LOW] of Q1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(150.5000 mm, 45.0000 mm): PTH pad 1 [/BUZZER_LOW] of BZ2
+    @(150.0000 mm, 55.0000 mm): PTH pad 1 [/BUZZER_LOW] of D3
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(150.5000 mm, 65.0000 mm): PTH pad 1 [/BUZZER_LOW] of BZ3
+    @(150.0000 mm, 55.0000 mm): PTH pad 1 [/BUZZER_LOW] of D3
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(133.0000 mm, 23.7300 mm): PTH pad 2 [/BUZZER_BASE] of Q1
+    @(114.0000 mm, 25.0000 mm): PTH pad 1 [/BUZZER_BASE] of R1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(143.1600 mm, 34.0000 mm): PTH pad 2 [/BUZZER_BASE] of R1-1
+    @(133.0000 mm, 23.7300 mm): PTH pad 2 [/BUZZER_BASE] of Q1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(4.0000 mm, 11.7500 mm): PTH pad 1 [/GND] of J1
+    @(12.3160 mm, 14.5000 mm): PTH pad 1 [/GND] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(12.3160 mm, 14.5000 mm): PTH pad 1 [/GND] of U1
+    @(30.0000 mm, 13.5000 mm): PTH pad 1 [/GND] of SW1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(17.6500 mm, 48.0000 mm): PTH pad 3 [/GND] of J7
+    @(20.1900 mm, 73.6500 mm): PTH pad 3 [/GND] of J6
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(17.6500 mm, 48.0000 mm): PTH pad 3 [/GND] of J7
+    @(29.0000 mm, 22.0000 mm): PTH pad 1 [/GND] of C1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(29.0000 mm, 22.0000 mm): PTH pad 1 [/GND] of C1
+    @(30.0000 mm, 13.5000 mm): PTH pad 1 [/GND] of SW1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(40.5000 mm, 53.0000 mm): PTH pad 1 [/GND] of C2
+    @(17.6500 mm, 48.0000 mm): PTH pad 3 [/GND] of J7
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(41.1900 mm, 13.7000 mm): PTH pad 1 [/GND] of J5
+    @(30.0000 mm, 13.5000 mm): PTH pad 1 [/GND] of SW1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(66.7450 mm, 45.1600 mm): PTH pad 25 [/GND] of J10
+    @(40.5000 mm, 53.0000 mm): PTH pad 1 [/GND] of C2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(66.7450 mm, 45.1600 mm): PTH pad 25 [/GND] of J10
+    @(93.4100 mm, 64.3600 mm): PTH pad 2 [/GND] of J11
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(91.3500 mm, 15.2000 mm): PTH pad 6 [/GND] of J3
+    @(66.7450 mm, 45.1600 mm): PTH pad 25 [/GND] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(120.0000 mm, 13.5000 mm): PTH pad 2 [/GND] of U2
+    @(91.3500 mm, 15.2000 mm): PTH pad 6 [/GND] of J3
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(133.0000 mm, 22.4600 mm): PTH pad 3 [/GND] of Q1
+    @(120.0000 mm, 13.5000 mm): PTH pad 2 [/GND] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(133.0000 mm, 34.0000 mm): PTH pad 1 [/GND] of R1-1
+    @(133.0000 mm, 22.4600 mm): PTH pad 3 [/GND] of Q1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(133.0000 mm, 42.4600 mm): PTH pad 3 [/GND] of Q2
+    @(133.0000 mm, 34.0000 mm): PTH pad 1 [/GND] of R1-1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(133.0000 mm, 54.0000 mm): PTH pad 1 [/GND] of R1-2
+    @(133.0000 mm, 42.4600 mm): PTH pad 3 [/GND] of Q2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(133.0000 mm, 62.4600 mm): PTH pad 3 [/GND] of Q3
+    @(133.0000 mm, 54.0000 mm): PTH pad 1 [/GND] of R1-2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(133.0000 mm, 74.0000 mm): PTH pad 1 [/GND] of R1-3
+    @(133.0000 mm, 62.4600 mm): PTH pad 3 [/GND] of Q3
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(17.6500 mm, 42.9200 mm): PTH pad 5 [/SDA] of J7
+    @(27.8100 mm, 73.6500 mm): PTH pad 6 [/SDA] of J6
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(27.8100 mm, 73.6500 mm): PTH pad 6 [/SDA] of J6
+    @(78.1700 mm, 64.3600 mm): PTH pad 8 [/SDA] of J11
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(78.1700 mm, 64.3600 mm): PTH pad 8 [/SDA] of J11
+    @(97.2250 mm, 24.8400 mm): PTH pad 1 [/SDA] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(17.6500 mm, 45.4600 mm): PTH pad 4 [/SCL] of J7
+    @(22.7300 mm, 73.6500 mm): PTH pad 4 [/SCL] of J6
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(22.7300 mm, 73.6500 mm): PTH pad 4 [/SCL] of J6
+    @(80.7100 mm, 64.3600 mm): PTH pad 7 [/SCL] of J11
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(80.7100 mm, 64.3600 mm): PTH pad 7 [/SCL] of J11
+    @(94.6850 mm, 24.8400 mm): PTH pad 2 [/SCL] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(81.9850 mm, 24.8400 mm): PTH pad 7 [/BUZZER3_GPIO2_ESP27] of J10
+    @(124.1600 mm, 65.0000 mm): PTH pad 2 [/BUZZER3_GPIO2_ESP27] of R3
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(46.2700 mm, 13.7000 mm): PTH pad 3 [/GPS_TX_THING_RX] of J5
+    @(76.9050 mm, 24.8400 mm): PTH pad 9 [/GPS_TX_THING_RX] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(30.0000 mm, 8.5000 mm): PTH pad 3 [/SW_BAT] of SW1
+    @(31.0000 mm, 22.0000 mm): PTH pad 2 [/SW_BAT] of C1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(31.0000 mm, 22.0000 mm): PTH pad 2 [/SW_BAT] of C1
+    @(69.2850 mm, 24.8400 mm): PTH pad 12 [/SW_BAT] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(69.2850 mm, 24.8400 mm): PTH pad 12 [/SW_BAT] of J10
+    @(117.4600 mm, 13.5000 mm): PTH pad 1 [/SW_BAT] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(48.8100 mm, 13.7000 mm): PTH pad 4 [/GPS_RX_THING_TX] of J5
+    @(94.6850 mm, 45.1600 mm): PTH pad 14 [/GPS_RX_THING_TX] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(92.1450 mm, 45.1600 mm): PTH pad 15 [/D13_BUZZER_GPIO13] of J10
+    @(124.1600 mm, 75.0000 mm): PTH pad 2 [/D13_BUZZER_GPIO13] of R4
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(124.1600 mm, 25.0000 mm): PTH pad 2 [/D13_BUZZER_GPIO13] of R1
+    @(92.1450 mm, 45.1600 mm): PTH pad 15 [/D13_BUZZER_GPIO13] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(88.8100 mm, 15.2000 mm): PTH pad 5 [/SPI_MISO] of J3
+    @(89.6050 mm, 45.1600 mm): PTH pad 16 [/SPI_MISO] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(83.7300 mm, 15.2000 mm): PTH pad 3 [/SPI_MOSI] of J3
+    @(87.0650 mm, 45.1600 mm): PTH pad 17 [/SPI_MOSI] of J10
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(84.5250 mm, 45.1600 mm): PTH pad 18 [/SPI_SCK] of J10
+    @(86.2700 mm, 15.2000 mm): PTH pad 4 [/SPI_SCK] of J3
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(81.9850 mm, 45.1600 mm): PTH pad 19 [/BTN_BACK_GPIO3] of J10
+    @(90.8700 mm, 64.3600 mm): PTH pad 3 [/BTN_BACK_GPIO3] of J11
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(79.4450 mm, 45.1600 mm): PTH pad 20 [/BTN_NEXT_GPIO4] of J10
+    @(88.3300 mm, 64.3600 mm): PTH pad 4 [/BTN_NEXT_GPIO4] of J11
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(76.9050 mm, 45.1600 mm): PTH pad 21 [/BTN_DOWN_GPIO5] of J10
+    @(85.7900 mm, 64.3600 mm): PTH pad 5 [/BTN_DOWN_GPIO5] of J11
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(74.3650 mm, 45.1600 mm): PTH pad 22 [/BTN_UP_GPIO21] of J10
+    @(83.2500 mm, 64.3600 mm): PTH pad 6 [/BTN_UP_GPIO21] of J11
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(71.8250 mm, 45.1600 mm): PTH pad 23 [/SD_CS_GPIO2] of J10
+    @(81.1900 mm, 15.2000 mm): PTH pad 2 [/SD_CS_GPIO2] of J3
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(69.2850 mm, 45.1600 mm): PTH pad 24 [/BUZZER2_ESP26] of J10
+    @(124.1600 mm, 45.0000 mm): PTH pad 2 [/BUZZER2_ESP26] of R2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(114.0000 mm, 65.0000 mm): PTH pad 1 [/BUZZER_BASE3] of R3
+    @(114.0000 mm, 75.0000 mm): PTH pad 1 [/BUZZER_BASE3] of R4
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(133.0000 mm, 63.7300 mm): PTH pad 2 [/BUZZER_BASE3] of Q3
+    @(114.0000 mm, 65.0000 mm): PTH pad 1 [/BUZZER_BASE3] of R3
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(143.1600 mm, 74.0000 mm): PTH pad 2 [/BUZZER_BASE3] of R1-3
+    @(133.0000 mm, 63.7300 mm): PTH pad 2 [/BUZZER_BASE3] of Q3
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(157.5000 mm, 25.0000 mm): PTH pad 2 [/A] of BZ1
+    @(158.0000 mm, 35.0000 mm): PTH pad 2 [/A] of D2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(157.5000 mm, 65.0000 mm): PTH pad 2 [/A] of BZ3
+    @(158.0000 mm, 55.0000 mm): PTH pad 2 [/A] of D3
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(158.0000 mm, 15.0000 mm): PTH pad 2 [/A] of D1
+    @(157.5000 mm, 25.0000 mm): PTH pad 2 [/A] of BZ1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(158.0000 mm, 15.0000 mm): PTH pad 2 [/A] of D1
+    @(122.5400 mm, 13.5000 mm): PTH pad 3 [/A] of U2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(158.0000 mm, 35.0000 mm): PTH pad 2 [/A] of D2
+    @(157.5000 mm, 45.0000 mm): PTH pad 2 [/A] of BZ2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(158.0000 mm, 55.0000 mm): PTH pad 2 [/A] of D3
+    @(157.5000 mm, 45.0000 mm): PTH pad 2 [/A] of BZ2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(2.0000 mm, 11.7500 mm): PTH pad 2 [/BAT_IN] of J1
+    @(17.6840 mm, 14.5000 mm): PTH pad 2 [/BAT_IN] of U1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(17.6840 mm, 14.5000 mm): PTH pad 2 [/BAT_IN] of U1
+    @(30.0000 mm, 11.0000 mm): PTH pad 2 [/BAT_IN] of SW1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(133.0000 mm, 43.7300 mm): PTH pad 2 [/BUZZER_BASE2] of Q2
+    @(114.0000 mm, 45.0000 mm): PTH pad 1 [/BUZZER_BASE2] of R2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(143.1600 mm, 54.0000 mm): PTH pad 2 [/BUZZER_BASE2] of R1-2
+    @(133.0000 mm, 43.7300 mm): PTH pad 2 [/BUZZER_BASE2] of Q2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(15.1100 mm, 73.6500 mm): PTH pad 1 [/3V3] of J6
+    @(17.6500 mm, 73.6500 mm): PTH pad 2 [/3V3] of J6
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(17.6500 mm, 53.0800 mm): PTH pad 1 [/3V3] of J7
+    @(17.6500 mm, 50.5400 mm): PTH pad 2 [/3V3] of J7
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(17.6500 mm, 53.0800 mm): PTH pad 1 [/3V3] of J7
+    @(17.6500 mm, 73.6500 mm): PTH pad 2 [/3V3] of J6
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(43.7300 mm, 13.7000 mm): PTH pad 2 [/3V3] of J5
+    @(17.6500 mm, 50.5400 mm): PTH pad 2 [/3V3] of J7
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(78.6500 mm, 15.2000 mm): PTH pad 1 [/3V3] of J3
+    @(43.7300 mm, 13.7000 mm): PTH pad 2 [/3V3] of J5
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(95.9500 mm, 64.3600 mm): PTH pad 1 [/3V3] of J11
+    @(78.6500 mm, 15.2000 mm): PTH pad 1 [/3V3] of J3
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **

@@ -1,31 +1,234 @@
-(footprint "TP4057_Module_12.2x18.5" (layer "F.Cu")
-	(descr "HiLetGo TP4057 LiPo/LiIon charger. 12.2x18.5mm envelope including USB-C protrusion; pad columns span 10.45mm and rows span 9.0mm from DXF/PDF.")
-	(property "Reference" "REF**" (at 0 -6.6 0) (layer "F.SilkS") (effects (font (size 1 1) (thickness 0.15))))
-	(property "Value" "TP4057_Module_12.2x18.5" (at 0 14.4 0) (layer "F.Fab") (hide yes) (effects (font (size 1 1) (thickness 0.15))))
-	(attr through_hole)
-	(fp_line (start -6.1 -5.376) (end 6.1 -5.376) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
-	(fp_line (start 6.1 -5.376) (end 6.1 11.424) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
-	(fp_line (start 6.1 11.424) (end 4.5 11.424) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
-	(fp_line (start 4.5 11.424) (end 4.5 13.124) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
-	(fp_line (start 4.5 13.124) (end -4.5 13.124) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
-	(fp_line (start -4.5 13.124) (end -4.5 11.424) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
-	(fp_line (start -4.5 11.424) (end -6.1 11.424) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
-	(fp_line (start -6.1 11.424) (end -6.1 -5.376) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
-	(fp_line (start -4.5 6.124) (end 4.5 6.124) (stroke (width 0.12) (type solid)) (layer "F.SilkS"))
-	(fp_text user "USB-C" (at 0 10.55 0) (layer "F.SilkS") (effects (font (size 0.55 0.55) (thickness 0.12))))
-	(fp_text user "IN-      IN+" (at 0 2.85 0) (layer "F.SilkS") (effects (font (size 0.5 0.5) (thickness 0.12))))
-	(fp_text user "OUT- BAT- BAT+ OUT+" (at 0 -3.05 0) (layer "F.SilkS") (effects (font (size 0.5 0.5) (thickness 0.12))))
-	(fp_text user "TP4057" (at 0 -0.2 0) (layer "F.SilkS") (effects (font (size 0.7 0.7) (thickness 0.12))))
-	(pad "1" thru_hole rect (at 2.684 -4.5) (size 1.6 1.6) (drill 0.9) (layers "*.Cu" "*.Mask") (remove_unused_layers no) (pinfunction "BAT+") (pintype "passive"))
-	(pad "2" thru_hole circle (at -2.684 -4.5) (size 1.6 1.6) (drill 0.9) (layers "*.Cu" "*.Mask") (remove_unused_layers no) (pinfunction "BAT-") (pintype "passive"))
-	(pad "3" thru_hole circle (at -5.224 4.5) (size 1.6 1.6) (drill 0.9) (layers "*.Cu" "*.Mask") (remove_unused_layers no) (pinfunction "IN-") (pintype "passive"))
-	(pad "4" thru_hole circle (at 5.224 4.5) (size 1.6 1.6) (drill 0.9) (layers "*.Cu" "*.Mask") (remove_unused_layers no) (pinfunction "IN+") (pintype "passive"))
-	(pad "5" thru_hole circle (at -5.224 -4.5) (size 1.6 1.6) (drill 0.9) (layers "*.Cu" "*.Mask") (remove_unused_layers no) (pinfunction "OUT-") (pintype "passive"))
-	(pad "6" thru_hole circle (at 5.224 -4.5) (size 1.6 1.6) (drill 0.9) (layers "*.Cu" "*.Mask") (remove_unused_layers no) (pinfunction "OUT+") (pintype "passive"))
-	(model "${KIPRJMOD}/../Component References/HiLetGo TP4057 LiPo_LiIon Charger.step"
-		(offset (xyz 0 0 0))
-		(scale (xyz 1 1 1))
-		(rotate (xyz 0 0 0))
+(footprint "TP4057_Module_12.2x18.5"
+(layer "F.Cu")
+(descr "HiLetGo TP4057 LiPo/LiIon charger. 12.2x18.5mm envelope including USB-C protrusion; pad columns span 10.45mm and rows span 9.0mm from DXF/PDF.")
+(property "Reference" "REF**"
+	(at 0 -6.6 0)
+	(layer "F.SilkS")
+	(effects
+		(font
+			(size 1 1)
+			(thickness 0.15)
+		)
 	)
-	(embedded_fonts no)
+)
+(property "Value" "TP4057_Module_12.2x18.5"
+	(at 0 14.4 0)
+	(layer "F.Fab")
+	(hide yes)
+	(effects
+		(font
+			(size 1 1)
+			(thickness 0.15)
+		)
+	)
+)
+(property "Datasheet" ""
+	(at 0 0 0)
+	(layer "F.Fab")
+	(hide yes)
+	(effects
+		(font
+			(size 1.27 1.27)
+		)
+	)
+)
+(property "Description" ""
+	(at 0 0 0)
+	(layer "F.Fab")
+	(hide yes)
+	(effects
+		(font
+			(size 1.27 1.27)
+		)
+	)
+)
+(attr through_hole)
+(duplicate_pad_numbers_are_jumpers no)
+(fp_line
+	(start -6.1 -5.376)
+	(end 6.1 -5.376)
+	(stroke
+		(width 0.12)
+		(type solid)
+	)
+	(layer "F.SilkS")
+)
+(fp_line
+	(start -6.1 11.424)
+	(end -6.1 -5.376)
+	(stroke
+		(width 0.12)
+		(type solid)
+	)
+	(layer "F.SilkS")
+)
+(fp_line
+	(start -4.5 6.124)
+	(end 4.5 6.124)
+	(stroke
+		(width 0.12)
+		(type solid)
+	)
+	(layer "F.SilkS")
+)
+(fp_line
+	(start -4.5 11.424)
+	(end -6.1 11.424)
+	(stroke
+		(width 0.12)
+		(type solid)
+	)
+	(layer "F.SilkS")
+)
+(fp_line
+	(start -4.5 13.124)
+	(end -4.5 11.424)
+	(stroke
+		(width 0.12)
+		(type solid)
+	)
+	(layer "F.SilkS")
+)
+(fp_line
+	(start 4.5 11.424)
+	(end 4.5 13.124)
+	(stroke
+		(width 0.12)
+		(type solid)
+	)
+	(layer "F.SilkS")
+)
+(fp_line
+	(start 4.5 13.124)
+	(end -4.5 13.124)
+	(stroke
+		(width 0.12)
+		(type solid)
+	)
+	(layer "F.SilkS")
+)
+(fp_line
+	(start 6.1 -5.376)
+	(end 6.1 11.424)
+	(stroke
+		(width 0.12)
+		(type solid)
+	)
+	(layer "F.SilkS")
+)
+(fp_line
+	(start 6.1 11.424)
+	(end 4.5 11.424)
+	(stroke
+		(width 0.12)
+		(type solid)
+	)
+	(layer "F.SilkS")
+)
+(fp_text user "OUT+ BAT+ BAT- OUT-"
+	(at 0 -3.05 0)
+	(layer "F.SilkS")
+	(effects
+		(font
+			(size 0.5 0.5)
+			(thickness 0.12)
+		)
+	)
+)
+(fp_text user "TP4057"
+	(at 0 -0.2 0)
+	(layer "F.SilkS")
+	(effects
+		(font
+			(size 0.7 0.7)
+			(thickness 0.12)
+		)
+	)
+)
+(fp_text user "IN+      IN-"
+	(at 0 2.85 0)
+	(layer "F.SilkS")
+	(effects
+		(font
+			(size 0.5 0.5)
+			(thickness 0.12)
+		)
+	)
+)
+(fp_text user "USB-C"
+	(at 0 10.55 0)
+	(layer "F.SilkS")
+	(effects
+		(font
+			(size 0.55 0.55)
+			(thickness 0.12)
+		)
+	)
+)
+(pad "1" thru_hole oval
+	(at -2.684 -4.5 180)
+	(size 2 3.25)
+	(drill 0.8)
+	(layers "*.Cu" "*.Mask")
+	(remove_unused_layers no)
+	(pinfunction "BAT+")
+	(pintype "passive")
+)
+(pad "2" thru_hole rect
+	(at 2.684 -4.5 180)
+	(size 2 3)
+	(drill 0.8)
+	(layers "*.Cu" "*.Mask")
+	(remove_unused_layers no)
+	(pinfunction "BAT-")
+	(pintype "passive")
+)
+(pad "3" thru_hole oval
+	(at -5.224 4.5 180)
+	(size 2 3.25)
+	(drill 0.8)
+	(layers "*.Cu" "*.Mask")
+	(remove_unused_layers no)
+	(pinfunction "IN+")
+	(pintype "passive")
+)
+(pad "4" thru_hole oval
+	(at 5.224 4.5 180)
+	(size 2 3.25)
+	(drill 0.8)
+	(layers "*.Cu" "*.Mask")
+	(remove_unused_layers no)
+	(pinfunction "IN-")
+	(pintype "passive")
+)
+(pad "5" thru_hole oval
+	(at -5.224 -4.5 180)
+	(size 2 3.25)
+	(drill 0.8)
+	(layers "*.Cu" "*.Mask")
+	(remove_unused_layers no)
+	(pinfunction "OUT+")
+	(pintype "passive")
+)
+(pad "6" thru_hole oval
+	(at 5.224 -4.5 180)
+	(size 2 3.25)
+	(drill 0.8)
+	(layers "*.Cu" "*.Mask")
+	(remove_unused_layers no)
+	(pinfunction "OUT-")
+	(pintype "passive")
+)
+(embedded_fonts no)
+(model "${KIPRJMOD}/../Component References/HiLetGo TP4057 LiPo_LiIon Charger.step"
+	(offset
+		(xyz 0 0 0)
+	)
+	(scale
+		(xyz 1 1 1)
+	)
+	(rotate
+		(xyz 0 0 0)
+	)
+)
 )

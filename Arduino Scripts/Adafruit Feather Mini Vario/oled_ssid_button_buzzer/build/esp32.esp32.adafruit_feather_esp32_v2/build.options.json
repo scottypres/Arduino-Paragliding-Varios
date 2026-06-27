@@ -1,0 +1,9 @@
+{
+  "additionalFiles": "",
+  "compiler.optimization_flags": "-Os",
+  "customBuildProperties": "",
+  "fqbn": "esp32:esp32:adafruit_feather_esp32_v2",
+  "hardwareFolders": "/Users/scottpresbrey/Library/Arduino15/packages/esp32/hardware/esp32/3.3.10,/Users/scottpresbrey/Library/Arduino15/packages/esp32/hardware/esp32/3.3.10",
+  "otherLibrariesFolders": "/Users/scottpresbrey/Documents/Arduino/libraries",
+  "sketchLocation": "/Users/scottpresbrey/Documents/GitHub/Vario_Adafruit_Featherwing/oled_ssid_button_buzzer"
+}

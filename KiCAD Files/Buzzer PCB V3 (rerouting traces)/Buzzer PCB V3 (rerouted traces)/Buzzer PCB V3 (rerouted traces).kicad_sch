@@ -3094,6 +3094,17 @@
 		)
 		(uuid "34d62a90-5c08-458b-b766-8d80d6849605")
 	)
+	(text "A1 battery voltage divider: SW_BAT -> R4 100k -> VBAT_SENSE_A1/A1 -> R5 100k -> GND. No capacitor fitted."
+		(exclude_from_sim no)
+		(at 108 117.5 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "4a87f7fc-9455-4c2f-acb2-6faeb6ec9ed3")
+	)
 	(text "Three 5V boosted buzzer channels use separate S8050 transistors; copied JST/slide-switch footprints are preserved and PCB remains placement-only with no traces."
 		(exclude_from_sim no)
 		(at 76.01 66.9 0)
@@ -3122,28 +3133,8 @@
 		(uuid "25ea9371-d7ae-4ffb-a67d-aa66b5b145c6")
 	)
 	(no_connect
-		(at 225.31 138.36)
-		(uuid "28b854da-3033-4493-84ea-308046b71f93")
-	)
-	(no_connect
-		(at 36.83 148.59)
-		(uuid "c83961db-2f9f-4444-9f81-f98428cb2725")
-	)
-	(no_connect
-		(at 36.83 138.43)
-		(uuid "d17f1c64-5bf1-4450-a766-c6ac6c767ad1")
-	)
-	(no_connect
 		(at 36.83 140.97)
 		(uuid "268d53b1-c0f0-4a9f-b6e1-4eb9ce593e40")
-	)
-	(no_connect
-		(at 36.83 143.51)
-		(uuid "ad481d78-7252-4850-abca-c528cd5c7585")
-	)
-	(no_connect
-		(at 93.98 153.67)
-		(uuid "6fac2cab-7985-4562-9ca4-db1593522079")
 	)
 	(no_connect
 		(at 34.7 93.21)
@@ -3160,6 +3151,10 @@
 	(no_connect
 		(at 93.98 166.37)
 		(uuid "59643d8b-1ef5-4562-8cb1-480863df53e4")
+	)
+	(no_connect
+		(at 93.98 153.67)
+		(uuid "6fac2cab-7985-4562-9ca4-db1593522079")
 	)
 	(no_connect
 		(at 93.98 135.89)
@@ -3182,6 +3177,18 @@
 		(uuid "aaf6de68-e575-47cd-b1cc-78f9672605a4")
 	)
 	(no_connect
+		(at 36.83 143.51)
+		(uuid "ad481d78-7252-4850-abca-c528cd5c7585")
+	)
+	(no_connect
+		(at 36.83 148.59)
+		(uuid "c83961db-2f9f-4444-9f81-f98428cb2725")
+	)
+	(no_connect
+		(at 36.83 138.43)
+		(uuid "d17f1c64-5bf1-4450-a766-c6ac6c767ad1")
+	)
+	(no_connect
 		(at 225.31 119.25)
 		(uuid "d1a1db63-d18a-48fa-90ba-c056cc89aa4b")
 	)
@@ -3202,16 +3209,6 @@
 			(type default)
 		)
 		(uuid "0267e2f5-a275-47c5-82a6-3a9a8fb3c601")
-	)
-	(wire
-		(pts
-			(xy 220.23 143.44) (xy 225.31 143.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "02e54c41-b4ec-4ef9-be9d-3abc061210b4")
 	)
 	(wire
 		(pts
@@ -3615,16 +3612,6 @@
 	)
 	(wire
 		(pts
-			(xy 220.23 145.98) (xy 225.31 145.98)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c22d80b0-b3aa-42ca-88f6-ed2d0c18d1dc")
-	)
-	(wire
-		(pts
 			(xy 102.87 161.29) (xy 93.98 161.29)
 		)
 		(stroke
@@ -3655,16 +3642,6 @@
 	)
 	(wire
 		(pts
-			(xy 220.23 135.82) (xy 225.31 135.82)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c6513ec7-8ac2-41cc-88e9-199bb1f582ea")
-	)
-	(wire
-		(pts
 			(xy 172.31 235.72) (xy 172.31 234.45)
 		)
 		(stroke
@@ -3692,16 +3669,6 @@
 			(type default)
 		)
 		(uuid "d056b030-4e5f-4878-b460-fb5ec50468c1")
-	)
-	(wire
-		(pts
-			(xy 220.23 140.9) (xy 225.31 140.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d47ed5b6-ef00-4ca7-b277-572b1416ed72")
 	)
 	(wire
 		(pts
@@ -3917,15 +3884,6 @@
 		)
 		(uuid "0e888052-62d8-4ffa-a8e4-51c569acf9b9")
 	)
-	(label "GND"
-		(at 220.23 140.9 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "0e8daf77-26e7-48ae-9bc8-55b669b25c10")
-	)
 	(label "BUZZER_LOW"
 		(at 106.68 204.47 0)
 		(effects
@@ -4012,15 +3970,6 @@
 			)
 		)
 		(uuid "2732ecdf-c86c-4fc1-b002-a75b1483abf9")
-	)
-	(label "SCL"
-		(at 220.23 143.44 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "2847dc7a-8d00-42cd-9a65-f59ea01f5455")
 	)
 	(label "SW_BAT"
 		(at 29.62 98.29 0)
@@ -4128,6 +4077,15 @@
 			(justify left bottom)
 		)
 		(uuid "5036d28e-45d6-4654-8b72-363c196fd963")
+	)
+	(label "GND"
+		(at 224.79 229.87 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "53044c04-a068-4e78-94fd-7b532f0fdd08")
 	)
 	(label "BOOST_5V"
 		(at 158.34 240.8 180)
@@ -4401,6 +4359,24 @@
 		)
 		(uuid "99a769ea-ee99-40ed-8147-79f5b35db307")
 	)
+	(label "SW_BAT"
+		(at 205.74 229.87 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "a00f9fdc-729d-4e5c-bb44-afba937d609b")
+	)
+	(label "VBAT_SENSE_A1"
+		(at 217.17 229.87 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "a60dd009-d3d0-48c1-b1fc-8882ca1f4e7d")
+	)
 	(label "BOOST_5V"
 		(at 163.83 203.2 180)
 		(effects
@@ -4526,6 +4502,15 @@
 		)
 		(uuid "c96bfed7-8740-4edd-ba51-6fb9c309018b")
 	)
+	(label "VBAT_SENSE_A1"
+		(at 213.36 229.87 90)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "d089d43b-7a27-4d12-b06c-e537981de973")
+	)
 	(label "BUZZER_LOW3"
 		(at 172.31 234.45 0)
 		(effects
@@ -4565,15 +4550,6 @@
 			(justify left bottom)
 		)
 		(uuid "daf12c64-3b87-44ac-b855-019688fe49d7")
-	)
-	(label "3V3"
-		(at 220.23 135.82 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "dd0952dc-5340-4910-bd08-f32b85d9418e")
 	)
 	(label "GND"
 		(at 29.62 67.02 0)
@@ -4633,6 +4609,16 @@
 		)
 		(uuid "ea9e9cb5-80f3-4972-8c82-71898694629c")
 	)
+	(label "VBAT_SENSE_A1"
+		(at 93.98 153.67 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "eba2d458-382b-4512-b4a3-7db0d27077f1")
+	)
 	(label "OLD_GPS_RX_UNUSED"
 		(at 220.23 79.09 0)
 		(effects
@@ -4660,15 +4646,6 @@
 		)
 		(uuid "f17b63b5-63e8-4069-859a-516ad3f2bd4a")
 	)
-	(label "SDA"
-		(at 220.23 145.98 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "f9dc95fd-be67-4ed8-889f-5eccafc7f8aa")
-	)
 	(label "BTN_DOWN_GPIO5"
 		(at 165.47 104.9 180)
 		(effects
@@ -4688,93 +4665,6 @@
 			(justify left bottom)
 		)
 		(uuid "fce36132-4613-46ad-b816-271ff53f755e")
-	)
-	(symbol
-		(lib_id "Vario_Buzzer_V2:SHT41_5")
-		(at 238.01 140.9 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "0248e817-9020-4c33-85f7-e2bd35415643")
-		(property "Reference" "J7"
-			(at 238.01 147.25 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SHT41 top pads"
-			(at 238.01 134.55 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Vario_Buzzer_V2:Adafruit_SHT41_Breakout_Top"
-			(at 238.01 140.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 58.01 24.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 238.01 140.9 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "77588b69-d88c-4fd9-a0e6-ed54e8747d54")
-		)
-		(pin "2"
-			(uuid "e10d6fb1-3dfa-44b1-863c-4be1d4670d4e")
-		)
-		(pin "3"
-			(uuid "ece51f5a-69e2-49c2-b23b-8feb233f22b7")
-		)
-		(pin "4"
-			(uuid "2592dab7-5d26-4273-968e-07c8857d4005")
-		)
-		(pin "5"
-			(uuid "4603417c-50c9-4cd0-852b-1f6bf64d6a91")
-		)
-		(instances
-			(project "Buzzer PCB V3 (rerouted traces)"
-				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
-					(reference "J7")
-					(unit 1)
-				)
-			)
-		)
 	)
 	(symbol
 		(lib_id "Vario_Buzzer_V2:TP4057_Charger_2")
@@ -5037,6 +4927,86 @@
 			(project "Buzzer PCB V3 (rerouted traces)"
 				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
 					(reference "Q2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 220.98 229.87 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "20246392-5de8-4636-a1f7-3ddf0e939b50")
+		(property "Reference" "R5"
+			(at 220.98 232.41 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 220.98 227.33 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+			(at 220.98 228.092 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 220.98 229.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 220.98 229.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "116d7e40-4759-4f71-a921-65b545297c3c")
+		)
+		(pin "2"
+			(uuid "11a9aa0d-6e31-41f9-bb18-3e06f37b6797")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "R5")
 					(unit 1)
 				)
 			)
@@ -7017,6 +6987,86 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 209.55 229.87 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f30c7525-3c43-401a-87ee-1c38969e86ec")
+		(property "Reference" "R4"
+			(at 209.55 232.41 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 209.55 227.33 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+			(at 209.55 228.092 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 209.55 229.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 209.55 229.87 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "4109f4bf-7de3-4540-bd24-e0ab9f44cbdf")
+		)
+		(pin "2"
+			(uuid "3b136a10-aac5-4429-844c-9e5d16bf4124")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "R4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Transistor_BJT:S8050")
 		(at 109.22 199.39 180)
 		(unit 1)
@@ -7201,222 +7251,6 @@
 			(project "Buzzer PCB V3 (rerouted traces)"
 				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
 					(reference "D2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(text "A1 battery voltage divider: SW_BAT -> R4 100k -> VBAT_SENSE_A1/A1 -> R5 100k -> GND. No capacitor fitted."
-		(exclude_from_sim no)
-		(at 108.00 117.50 0)
-		(effects
-			(font
-				(size 1 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "4a87f7fc-9455-4c2f-acb2-6faeb6ec9ed3")
-	)
-	(label "VBAT_SENSE_A1"
-		(at 93.98 143.51 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "38bb4363-dc7a-4208-b32b-fd8abebc3598")
-	)
-	(label "SW_BAT"
-		(at 118.11 142.24 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "a00f9fdc-729d-4e5c-bb44-afba937d609b")
-	)
-	(label "VBAT_SENSE_A1"
-		(at 118.11 134.62 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "d089d43b-7a27-4d12-b06c-e537981de973")
-	)
-	(label "VBAT_SENSE_A1"
-		(at 118.11 130.81 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "a60dd009-d3d0-48c1-b1fc-8882ca1f4e7d")
-	)
-	(label "GND"
-		(at 118.11 123.19 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "53044c04-a068-4e78-94fd-7b532f0fdd08")
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 118.11 138.43 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "f30c7525-3c43-401a-87ee-1c38969e86ec")
-		(property "Reference" "R4"
-			(at 120.65 138.43 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "100k"
-			(at 115.57 138.43 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
-			(at 116.332 138.43 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 118.11 138.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 118.11 138.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "4109f4bf-7de3-4540-bd24-e0ab9f44cbdf")
-		)
-		(pin "2"
-			(uuid "3b136a10-aac5-4429-844c-9e5d16bf4124")
-		)
-		(instances
-			(project "Buzzer PCB V3 (rerouted traces)"
-				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
-					(reference "R4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R")
-		(at 118.11 127.00 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "20246392-5de8-4636-a1f7-3ddf0e939b50")
-		(property "Reference" "R5"
-			(at 120.65 127.00 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "100k"
-			(at 115.57 127.00 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
-			(at 116.332 127.00 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 118.11 127.00 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Resistor"
-			(at 118.11 127.00 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "116d7e40-4759-4f71-a921-65b545297c3c")
-		)
-		(pin "2"
-			(uuid "11a9aa0d-6e31-41f9-bb18-3e06f37b6797")
-		)
-		(instances
-			(project "Buzzer PCB V3 (rerouted traces)"
-				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
-					(reference "R5")
 					(unit 1)
 				)
 			)

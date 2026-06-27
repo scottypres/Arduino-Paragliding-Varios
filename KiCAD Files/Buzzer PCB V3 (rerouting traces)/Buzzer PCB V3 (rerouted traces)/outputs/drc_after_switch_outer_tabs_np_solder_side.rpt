@@ -1,0 +1,677 @@
+** Drc report for Buzzer PCB V3 (rerouted traces).kicad_pcb **
+** Created on 2026-06-27T02:14:39 **
+** Report includes: Errors, Warnings **
+
+** Found 163 DRC violations **
+[clearance]: Clearance violation (netclass 'Default' clearance 0.5000 mm; actual 0.1506 mm)
+    Rule: netclass 'Default'; error
+    @(99.7500 mm, 81.5000 mm): Track [/OLED_CONFIRM] on F.Cu, length 5.2500 mm
+    @(101.0000 mm, 74.5000 mm): PTH pad 1 [/GND] of 
+[tracks_crossing]: Tracks crossing
+    Rule: netclass 'Default'; error
+    @(120.0000 mm, 88.5700 mm): Track [/GND] on B.Cu, length 20.0240 mm
+    @(115.2500 mm, 91.7500 mm): Track [/SCL] on B.Cu, length 13.0815 mm
+[shorting_items]: Items shorting two nets (nets /GND and /OLED_CONFIRM)
+    Local override; error
+    @(101.0000 mm, 74.5000 mm): PTH pad 1 [/GND] of 
+    @(101.0000 mm, 75.0000 mm): Track [/OLED_CONFIRM] on F.Cu, length 32.2250 mm
+[shorting_items]: Items shorting two nets (nets /GND and /OLED_CONFIRM)
+    Local override; error
+    @(101.0000 mm, 74.5000 mm): PTH pad 1 [/GND] of 
+    @(99.7500 mm, 76.2500 mm): Track [/OLED_CONFIRM] on F.Cu, length 1.7678 mm
+[clearance]: Clearance violation (netclass 'Default' clearance 0.5000 mm; actual 0.3496 mm)
+    Rule: netclass 'Default'; error
+    @(105.2850 mm, 58.0900 mm): Track [/SW_BAT] on B.Cu, length 14.0573 mm
+    @(112.8400 mm, 64.4000 mm): Track [/D13_BUZZER_GPIO13] on B.Cu, length 6.2450 mm
+[tracks_crossing]: Tracks crossing
+    Rule: netclass 'Default'; error
+    @(120.0000 mm, 88.5700 mm): Track [/GND] on B.Cu, length 20.0240 mm
+    @(113.1500 mm, 84.7500 mm): Track [/BTN_BACK_GPIO3] on B.Cu, length 6.8377 mm
+[shorting_items]: Items shorting two nets (nets /GND and /BTN_BACK_GPIO3)
+    Local override; error
+    @(120.0000 mm, 88.5700 mm): Track [/GND] on B.Cu, length 20.0240 mm
+    @(104.8700 mm, 84.7500 mm): Track [/BTN_BACK_GPIO3] on B.Cu, length 8.2800 mm
+[clearance]: Clearance violation (netclass 'Default' clearance 0.5000 mm; actual 0.2500 mm)
+    Rule: netclass 'Default'; error
+    @(148.0000 mm, 69.2500 mm): Track [/BUZZER_BASE2] on B.Cu, length 33.1700 mm
+    @(105.2850 mm, 58.0900 mm): Track [/SW_BAT] on B.Cu, length 14.0573 mm
+[tracks_crossing]: Tracks crossing
+    Rule: netclass 'Default'; error
+    @(117.9850 mm, 79.9150 mm): Track [/BTN_BACK_GPIO3] on B.Cu, length 1.5050 mm
+    @(115.0000 mm, 78.4100 mm): Track [/VBAT_SENSE_A1] on B.Cu, length 5.0000 mm
+[shorting_items]: Items shorting two nets (nets /BTN_NEXT_GPIO4 and /VBAT_SENSE_A1)
+    Local override; error
+    @(115.4450 mm, 78.8449 mm): Track [/BTN_NEXT_GPIO4] on B.Cu, length 0.4349 mm
+    @(107.8250 mm, 78.4100 mm): Track [/VBAT_SENSE_A1] on B.Cu, length 7.1750 mm
+[clearance]: Clearance violation (netclass 'Default' clearance 0.5000 mm; actual 0.0781 mm)
+    Rule: netclass 'Default'; error
+    @(120.0000 mm, 88.5700 mm): Track [/GND] on B.Cu, length 20.0240 mm
+    @(104.2000 mm, 83.7000 mm): Track [/BTN_NEXT_GPIO4] on B.Cu, length 6.3899 mm
+[clearance]: Clearance violation (netclass 'Default' clearance 0.5000 mm; actual 0.1222 mm)
+    Rule: netclass 'Default'; error
+    @(107.8250 mm, 78.4100 mm): Track [/VBAT_SENSE_A1] on B.Cu, length 7.1750 mm
+    @(110.5899 mm, 83.7000 mm): Track [/BTN_NEXT_GPIO4] on B.Cu, length 6.8662 mm
+[tracks_crossing]: Tracks crossing
+    Rule: netclass 'Default'; error
+    @(107.8250 mm, 78.4100 mm): Track [/VBAT_SENSE_A1] on B.Cu, length 7.1750 mm
+    @(112.9050 mm, 76.5950 mm): Track [/BTN_DOWN_GPIO5] on B.Cu, length 1.8150 mm
+[tracks_crossing]: Tracks crossing
+    Rule: netclass 'Default'; error
+    @(105.2850 mm, 58.0900 mm): Track [/SW_BAT] on B.Cu, length 14.0573 mm
+    @(110.2000 mm, 66.8000 mm): Track [/SCL] on B.Cu, length 7.4000 mm
+[tracks_crossing]: Tracks crossing
+    Rule: netclass 'Default'; error
+    @(120.0000 mm, 88.5700 mm): Track [/GND] on B.Cu, length 20.0240 mm
+    @(110.8500 mm, 93.4000 mm): Track [/BTN_DOWN_GPIO5] on B.Cu, length 17.1827 mm
+[clearance]: Clearance violation (netclass 'Default' clearance 0.5000 mm; actual 0.0675 mm)
+    Rule: netclass 'Default'; error
+    @(105.2850 mm, 58.0900 mm): Track [/SW_BAT] on B.Cu, length 14.0573 mm
+    @(107.8250 mm, 58.0900 mm): NPTH pad of J10
+[shorting_items]: Items shorting two nets (nets /VBAT_SENSE_A1 and /BTN_NEXT_GPIO4)
+    Local override; error
+    @(107.8250 mm, 78.4100 mm): Track [/VBAT_SENSE_A1] on B.Cu, length 7.1750 mm
+    @(115.4450 mm, 78.4100 mm): NPTH pad of J10
+[clearance]: Clearance violation (netclass 'Default' clearance 0.5000 mm; actual 0.0665 mm)
+    Rule: netclass 'Default'; error
+    @(120.0000 mm, 88.5700 mm): Track [/GND] on B.Cu, length 20.0240 mm
+    @(103.5000 mm, 82.2500 mm): Track [/BTN_UP_GPIO21] on B.Cu, length 4.6500 mm
+[shorting_items]: Items shorting two nets (nets unconnected-(J10-SCK_ESP18-Pad18) and /VBAT_SENSE_A1)
+    Local override; error
+    @(120.5250 mm, 78.4100 mm): NPTH pad of J10
+    @(115.0000 mm, 78.4100 mm): Track [/VBAT_SENSE_A1] on B.Cu, length 5.0000 mm
+[tracks_crossing]: Tracks crossing
+    Rule: netclass 'Default'; error
+    @(107.8250 mm, 78.4100 mm): Track [/VBAT_SENSE_A1] on B.Cu, length 7.1750 mm
+    @(110.3650 mm, 80.0350 mm): Track [/BTN_UP_GPIO21] on B.Cu, length 1.6250 mm
+[shorting_items]: Items shorting two nets (nets /GND and /BUZZER2_ESP26)
+    Local override; error
+    @(120.0000 mm, 88.5700 mm): Track [/GND] on B.Cu, length 20.0240 mm
+    @(105.2850 mm, 78.4100 mm): NPTH pad of J10
+[tracks_crossing]: Tracks crossing
+    Rule: netclass 'Default'; error
+    @(120.0000 mm, 88.5700 mm): Track [/GND] on B.Cu, length 20.0240 mm
+    @(108.1500 mm, 82.2500 mm): Track [/BTN_UP_GPIO21] on B.Cu, length 3.1325 mm
+[shorting_items]: Items shorting two nets (nets /SW_BAT and /BUZZER_BASE2)
+    Local override; error
+    @(115.0000 mm, 68.2500 mm): NPTH pad of R4
+    @(114.8300 mm, 69.2500 mm): NPTH pad of R2
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(115.0000 mm, 58.0900 mm): NPTH pad of R4
+    @(115.4450 mm, 58.0900 mm): NPTH pad of J10
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(120.0000 mm, 78.4100 mm): NPTH pad of R5
+    @(120.5250 mm, 78.4100 mm): NPTH pad of J10
+[npth_inside_courtyard]: NPTH inside courtyard
+    Local override; error
+    @(115.4450 mm, 58.0900 mm): NPTH pad of J10
+    @(115.0000 mm, 68.2500 mm): Footprint R4
+[npth_inside_courtyard]: NPTH inside courtyard
+    Local override; error
+    @(120.5250 mm, 78.4100 mm): NPTH pad of J10
+    @(120.0000 mm, 78.4100 mm): Footprint R5
+[courtyards_overlap]: Courtyards overlap
+    Rule: board setup constraints courtyard; error
+    @(115.0000 mm, 68.2500 mm): Footprint R4
+    @(114.8300 mm, 69.2500 mm): Footprint R2
+[npth_inside_courtyard]: NPTH inside courtyard
+    Local override; error
+    @(114.8300 mm, 69.2500 mm): NPTH pad of R2
+    @(115.0000 mm, 68.2500 mm): Footprint R4
+[npth_inside_courtyard]: NPTH inside courtyard
+    Local override; error
+    @(115.0000 mm, 68.2500 mm): NPTH pad of R4
+    @(114.8300 mm, 69.2500 mm): Footprint R2
+[courtyards_overlap]: Courtyards overlap
+    Rule: board setup constraints courtyard; error
+    @(115.0000 mm, 68.2500 mm): Footprint R4
+    @(123.0000 mm, 64.4000 mm): Footprint R1
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(107.8250 mm, 78.4100 mm): Track [/VBAT_SENSE_A1] on B.Cu, length 7.1750 mm
+    @(115.4450 mm, 78.4100 mm): NPTH pad of J10
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(107.8250 mm, 78.4100 mm): Track [/VBAT_SENSE_A1] on B.Cu, length 7.1750 mm
+    @(112.9050 mm, 78.4100 mm): NPTH pad of J10
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(107.8250 mm, 78.4100 mm): Track [/VBAT_SENSE_A1] on B.Cu, length 7.1750 mm
+    @(110.3650 mm, 78.4100 mm): NPTH pad of J10
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(101.0000 mm, 75.0000 mm): Track [/OLED_CONFIRM] on F.Cu, length 32.2250 mm
+    @(101.0000 mm, 74.5000 mm): PTH pad 1 [/GND] of 
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(115.0000 mm, 78.4100 mm): Track [/VBAT_SENSE_A1] on B.Cu, length 5.0000 mm
+    @(120.5250 mm, 78.4100 mm): NPTH pad of J10
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(115.0000 mm, 78.4100 mm): Track [/VBAT_SENSE_A1] on B.Cu, length 5.0000 mm
+    @(117.9850 mm, 78.4100 mm): NPTH pad of J10
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(114.8300 mm, 69.2500 mm): NPTH pad of R2
+    @(115.0000 mm, 68.2500 mm): NPTH pad of R4
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(115.0000 mm, 78.4100 mm): Track [/VBAT_SENSE_A1] on B.Cu, length 5.0000 mm
+    @(115.4450 mm, 78.4100 mm): NPTH pad of J10
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(99.7500 mm, 76.2500 mm): Track [/OLED_CONFIRM] on F.Cu, length 1.7678 mm
+    @(101.0000 mm, 74.5000 mm): PTH pad 1 [/GND] of 
+[solder_mask_bridge]: Rear solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(120.0000 mm, 88.5700 mm): Track [/GND] on B.Cu, length 20.0240 mm
+    @(105.2850 mm, 78.4100 mm): NPTH pad of J10
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(109.9500 mm, 87.7500 mm): Track [/3V3] on F.Cu, length 9.9678 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(74.5000 mm, 87.5000 mm): Track [/3V3] on F.Cu, length 4.2426 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(97.7500 mm, 78.4950 mm): Track [/3V3] on F.Cu, length 0.1202 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(151.4200 mm, 107.1200 mm): Track [/3V3] on F.Cu, length 11.3900 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(102.7450 mm, 83.7805 mm): Track [/GND] on F.Cu, length 5.3705 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(179.0850 mm, 99.0000 mm): Track [/GND] on F.Cu, length 3.7850 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(149.5400 mm, 59.2600 mm): Track [/GND] on F.Cu, length 0.7600 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(63.7000 mm, 75.3000 mm): Track [/GND] on F.Cu, length 12.4000 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(156.5000 mm, 118.5100 mm): Track [/GND] on F.Cu, length 12.4816 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(167.2500 mm, 60.0000 mm): Track [/GND] on B.Cu, length 5.7500 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(167.2400 mm, 58.2500 mm): Track [/GND] on B.Cu, length 0.7400 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(133.8500 mm, 64.4000 mm): Track [/BUZZER_BASE] on B.Cu, length 10.8500 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(118.1700 mm, 57.9050 mm): Track [/BUZZER3_GPIO2_ESP27] on F.Cu, length 0.2616 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(118.0400 mm, 52.9000 mm): Track [/BUZZER3_GPIO2_ESP27] on B.Cu, length 5.1350 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(112.8400 mm, 58.1550 mm): Track [/D13_BUZZER_GPIO13] on F.Cu, length 0.0919 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(112.8400 mm, 64.4000 mm): Track [/D13_BUZZER_GPIO13] on B.Cu, length 6.2450 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(153.5000 mm, 57.0800 mm): Track [/SW_BAT] on F.Cu, length 2.0082 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(66.5000 mm, 97.2500 mm): Track [/SW_BAT] on F.Cu, length 1.5000 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(112.9050 mm, 78.4100 mm): Track [/BTN_DOWN_GPIO5] on F.Cu, length 0.1050 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(113.0100 mm, 78.4100 mm): Track [/BTN_DOWN_GPIO5] on F.Cu, length 0.5515 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(104.7000 mm, 69.2800 mm): Track [/BUZZER2_ESP26] on B.Cu, length 0.0424 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(104.7500 mm, 69.1700 mm): Track [/BUZZER2_ESP26] on B.Cu, length 0.1131 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(166.2500 mm, 71.7500 mm): Track [/BOOST_5V] on F.Cu, length 6.2500 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(184.7500 mm, 83.5000 mm): Track [/BOOST_5V] on F.Cu, length 3.5000 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(190.7500 mm, 71.7500 mm): Track [/BOOST_5V] on F.Cu, length 0.3536 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(145.5000 mm, 57.0000 mm): Track [/BOOST_5V] on F.Cu, length 2.1213 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(68.8160 mm, 107.2160 mm): Track [/BAT_IN] on F.Cu, length 0.5160 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(69.5000 mm, 97.2500 mm): Track [/BAT_IN] on F.Cu, length 0.5657 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(61.6500 mm, 81.7000 mm): Track [/BAT_IN] on B.Cu, length 2.0500 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(128.2000 mm, 52.9000 mm): Track [/BUZZER_BASE3] on B.Cu, length 3.1000 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(148.0000 mm, 69.2500 mm): Track [/BUZZER_BASE2] on B.Cu, length 33.1700 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(157.0800 mm, 62.0000 mm): Track [/BUZZER_BASE2] on B.Cu, length 0.3300 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(105.2850 mm, 58.0900 mm): Track [/SW_BAT] on B.Cu, length 14.0573 mm
+[track_dangling]: Track has unconnected end
+    Local override; warning
+    @(120.0000 mm, 88.5700 mm): Track [/GND] on B.Cu, length 20.0240 mm
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(56.8809 mm, 47.9158 mm): Rectangle on Edge.Cuts
+    @(67.0000 mm, 124.3240 mm): Segment of U1 on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(56.8809 mm, 47.9158 mm): Rectangle on Edge.Cuts
+    @(76.0000 mm, 122.6240 mm): Segment of U1 on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(56.8809 mm, 47.9158 mm): Rectangle on Edge.Cuts
+    @(196.3000 mm, 69.3000 mm): Segment of REF** on F.Silkscreen
+[silk_edge_clearance]: Silkscreen clipped by board edge
+    Rule: board setup constraints silk; warning
+    @(56.8809 mm, 47.9158 mm): Rectangle on Edge.Cuts
+    @(221.7000 mm, 94.7000 mm): Segment of REF** on F.Silkscreen
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2495 mm; actual 0.0000 mm)
+    Rule: board setup constraints; warning
+    @(115.4450 mm, 58.0900 mm): NPTH pad of J10
+    @(115.0000 mm, 58.0900 mm): NPTH pad of R4
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2495 mm; actual 0.0000 mm)
+    Rule: board setup constraints; warning
+    @(120.5250 mm, 78.4100 mm): NPTH pad of J10
+    @(120.0000 mm, 78.4100 mm): NPTH pad of R5
+[hole_to_hole]: Drilled hole too close to other hole (board setup constraints min 0.2495 mm; actual 0.2143 mm)
+    Rule: board setup constraints; warning
+    @(114.8300 mm, 69.2500 mm): NPTH pad of R2
+    @(115.0000 mm, 68.2500 mm): NPTH pad of R4
+[lib_footprint_mismatch]: Footprint 'TO-92_Inline' does not match copy in library 'Package_TO_SOT_THT'
+    Local override; warning
+    @(172.4800 mm, 99.0000 mm): Footprint Q1
+[lib_footprint_mismatch]: Footprint 'MountingHole_3.2mm_M3' does not match copy in library 'MountingHole'
+    Local override; warning
+    @(192.9809 mm, 52.5000 mm): Footprint H3
+[lib_footprint_mismatch]: Footprint 'SparkFun_Thing_Plus_ESP32_WROOM_C_Header' does not match copy in library 'Vario_Buzzer_V2'
+    Local override; warning
+    @(111.0000 mm, 68.2500 mm): Footprint J10
+[lib_footprint_mismatch]: Footprint 'Ceramic_Cap_0.1uF_P5.00mm_V1' does not match copy in library 'Vario_Buzzer_V2'
+    Local override; warning
+    @(74.5000 mm, 90.0000 mm): Footprint C2
+[lib_footprint_mismatch]: Footprint 'D_DO-41_SOD81_P10.16mm_Horizontal' does not match copy in library 'Diode_THT'
+    Local override; warning
+    @(181.2500 mm, 87.5000 mm): Footprint D2
+[lib_footprint_mismatch]: Footprint 'SS12F44G3_5.9x12.25_P3.00' does not match copy in library 'Vario_Buzzer_V2'
+    Local override; warning
+    @(69.5000 mm, 97.2500 mm): Footprint SW1
+[lib_footprint_mismatch]: Footprint 'Comidox_5V_Booster_10.75x10.75_3Pin' does not match copy in library 'Vario_Buzzer_V2'
+    Local override; warning
+    @(149.5400 mm, 62.0000 mm): Footprint U2
+[lib_footprint_mismatch]: Footprint 'TP4057_Module_12.2x18.5' does not match copy in library 'Vario_Buzzer_V2'
+    Local override; warning
+    @(71.5000 mm, 111.2000 mm): Footprint U1
+[lib_footprint_mismatch]: Footprint 'TO-92_Inline' does not match copy in library 'Package_TO_SOT_THT'
+    Local override; warning
+    @(188.2300 mm, 99.0000 mm): Footprint Q3
+[lib_footprint_mismatch]: Footprint 'MountingHole_3.2mm_M3' does not match copy in library 'MountingHole'
+    Local override; warning
+    @(61.5000 mm, 52.5000 mm): Footprint H1
+[lib_footprint_mismatch]: Footprint 'GPS_M100_15x15_4Pin_Back' does not match copy in library 'Vario_Buzzer_V2'
+    Local override; warning
+    @(151.5000 mm, 76.0000 mm): Footprint J5
+[lib_footprint_mismatch]: Footprint 'TO-92_Inline' does not match copy in library 'Package_TO_SOT_THT'
+    Local override; warning
+    @(180.3550 mm, 99.0000 mm): Footprint Q2
+[lib_footprint_mismatch]: Footprint 'Adafruit_SHT41_Breakout_Top' does not match copy in library 'Vario_Buzzer_V2'
+    Local override; warning
+    @(156.5000 mm, 112.1600 mm): Footprint J7
+[lib_footprint_mismatch]: Footprint 'MountingHole_3.2mm_M3' does not match copy in library 'MountingHole'
+    Local override; warning
+    @(192.9809 mm, 118.3000 mm): Footprint H4
+[lib_footprint_mismatch]: Footprint 'SolderWire-0.127sqmm_1x01_D0.48mm_OD1mm' does not match copy in library 'Connector_Wire'
+    Local override; warning
+    @(145.5000 mm, 54.6000 mm): Footprint REF**
+[lib_footprint_issues]: Footprint 'Buzzer_12x8.5mm_P7.62mm_Custom' not found in library 'Buzzer_Beeper'
+    Local override; warning
+    @(166.2500 mm, 75.2500 mm): Footprint BZ1
+[lib_footprint_mismatch]: Footprint 'MountingHole_3.2mm_M3' does not match copy in library 'MountingHole'
+    Local override; warning
+    @(61.5000 mm, 118.3000 mm): Footprint H2
+[lib_footprint_mismatch]: Footprint 'OLED_M16968_59x35_9Pin' does not match copy in library 'Vario_Buzzer_V2'
+    Local override; warning
+    @(78.1300 mm, 85.7500 mm): Footprint J11
+[lib_footprint_issues]: Footprint 'Buzzer_12x8.5mm_P7.62mm_Custom' not found in library 'Buzzer_Beeper'
+    Local override; warning
+    @(191.0000 mm, 75.2500 mm): Footprint BZ3
+[lib_footprint_mismatch]: Footprint 'CP_Radial_D5.0mm_P2.00mm' does not match copy in library 'Capacitor_THT'
+    Local override; warning
+    @(76.1000 mm, 76.3000 mm): Footprint C1
+[lib_footprint_mismatch]: Footprint 'Adafruit_BMP390_Breakout_Top' does not match copy in library 'Vario_Buzzer_V2'
+    Local override; warning
+    @(156.5000 mm, 93.5000 mm): Footprint J6
+[lib_footprint_issues]: Footprint 'Buzzer_12x8.5mm_P7.62mm_Custom' not found in library 'Buzzer_Beeper'
+    Local override; warning
+    @(178.6250 mm, 75.2500 mm): Footprint BZ2
+[lib_footprint_mismatch]: Footprint 'D_DO-41_SOD81_P10.16mm_Horizontal' does not match copy in library 'Diode_THT'
+    Local override; warning
+    @(173.5000 mm, 87.5000 mm): Footprint D1
+[lib_footprint_mismatch]: Footprint 'D_DO-41_SOD81_P10.16mm_Horizontal' does not match copy in library 'Diode_THT'
+    Local override; warning
+    @(188.2500 mm, 87.5000 mm): Footprint D3
+[lib_footprint_mismatch]: Footprint 'R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal' does not match copy in library 'Resistor_THT'
+    Local override; warning
+    @(167.2500 mm, 65.7500 mm): Footprint R1-3
+[lib_footprint_mismatch]: Footprint 'JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal' does not match copy in library 'Connector_JST'
+    Local override; warning
+    @(63.4000 mm, 82.7000 mm): Footprint J1
+[lib_footprint_mismatch]: Footprint 'R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal' does not match copy in library 'Resistor_THT'
+    Local override; warning
+    @(114.8300 mm, 69.2500 mm): Footprint R2
+[lib_footprint_mismatch]: Footprint 'R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal' does not match copy in library 'Resistor_THT'
+    Local override; warning
+    @(123.0000 mm, 64.4000 mm): Footprint R1
+[lib_footprint_mismatch]: Footprint 'R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal' does not match copy in library 'Resistor_THT'
+    Local override; warning
+    @(167.2400 mm, 62.0000 mm): Footprint R1-2
+[lib_footprint_mismatch]: Footprint 'R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal' does not match copy in library 'Resistor_THT'
+    Local override; warning
+    @(128.2000 mm, 52.9000 mm): Footprint R3
+[lib_footprint_mismatch]: Footprint 'R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal' does not match copy in library 'Resistor_THT'
+    Local override; warning
+    @(167.2400 mm, 58.2500 mm): Footprint R1-1
+[lib_footprint_mismatch]: Footprint 'R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal' does not match copy in library 'Resistor_THT'
+    Local override; warning
+    @(115.0000 mm, 68.2500 mm): Footprint R4
+[lib_footprint_mismatch]: Footprint 'R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal' does not match copy in library 'Resistor_THT'
+    Local override; warning
+    @(120.0000 mm, 78.4100 mm): Footprint R5
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.4800 mm)
+    Rule: board setup constraints silk text height; warning
+    @(101.5000 mm, 31.0000 mm): PCB text 'R1 470R D13/GPIO13 to Q1 base' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.4800 mm)
+    Rule: board setup constraints silk text height; warning
+    @(109.2000 mm, 32.8000 mm): PCB text 'R2 100k base to GND; Q1 S8050 E-B-C' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5500 mm)
+    Rule: board setup constraints silk text height; warning
+    @(74.0000 mm, 55.7500 mm): PCB text 'J10 SparkFun Thing Plus ESP32 WROOM-C, SparkFun Eagle header geometry' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5800 mm)
+    Rule: board setup constraints silk text height; warning
+    @(40.6000 mm, 27.8500 mm): PCB text 'PCB 90x50mm, 1.5mm FR4; drill set: 0.8/1/1.2/1.4/1.6/2/2.4/3/3.175mm' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(40.6000 mm, 25.6500 mm): PCB text 'Vario Buzzer / Sensor Interposer V2 - SparkFun Thing Plus + Qwiic OLED, no traces' on F.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(108.7500 mm, 80.7500 mm): PCB text 'J5 HGLRC M100 manual pin order: RX TX VCC GND' on B.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5400 mm)
+    Rule: board setup constraints silk text height; warning
+    @(79.0000 mm, 55.2500 mm): PCB text 'Back side: optional external SD plus HGLRC M100' on B.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5400 mm)
+    Rule: board setup constraints silk text height; warning
+    @(108.0000 mm, 82.2500 mm): PCB text 'J1 bottom LiPo JST' on B.Silkscreen
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5800 mm)
+    Rule: board setup constraints silk text height; warning
+    @(82.1550 mm, 78.4800 mm): Footprint text of J10 (USB-C end)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7200 mm)
+    Rule: board setup constraints silk text height; warning
+    @(85.2500 mm, 54.2500 mm): Footprint text of J10 (SPARKFUN THING PLUS ESP32 WROOM-C)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.4800 mm)
+    Rule: board setup constraints silk text height; warning
+    @(90.1000 mm, 68.1000 mm): Footprint text of J10 (header geometry from SparkFun Eagle J5)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(76.6500 mm, 90.0000 mm): Value field of C2 (0.1uF CER)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5500 mm)
+    Rule: board setup constraints silk text height; warning
+    @(149.5400 mm, 56.0000 mm): Footprint text of U2 (Vin GND Vout)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(149.5400 mm, 66.6000 mm): Footprint text of U2 (5V BOOST)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(71.5000 mm, 108.1500 mm): Footprint text of U1 (OUT- BAT- BAT+ OUT+)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(71.5000 mm, 111.0000 mm): Footprint text of U1 (TP4057)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(71.5000 mm, 114.0500 mm): Footprint text of U1 (IN-      IN+)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5500 mm)
+    Rule: board setup constraints silk text height; warning
+    @(71.5000 mm, 121.7500 mm): Footprint text of U1 (USB-C)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(148.4000 mm, 77.4000 mm): Footprint text of J5 (manual: RX TX VCC GND)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6200 mm)
+    Rule: board setup constraints silk text height; warning
+    @(156.9000 mm, 77.5000 mm): Footprint text of J5 (FRONT HGLRC M100)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5500 mm)
+    Rule: board setup constraints silk text height; warning
+    @(162.2000 mm, 108.7000 mm): Footprint text of J7 (TOP; pins solder backside)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7200 mm)
+    Rule: board setup constraints silk text height; warning
+    @(168.6000 mm, 119.8100 mm): Footprint text of J7 (SHT41)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(107.7800 mm, 120.0000 mm): Footprint text of J11 (pin1=3v3 ... pin9=CONFIRM)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7000 mm)
+    Rule: board setup constraints silk text height; warning
+    @(73.0500 mm, 76.3000 mm): Value field of C1 (47-100uF ELEC)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.5500 mm)
+    Rule: board setup constraints silk text height; warning
+    @(158.1000 mm, 87.1000 mm): Footprint text of J6 (TOP; pins solder backside)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.7200 mm)
+    Rule: board setup constraints silk text height; warning
+    @(163.0000 mm, 89.8000 mm): Footprint text of J6 (BMP390/BMP5xx)
+[text_height]: Text height out of range (board setup constraints silk text height min height 0.8000 mm; actual 0.6500 mm)
+    Rule: board setup constraints silk text height; warning
+    @(209.0000 mm, 84.0000 mm): Footprint text of REF** (external via Qwiic cable)
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(81.1550 mm, 79.6800 mm): Segment of J10 on F.Silkscreen
+    @(82.1550 mm, 78.4800 mm): Footprint text of J10 (USB-C end)
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(169.2000 mm, 103.2700 mm): Segment of J7 on F.Silkscreen
+    @(168.6000 mm, 119.8100 mm): Footprint text of J7 (SHT41)
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(191.0000 mm, 75.2500 mm): Circle of BZ3 on F.Silkscreen
+    @(196.3000 mm, 94.7000 mm): Segment of REF** on F.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(82.1550 mm, 78.4800 mm): Footprint text of J10 (USB-C end)
+    @(83.6950 mm, 77.1400 mm): NPTH pad of J10
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(149.5400 mm, 56.0000 mm): Footprint text of U2 (Vin GND Vout)
+    @(149.4375 mm, 54.6000 mm): PTH pad 1 [/GND] of 
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(168.6000 mm, 119.8100 mm): Footprint text of J7 (SHT41)
+    @(166.6600 mm, 118.5100 mm): NPTH pad of J7
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(117.3700 mm, 63.1700 mm): Reference field of R4
+    @(117.9200 mm, 62.0300 mm): Reference field of R1
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(117.3700 mm, 63.1700 mm): Reference field of R4
+    @(121.1900 mm, 63.0300 mm): Rectangle of R1 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(116.3700 mm, 66.4400 mm): Rectangle of R4 on B.Silkscreen
+    @(121.1900 mm, 63.0300 mm): Rectangle of R1 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(162.1700 mm, 63.3800 mm): Reference field of R1-3
+    @(165.4300 mm, 60.6300 mm): Rectangle of R1-2 on B.Silkscreen
+[silk_overlap]: Silkscreen clearance
+    Rule: board setup constraints silk; warning
+    @(162.1600 mm, 59.6300 mm): Reference field of R1-2
+    @(165.4300 mm, 56.8800 mm): Rectangle of R1-1 on B.Silkscreen
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(120.0000 mm, 77.3700 mm): Segment of R5 on B.Silkscreen
+    @(120.5250 mm, 78.4100 mm): NPTH pad of J10
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(115.0000 mm, 59.1300 mm): Segment of R4 on B.Silkscreen
+    @(115.4450 mm, 58.0900 mm): NPTH pad of J10
+[silk_over_copper]: Silkscreen clipped by solder mask
+    Local override; warning
+    @(116.3700 mm, 66.4400 mm): Rectangle of R4 on B.Silkscreen
+    @(115.4450 mm, 58.0900 mm): NPTH pad of J10
+[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    Local override; warning
+    @(108.7500 mm, 80.7500 mm): PCB text 'J5 HGLRC M100 manual pin order: RX TX VCC GND' on B.Silkscreen
+[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    Local override; warning
+    @(79.0000 mm, 55.2500 mm): PCB text 'Back side: optional external SD plus HGLRC M100' on B.Silkscreen
+[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    Local override; warning
+    @(108.0000 mm, 82.2500 mm): PCB text 'J1 bottom LiPo JST' on B.Silkscreen
+[mirrored_text_on_front_layer]: Mirrored text on front layer
+    Local override; warning
+    @(151.5000 mm, 76.0000 mm): Reference field of J5
+[mirrored_text_on_front_layer]: Mirrored text on front layer
+    Local override; warning
+    @(148.4000 mm, 77.4000 mm): Footprint text of J5 (manual: RX TX VCC GND)
+[mirrored_text_on_front_layer]: Mirrored text on front layer
+    Local override; warning
+    @(156.9000 mm, 77.5000 mm): Footprint text of J5 (FRONT HGLRC M100)
+[nonmirrored_text_on_back_layer]: Non-Mirrored text on back layer
+    Local override; warning
+    @(60.5000 mm, 81.7000 mm): Reference field of J1
+
+** Found 27 unconnected pads **
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(74.5000 mm, 87.5000 mm): Track [/3V3] on F.Cu, length 4.2426 mm
+    @(74.5000 mm, 87.5000 mm): NPTH pad of C2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(145.8000 mm, 74.7300 mm): NPTH pad of J5
+    @(147.6100 mm, 99.8500 mm): Track [/3V3] on F.Cu, length 35.5278 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(63.7000 mm, 75.3000 mm): Track [/GND] on F.Cu, length 12.4000 mm
+    @(76.1000 mm, 75.3000 mm): NPTH pad of C1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(102.7450 mm, 78.4100 mm): Track [/GND] on B.Cu, length 2.1650 mm
+    @(120.0000 mm, 68.2500 mm): NPTH pad of R5
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(102.7450 mm, 83.7805 mm): Track [/GND] on F.Cu, length 5.3705 mm
+    @(102.7450 mm, 78.4100 mm): Track [/GND] on B.Cu, length 2.1650 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(107.4100 mm, 87.7500 mm): Track [/GND] on F.Cu, length 3.0900 mm
+    @(107.4100 mm, 87.7500 mm): NPTH pad of J11
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(145.8000 mm, 72.1900 mm): NPTH pad of J5
+    @(164.2000 mm, 68.8000 mm): Track [/GND] on F.Cu, length 20.4000 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(167.2500 mm, 65.7500 mm): NPTH pad of R1-3
+    @(167.2500 mm, 60.0000 mm): Track [/GND] on B.Cu, length 5.7500 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(171.2100 mm, 99.0000 mm): Track [/GND] on F.Cu, length 3.8000 mm
+    @(171.2100 mm, 99.0000 mm): NPTH pad of Q1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(179.0850 mm, 99.0000 mm): NPTH pad of Q2
+    @(179.0850 mm, 99.0000 mm): Track [/GND] on F.Cu, length 3.7850 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(186.9600 mm, 102.8000 mm): Track [/GND] on F.Cu, length 3.8000 mm
+    @(186.9600 mm, 99.0000 mm): NPTH pad of Q3
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(123.0000 mm, 64.4000 mm): NPTH pad of R1
+    @(133.8500 mm, 64.4000 mm): Track [/BUZZER_BASE] on B.Cu, length 10.8500 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(157.0800 mm, 58.2500 mm): Track [/BUZZER_BASE] on B.Cu, length 5.3033 mm
+    @(157.0800 mm, 58.2500 mm): NPTH pad of R1-1
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(66.5000 mm, 97.2500 mm): NPTH pad of SW1
+    @(66.5000 mm, 97.2500 mm): Track [/SW_BAT] on F.Cu, length 1.5000 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(76.1000 mm, 77.3000 mm): NPTH pad of C1
+    @(78.3000 mm, 77.3000 mm): Track [/SW_BAT] on F.Cu, length 2.2000 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(115.0000 mm, 68.2500 mm): NPTH pad of R4
+    @(105.2850 mm, 58.0900 mm): Track [/SW_BAT] on B.Cu, length 14.0573 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(118.0400 mm, 58.0350 mm): Track [/BUZZER3_GPIO2_ESP27] on B.Cu, length 0.0778 mm
+    @(118.1700 mm, 57.9050 mm): Track [/BUZZER3_GPIO2_ESP27] on F.Cu, length 0.2616 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(112.8400 mm, 58.1550 mm): Track [/D13_BUZZER_GPIO13] on F.Cu, length 0.0919 mm
+    @(112.8400 mm, 64.4000 mm): Track [/D13_BUZZER_GPIO13] on B.Cu, length 6.2450 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(112.9050 mm, 78.4100 mm): Track [/BTN_DOWN_GPIO5] on F.Cu, length 0.1050 mm
+    @(112.9050 mm, 76.5950 mm): Track [/BTN_DOWN_GPIO5] on B.Cu, length 1.8150 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(115.0000 mm, 58.0900 mm): NPTH pad of R4
+    @(107.8250 mm, 78.4100 mm): Track [/VBAT_SENSE_A1] on B.Cu, length 7.1750 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(120.0000 mm, 78.4100 mm): NPTH pad of R5
+    @(115.0000 mm, 78.4100 mm): Track [/VBAT_SENSE_A1] on B.Cu, length 5.0000 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(104.6700 mm, 69.2500 mm): NPTH pad of R2
+    @(104.6700 mm, 69.2500 mm): Track [/BUZZER2_ESP26] on B.Cu, length 3.7200 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(61.6500 mm, 81.7000 mm): Track [/BAT_IN] on B.Cu, length 2.0500 mm
+    @(61.6500 mm, 81.7000 mm): Track [/BAT_IN] on F.Cu, length 1.8000 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(128.2000 mm, 52.9000 mm): NPTH pad of R3
+    @(128.2000 mm, 52.9000 mm): Track [/BUZZER_BASE3] on B.Cu, length 3.1000 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(157.0900 mm, 65.7500 mm): NPTH pad of R1-3
+    @(157.0900 mm, 65.7500 mm): Track [/BUZZER_BASE3] on B.Cu, length 1.6600 mm
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(148.0000 mm, 69.2500 mm): Track [/BUZZER_BASE2] on B.Cu, length 33.1700 mm
+    @(114.8300 mm, 69.2500 mm): NPTH pad of R2
+[unconnected_items]: Missing connection between items
+    Local override; error
+    @(157.0800 mm, 62.0000 mm): NPTH pad of R1-2
+    @(157.0800 mm, 62.0000 mm): Track [/BUZZER_BASE2] on B.Cu, length 0.3300 mm
+
+** Found 0 Footprint errors **
+
+** Ignored checks **
+    - Footprint has no courtyard defined
+    - Track endpoint not centered on via
+    - Tuning profile track geometries
+    - Footprint doesn't match symbol's footprint filters
+    - Footprint component type doesn't match footprint pads
+
+** End of Report **
