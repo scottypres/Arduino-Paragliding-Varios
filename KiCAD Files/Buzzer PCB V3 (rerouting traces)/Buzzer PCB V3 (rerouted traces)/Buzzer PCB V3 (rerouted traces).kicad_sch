@@ -1,0 +1,7431 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "1b4b1935-b674-4f7b-922d-e131a48a660a")
+	(paper "A3")
+	(title_block
+		(title "SparkFun Thing Plus Vario Buzzer / Sensor Interposer PCB V2")
+		(date "2026-06-22")
+		(rev "V2")
+		(comment 1 "SparkFun Thing Plus + M16968 OLED/rotary replacement; placement only, no traces")
+	)
+	(lib_symbols
+		(symbol "Device:C_Small_US"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.254)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "C"
+				(at 0.254 1.778 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C_Small_US"
+				(at 0.254 -2.032 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "capacitor, small US symbol"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "cap capacitor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "C_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "C_Small_US_0_1"
+				(polyline
+					(pts
+						(xy -1.524 0.508) (xy 1.524 0.508)
+					)
+					(stroke
+						(width 0.3048)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -1.524 -0.762)
+					(mid 0 -0.3734)
+					(end 1.524 -0.762)
+					(stroke
+						(width 0.3048)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "C_Small_US_1_1"
+				(pin passive line
+					(at 0 2.54 270)
+					(length 2.032)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -2.54 90)
+					(length 2.032)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:R"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "R"
+				(at 2.032 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R"
+				(at 0 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at -1.778 0 90)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Resistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "R res resistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "R_0_1"
+				(rectangle
+					(start -1.016 -2.54)
+					(end 1.016 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Diode:1N5819"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "D"
+				(at 0 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "1N5819"
+				(at 0 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal"
+				(at 0 -4.445 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "http://www.vishay.com/docs/88525/1n5817.pdf"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "40V 1A Schottky Barrier Rectifier Diode, DO-41"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "diode Schottky"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "D*DO?41*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "1N5819_0_1"
+				(polyline
+					(pts
+						(xy -1.905 0.635) (xy -1.905 1.27) (xy -1.27 1.27) (xy -1.27 -1.27) (xy -0.635 -1.27) (xy -0.635 -0.635)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 1.27) (xy 1.27 -1.27) (xy -1.27 0) (xy 1.27 1.27)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 0) (xy -1.27 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "1N5819_1_1"
+				(pin passive line
+					(at -3.81 0 0)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Transistor_BJT:S8050"
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "Q"
+				(at 5.08 1.905 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "S8050"
+				(at 5.08 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+				(at 5.08 -1.905 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+						(italic yes)
+					)
+					(justify left)
+				)
+			)
+			(property "Datasheet" "http://www.unisonic.com.tw/datasheet/S8050.pdf"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Description" "0.7A Ic, 20V Vce, Low Voltage High Current NPN Transistor, TO-92"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Device" "NPN"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Sim.Pins" "1=E 2=B 3=C"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "S8050 NPN Low Voltage High Current Transistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "TO?92*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "S8050_0_1"
+				(polyline
+					(pts
+						(xy -2.54 0) (xy 0.635 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.635 1.905) (xy 0.635 -1.905)
+					)
+					(stroke
+						(width 0.508)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 1.27 0)
+					(radius 2.8194)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "S8050_1_1"
+				(polyline
+					(pts
+						(xy 0.635 0.635) (xy 2.54 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.635 -0.635) (xy 2.54 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -1.778) (xy 1.778 -1.27) (xy 2.286 -2.286) (xy 1.27 -1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(pin passive line
+					(at 2.54 -5.08 90)
+					(length 2.54)
+					(name "E"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 5.08 270)
+					(length 2.54)
+					(name "C"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Vario_Buzzer_V2:Ant_Display_Button"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "SW"
+				(at 0 6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Ant_Display_Button"
+				(at 0 -6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Ant Display copied tactile button"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Ant_Display_Button_0_1"
+				(rectangle
+					(start -8.89 3.81)
+					(end 7.62 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "Ant_Display_Button_1_1"
+				(pin passive line
+					(at -12.7 1.27 0)
+					(length 3.81)
+					(name "BTN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -1.27 0)
+					(length 3.81)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Vario_Buzzer_V2:BMP390_8"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 13.97 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "BMP390_8"
+				(at 0 -13.97 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Adafruit BMP390/BMP5xx breakout pads"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "BMP390_8_0_1"
+				(rectangle
+					(start -8.89 11.43)
+					(end 7.62 -11.43)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "BMP390_8_1_1"
+				(pin passive line
+					(at -12.7 8.89 0)
+					(length 3.81)
+					(name "VCC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 6.35 0)
+					(length 3.81)
+					(name "3V3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 3.81 0)
+					(length 3.81)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 1.27 0)
+					(length 3.81)
+					(name "SCK/SCL"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -1.27 0)
+					(length 3.81)
+					(name "SDO/ADR"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -3.81 0)
+					(length 3.81)
+					(name "SDI/SDA"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -6.35 0)
+					(length 3.81)
+					(name "CS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -8.89 0)
+					(length 3.81)
+					(name "INT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Vario_Buzzer_V2:Buzzer_2"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "BZ"
+				(at 0 6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Buzzer_2"
+				(at 0 -6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Passive buzzer"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Buzzer_2_0_1"
+				(rectangle
+					(start -8.89 3.81)
+					(end 7.62 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "Buzzer_2_1_1"
+				(pin passive line
+					(at -12.7 1.27 0)
+					(length 3.81)
+					(name "+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -1.27 0)
+					(length 3.81)
+					(name "-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Vario_Buzzer_V2:Comidox_5V_Booster_3"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "U"
+				(at 2.54 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Comidox_5V_Booster_3"
+				(at 0 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Vario_Buzzer_V2:Comidox_5V_Booster_10.75x10.75_3Pin"
+				(at 0 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 -7.62 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Comidox 5V boost converter module, 3-pin (Vin/GND/Vout)"
+				(at 0 -10.16 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "boost converter 5V step-up Comidox"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Comidox_5V_Booster_3_0_1"
+				(rectangle
+					(start 0 5.08)
+					(end 7.62 -5.08)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "Comidox_5V_Booster_3_1_1"
+				(pin power_in line
+					(at -2.54 2.54 0)
+					(length 2.54)
+					(name "Vin"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -2.54 -2.54 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_out line
+					(at 10.16 0 180)
+					(length 2.54)
+					(name "Vout"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Vario_Buzzer_V2:Conn_2"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_2"
+				(at 0 -6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Two-pin connector"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Conn_2_0_1"
+				(rectangle
+					(start -8.89 3.81)
+					(end 7.62 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "Conn_2_1_1"
+				(pin passive line
+					(at -12.7 1.27 0)
+					(length 3.81)
+					(name "+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -1.27 0)
+					(length 3.81)
+					(name "-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Vario_Buzzer_V2:GPS_M100_4"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 8.89 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "GPS_M100_4"
+				(at 0 -8.89 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "HGLRC M100 Mini manual pin order"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "GPS_M100_4_0_1"
+				(rectangle
+					(start -8.89 6.35)
+					(end 7.62 -6.35)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "GPS_M100_4_1_1"
+				(pin passive line
+					(at -12.7 3.81 0)
+					(length 3.81)
+					(name "RX"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 1.27 0)
+					(length 3.81)
+					(name "TX"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -1.27 0)
+					(length 3.81)
+					(name "VCC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -3.81 0)
+					(length 3.81)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Vario_Buzzer_V2:M16968_OLED_RotaryKnob_9"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 2.54 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "M16968_OLED_RotaryKnob_9"
+				(at 0 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Vario_Buzzer_V2:OLED_M16968_59x35_9Pin"
+				(at 0 -5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 -7.62 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "M16968 OLED display + rotary encoder + BACK/CONFIRM buttons module, 9-pin 2.54mm header"
+				(at 0 -10.16 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "OLED rotary encoder module M16968"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "M16968_OLED_RotaryKnob_9_0_1"
+				(rectangle
+					(start 0 11.43)
+					(end 15.24 -11.43)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "M16968_OLED_RotaryKnob_9_1_1"
+				(pin power_in line
+					(at -2.54 10.16 0)
+					(length 2.54)
+					(name "3v3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -2.54 7.62 0)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -2.54 5.08 0)
+					(length 2.54)
+					(name "BACK"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -2.54 2.54 0)
+					(length 2.54)
+					(name "ENC_B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -2.54 0 0)
+					(length 2.54)
+					(name "ENC_A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -2.54 -2.54 0)
+					(length 2.54)
+					(name "ENC_PUSH"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at -2.54 -5.08 0)
+					(length 2.54)
+					(name "OLED_SCL"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin bidirectional line
+					(at -2.54 -7.62 0)
+					(length 2.54)
+					(name "OLED_SDA"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -2.54 -10.16 0)
+					(length 2.54)
+					(name "CONFIRM"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Vario_Buzzer_V2:SHT41_5"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 10.16 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SHT41_5"
+				(at 0 -10.16 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Adafruit SHT41 breakout pads"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "SHT41_5_0_1"
+				(rectangle
+					(start -8.89 7.62)
+					(end 7.62 -7.62)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "SHT41_5_1_1"
+				(pin passive line
+					(at -12.7 5.08 0)
+					(length 3.81)
+					(name "VCC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 2.54 0)
+					(length 3.81)
+					(name "3V3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 0 0)
+					(length 3.81)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -2.54 0)
+					(length 3.81)
+					(name "SCL"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -5.08 0)
+					(length 3.81)
+					(name "SDA"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Vario_Buzzer_V2:SPDT_Switch_3"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "SW"
+				(at 0 7.62 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SPDT_Switch_3"
+				(at 0 -7.62 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "SPDT slide switch"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "SPDT_Switch_3_0_1"
+				(rectangle
+					(start -8.89 5.08)
+					(end 7.62 -5.08)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "SPDT_Switch_3_1_1"
+				(pin passive line
+					(at -12.7 2.54 0)
+					(length 3.81)
+					(name "ON"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 0 0)
+					(length 3.81)
+					(name "COM"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -2.54 0)
+					(length 3.81)
+					(name "NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Vario_Buzzer_V2:SparkFun_Qwiic_OLED_1p3"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 8.89 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SparkFun_Qwiic_OLED_1p3"
+				(at 0 -8.89 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "SparkFun Qwiic OLED 1.3in breakout"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "SparkFun_Qwiic_OLED_1p3_0_1"
+				(rectangle
+					(start -8.89 6.35)
+					(end 7.62 -6.35)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "SparkFun_Qwiic_OLED_1p3_1_1"
+				(pin passive line
+					(at -12.7 3.81 0)
+					(length 3.81)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 1.27 0)
+					(length 3.81)
+					(name "VDD/3V3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -1.27 0)
+					(length 3.81)
+					(name "SDA"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -3.81 0)
+					(length 3.81)
+					(name "SCL"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Vario_Buzzer_V2:SparkFun_Thing_Plus_ESP32_WROOM_C"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J10"
+				(at 14.224 30.988 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "SparkFun Thing Plus ESP32 WROOM-C USB-C"
+				(at 14.732 35.052 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "Vario_Buzzer_V2:SparkFun_Thing_Plus_ESP32_WROOM_C_Header"
+				(at 14.986 -22.86 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at -55 84 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "SparkFun_Thing_Plus_ESP32_WROOM_C_0_1"
+				(rectangle
+					(start -8.89 33.02)
+					(end 40.64 -20.32)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "SparkFun_Thing_Plus_ESP32_WROOM_C_1_1"
+				(pin passive line
+					(at -12.7 15.24 0)
+					(length 3.81)
+					(name "SDA/ESP21"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 12.7 0)
+					(length 3.81)
+					(name "SCL/ESP22"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 44.45 0 180)
+					(length 3.81)
+					(name "GPIO6/ESP14"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 44.45 10.16 180)
+					(length 3.81)
+					(name "GPIO5/ESP32"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 44.45 12.7 180)
+					(length 3.81)
+					(name "GPIO4/ESP15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 44.45 15.24 180)
+					(length 3.81)
+					(name "GPIO3/ESP33"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 44.45 5.08 180)
+					(length 3.81)
+					(name "GPIO2/ESP27"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 44.45 2.54 180)
+					(length 3.81)
+					(name "GPIO1/ESP12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -2.54 0)
+					(length 3.81)
+					(name "D13/ESP13_STAT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 27.94 0)
+					(length 3.81)
+					(name "V_USB"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 20.32 0)
+					(length 3.81)
+					(name "EN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 30.48 0)
+					(length 3.81)
+					(name "V_BATT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 44.45 7.62 180)
+					(length 3.81)
+					(name "FREEBIE/ESP4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "13"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 0 0)
+					(length 3.81)
+					(name "TX_ESP17"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "14"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 2.54 0)
+					(length 3.81)
+					(name "RX_ESP16"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 10.16 0)
+					(length 3.81)
+					(name "MISO/POCI_ESP19"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "16"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 7.62 0)
+					(length 3.81)
+					(name "MOSI/PICO_ESP23"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "17"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 5.08 0)
+					(length 3.81)
+					(name "SCK_ESP18"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "18"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 44.45 -15.24 180)
+					(length 3.81)
+					(name "A5/ESP35"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "19"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 44.45 -12.7 180)
+					(length 3.81)
+					(name "A4/ESP36"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "20"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 44.45 -10.16 180)
+					(length 3.81)
+					(name "A3/ESP39"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "21"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 44.45 -7.62 180)
+					(length 3.81)
+					(name "A2/ESP34"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "22"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 44.45 -5.08 180)
+					(length 3.81)
+					(name "A1/ESP25"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "23"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 44.45 -2.54 180)
+					(length 3.81)
+					(name "A0/ESP26"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "24"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 17.78 0)
+					(length 3.81)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "25"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 44.45 -17.78 180)
+					(length 3.81)
+					(name "AREF/NC"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "26"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 25.4 0)
+					(length 3.81)
+					(name "3V3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "27"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 22.86 0)
+					(length 3.81)
+					(name "RESET"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "28"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Vario_Buzzer_V2:TP4057_Charger_2"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "U"
+				(at 0 6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TP4057_Charger_2"
+				(at 0 -6.35 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "TP4057 module BAT pads only"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "TP4057_Charger_2_0_1"
+				(rectangle
+					(start -8.89 3.81)
+					(end 7.62 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(symbol "TP4057_Charger_2_1_1"
+				(pin passive line
+					(at -12.7 1.27 0)
+					(length 3.81)
+					(name "BAT+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 -1.27 0)
+					(length 3.81)
+					(name "BAT-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "power:PWR_FLAG"
+			(power global)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "#FLG"
+				(at 0 1.905 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "PWR_FLAG"
+				(at 0 3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Special symbol for telling ERC where power comes from"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "flag power"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "PWR_FLAG_0_0"
+				(pin power_out line
+					(at 0 0 90)
+					(length 0)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "PWR_FLAG_0_1"
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 1.27) (xy -1.016 1.905) (xy 0 2.54) (xy 1.016 1.905) (xy 0 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+	)
+	(text "External M100 GPS plugs into SparkFun onboard Qwiic socket as UART: GPIO21/SDA=GPS TX into ESP RX, GPIO22/SCL=GPS RX from ESP TX."
+		(exclude_from_sim no)
+		(at 76.01 60.9 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "0d07d82b-a252-4cac-b63e-431443e1f13d")
+	)
+	(text "I2C bus moved off SparkFun Qwiic pins: SDA uses ESP33, SCL uses ESP32; onboard legacy M100 footprint nets are unused."
+		(exclude_from_sim no)
+		(at 76.01 54.9 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "1d59b588-6136-4267-9acb-34748d50c708")
+	)
+	(text "SparkFun Thing Plus and M16968 OLED/rotary module replace the Feather/FeatherWing. OLED/SHT/BMP share relocated SDA/SCL; rotary controls replace standalone tactile switches."
+		(exclude_from_sim no)
+		(at 76.01 42.9 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "34d62a90-5c08-458b-b766-8d80d6849605")
+	)
+	(text "Three 5V boosted buzzer channels use separate S8050 transistors; copied JST/slide-switch footprints are preserved and PCB remains placement-only with no traces."
+		(exclude_from_sim no)
+		(at 76.01 66.9 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "f071e086-a2ad-4490-9dfa-40edcb67ba34")
+	)
+	(no_connect
+		(at 59.45 196.25)
+		(uuid "11546b87-1ab3-4176-a33f-2d6eed1c8232")
+	)
+	(no_connect
+		(at 36.83 146.05)
+		(uuid "176906fd-65c7-48a3-b3cd-8fea74b2bbca")
+	)
+	(no_connect
+		(at 62.23 223.52)
+		(uuid "22c78670-ed1b-4d1a-92ae-15fcb2051ada")
+	)
+	(no_connect
+		(at 93.98 146.05)
+		(uuid "25ea9371-d7ae-4ffb-a67d-aa66b5b145c6")
+	)
+	(no_connect
+		(at 225.31 138.36)
+		(uuid "28b854da-3033-4493-84ea-308046b71f93")
+	)
+	(no_connect
+		(at 36.83 148.59)
+		(uuid "c83961db-2f9f-4444-9f81-f98428cb2725")
+	)
+	(no_connect
+		(at 36.83 138.43)
+		(uuid "d17f1c64-5bf1-4450-a766-c6ac6c767ad1")
+	)
+	(no_connect
+		(at 36.83 140.97)
+		(uuid "268d53b1-c0f0-4a9f-b6e1-4eb9ce593e40")
+	)
+	(no_connect
+		(at 36.83 143.51)
+		(uuid "ad481d78-7252-4850-abca-c528cd5c7585")
+	)
+	(no_connect
+		(at 93.98 153.67)
+		(uuid "6fac2cab-7985-4562-9ca4-db1593522079")
+	)
+	(no_connect
+		(at 34.7 93.21)
+		(uuid "2ddf1962-252c-4533-b4bc-19b102a5ce89")
+	)
+	(no_connect
+		(at 36.83 128.27)
+		(uuid "47754fc7-e4f7-446d-8cae-f5000f7fcf6b")
+	)
+	(no_connect
+		(at 59.45 191.17)
+		(uuid "5624052b-3814-4035-9a97-2ac747cae547")
+	)
+	(no_connect
+		(at 93.98 166.37)
+		(uuid "59643d8b-1ef5-4562-8cb1-480863df53e4")
+	)
+	(no_connect
+		(at 93.98 135.89)
+		(uuid "732dca2e-eb51-42a4-9cde-ed1b112baaa1")
+	)
+	(no_connect
+		(at 36.83 120.65)
+		(uuid "7f0a5909-e211-492f-a80b-44b21cb93fd5")
+	)
+	(no_connect
+		(at 93.98 148.59)
+		(uuid "9ed914a5-7e1b-4c61-b955-7ad014b39df0")
+	)
+	(no_connect
+		(at 225.31 106.55)
+		(uuid "a51ea942-2812-4ff2-b2ec-9bf1164af6e3")
+	)
+	(no_connect
+		(at 225.31 114.17)
+		(uuid "aaf6de68-e575-47cd-b1cc-78f9672605a4")
+	)
+	(no_connect
+		(at 225.31 119.25)
+		(uuid "d1a1db63-d18a-48fa-90ba-c056cc89aa4b")
+	)
+	(no_connect
+		(at 225.31 121.79)
+		(uuid "e37f18f9-c43f-4072-aaf9-7a30b6c5ca3a")
+	)
+	(no_connect
+		(at 36.83 125.73)
+		(uuid "fcf36353-c79e-441f-86f3-4cd550604b46")
+	)
+	(wire
+		(pts
+			(xy 189.23 139.7) (xy 187.96 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0267e2f5-a275-47c5-82a6-3a9a8fb3c601")
+	)
+	(wire
+		(pts
+			(xy 220.23 143.44) (xy 225.31 143.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "02e54c41-b4ec-4ef9-be9d-3abc061210b4")
+	)
+	(wire
+		(pts
+			(xy 100.33 227.33) (xy 106.68 227.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "03ef183a-07b6-4743-820a-e9b7fbd766b6")
+	)
+	(wire
+		(pts
+			(xy 198.12 217.17) (xy 212.09 217.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "06bf47f0-739d-426c-9c53-f38b9e88e4d7")
+	)
+	(wire
+		(pts
+			(xy 102.87 158.75) (xy 93.98 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0e1fe51f-7bf9-40c8-bb57-28b777b0a2cb")
+	)
+	(wire
+		(pts
+			(xy 161.29 207.01) (xy 163.83 203.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1845ba03-7281-4e1e-93bc-72c98fa276b0")
+	)
+	(wire
+		(pts
+			(xy 102.87 133.35) (xy 93.98 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1eec5672-5320-4fc2-a7e7-4ca74af65aac")
+	)
+	(wire
+		(pts
+			(xy 116.84 232.41) (xy 114.3 232.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "21ec6f06-5f24-4d66-9e6e-ae9b5716734d")
+	)
+	(wire
+		(pts
+			(xy 220.23 81.63) (xy 225.31 81.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "26f1cacd-7379-4f03-899a-72bc7920353b")
+	)
+	(wire
+		(pts
+			(xy 189.23 151.13) (xy 187.96 148.59)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3274e5dc-a680-4263-b91d-4cfad5a9690d")
+	)
+	(wire
+		(pts
+			(xy 117.25 216.4) (xy 114.71 216.4)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3b7b30e8-4337-4231-8e47-a8cdd6b7e815")
+	)
+	(wire
+		(pts
+			(xy 44.45 233.68) (xy 46.99 227.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3d3cc27b-f127-486a-90a4-fd3893e8dc56")
+	)
+	(wire
+		(pts
+			(xy 220.23 79.09) (xy 225.31 79.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "42f5a04a-7c35-4078-9daa-64f42c6a7f47")
+	)
+	(wire
+		(pts
+			(xy 44.45 222.25) (xy 46.99 224.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "44a5710f-2225-4481-8856-7487fc751168")
+	)
+	(wire
+		(pts
+			(xy 220.23 84.17) (xy 225.31 84.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "45528fac-247c-4a44-9689-5dc55901fc99")
+	)
+	(wire
+		(pts
+			(xy 102.87 163.83) (xy 93.98 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "465cdb21-0784-4481-b2c3-000aa037f70f")
+	)
+	(wire
+		(pts
+			(xy 251.46 205.74) (xy 255.27 205.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "46d6bd65-2695-4ee7-8c8a-68fd5d8fb4e8")
+	)
+	(wire
+		(pts
+			(xy 29.62 98.29) (xy 34.7 98.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "47113382-1a1e-4d08-a076-904522ba6bdb")
+	)
+	(wire
+		(pts
+			(xy 220.23 116.71) (xy 225.31 116.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "477a5866-0615-4501-bcf1-5aceea519c24")
+	)
+	(wire
+		(pts
+			(xy 100.33 194.31) (xy 106.68 194.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "485c3745-eedf-49fd-9e06-975c83c7a33d")
+	)
+	(wire
+		(pts
+			(xy 220.23 111.63) (xy 225.31 111.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4a71f776-87d5-4d63-99ea-cde9b5b389d4")
+	)
+	(wire
+		(pts
+			(xy 43.18 242.57) (xy 43.18 241.3)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4d9a5d3a-f7ef-4580-9340-2ac37d7e8ba8")
+	)
+	(wire
+		(pts
+			(xy 31.75 135.89) (xy 36.83 135.89)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "534ddc89-5041-49a8-88c4-a1231a65968f")
+	)
+	(wire
+		(pts
+			(xy 179.07 219.71) (xy 172.72 219.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5668acc7-ccdb-492c-b089-37ad20884b36")
+	)
+	(wire
+		(pts
+			(xy 31.75 130.81) (xy 36.83 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5cabaa9a-bf46-477f-bdfc-c20b24cc3f53")
+	)
+	(wire
+		(pts
+			(xy 96.52 151.13) (xy 93.98 151.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5cd86958-7f1e-4cb2-839f-da5591ec8642")
+	)
+	(wire
+		(pts
+			(xy 196.85 205.74) (xy 210.82 205.74)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6050f834-0a92-49e5-bca9-beae8a2adc3b")
+	)
+	(wire
+		(pts
+			(xy 158.75 224.79) (xy 165.1 218.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "74647fa4-487f-437d-9bf0-541bc4c1baef")
+	)
+	(wire
+		(pts
+			(xy 48.26 242.57) (xy 43.18 242.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7b48f5df-833f-4d51-a1f5-8f4e2de54469")
+	)
+	(wire
+		(pts
+			(xy 178.66 235.72) (xy 172.31 235.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7c89c975-8c16-4f91-bd79-8c40df5d43fd")
+	)
+	(wire
+		(pts
+			(xy 178.66 240.8) (xy 178.66 235.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8194ba74-bff4-49bb-9588-a698acfa12c4")
+	)
+	(wire
+		(pts
+			(xy 31.75 123.19) (xy 36.83 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8698025b-4773-4ecb-8ddb-d54e6c3485e2")
+	)
+	(wire
+		(pts
+			(xy 116.84 199.39) (xy 114.3 199.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "87552bae-cb68-4fc7-9272-728ded3ec5a5")
+	)
+	(wire
+		(pts
+			(xy 172.72 219.71) (xy 172.72 218.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8e52d819-903b-4cd0-87a9-11dca5a35294")
+	)
+	(wire
+		(pts
+			(xy 43.18 246.38) (xy 48.26 245.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8edd04ed-2cff-4d47-b0ec-d2358cf42bab")
+	)
+	(wire
+		(pts
+			(xy 29.62 95.75) (xy 34.7 95.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "96919af9-3105-4707-9d11-bc64963b15f4")
+	)
+	(wire
+		(pts
+			(xy 196.85 195.58) (xy 210.82 195.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9b606f85-8159-403f-ae95-18b019615742")
+	)
+	(wire
+		(pts
+			(xy 158.34 240.8) (xy 164.69 234.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a2e2964c-fa96-4943-9f49-d5f58f3d09e4")
+	)
+	(wire
+		(pts
+			(xy 29.62 64.48) (xy 34.7 64.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ab8f455c-7639-4aa4-97db-a448c6fe9277")
+	)
+	(wire
+		(pts
+			(xy 220.23 104.01) (xy 225.31 104.01)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b6d89dfb-6df9-4ca2-8a34-4570581961a2")
+	)
+	(wire
+		(pts
+			(xy 251.46 195.58) (xy 255.27 195.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bb3820cf-dbd6-4b03-a2e8-285e23f3dfdf")
+	)
+	(wire
+		(pts
+			(xy 29.62 81.02) (xy 34.7 81.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "be6c99ae-8468-4043-b3b1-0d1362dad7bc")
+	)
+	(wire
+		(pts
+			(xy 220.23 145.98) (xy 225.31 145.98)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c22d80b0-b3aa-42ca-88f6-ed2d0c18d1dc")
+	)
+	(wire
+		(pts
+			(xy 102.87 161.29) (xy 93.98 161.29)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c3127130-b595-4c6c-8e53-05a3c91950e1")
+	)
+	(wire
+		(pts
+			(xy 29.62 78.48) (xy 34.7 78.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c4f5c499-8b1f-474d-8a5e-6a0a5f655cec")
+	)
+	(wire
+		(pts
+			(xy 95.25 143.51) (xy 93.98 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c5817fe2-7df7-4548-b937-87c16680eeca")
+	)
+	(wire
+		(pts
+			(xy 220.23 135.82) (xy 225.31 135.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c6513ec7-8ac2-41cc-88e9-199bb1f582ea")
+	)
+	(wire
+		(pts
+			(xy 172.31 235.72) (xy 172.31 234.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cc6a6072-bd7a-4554-8013-cde11ea918ab")
+	)
+	(wire
+		(pts
+			(xy 179.07 224.79) (xy 179.07 219.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cde8677f-b2fe-4e9a-8454-913cd6bcf292")
+	)
+	(wire
+		(pts
+			(xy 31.75 133.35) (xy 36.83 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d056b030-4e5f-4878-b460-fb5ec50468c1")
+	)
+	(wire
+		(pts
+			(xy 220.23 140.9) (xy 225.31 140.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d47ed5b6-ef00-4ca7-b277-572b1416ed72")
+	)
+	(wire
+		(pts
+			(xy 29.62 67.02) (xy 34.7 67.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d5d56b01-dfbc-4ead-9ee0-fb3e68f6804a")
+	)
+	(wire
+		(pts
+			(xy 171.45 205.74) (xy 171.45 203.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d7ad1ccb-cdd3-4c7c-a5a6-f3269363c84a")
+	)
+	(wire
+		(pts
+			(xy 100.74 211.32) (xy 107.09 211.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dc312b26-f23d-40bb-87c1-205725b01d7a")
+	)
+	(wire
+		(pts
+			(xy 251.46 215.9) (xy 255.27 215.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "df20e0a3-8de4-4ce5-aa82-b90b51f2fe52")
+	)
+	(wire
+		(pts
+			(xy 220.23 86.71) (xy 225.31 86.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e4c36da6-8364-4a2b-91f6-8d37361db522")
+	)
+	(wire
+		(pts
+			(xy 54.37 198.79) (xy 59.45 198.79)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eb93e23c-19ab-4b3a-b7dc-df00acb474c0")
+	)
+	(wire
+		(pts
+			(xy 31.75 118.11) (xy 36.83 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ec286c09-482b-4e55-a636-a7904366e849")
+	)
+	(wire
+		(pts
+			(xy 25.4 151.13) (xy 36.83 151.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f3c46033-125d-4c27-89b8-c7b2c5f09cda")
+	)
+	(wire
+		(pts
+			(xy 101.6 156.21) (xy 93.98 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f4a945fc-1c6c-4a70-b196-da9103417bba")
+	)
+	(wire
+		(pts
+			(xy 54.37 193.71) (xy 59.45 193.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f916f67d-e776-4711-91e7-757c3ce2cb15")
+	)
+	(wire
+		(pts
+			(xy 102.87 138.43) (xy 93.98 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f92dd829-a693-4e5c-9235-016d05608c08")
+	)
+	(wire
+		(pts
+			(xy 220.23 109.09) (xy 225.31 109.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f9af2666-6bd9-48d4-a767-d7b8681b3644")
+	)
+	(label "GND"
+		(at 54.61 196.85 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "01285573-d493-49b7-b5b5-77ca1f0ff6e8")
+	)
+	(label "SDA"
+		(at 102.87 133.35 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "03dcc59c-1602-4dd0-b179-aaadce1d6281")
+	)
+	(label "3V3"
+		(at 31.75 123.19 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "06f02a80-6824-4013-ada3-eec23365dba5")
+	)
+	(label "BUZZER_BASE"
+		(at 116.84 199.39 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "07ad8a9a-1d46-4df3-a349-d8c7a6bb1d33")
+	)
+	(label "GND"
+		(at 220.23 109.09 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "09e25fd4-3717-49a1-ae33-b0670871350c")
+	)
+	(label "3V3"
+		(at 220.23 104.01 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "0aab4388-f8ac-4a9f-98d6-6fe3ee5e9fb4")
+	)
+	(label "GPS_TX_THING_RX"
+		(at 31.75 133.35 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "0b941813-3182-481e-a30b-3e29e5624bf1")
+	)
+	(label "BUZZER_BASE2"
+		(at 196.85 205.74 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "0ba92505-3d4b-4a2a-a9f8-624f1d7f33ef")
+	)
+	(label "GND"
+		(at 31.75 130.81 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "0cd7e358-184d-4775-8ca6-b5fd0025330d")
+	)
+	(label "GND"
+		(at 251.46 205.74 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "0e888052-62d8-4ffa-a8e4-51c569acf9b9")
+	)
+	(label "GND"
+		(at 220.23 140.9 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "0e8daf77-26e7-48ae-9bc8-55b669b25c10")
+	)
+	(label "BUZZER_LOW"
+		(at 106.68 204.47 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "14b38626-a3ba-4481-aa83-e482503b7aed")
+	)
+	(label "GND"
+		(at 187.96 143.51 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1a41a01c-af81-48d8-9398-415ce4ee838f")
+	)
+	(label "BUZZER_BASE3"
+		(at 198.12 217.17 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1cc24ccb-fb73-4702-9ba3-7fed77b445ef")
+	)
+	(label "3V3"
+		(at 54.37 193.71 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "1cc48a12-8795-4e45-9833-1d75aab596a3")
+	)
+	(label "OLED_CONFIRM"
+		(at 165.47 115.06 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "1e6832be-c87a-4425-9930-5ba900a84186")
+	)
+	(label "GND"
+		(at 251.46 195.58 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1ec927d2-6b9a-4f61-909e-cd95ce175182")
+	)
+	(label "GND"
+		(at 165.47 97.28 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "2069711a-95d0-4687-bdd6-aca49e424773")
+	)
+	(label "SCL"
+		(at 102.87 138.43 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "26953dbc-c3ae-4e43-aad9-62ec572a481f")
+	)
+	(label "D13_BUZZER_GPIO13"
+		(at 25.4 151.13 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "2732ecdf-c86c-4fc1-b002-a75b1483abf9")
+	)
+	(label "SCL"
+		(at 220.23 143.44 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "2847dc7a-8d00-42cd-9a65-f59ea01f5455")
+	)
+	(label "SW_BAT"
+		(at 29.62 98.29 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "29440a6e-7af6-4e33-b876-d3b110442e65")
+	)
+	(label "BTN_BACK_GPIO3"
+		(at 165.47 99.82 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "29b9a8ca-94fc-4346-b262-4285d44694e0")
+	)
+	(label "SW_BAT"
+		(at 54.37 198.79 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "2a6b2a7e-a71b-4305-bfc5-b7a590878d65")
+	)
+	(label "BUZZER_BASE"
+		(at 262.89 195.58 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "2fcf55ce-fdb5-45df-9c10-f1d2be948e2e")
+	)
+	(label "BUZZER_LOW3"
+		(at 45.72 259.08 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "332b3e79-fea7-4438-bea3-027c307c996c")
+	)
+	(label "BUZZER2_ESP26"
+		(at 218.44 205.74 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "3e963428-3377-42bd-a0a2-aadffd87f67d")
+	)
+	(label "BUZZER_LOW"
+		(at 171.45 205.74 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4a2fef69-c09c-4e8c-af52-82bb7d604f23")
+	)
+	(label "GPS_RX_THING_TX"
+		(at 31.75 135.89 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "4a7edd83-c7ea-4305-a4e5-dec1a256c133")
+	)
+	(label "BTN_NEXT_GPIO4"
+		(at 165.47 102.36 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "4e4bccf2-55b2-4c8d-9063-778d4d91821c")
+	)
+	(label "BUZZER_LOW2"
+		(at 107.09 221.48 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4ff4b18f-6c6e-4a4b-be7c-d38ed3cce239")
+	)
+	(label "BUZZER_LOW2"
+		(at 172.72 218.44 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5036d28e-45d6-4654-8b72-363c196fd963")
+	)
+	(label "BOOST_5V"
+		(at 158.34 240.8 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "54d5a734-ed98-436d-a847-e41bf72b620f")
+	)
+	(label "BUZZER3_GPIO2_ESP27"
+		(at 219.71 217.17 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "557d2346-a7a9-44da-8f16-c140c2ee262f")
+	)
+	(label "GND"
+		(at 100.33 194.31 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5594f3b7-0e82-4a31-8c4c-8360fdc215a3")
+	)
+	(label "BUZZER_BASE2"
+		(at 117.25 216.4 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "56485c5b-b74b-431a-a773-be38ee16216d")
+	)
+	(label "BOOST_5V"
+		(at 45.72 256.54 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5a446abf-a419-42ee-9bcd-4ddff36e235e")
+	)
+	(label "BTN_DOWN_GPIO5"
+		(at 102.87 158.75 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "5b0602a9-8b8f-4cb5-95d7-a82f769118f3")
+	)
+	(label "BOOST_5V"
+		(at 158.75 224.79 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "5f64c304-dc0c-482f-86e2-39ccc5e06e37")
+	)
+	(label "BAT_IN"
+		(at 29.62 78.48 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "60182364-2405-4c21-b1f9-4ff385aa4667")
+	)
+	(label "SW_BAT"
+		(at 189.23 139.7 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "6058e8e4-e37f-4b4a-be74-54c7f4066ae6")
+	)
+	(label "OLD_GPS_TX_UNUSED"
+		(at 220.23 81.63 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "612d1e82-46c8-4410-a93a-83c8cc115d5b")
+	)
+	(label "SDA"
+		(at 165.47 112.52 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "6a93d895-ffa1-431c-865d-4ec35530a0ea")
+	)
+	(label "BTN_NEXT_GPIO4"
+		(at 102.87 161.29 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "6d429592-30a4-4ed8-809b-c83d9452dfe4")
+	)
+	(label "BUZZER3_GPIO2_ESP27"
+		(at 95.25 143.51 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "6f2322e1-bad5-4321-95db-98515feddbab")
+	)
+	(label "BTN_UP_GPIO21"
+		(at 165.47 107.44 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "70d7bcb0-afa1-409a-afff-4568cad1132b")
+	)
+	(label "BTN_BACK_GPIO3"
+		(at 102.87 163.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "7153c0cc-9245-4be4-ac0f-cf3bd2627175")
+	)
+	(label "BUZZER2_ESP26"
+		(at 96.52 151.13 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "72c0f0a2-a467-41f1-83fd-705bdbc69648")
+	)
+	(label "BOOST_5V"
+		(at 44.45 222.25 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "73f45a71-453a-4b30-88d9-3bfcb6dc9dc5")
+	)
+	(label "BOOST_5V"
+		(at 67.31 194.31 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "781d7f70-ce3c-49e0-857f-1dfdcfa869d9")
+	)
+	(label "BUZZER_LOW"
+		(at 44.45 233.68 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7ab28438-54b6-48a1-8be3-5b2208e55781")
+	)
+	(label "BOOST_5V"
+		(at 165.1 218.44 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "812f7d58-3bfe-4601-9d30-3898513454ad")
+	)
+	(label "BOOST_5V"
+		(at 43.18 241.3 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "852c6504-1d29-4154-9875-275617f1271d")
+	)
+	(label "GND"
+		(at 100.33 227.33 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "85fbe56d-b3a3-4b5f-8e5f-126b239e0ac6")
+	)
+	(label "BUZZER_LOW2"
+		(at 43.18 246.38 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "8cc79722-5ba6-49d9-9578-2c91beb652af")
+	)
+	(label "BOOST_5V"
+		(at 161.29 207.01 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "8dea383a-47c7-4277-b366-0b8e47bc2675")
+	)
+	(label "BOOST_5V"
+		(at 164.69 234.45 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "8df86052-2d87-4c98-9e23-d7e2abdc0b45")
+	)
+	(label "BUZZER_BASE2"
+		(at 262.89 205.74 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8fedf9e3-908b-43f3-9407-4aaa4a3fc7a1")
+	)
+	(label "BUZZER_BASE3"
+		(at 116.84 232.41 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "9323741d-5115-4691-a471-a05cb9751745")
+	)
+	(label "GND"
+		(at 29.62 81.02 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "99a769ea-ee99-40ed-8147-79f5b35db307")
+	)
+	(label "BOOST_5V"
+		(at 163.83 203.2 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "a8710c55-fc0b-416b-b0ef-c8f80a422470")
+	)
+	(label "BAT_IN"
+		(at 29.62 95.75 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "ac1a41ff-61df-4d0c-ad8a-487c16fba61a")
+	)
+	(label "BAT_IN"
+		(at 29.62 64.48 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "acd4a867-6caa-4d26-a845-2e456f4ce0f9")
+	)
+	(label "BUZZER_LOW2"
+		(at 179.07 224.79 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "afcc65b6-3570-452e-9934-aad9b4d31b00")
+	)
+	(label "D13_BUZZER_GPIO13"
+		(at 218.44 195.58 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b0e1a56d-b4be-4211-9efc-e3bd1d1ac992")
+	)
+	(label "GND"
+		(at 220.23 86.71 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "b40cd10c-12c4-46bc-abd4-e6576c245e9b")
+	)
+	(label "BUZZER_LOW3"
+		(at 106.68 237.49 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b5092d79-c204-4f13-9906-1a6fa69083b9")
+	)
+	(label "BUZZER_LOW"
+		(at 171.45 203.2 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b7d3f2b2-67b0-4312-9389-d6674e9153b0")
+	)
+	(label "SDA"
+		(at 220.23 116.71 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "bc9c76e7-5f8b-4081-85eb-df3406474fb0")
+	)
+	(label "BUZZER_BASE3"
+		(at 262.89 215.9 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c34b70b3-e854-4cfe-a5a8-0d686e3b21b4")
+	)
+	(label "SCL"
+		(at 220.23 111.63 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "c378ca8f-2480-44de-b15d-e7923766e850")
+	)
+	(label "GND"
+		(at 251.46 215.9 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c56144e7-b69a-4185-8398-a0b89472e990")
+	)
+	(label "3V3"
+		(at 189.23 151.13 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c96bfed7-8740-4edd-ba51-6fb9c309018b")
+	)
+	(label "BUZZER_LOW3"
+		(at 172.31 234.45 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d3a214e8-7d3e-483c-9658-a5141ea23ed4")
+	)
+	(label "SCL"
+		(at 165.47 109.98 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d6be1330-b7ff-4fc4-9b95-f8be9454bd94")
+	)
+	(label "SW_BAT"
+		(at 54.61 191.77 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "d6ebf198-cc95-4850-98cc-07fe85a3cc6f")
+	)
+	(label "GND"
+		(at 187.96 132.08 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "daf12c64-3b87-44ac-b855-019688fe49d7")
+	)
+	(label "3V3"
+		(at 220.23 135.82 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "dd0952dc-5340-4910-bd08-f32b85d9418e")
+	)
+	(label "GND"
+		(at 29.62 67.02 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "e0dc93b6-8429-4b3d-b5ef-692deda183c9")
+	)
+	(label "SW_BAT"
+		(at 31.75 118.11 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "e7249742-b99d-4559-9644-b0d1407880f8")
+	)
+	(label "BUZZER_LOW3"
+		(at 178.66 240.8 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "e75de4c2-4a8c-4468-bfb6-d6c920271984")
+	)
+	(label "OLED_CONFIRM"
+		(at 93.98 140.97 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e7c2ad99-07d0-414a-b591-9023e6772231")
+	)
+	(label "BUZZER_BASE"
+		(at 196.85 195.58 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e7fb9e52-c792-4a36-9738-896a1b72289d")
+	)
+	(label "3V3"
+		(at 165.47 94.74 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "ea9e9cb5-80f3-4972-8c82-71898694629c")
+	)
+	(label "OLD_GPS_RX_UNUSED"
+		(at 220.23 79.09 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "ec88bade-4b3f-4ebb-884f-3a5b76458e3d")
+	)
+	(label "BTN_UP_GPIO21"
+		(at 101.6 156.21 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "f154aa9c-d0a2-4bb5-9e3e-365a71f41c21")
+	)
+	(label "3V3"
+		(at 220.23 84.17 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "f17b63b5-63e8-4069-859a-516ad3f2bd4a")
+	)
+	(label "SDA"
+		(at 220.23 145.98 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "f9dc95fd-be67-4ed8-889f-5eccafc7f8aa")
+	)
+	(label "BTN_DOWN_GPIO5"
+		(at 165.47 104.9 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb08ebaf-3fb5-43bb-8c8f-5e9c5df42bff")
+	)
+	(label "GND"
+		(at 100.74 211.32 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fce36132-4613-46ad-b816-271ff53f755e")
+	)
+	(symbol
+		(lib_id "Vario_Buzzer_V2:SHT41_5")
+		(at 238.01 140.9 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "0248e817-9020-4c33-85f7-e2bd35415643")
+		(property "Reference" "J7"
+			(at 238.01 147.25 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SHT41 top pads"
+			(at 238.01 134.55 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Vario_Buzzer_V2:Adafruit_SHT41_Breakout_Top"
+			(at 238.01 140.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 58.01 24.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 238.01 140.9 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "77588b69-d88c-4fd9-a0e6-ed54e8747d54")
+		)
+		(pin "2"
+			(uuid "e10d6fb1-3dfa-44b1-863c-4be1d4670d4e")
+		)
+		(pin "3"
+			(uuid "ece51f5a-69e2-49c2-b23b-8feb233f22b7")
+		)
+		(pin "4"
+			(uuid "2592dab7-5d26-4273-968e-07c8857d4005")
+		)
+		(pin "5"
+			(uuid "4603417c-50c9-4cd0-852b-1f6bf64d6a91")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "J7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Vario_Buzzer_V2:TP4057_Charger_2")
+		(at 47.4 65.75 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "059cc4ff-b377-413e-b87c-4212ab375d1e")
+		(property "Reference" "U1"
+			(at 47.4 72.1 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TP4057 USB-C charger"
+			(at 47.4 59.4 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Vario_Buzzer_V2:TP4057_Module_12.2x18.5"
+			(at 47.4 65.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 25.4 31.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 47.4 65.75 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "9d4423ef-cb7c-4b94-a6bd-d7615bb83698")
+		)
+		(pin "2"
+			(uuid "ed6c16b8-e379-423a-856a-2bf8a6806c07")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Vario_Buzzer_V2:Conn_2")
+		(at 47.4 79.75 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "059f231b-167e-4d7d-8e70-3850f11b0f84")
+		(property "Reference" "J1"
+			(at 47.4 86.1 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "2600mAh LiPo JST-PH bottom"
+			(at 47.4 73.4 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_JST:JST_PH_S2B-PH-K_1x02_P2.00mm_Horizontal"
+			(at 47.4 79.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 25.4 31.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 47.4 79.75 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "66e7d411-c2a7-4c68-9656-07edfdd4e691")
+		)
+		(pin "2"
+			(uuid "1f47605d-cde9-47fe-a502-b72beb38e43d")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "J1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_BJT:S8050")
+		(at 109.63 216.4 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0cd3fc5d-3976-45a2-934d-bfb1f358a53c")
+		(property "Reference" "Q2"
+			(at 104.55 215.1299 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "S8050"
+			(at 104.55 217.6699 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+			(at 104.55 214.495 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "http://www.unisonic.com.tw/datasheet/S8050.pdf"
+			(at 109.63 216.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" "0.7A Ic, 20V Vce, Low Voltage High Current NPN Transistor, TO-92"
+			(at 109.63 216.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" "NPN"
+			(at 109.63 216.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" "1=E 2=B 3=C"
+			(at 109.63 216.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "09edbccd-6174-437c-af4a-d2a4921be35a")
+		)
+		(pin "3"
+			(uuid "e6feeeae-2eb4-49ed-a08a-635cb3f3da21")
+		)
+		(pin "2"
+			(uuid "ec571ccd-e6ee-4d02-99b7-a1d4b537b639")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "Q2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Small_US")
+		(at 187.96 146.05 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "24f83c6a-6527-4c25-b96f-ebcec4803e20")
+		(property "Reference" "C2"
+			(at 190.5 144.9069 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "0.1uF CER"
+			(at 190.5 147.4469 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Vario_Buzzer_V2:Ceramic_Cap_0.1uF_P5.00mm_V1"
+			(at 187.96 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 187.96 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "capacitor, small US symbol"
+			(at 187.96 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "924dc16b-1e4f-40f7-b7d7-5565e4be3760")
+		)
+		(pin "2"
+			(uuid "76b84689-2669-4326-8a25-0f98599091ea")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "C2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Vario_Buzzer_V2:SparkFun_Thing_Plus_ESP32_WROOM_C")
+		(at 49.53 148.59 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "2cd896ab-6b13-45a1-bd7f-15a29bb62ee6")
+		(property "Reference" "J10"
+			(at 63.754 117.602 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SparkFun Thing Plus ESP32 WROOM-C USB-C"
+			(at 64.262 113.538 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Vario_Buzzer_V2:SparkFun_Thing_Plus_ESP32_WROOM_C_Header"
+			(at 64.516 171.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at -5.47 64.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 49.53 148.59 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "927b5a0f-ef76-4e45-9ee1-15baa46c25b0")
+		)
+		(pin "2"
+			(uuid "6487a384-ed55-4479-944d-d322ece81458")
+		)
+		(pin "3"
+			(uuid "3086d663-ed50-4748-a563-0d8605548e29")
+		)
+		(pin "4"
+			(uuid "2848d53d-1740-4d5e-8f19-7f6fae259786")
+		)
+		(pin "5"
+			(uuid "1062c5c2-1f36-4062-a58e-cd05d83c4c87")
+		)
+		(pin "6"
+			(uuid "17915989-3839-4e9f-a0f0-7dba20bbbb86")
+		)
+		(pin "7"
+			(uuid "9ec7610e-b0c4-467a-a1f2-076ef97269b2")
+		)
+		(pin "8"
+			(uuid "1c44215d-7cd1-4815-a7a7-8125606d0e9f")
+		)
+		(pin "9"
+			(uuid "94d79dd7-04f7-440a-98d0-b1280e13073b")
+		)
+		(pin "10"
+			(uuid "992f31e0-7151-4025-a62f-47de045f0d07")
+		)
+		(pin "11"
+			(uuid "226e1e51-d8ea-41ca-a6dd-06077c445baf")
+		)
+		(pin "12"
+			(uuid "89e305c0-579b-4b7f-9b98-b29148530240")
+		)
+		(pin "13"
+			(uuid "8543eca7-1154-4668-9163-c759ab70669c")
+		)
+		(pin "14"
+			(uuid "ef9c21c2-4e0a-4252-80f1-c0f9bea9f6cf")
+		)
+		(pin "15"
+			(uuid "c849e6b2-78df-40a3-a8c5-9707d4a17487")
+		)
+		(pin "16"
+			(uuid "fe0ea626-b007-42d3-99b7-28fbc944556e")
+		)
+		(pin "17"
+			(uuid "d7365144-b1af-44ed-a79b-9f46521c9867")
+		)
+		(pin "18"
+			(uuid "5dcd6f7e-b5ae-4506-8ed7-1484b0711ec7")
+		)
+		(pin "19"
+			(uuid "a3fe5e1d-739a-42d2-b79a-ec598b90450a")
+		)
+		(pin "20"
+			(uuid "df6c0055-ad5f-41c2-82a4-1b6a766130bb")
+		)
+		(pin "21"
+			(uuid "2fe0f2d9-a3c8-49bc-8cfb-74965aff7f84")
+		)
+		(pin "22"
+			(uuid "ba88ad20-80a0-4e99-915c-19be5f5d2b99")
+		)
+		(pin "23"
+			(uuid "8843ff51-e0e6-467b-b143-ac3f73966a39")
+		)
+		(pin "24"
+			(uuid "0991bac6-8a83-44d0-835e-986c7cc8fc2b")
+		)
+		(pin "25"
+			(uuid "a405ae6e-d053-4395-8aeb-59c12b3fdf54")
+		)
+		(pin "26"
+			(uuid "0bc35248-03d2-4c63-a779-28ac04978811")
+		)
+		(pin "27"
+			(uuid "453e68f7-c086-4223-8974-e73e5b52387f")
+		)
+		(pin "28"
+			(uuid "da75cc4f-b792-459a-aa4c-8fdc84b52e26")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "J10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Vario_Buzzer_V2:Buzzer_2")
+		(at 59.69 226.06 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "314d1150-0cba-433a-8787-de3451346221")
+		(property "Reference" "BZ1"
+			(at 59.69 232.41 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "12085 Passive Buzzer 42R"
+			(at 59.436 218.948 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Buzzer_Beeper:Buzzer_12x8.5mm_P7.62mm_Custom"
+			(at 59.69 226.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at -76.31 144.06 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 59.69 226.06 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "bfa4fbb4-6a66-4bbc-a077-a09b9b1a4e1a")
+		)
+		(pin "2"
+			(uuid "6609834a-8905-43e9-94cb-8bf1effbf18d")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "BZ1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 259.08 195.58 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3af9e9d1-2897-4567-95b5-d31392529a0e")
+		(property "Reference" "R1-1"
+			(at 259.08 189.23 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 259.08 191.77 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+			(at 259.08 197.358 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 259.08 195.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 259.08 195.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "524e9450-9938-444f-b6f9-9e14816be2bd")
+		)
+		(pin "2"
+			(uuid "7bc9542d-45d6-4f54-ad1b-a5931ad765e9")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "R1-1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_BJT:S8050")
+		(at 109.22 232.41 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "44aa58b9-9d77-4ecf-9eb1-9e741915a069")
+		(property "Reference" "Q3"
+			(at 104.14 231.1399 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "S8050"
+			(at 104.14 233.6799 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+			(at 104.14 230.505 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "http://www.unisonic.com.tw/datasheet/S8050.pdf"
+			(at 109.22 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" "0.7A Ic, 20V Vce, Low Voltage High Current NPN Transistor, TO-92"
+			(at 109.22 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" "NPN"
+			(at 109.22 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" "1=E 2=B 3=C"
+			(at 109.22 232.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "d17641f4-a4d2-44d5-bc46-3214630ff2b3")
+		)
+		(pin "3"
+			(uuid "c398b409-7487-49a1-a81e-eadadcc4b298")
+		)
+		(pin "2"
+			(uuid "e8c8dc72-31f7-46d8-847c-fc8b6d33898b")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "Q3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 214.63 195.58 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "572be16f-d529-46ed-a53c-c9d12119bd1f")
+		(property "Reference" "R1"
+			(at 214.63 189.23 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "470R"
+			(at 214.63 191.77 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+			(at 214.63 197.358 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 214.63 195.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 214.63 195.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "fcb6ca26-456a-48e9-a971-061ec9394b69")
+		)
+		(pin "2"
+			(uuid "11cc0234-2ed8-43d9-8db6-974f078dac7f")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "R1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Diode:1N5819")
+		(at 167.64 203.2 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "630fa598-afb1-4db2-8291-bade953cece0")
+		(property "Reference" "D1"
+			(at 167.3225 196.85 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1N5819"
+			(at 167.3225 199.39 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal"
+			(at 167.64 207.645 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "http://www.vishay.com/docs/88525/1n5817.pdf"
+			(at 167.64 203.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "40V 1A Schottky Barrier Rectifier Diode, DO-41"
+			(at 167.64 203.2 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "a35f3e7b-1aac-4c6d-aa3c-ecd63b84eec6")
+		)
+		(pin "2"
+			(uuid "5d169221-5aa4-44c2-ad14-551dfc335d5e")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "D1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Vario_Buzzer_V2:GPS_M100_4")
+		(at 238.01 82.9 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "66bb50ba-c51b-438f-b376-0b8856866d17")
+		(property "Reference" "J5"
+			(at 238.01 89.25 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "HGLRC M100 Mini GPS"
+			(at 238.096 74.684 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Vario_Buzzer_V2:GPS_M100_15x15_4Pin_Back"
+			(at 238.01 82.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 58.01 24.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 238.01 82.9 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2e896a7f-f85b-4580-a841-ecd25417878e")
+		)
+		(pin "2"
+			(uuid "dc5ea524-5a72-4e8d-a91b-e6194740a25f")
+		)
+		(pin "3"
+			(uuid "9e50e3ae-a556-435c-8a98-7ce6712c583b")
+		)
+		(pin "4"
+			(uuid "fc41859b-07f9-4d27-b399-43a6b450cb3a")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "J5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Vario_Buzzer_V2:Comidox_5V_Booster_3")
+		(at 57.15 194.31 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "6da7947d-a4ba-456a-a943-ce869648bb4a")
+		(property "Reference" "U2"
+			(at 59.69 194.31 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Comidox 5V Booster"
+			(at 57.15 191.77 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Vario_Buzzer_V2:Comidox_5V_Booster_10.75x10.75_3Pin"
+			(at 57.15 189.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 57.15 186.69 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 57.15 194.31 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "3"
+			(uuid "eec29477-62e5-40cb-bcc5-592e82d03cf9")
+		)
+		(pin "2"
+			(uuid "ff6d5156-8ef2-4eda-87c2-bf7210988989")
+		)
+		(pin "1"
+			(uuid "deac4a04-58ef-4198-841b-692f3e94489b")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "U2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Small_US")
+		(at 187.96 134.62 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "70e1a432-ba19-4ba7-b0e0-78641dd8104a")
+		(property "Reference" "C1"
+			(at 190.5 133.4769 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "47-100uF ELEC"
+			(at 190.5 136.0169 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.00mm"
+			(at 187.96 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 187.96 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "capacitor, small US symbol"
+			(at 187.96 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "c81ea8bf-fac8-48dd-bb00-4bb835262473")
+		)
+		(pin "1"
+			(uuid "23cd7cd3-d98d-4d58-a2f7-3ac5ec7a2e7e")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "C1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 214.63 205.74 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7a0ae252-16e9-44fa-ab20-628efdad7b16")
+		(property "Reference" "R2"
+			(at 214.63 199.89 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "470R"
+			(at 214.63 202.43 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+			(at 214.63 207.518 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 214.63 205.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 214.63 205.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "e0b68eeb-1e5f-43b5-98d8-d11885755eff")
+		)
+		(pin "2"
+			(uuid "23d0147c-edc0-4e4f-82f5-ecc685f6b61f")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "R2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Vario_Buzzer_V2:Buzzer_2")
+		(at 58.42 257.81 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "7e5e854c-9745-4a50-b9ff-1309f5caa0a1")
+		(property "Reference" "BZ3"
+			(at 58.11 255.53 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "12085 Passive Buzzer 42R"
+			(at 57.15 251.968 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Buzzer_Beeper:Buzzer_12x8.5mm_P7.62mm_Custom"
+			(at 58.42 257.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 58.42 257.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 58.42 257.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "bf05cf6e-f3f7-41c1-a93e-c4c4181a073e")
+		)
+		(pin "1"
+			(uuid "f0c0f48e-cb6b-4011-a9db-579e65ab9caf")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "BZ3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Vario_Buzzer_V2:SPDT_Switch_3")
+		(at 47.4 95.75 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "8e9921de-5366-4055-8f17-e41c6f59de34")
+		(property "Reference" "SW1"
+			(at 47.4 102.1 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SS12F44G3 power switch"
+			(at 47.4 89.4 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Vario_Buzzer_V2:SS12F44G3_5.9x12.25_P3.00"
+			(at 47.4 95.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 25.4 31.75 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 47.4 95.75 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "f71ddc88-bfa0-4736-81d6-94ce178997e4")
+		)
+		(pin "2"
+			(uuid "28ab07b9-e4a5-48da-853a-b5a5f44db87c")
+		)
+		(pin "3"
+			(uuid "ab685b51-9ca8-4cc1-988d-6a7c8f95a14f")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "SW1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 259.08 215.9 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "96d81344-40a2-463e-885e-fadcbf22e6f6")
+		(property "Reference" "R1-3"
+			(at 259.08 209.55 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 259.08 212.09 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+			(at 259.08 217.678 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 259.08 215.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 259.08 215.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "79b3bf0a-6f71-45b7-b144-1d553fc6df04")
+		)
+		(pin "2"
+			(uuid "59fb3890-399c-4fc4-8f73-030948af3618")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "R1-3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 31.75 118.11 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "97eb6ec4-fb18-44d2-a03d-6c57d84a0c4d")
+		(property "Reference" "#FLG03"
+			(at 34.29 115.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 34.29 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 31.75 118.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 31.75 118.11 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 31.75 118.11 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "e791affe-009e-4621-a3c8-d5bef451546e")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "#FLG03")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Diode:1N5819")
+		(at 168.5 234.45 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "983d4380-6932-447e-8e15-ed945b63e379")
+		(property "Reference" "D3"
+			(at 168.1825 228.1 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1N5819"
+			(at 168.1825 230.64 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal"
+			(at 168.5 238.895 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "http://www.vishay.com/docs/88525/1n5817.pdf"
+			(at 168.5 234.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "40V 1A Schottky Barrier Rectifier Diode, DO-41"
+			(at 168.5 234.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "c0f3aa3a-bc08-44bb-86a6-68c0e764cb21")
+		)
+		(pin "2"
+			(uuid "0d272ccb-0d70-45f2-b341-8d44e349f151")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "D3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Vario_Buzzer_V2:Buzzer_2")
+		(at 60.96 243.84 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "9b0fc087-3c5e-4721-978a-f6fe0ec1851d")
+		(property "Reference" "BZ2"
+			(at 58.11 243.7 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "12085 Passive Buzzer 42R"
+			(at 59.436 237.744 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Buzzer_Beeper:Buzzer_12x8.5mm_P7.62mm_Custom"
+			(at 60.96 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 60.96 243.84 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 60.96 243.84 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "90b92c7e-71ce-4f25-9615-8976c68374e9")
+		)
+		(pin "1"
+			(uuid "d475b10b-c19a-4992-b827-ec19faa49ed2")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "BZ2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 215.9 217.17 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9e0197ca-58d8-4b7e-8b3c-0458c30b5de8")
+		(property "Reference" "R3"
+			(at 215.9 210.82 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "470R"
+			(at 215.9 213.36 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+			(at 215.9 218.948 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 215.9 217.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 215.9 217.17 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "57f2661d-f142-4370-8c4d-fa879ae9c8c0")
+		)
+		(pin "2"
+			(uuid "c2728562-55b4-4e52-b88a-1a1908e0ce16")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "R3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 259.08 205.74 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a2f46787-47aa-4c07-ae0c-c521176ab094")
+		(property "Reference" "R1-2"
+			(at 259.08 199.39 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 259.08 201.93 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+			(at 259.08 207.518 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 259.08 205.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 259.08 205.74 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7aa2994a-f2f0-423e-88af-87e6feba9ce5")
+		)
+		(pin "2"
+			(uuid "60b00a34-4acd-46be-b00b-308f04658b4e")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "R1-2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 31.75 123.19 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "abe53b6f-3e9e-46f6-8137-338dd998dacb")
+		(property "Reference" "#FLG01"
+			(at 34.29 120.65 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 34.29 127 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 31.75 123.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 31.75 123.19 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 31.75 123.19 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "a87d9424-7abc-4dff-8e36-3c69717b513b")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "#FLG01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 31.75 130.81 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "b6650a3a-053c-42c0-8822-35fe61ead32f")
+		(property "Reference" "#FLG02"
+			(at 34.29 128.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 34.29 134.62 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 31.75 130.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 31.75 130.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 31.75 130.81 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "204f7b36-a305-4c41-b5ad-e3400e9c52b7")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "#FLG02")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Vario_Buzzer_V2:M16968_OLED_RotaryKnob_9")
+		(at 168.01 104.9 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "be7c807b-ccf0-4007-8884-ebed776065ee")
+		(property "Reference" "J11"
+			(at 170.55 104.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "M16968 OLED + Rotary Knob"
+			(at 181.708 90.94 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Vario_Buzzer_V2:OLED_M16968_59x35_9Pin"
+			(at 168.01 99.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 168.01 97.28 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 168.01 104.9 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b9db27f0-fd82-49d7-8e59-0ad068ae94b6")
+		)
+		(pin "4"
+			(uuid "44de5399-5099-4984-a528-b4c7a0cd7469")
+		)
+		(pin "3"
+			(uuid "1ccdda12-33bf-4a2a-8c65-1684c9bce679")
+		)
+		(pin "5"
+			(uuid "5d8c8d05-5ef4-4985-b48c-cb58ce30c08e")
+		)
+		(pin "6"
+			(uuid "be836c9e-72a6-4af1-b411-3c1f53a0c875")
+		)
+		(pin "7"
+			(uuid "55ab418b-7eb8-424f-9d0e-1c183b77497e")
+		)
+		(pin "8"
+			(uuid "1ae26eb8-b318-43f5-a07c-c81c721af0a2")
+		)
+		(pin "2"
+			(uuid "605aab54-6435-49f6-bb02-52a02f7a4b2a")
+		)
+		(pin "9"
+			(uuid "3879612a-bdef-4769-9730-b667226b4093")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "J11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Vario_Buzzer_V2:BMP390_8")
+		(at 238.01 112.9 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "f2117911-44ec-4094-8842-83988e4a73ca")
+		(property "Reference" "J6"
+			(at 238.01 119.25 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "BMP581/BMP5xx top pads"
+			(at 237.842 99.322 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Vario_Buzzer_V2:Adafruit_BMP390_Breakout_Top"
+			(at 238.01 112.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 58.01 24.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 238.01 112.9 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7e619d7f-842f-4219-9a15-d9ca63836d8c")
+		)
+		(pin "2"
+			(uuid "295c6f97-db5b-4995-bbd9-1ecf9fb0bcf6")
+		)
+		(pin "3"
+			(uuid "04e9f4e4-4fa4-4a89-965e-8d38ba129c53")
+		)
+		(pin "4"
+			(uuid "67dcf61a-ba15-4dd2-8aa0-6b211f094cc6")
+		)
+		(pin "5"
+			(uuid "6915505e-8acf-4d17-9a8f-22455b4e9400")
+		)
+		(pin "6"
+			(uuid "9a72c8ea-00c6-4fff-a859-8678291920de")
+		)
+		(pin "7"
+			(uuid "a28d452b-1c02-464a-8fee-faaf4a1175f7")
+		)
+		(pin "8"
+			(uuid "45ab0bf8-53cf-431d-b04e-91178c7b9d52")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "J6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Transistor_BJT:S8050")
+		(at 109.22 199.39 180)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f448cba2-8b09-4fb5-887e-b1fc6a8e244c")
+		(property "Reference" "Q1"
+			(at 104.14 198.1199 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "S8050"
+			(at 104.14 200.6599 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline"
+			(at 104.14 197.485 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "http://www.unisonic.com.tw/datasheet/S8050.pdf"
+			(at 109.22 199.39 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Description" "0.7A Ic, 20V Vce, Low Voltage High Current NPN Transistor, TO-92"
+			(at 109.22 199.39 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" "NPN"
+			(at 109.22 199.39 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" "1=E 2=B 3=C"
+			(at 109.22 199.39 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "9cc17bf6-a759-43b3-9d5f-69fdb754846a")
+		)
+		(pin "3"
+			(uuid "4ef8c7ed-842a-4cc6-9998-a0c5dd518da9")
+		)
+		(pin "2"
+			(uuid "ce25daec-4cdf-4be3-9ff0-8a72e980b501")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "Q1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Diode:1N5819")
+		(at 168.91 218.44 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f83201b6-c00c-44df-80da-604805e3cea6")
+		(property "Reference" "D2"
+			(at 168.5925 212.09 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "1N5819"
+			(at 168.5925 214.63 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal"
+			(at 168.91 222.885 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "http://www.vishay.com/docs/88525/1n5817.pdf"
+			(at 168.91 218.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "40V 1A Schottky Barrier Rectifier Diode, DO-41"
+			(at 168.91 218.44 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "f19aaf45-328a-4afc-9a32-f9b688c61b62")
+		)
+		(pin "2"
+			(uuid "d1b4e6b0-a4d4-4adb-a716-efe1d1747d33")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "D2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(text "A1 battery voltage divider: SW_BAT -> R4 100k -> VBAT_SENSE_A1/A1 -> R5 100k -> GND. No capacitor fitted."
+		(exclude_from_sim no)
+		(at 108.00 117.50 0)
+		(effects
+			(font
+				(size 1 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "4a87f7fc-9455-4c2f-acb2-6faeb6ec9ed3")
+	)
+	(label "VBAT_SENSE_A1"
+		(at 93.98 143.51 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "38bb4363-dc7a-4208-b32b-fd8abebc3598")
+	)
+	(label "SW_BAT"
+		(at 118.11 142.24 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "a00f9fdc-729d-4e5c-bb44-afba937d609b")
+	)
+	(label "VBAT_SENSE_A1"
+		(at 118.11 134.62 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "d089d43b-7a27-4d12-b06c-e537981de973")
+	)
+	(label "VBAT_SENSE_A1"
+		(at 118.11 130.81 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "a60dd009-d3d0-48c1-b1fc-8882ca1f4e7d")
+	)
+	(label "GND"
+		(at 118.11 123.19 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "53044c04-a068-4e78-94fd-7b532f0fdd08")
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 118.11 138.43 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f30c7525-3c43-401a-87ee-1c38969e86ec")
+		(property "Reference" "R4"
+			(at 120.65 138.43 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 115.57 138.43 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+			(at 116.332 138.43 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 118.11 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 118.11 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "4109f4bf-7de3-4540-bd24-e0ab9f44cbdf")
+		)
+		(pin "2"
+			(uuid "3b136a10-aac5-4429-844c-9e5d16bf4124")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "R4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 118.11 127.00 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "20246392-5de8-4636-a1f7-3ddf0e939b50")
+		(property "Reference" "R5"
+			(at 120.65 127.00 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "100k"
+			(at 115.57 127.00 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal"
+			(at 116.332 127.00 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 118.11 127.00 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 118.11 127.00 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "116d7e40-4759-4f71-a921-65b545297c3c")
+		)
+		(pin "2"
+			(uuid "11a9aa0d-6e31-41f9-bb18-3e06f37b6797")
+		)
+		(instances
+			(project "Buzzer PCB V3 (rerouted traces)"
+				(path "/1b4b1935-b674-4f7b-922d-e131a48a660a"
+					(reference "R5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)

@@ -1,0 +1,5 @@
+(sym_lib_table
+	(version 7)
+	(lib (name "Buzzer PCB-eagle-import") (type "KiCad") (uri "${KIPRJMOD}/Buzzer PCB-eagle-import.kicad_sym") (options "") (descr ""))
+	(lib (name "Vario_Buzzer_V2") (type "KiCad") (uri "${KIPRJMOD}/Vario_Buzzer_V2.kicad_sym") (options "") (descr "V2 custom interposer symbols"))
+)

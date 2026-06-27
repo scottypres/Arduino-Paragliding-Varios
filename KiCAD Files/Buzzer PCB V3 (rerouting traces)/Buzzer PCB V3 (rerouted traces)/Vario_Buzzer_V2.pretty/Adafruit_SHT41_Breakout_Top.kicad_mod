@@ -1,0 +1,173 @@
+(footprint "Adafruit_SHT41_Breakout_Top"
+		(layer "F.Cu")
+		(uuid "c66df83e-a9cf-4c7c-bd29-e81053e8a765")
+		(property "Reference" "J**"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(uuid "203e4530-490f-4909-8106-38471b44d691")
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Value" "SHT41 top module"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "873b48bd-0c80-4317-a9a8-3b923d4d31da")
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "793e3603-2465-40b6-a296-e812d80b7ab3")
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(property "Description" "Adafruit 5776 EagleCAD geometry"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "bbd3cf87-938a-4efb-9ca2-8f09d8de0f5c")
+			(effects
+				(font
+					(size 1 1)
+				)
+			)
+		)
+		(attr through_hole)
+		(duplicate_pad_numbers_are_jumpers no)
+		(fp_line
+			(start 12.7 -8.89)
+			(end 12.7 8.89)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "97e899d7-355c-4179-a06a-ff0d3422ebc5")
+		)
+		(fp_line
+			(start -12.7 -8.89)
+			(end 12.7 -8.89)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "98f830a2-2be2-489b-979c-4ca09fc601b1")
+		)
+		(fp_line
+			(start 12.7 8.89)
+			(end -12.7 8.89)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "3149d653-af71-4ea5-9763-c56aec01aeb6")
+		)
+		(fp_line
+			(start -12.7 8.89)
+			(end -12.7 -8.89)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "46c8c909-3b93-4e94-9f91-c174dea7b854")
+		)
+		(fp_text user "SHT41"
+			(at -12.1 -7.65 0)
+			(layer "F.SilkS")
+			(uuid "150f6e28-3ac8-40a2-b55c-924cc3938d58")
+			(effects
+				(font
+					(size 0.72 0.72)
+					(thickness 0.12)
+				)
+			)
+		)
+		(fp_text user "TOP; pins solder backside"
+			(at -12.1 7.35 0)
+			(layer "F.SilkS")
+			(uuid "054eeaca-1cbf-4f1e-ac62-5914aeb36a8f")
+			(effects
+				(font
+					(size 0.55 0.55)
+					(thickness 0.12)
+				)
+			)
+		)
+		(pad "1" thru_hole circle
+			(at 5.08 -6.35)
+			(size 1.8 1.8)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(pinfunction "VCC")
+			(pintype "passive")
+			(uuid "801ebc84-920e-437e-a274-92bc912914db")
+		)
+		(pad "2" thru_hole circle
+			(at 2.54 -6.35)
+			(size 1.8 1.8)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(pinfunction "3V3")
+			(pintype "passive")
+			(uuid "80f9619b-a042-48e1-b311-89974b668b72")
+		)
+		(pad "3" thru_hole circle
+			(at 0 -6.35)
+			(size 1.8 1.8)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(pinfunction "GND")
+			(pintype "passive")
+			(uuid "ad5232d4-8d83-4969-804e-9e3d9a931e5c")
+		)
+		(pad "4" thru_hole circle
+			(at -2.54 -6.35)
+			(size 1.8 1.8)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(pinfunction "SCL")
+			(pintype "passive")
+			(uuid "f792261c-8b06-4469-904e-b3b733415157")
+		)
+		(pad "5" thru_hole circle
+			(at -5.08 -6.35)
+			(size 1.8 1.8)
+			(drill 1)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(pinfunction "SDA")
+			(pintype "passive")
+			(uuid "583d9490-c19c-4dea-8c8a-60dc05a169e0")
+		)
+		(model "${KIPRJMOD}/../Component References/5776 SHT41 Sensor - from SHT45 same SHT4x board family.step"
+			(offset
+				(xyz -12.7 -8.89 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+		(embedded_fonts no)
+	)
