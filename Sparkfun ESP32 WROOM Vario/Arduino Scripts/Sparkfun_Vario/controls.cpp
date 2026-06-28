@@ -2,6 +2,7 @@
 
 #include "audio.h"
 #include "display.h"
+#include "firmware.h"
 #include "logging.h"
 #include "radio.h"
 #include "wifi_net.h"
@@ -182,6 +183,9 @@ void activateSelectedMenuItem() {
       break;
     case kMenuForgetWifi:
       forgetWifiAndStartPortal();
+      break;
+    case kMenuSwitchFirmware:
+      flashFirmwareFromSd();
       break;
     case kMenuVolume:
     case kMenuResponse:

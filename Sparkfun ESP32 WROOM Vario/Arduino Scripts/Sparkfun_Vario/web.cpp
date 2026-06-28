@@ -137,6 +137,8 @@ uint32_t parseHtmlColor(const String &value, uint32_t fallback) {
   return fallback;
 }
 
+#ifndef VARIO_DISABLE_WIFI
+
 String dataJson() {
   String json;
   json.reserve(768);
@@ -948,3 +950,11 @@ void serviceOta() {
     ArduinoOTA.handle();
   }
 }
+
+#else  // VARIO_DISABLE_WIFI — no web server / OTA in the BT firmware.
+
+void serviceWebServer() {}
+void serviceWebPush() {}
+void serviceOta() {}
+
+#endif

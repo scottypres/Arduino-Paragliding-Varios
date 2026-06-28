@@ -1,5 +1,7 @@
 #include "wifi_net.h"
 
+#ifndef VARIO_DISABLE_WIFI
+
 #include "timekeeping.h"
 #include "web.h"
 
@@ -288,3 +290,14 @@ void serviceWifi() {
     startWifiAttempt(wifiAttemptIndex);
   }
 }
+
+#else  // VARIO_DISABLE_WIFI — radio-free stubs so the BT firmware links without WiFi.
+
+void initWifi() {}
+void serviceWifi() {}
+void loadWifiNetworks() {}
+void forgetWifiAndStartPortal() {}
+void setBatteryLogWifiEnabled(bool enabled) { batteryLogWifiEnabled = enabled; }
+String wifiStatusText() { return "Off"; }
+
+#endif

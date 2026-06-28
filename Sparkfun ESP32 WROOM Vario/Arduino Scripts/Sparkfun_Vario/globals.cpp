@@ -13,8 +13,10 @@ TinyGPSCustom gpsBdgsvSatellites(gps, "BDGSV", 3);
 HardwareSerial gpsSerial(1);
 TwoWire batteryWire(1);
 SFE_MAX1704X batteryGauge(MAX1704X_MAX17048);
+#ifndef VARIO_DISABLE_WIFI
 AsyncWebServer webServer(kWebServerPort);
 WiFiManager wifiManager;
+#endif
 
 Button backButton = {kBackButtonPin, false, false, false, 0, false};
 Button encoderButton = {kEncoderButtonPin, false, false, false, 0, false};

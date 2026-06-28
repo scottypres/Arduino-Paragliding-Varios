@@ -1,5 +1,6 @@
 #include "display.h"
 
+#include "firmware.h"
 #include "gps_mod.h"
 #include "radio.h"
 #include "timekeeping.h"
@@ -38,6 +39,8 @@ String menuValue(uint8_t item) {
       return batteryLoggingActive ? "Running" : "Start";
     case kMenuForgetWifi:
       return wifiNetworkCount == 0 ? "Cleared" : String(wifiNetworkCount) + " saved";
+    case kMenuSwitchFirmware:
+      return switchFirmwareTargetLabel();
   }
   return "";
 }
@@ -70,6 +73,8 @@ String menuLabel(uint8_t item) {
       return "Battery log";
     case kMenuForgetWifi:
       return "Forget WiFi";
+    case kMenuSwitchFirmware:
+      return "Switch FW";
   }
   return "";
 }

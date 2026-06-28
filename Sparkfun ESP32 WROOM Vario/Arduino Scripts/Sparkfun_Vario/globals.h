@@ -1,5 +1,7 @@
 #pragma once
 
+#include "radio_config.h"
+
 #include <Arduino.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_BMP5xx.h>
@@ -141,6 +143,7 @@ enum MenuItem : uint8_t {
   kMenuBluetooth,
   kMenuBatteryLogging,
   kMenuForgetWifi,
+  kMenuSwitchFirmware,
   kMenuCount
 };
 
