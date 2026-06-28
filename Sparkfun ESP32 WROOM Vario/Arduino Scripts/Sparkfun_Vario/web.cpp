@@ -359,6 +359,9 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 </div></section>
 
 <section class=tab id=sd>
+<div class=card><h2>Files</h2>
+<div class=row><span class=sub>Path <b id=fmpath>/</b></span><label class=btn style=cursor:pointer>Upload here<input type=file id=fmup multiple style=display:none></label></div>
+<div id=fmlist class=muted>--</div></div>
 <div class=card><h2>SD card</h2>
 <div class=row><span class=sub>Log size</span><span class=sub id=logsz>--</span></div>
 <div class=row><span class=sub><a href=/log target=_blank>View CSV</a> &middot; <a href=/download>Download CSV</a></span></div>
@@ -415,7 +418,7 @@ tabs.forEach(function(b){b.onclick=function(){
  tabs.forEach(function(x){x.classList.remove('on')});b.classList.add('on');
  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on')});
  $(b.dataset.t).classList.add('on');
- if(b.dataset.t=='wifi')loadWifi();if(b.dataset.t=='sd')loadTail();if(b.dataset.t=='map')ensureMap();if(b.dataset.t=='oled')loadWindows();
+ if(b.dataset.t=='wifi')loadWifi();if(b.dataset.t=='sd'){loadTail();loadFiles()}if(b.dataset.t=='map')ensureMap();if(b.dataset.t=='oled')loadWindows();
 }});
 function f(v,d,u){return v===null||v===undefined?'--':Number(v).toFixed(d)+(u||'')}
 function sw(s){s=Math.floor(s||0);var h=Math.floor(s/3600),m=Math.floor((s%3600)/60),x=s%60;return h+':'+String(m).padStart(2,'0')+':'+String(x).padStart(2,'0')}
@@ -521,6 +524,26 @@ $('wforget').onclick=function(){confirmAct('Forget all WiFi?','Removes every sav
 function loadTail(){fetch('/tail',{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){$('tail').textContent=t+'\n\nBattery log:\n';return fetch('/battery-tail',{cache:'no-store'})}).then(function(r){return r.text()}).then(function(t){$('tail').textContent+=t})}
 $('sdclear').onclick=function(){confirmAct('Clear logs & data?','Deletes flight logs and data files but keeps the web UI and saved OLED layouts.',null,function(){fetch('/sd/clear',{method:'POST'}).then(loadTail)})};
 $('sdwipe').onclick=function(){confirmAct('Full wipe SD card?','This erases EVERYTHING on the SD including the web UI and layouts. You will drop to the built-in page until you re-upload. Type ERASE to confirm.','ERASE',function(){fetch('/sd/wipe',{method:'POST'}).then(loadTail)})};
+// ---- file manager ----
+var fmPath='/';
+function loadFiles(p){if(p)fmPath=p;$('fmpath').textContent=fmPath;
+ fetch('/api/files?path='+encodeURIComponent(fmPath),{cache:'no-store'}).then(function(r){return r.json()}).then(function(d){
+  if(!d.sd){$('fmlist').innerHTML='<div class=muted>No SD card</div>';return}
+  var h='';
+  if(fmPath!=='/'){var up=fmPath.replace(/\/[^/]*$/,'')||'/';h+='<div class=wifi><span><a href=# data-cd="'+esc(up)+'">.. up</a></span><span></span></div>'}
+  (d.entries||[]).forEach(function(e){var nm=e.path.replace(/^.*\//,'')||e.path;
+   if(e.dir)h+='<div class=wifi><span><a href=# data-cd="'+esc(e.path)+'">'+esc(nm)+'/</a></span><span><button class="btn ghost" data-rn="'+esc(e.path)+'">Rename</button> <button class="btn dng" data-del="'+esc(e.path)+'">Delete</button></span></div>';
+   else h+='<div class=wifi><span>'+esc(nm)+' <span class=sub>'+e.size+' B</span></span><span><a class="btn ghost" href="/file?path='+encodeURIComponent(e.path)+'">Get</a> <button class="btn ghost" data-rn="'+esc(e.path)+'">Rename</button> <button class="btn dng" data-del="'+esc(e.path)+'">Delete</button></span></div>';
+  });
+  $('fmlist').innerHTML=h||'<div class=muted>Empty folder</div>';
+  $('fmlist').querySelectorAll('[data-cd]').forEach(function(a){a.onclick=function(ev){ev.preventDefault();loadFiles(a.dataset.cd)}});
+  $('fmlist').querySelectorAll('[data-del]').forEach(function(b){b.onclick=function(){confirmAct('Delete?',b.dataset.del+' — cannot be undone.',null,function(){var fd=new FormData();fd.append('path',b.dataset.del);fetch('/api/file/delete',{method:'POST',body:fd}).then(function(){loadFiles()})})}});
+  $('fmlist').querySelectorAll('[data-rn]').forEach(function(b){b.onclick=function(){var from=b.dataset.rn,base=from.replace(/^.*\//,''),nn=prompt('Rename to:',base);if(!nn||nn===base)return;var to=from.replace(/[^/]*$/,nn);var fd=new FormData();fd.append('from',from);fd.append('to',to);fetch('/api/file/rename',{method:'POST',body:fd}).then(function(){loadFiles()})}});
+ }).catch(function(){$('fmlist').innerHTML='<div class=muted>SD not available</div>'})}
+$('fmup').onchange=function(){var fs=this.files;if(!fs.length)return;var done=0,n=fs.length;$('fmlist').innerHTML='<div class=muted>Uploading...</div>';
+ Array.prototype.forEach.call(fs,function(file){var fd=new FormData();fd.append('f',file,file.name);
+  fetch('/api/upload?path='+encodeURIComponent((fmPath==='/'?'':fmPath)+'/'+file.name),{method:'POST',body:fd}).then(function(){if(++done===n)loadFiles()}).catch(function(){if(++done===n)loadFiles()})});
+ this.value='';}
 // ---- ota ----
 $('fw').onchange=function(){var file=this.files[0];if(!file)return;
  var fd=new FormData();fd.append('f',file,file.name);var x=new XMLHttpRequest();x.open('POST','/api/ota');
@@ -816,6 +839,78 @@ static void handleOtaUpload(AsyncWebServerRequest *request, const String &filena
   }
 }
 
+// ---- SD file manager (browse / download / rename / delete; upload reuses /api/upload) ----
+
+static void handleFileList(AsyncWebServerRequest *request) {
+  String path = request->hasParam("path") ? request->getParam("path")->value() : String("/");
+  if (path.length() == 0) {
+    path = "/";
+  }
+  if (path.length() > 1 && path.endsWith("/")) {
+    path.remove(path.length() - 1);
+  }
+  JsonDocument doc;
+  doc["path"] = path;
+  doc["sd"] = sdReady;
+  JsonArray arr = doc["entries"].to<JsonArray>();
+  if (sdReady) {
+    File dir = SD.open(path);
+    if (dir && dir.isDirectory()) {
+      for (File e = dir.openNextFile(); e; e = dir.openNextFile()) {
+        JsonObject o = arr.add<JsonObject>();
+        o["path"] = String(e.path());
+        o["dir"] = e.isDirectory();
+        o["size"] = static_cast<uint32_t>(e.size());
+        e.close();
+      }
+    }
+    if (dir) {
+      dir.close();
+    }
+  }
+  String out;
+  serializeJson(doc, out);
+  sendNoStore(request, "application/json", out);
+}
+
+static void handleFileDownload(AsyncWebServerRequest *request) {
+  const String path = request->hasParam("path") ? request->getParam("path")->value() : String();
+  if (!sdReady || path.length() < 2 || !SD.exists(path)) {
+    request->send(404, "text/plain", "Not found");
+    return;
+  }
+  const String name = path.substring(path.lastIndexOf('/') + 1);
+  AsyncWebServerResponse *response = request->beginResponse(SD, path, "application/octet-stream");
+  response->addHeader("Content-Disposition", "attachment; filename=\"" + name + "\"");
+  request->send(response);
+}
+
+static void handleFileDelete(AsyncWebServerRequest *request) {
+  const String path = postArg(request, "path");
+  if (!sdReady || path.length() < 2) {
+    request->send(400, "text/plain", "bad path");
+    return;
+  }
+  File f = SD.open(path);
+  const bool isDir = f && f.isDirectory();
+  if (f) {
+    f.close();
+  }
+  const bool ok = isDir ? deleteRecursive(path) : SD.remove(path);
+  request->send(ok ? 200 : 500, "text/plain", ok ? "ok" : "fail");
+}
+
+static void handleFileRename(AsyncWebServerRequest *request) {
+  const String from = postArg(request, "from");
+  const String to = postArg(request, "to");
+  if (!sdReady || from.length() < 2 || to.length() < 2) {
+    request->send(400, "text/plain", "bad path");
+    return;
+  }
+  const bool ok = SD.rename(from, to);
+  request->send(ok ? 200 : 500, "text/plain", ok ? "ok" : "fail");
+}
+
 void startWebServer() {
   if (webServerReady) {
     return;
@@ -852,6 +947,10 @@ void startWebServer() {
     webServer.on("/sd/clear", M::HTTP_POST, handleSdClear);
     webServer.on("/sd/wipe", M::HTTP_POST, handleSdWipe);
     webServer.on("/reset", M::HTTP_POST, handleReset);
+    webServer.on("/api/files", M::HTTP_GET, handleFileList);
+    webServer.on("/file", M::HTTP_GET, handleFileDownload);
+    webServer.on("/api/file/delete", M::HTTP_POST, handleFileDelete);
+    webServer.on("/api/file/rename", M::HTTP_POST, handleFileRename);
     webServer.on("/api/sleep", M::HTTP_POST, handleSleep);
     webServer.on("/api/jingle", M::HTTP_POST, handleJingle);
     webServer.on("/api/upload", M::HTTP_POST, handleSdUploadDone, handleSdUpload);
