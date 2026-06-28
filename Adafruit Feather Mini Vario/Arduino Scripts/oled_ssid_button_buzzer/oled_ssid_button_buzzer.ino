@@ -35,6 +35,7 @@ const char *const kPrefBuzzerVolume = "buzzVol";
 const char *const kPrefDirectSettings = "directAP";
 const char *const kPrefWifiSetupRequired = "wifiSetup";
 const char *const kPrefResponse = "response";
+const char *const kPrefBatteryLogMs = "batLogMs";
 const char *const kPrefHasAltitudeZero = "hasZero";
 const char *const kPrefAltitudeZeroFt = "zeroFt";
 const char *const kBluetoothName = "VarioFeatherBT";
@@ -80,8 +81,10 @@ constexpr uint32_t kBmpRetryMs = 2000;
 constexpr uint32_t kWifiConnectTimeoutMs = 20000;
 constexpr uint32_t kWifiPortalTimeoutMs = 300000;
 constexpr uint32_t kWifiRetryMs = 15000;
-constexpr uint32_t kBatteryLogIntervalMs = 30000;
-constexpr size_t kBatteryLogRamMaxBytes = 49152;
+constexpr float kMinBatteryLogFrequencyHz = 0.5F;
+constexpr float kMaxBatteryLogFrequencyHz = 10.0F;
+constexpr uint32_t kDefaultBatteryLogIntervalMs = 2000;
+constexpr size_t kBatteryLogRamFallbackMaxBytes = 49152;
 constexpr uint16_t kSettingsPort = 80;
 constexpr uint16_t kApSettingsPort = 8080;
 const char *const kToneTestLabel[] = {"Ascent", "Fast up", "Descent", "Fast down"};
@@ -182,6 +185,7 @@ uint32_t wifiConnectStartMs = 0;
 uint32_t wifiPortalStartMs = 0;
 uint32_t lastWifiRetryMs = 0;
 uint8_t wifiConnectAttemptCount = 0;
+uint32_t batteryLogIntervalMs = kDefaultBatteryLogIntervalMs;
 uint32_t batteryLogStartMs = 0;
 uint32_t lastBatteryLogMs = 0;
 uint32_t batteryLogSampleCount = 0;
@@ -195,6 +199,7 @@ bool initBatteryLogFlash();
 void startBatteryLogging();
 void stopBatteryLogging();
 void serviceBatteryLogging();
+bool appendBatteryLogEvent(const String &eventName);
 void startWifiPortal();
 void startDirectSettingsAp();
 void stopSettingsServer();
@@ -285,6 +290,9 @@ void loadSettings() {
   }
   altitudeZeroSaved = prefs.getBool(kPrefHasAltitudeZero, false);
   baselineSmoothedAltitudeFt = prefs.getFloat(kPrefAltitudeZeroFt, 0.0F);
+  batteryLogIntervalMs = constrain(prefs.getUInt(kPrefBatteryLogMs, kDefaultBatteryLogIntervalMs),
+                                   static_cast<uint32_t>(1000.0F / kMaxBatteryLogFrequencyHz),
+                                   static_cast<uint32_t>(1000.0F / kMinBatteryLogFrequencyHz));
   if (directSettingsMode) {
     bootWifiEnabled = true;
     wifiEnabled = true;
@@ -436,6 +444,36 @@ String bluetoothStatusText() {
   return bluetoothStarted ? "classic on" : "starting";
 }
 
+float batteryLogFrequencyHz() {
+  return 1000.0F / static_cast<float>(batteryLogIntervalMs);
+}
+
+String batteryLogRateText() {
+  String rate = String(batteryLogFrequencyHz(), 1);
+  rate += " Hz / ";
+  rate += String(batteryLogIntervalMs / 1000.0F, 1);
+  rate += " s";
+  return rate;
+}
+
+void setBatteryLogFrequencyHz(float frequencyHz, bool persist) {
+  frequencyHz = clampFloat(frequencyHz, kMinBatteryLogFrequencyHz, kMaxBatteryLogFrequencyHz);
+  const uint32_t newIntervalMs =
+    static_cast<uint32_t>((1000.0F / frequencyHz) + 0.5F);
+  if (batteryLogIntervalMs == newIntervalMs) {
+    return;
+  }
+
+  batteryLogIntervalMs = newIntervalMs;
+  if (persist) {
+    prefs.putUInt(kPrefBatteryLogMs, batteryLogIntervalMs);
+  }
+  if (batteryLoggingActive) {
+    appendBatteryLogEvent(String("log_rate_") + String(batteryLogFrequencyHz(), 1) + "_hz");
+  }
+  requestDisplayRefresh();
+}
+
 String urlEncode(const String &value) {
   String encoded;
   encoded.reserve(value.length() * 3);
@@ -469,15 +507,15 @@ String stopwatchText(uint32_t elapsedMs) {
 
 String batteryLogSummary() {
   String summary = String(batteryLogSampleCount) + " samples";
-  if (batteryLogRamCsv.length() > 0) {
-    summary += ", RAM ";
-    summary += formatBytes(batteryLogRamCsv.length());
-  }
-  if (batteryLogRamTruncated) {
-    summary += " truncated";
-  }
   if (!initBatteryLogFlash()) {
     summary += ", flash unavailable";
+    if (batteryLogRamCsv.length() > 0) {
+      summary += ", RAM fallback ";
+      summary += formatBytes(batteryLogRamCsv.length());
+    }
+    if (batteryLogRamTruncated) {
+      summary += " truncated";
+    }
     return summary;
   }
   const uint32_t usedBytes = SPIFFS.usedBytes();
@@ -498,8 +536,8 @@ bool initBatteryLogFlash() {
   }
   batteryLogFlashChecked = true;
 
-  if (!SPIFFS.begin(false)) {
-    Serial.println("SPIFFS mount failed; battery log will not persist");
+  if (!SPIFFS.begin(true)) {
+    Serial.println("SPIFFS mount/format failed; battery log will use RAM fallback");
     batteryLogFlashReady = false;
     return false;
   }
@@ -597,7 +635,7 @@ void appendBatteryLogRam(const String &line) {
     resetBatteryLogRam();
   }
   const size_t lineBytes = line.length() + 1;
-  if (batteryLogRamCsv.length() + lineBytes > kBatteryLogRamMaxBytes) {
+  if (batteryLogRamCsv.length() + lineBytes > kBatteryLogRamFallbackMaxBytes) {
     batteryLogRamTruncated = true;
     return;
   }
@@ -607,12 +645,12 @@ void appendBatteryLogRam(const String &line) {
 
 bool appendBatteryLogRecord(const String &eventName, bool countSample) {
   const String line = batteryLogCsvLine(eventName);
-  appendBatteryLogRam(line);
   if (countSample) {
     batteryLogSampleCount++;
   }
 
   if (!initBatteryLogFlash()) {
+    appendBatteryLogRam(line);
     return true;
   }
 
@@ -621,6 +659,7 @@ bool appendBatteryLogRecord(const String &eventName, bool countSample) {
   if (totalBytes > 0 && totalBytes - usedBytes < 256) {
     batteryLogFlashFull = true;
     Serial.println("Battery log flash full");
+    appendBatteryLogRam(line);
     return false;
   }
 
@@ -629,6 +668,7 @@ bool appendBatteryLogRecord(const String &eventName, bool countSample) {
   if (!file) {
     batteryLogFlashReady = false;
     Serial.println("Battery log append failed");
+    appendBatteryLogRam(line);
     return false;
   }
 
@@ -678,6 +718,8 @@ String settingsPage(const String &message = "") {
   html += bluetoothStatusText();
   html += F("<br>Battery logging ");
   html += batteryLoggingActive ? stopwatchText(millis() - batteryLogStartMs) : String("off");
+  html += F("<br>Battery log rate ");
+  html += batteryLogRateText();
   html += F("<br>Battery log ");
   html += batteryLogSummary();
   if (batteryLogFlashFull) {
@@ -752,6 +794,13 @@ String settingsPage(const String &message = "") {
     html += buttonLabel(oledEnabled, "Disable OLED for logging", "Enable OLED for logging");
     html += F("</button></form>");
   }
+  html += F("<form method='POST' action='/log-rate'><label>Battery log frequency <input name='hz' type='number' min='");
+  html += String(kMinBatteryLogFrequencyHz, 1);
+  html += F("' max='");
+  html += String(kMaxBatteryLogFrequencyHz, 1);
+  html += F("' step='0.5' value='");
+  html += String(batteryLogFrequencyHz(), 1);
+  html += F("'> Hz</label><button>Set log frequency</button></form>");
   html += F("<form method='GET' action='/log-download'><button>Download battery log</button></form>");
   html += F("<form method='GET' action='/logs'><button>Browse saved logs</button></form>");
   html += F("<form method='POST' action='/log-clear'><button>Clear battery log</button></form></div>");
@@ -852,6 +901,13 @@ void handleBatteryLogStart(WebServer &server) {
 void handleBatteryLogStop(WebServer &server) {
   stopBatteryLogging();
   handleSettingsGet(server, "Battery logging stopped.");
+}
+
+void handleBatteryLogRate(WebServer &server) {
+  if (server.hasArg("hz")) {
+    setBatteryLogFrequencyHz(server.arg("hz").toFloat(), true);
+  }
+  handleSettingsGet(server, String("Battery log frequency set to ") + batteryLogRateText() + ".");
 }
 
 void handleBatteryLogOledOn(WebServer &server) {
@@ -1256,7 +1312,7 @@ void serviceBatteryLogging() {
   }
 
   const uint32_t now = millis();
-  if (lastBatteryLogMs == 0 || now - lastBatteryLogMs >= kBatteryLogIntervalMs) {
+  if (lastBatteryLogMs == 0 || now - lastBatteryLogMs >= batteryLogIntervalMs) {
     lastBatteryLogMs = now;
     appendBatteryLogSample();
     requestDisplayRefresh();
@@ -1353,6 +1409,8 @@ void drawBatteryLogDisplay() {
   display.println(wifiStatusText());
   display.print("BT ");
   display.println(bluetoothStatusText());
+  display.print("Rate ");
+  display.println(batteryLogRateText());
   display.print(batteryLogFlashFull ? "Full " : "Log ");
   display.println(flashMenuSummary());
 }
@@ -1456,6 +1514,7 @@ void configureSettingsRoutes() {
   settingsServer.on("/bt-off", HTTP_POST, []() { handleBluetoothOff(settingsServer); });
   settingsServer.on("/log-start", HTTP_POST, []() { handleBatteryLogStart(settingsServer); });
   settingsServer.on("/log-stop", HTTP_POST, []() { handleBatteryLogStop(settingsServer); });
+  settingsServer.on("/log-rate", HTTP_POST, []() { handleBatteryLogRate(settingsServer); });
   settingsServer.on("/log-oled-on", HTTP_POST, []() { handleBatteryLogOledOn(settingsServer); });
   settingsServer.on("/log-oled-off", HTTP_POST, []() { handleBatteryLogOledOff(settingsServer); });
   settingsServer.on("/log-clear", HTTP_POST, []() { handleBatteryLogClear(settingsServer); });
@@ -1477,6 +1536,7 @@ void configureSettingsRoutes() {
   apSettingsServer.on("/bt-off", HTTP_POST, []() { handleBluetoothOff(apSettingsServer); });
   apSettingsServer.on("/log-start", HTTP_POST, []() { handleBatteryLogStart(apSettingsServer); });
   apSettingsServer.on("/log-stop", HTTP_POST, []() { handleBatteryLogStop(apSettingsServer); });
+  apSettingsServer.on("/log-rate", HTTP_POST, []() { handleBatteryLogRate(apSettingsServer); });
   apSettingsServer.on("/log-oled-on", HTTP_POST, []() { handleBatteryLogOledOn(apSettingsServer); });
   apSettingsServer.on("/log-oled-off", HTTP_POST, []() { handleBatteryLogOledOff(apSettingsServer); });
   apSettingsServer.on("/log-clear", HTTP_POST, []() { handleBatteryLogClear(apSettingsServer); });
@@ -1551,14 +1611,6 @@ void serviceSettingsServers() {
 void startWifiConnection() {
   if (!wifiEnabled) {
     disableWifi();
-    return;
-  }
-
-  if (!hasSavedWifiCredentials()) {
-    Serial.println("WiFi setup required; starting setup AP");
-    wifiSetupRequired = true;
-    saveBoolSetting(kPrefWifiSetupRequired, true);
-    startWifiPortal();
     return;
   }
 
@@ -1734,10 +1786,6 @@ void serviceWifi() {
     return;
   }
 
-  if (!bmpWarmupComplete) {
-    return;
-  }
-
   if (directSettingsMode) {
     if (!settingsServerStarted) {
       startDirectSettingsAp();
@@ -1753,6 +1801,8 @@ void serviceWifi() {
       wifiConnectAttemptCount = 0;
       wifiSetupRequired = false;
       saveBoolSetting(kPrefWifiSetupRequired, false);
+      stopWifiPortalIfActive();
+      stopApSettingsServer();
       Serial.print("Connected to SSID: ");
       Serial.println(WiFi.SSID());
       Serial.print("IP address: ");
@@ -1795,6 +1845,13 @@ void serviceWifi() {
       Serial.println(wifiManager.getWLStatusString(WiFi.status()));
       WiFi.disconnect(false, false);
       wifiConnectInProgress = false;
+      if (!hasSavedWifiCredentials()) {
+        Serial.println("No saved WiFi SSID found after station attempt; starting setup AP");
+        wifiSetupRequired = true;
+        saveBoolSetting(kPrefWifiSetupRequired, true);
+        startWifiPortal();
+        return;
+      }
       lastWifiRetryMs = millis();
       requestDisplayRefresh();
     }

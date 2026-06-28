@@ -4,3 +4,14 @@
 
 # Local Arduino WiFi credentials
 Arduino Script/**/arduino_secrets.h
+**/arduino_secrets.h
+
+# Arduino build output
+**/build/
+
+# macOS metadata
+**/.DS_Store
+.DS_Store
+
+# VS Code Local History extension
+**/.history/

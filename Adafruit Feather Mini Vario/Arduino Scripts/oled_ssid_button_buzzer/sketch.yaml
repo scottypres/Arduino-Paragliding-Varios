@@ -1,6 +1,6 @@
 profiles:
   feather-v2:
-    fqbn: esp32:esp32:adafruit_feather_esp32_v2
+    fqbn: esp32:esp32:adafruit_feather_esp32_v2:PartitionScheme=default_8MB
     platforms:
       - platform: esp32:esp32 (3.3.10)
     libraries:
