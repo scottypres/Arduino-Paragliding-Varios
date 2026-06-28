@@ -5,12 +5,12 @@
       "Application": "Pcbnew",
       "Version": "10.0.3"
     },
-    "CreationDate": "2026-06-26T09:53:52-04:00"
+    "CreationDate": "2026-06-27T19:36:56-04:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
-      "Name": "Buzzer PCB",
-      "GUID": "42757a7a-6572-4205-9043-422e6b696361",
+      "Name": "Buzzer PCB V3 (rerouted traces)",
+      "GUID": "42757a7a-6572-4205-9043-422056332028",
       "Revision": "rev?"
     },
     "Size": {
@@ -32,22 +32,22 @@
   ],
   "FilesAttributes": [
     {
-      "Path": "Buzzer PCB-F_Cu.gbr",
+      "Path": "Buzzer PCB V3 (rerouted traces)-F_Cu.gbr",
       "FileFunction": "Copper,L1,Top",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Buzzer PCB-B_Cu.gbr",
+      "Path": "Buzzer PCB V3 (rerouted traces)-B_Cu.gbr",
       "FileFunction": "Copper,L2,Bot",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Buzzer PCB-Edge_Cuts.gbr",
+      "Path": "Buzzer PCB V3 (rerouted traces)-Edge_Cuts.gbr",
       "FileFunction": "Profile",
       "FilePolarity": "Positive"
     },
     {
-      "Path": "Buzzer PCB-NPTH_2_5mm_Vector.gbr",
+      "Path": "Buzzer PCB V3 (rerouted traces)-User_1.gbr",
       "FileFunction": "Other,User",
       "FilePolarity": "Positive"
     }
