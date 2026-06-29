@@ -201,8 +201,34 @@ void serviceJingle() {
   setChord(n.f0, n.f1, n.f2);
 }
 
+void labTone(bool on, uint32_t freq, uint8_t mask, uint8_t duty) {
+  buzzerLabActive = on;
+  if (!on) {
+    setToneMask(0, 0, false);  // resets currentTone state + silences
+    return;
+  }
+  lastBuzzerLabMs = millis();
+  freq = constrain(freq, 50U, 6000U);
+  if (duty < 1) duty = 1;
+  for (uint8_t i = 0; i < kBuzzerCount; i++) {
+    const bool active = mask & (1U << i);
+    ledcWriteTone(kBuzzerPins[i], active ? freq : 0);
+    ledcWrite(kBuzzerPins[i], active ? duty : 0);
+    if (!active) {
+      digitalWrite(kBuzzerPins[i], LOW);
+    }
+  }
+}
+
 void updateVarioAudio() {
   const uint32_t now = millis();
+
+  if (buzzerLabActive) {
+    if (now - lastBuzzerLabMs <= 8000) {
+      return;  // lab in control; keepalives keep it alive
+    }
+    labTone(false, 0, 0, 0);  // browser went away — release buzzers to the vario
+  }
 
   if (jinglePlaying) {
     return;

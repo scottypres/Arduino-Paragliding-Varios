@@ -380,6 +380,13 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <div class=row><span class=sub>Play a tune on the 3 buzzers (chords &amp; melody)</span>
 <span><button class=btn data-j=0>Chime</button> <button class=btn data-j=1>Arpeggio</button> <button class=btn data-j=2>Chords</button></span></div>
 </div>
+<div class=card><h2>Buzzer Lab</h2>
+<div class=row><label>Frequency <span class=sub id=blabfv>2700 Hz</span></label><input type=range id=blabf min=200 max=6000 step=10 value=2700></div>
+<div class=row><label>Duty <span class=sub id=blabdv>50%</span></label><input type=range id=blabd min=5 max=100 step=5 value=50></div>
+<div class=row><label>Buzzers</label><span><label><input type=checkbox id=blab1 checked> B1&middot;13</label> <label><input type=checkbox id=blab2> B2&middot;26</label> <label><input type=checkbox id=blab3> B3&middot;27</label></span></div>
+<div class=row><span><button class=btn id=blabplay>Play</button> <button class="btn dng" id=blabstop>Stop</button></span><button class="btn ghost" id=blabsweep>Sweep 200&rarr;6k</button></div>
+<div class=muted id=blabmsg>Idle &middot; find the loudest freq/buzzer combo by ear</div>
+</div>
 <div class=card><h2>Board</h2>
 <div class=row><span class=sub>Restart the device</span><button class="btn dng" id=reset>Reset board</button></div>
 <div class=row><span class=sub>Deep sleep (wake by pressing the encoder knob)</span><button class="btn dng" id=sleep>Sleep</button></div>
@@ -555,6 +562,21 @@ $('fw').onchange=function(){var file=this.files[0];if(!file)return;
 // ---- reset + confirm modal ----
 $('reset').onclick=function(){confirmAct('Reset board?','The device will restart. Live data resumes after boot.',null,function(){fetch('/reset',{method:'POST'});$('otamsg')})};
 document.querySelectorAll('[data-j]').forEach(function(b){b.onclick=function(){fetch('/api/jingle?i='+b.dataset.j,{method:'POST'})}});
+// ---- buzzer lab ----
+var blabPlaying=false,blabKeep=null,blabSweep=null;
+function blabMask(){return ($('blab1').checked?1:0)|($('blab2').checked?2:0)|($('blab3').checked?4:0)}
+function blabSend(on){return fetch('/api/tone?on='+(on?1:0)+'&freq='+$('blabf').value+'&mask='+blabMask()+'&duty='+Math.round($('blabd').value*255/100),{method:'POST'})}
+function blabStart(){if(blabMask()==0){$('blabmsg').textContent='Pick at least one buzzer';return false}blabPlaying=true;blabSend(true);if(!blabKeep)blabKeep=setInterval(function(){if(blabPlaying)blabSend(true)},4000);return true}
+function blabEnd(){blabPlaying=false;if(blabKeep){clearInterval(blabKeep);blabKeep=null}if(blabSweep){clearInterval(blabSweep);blabSweep=null;$('blabsweep').textContent='Sweep 200→6k'}blabSend(false)}
+$('blabf').oninput=function(){$('blabfv').textContent=this.value+' Hz';if(blabPlaying)blabSend(true)};
+$('blabd').oninput=function(){$('blabdv').textContent=this.value+'%';if(blabPlaying)blabSend(true)};
+$('blabplay').onclick=function(){if(blabStart())$('blabmsg').textContent='Playing '+$('blabf').value+' Hz'};
+$('blabstop').onclick=function(){blabEnd();$('blabmsg').textContent='Stopped'};
+$('blabsweep').onclick=function(){if(blabSweep){blabEnd();$('blabmsg').textContent='Sweep stopped';return}
+ if(blabMask()==0){$('blabmsg').textContent='Pick at least one buzzer';return}
+ blabPlaying=true;$('blabsweep').textContent='Stop sweep';var fr=200;$('blabf').value=200;
+ blabSweep=setInterval(function(){if(fr>6000){blabEnd();$('blabmsg').textContent='Sweep done';return}
+  $('blabf').value=fr;$('blabfv').textContent=fr+' Hz';$('blabmsg').textContent='Sweep '+fr+' Hz — note the loudest';blabSend(true);fr+=100},250)};
 $('sleep').onclick=function(){confirmAct('Deep sleep?','Powers the device down. Press the encoder knob to wake (it reboots).',null,function(){fetch('/api/sleep',{method:'POST'})})};
 var mcb=null;
 function confirmAct(title,body,typeWord,cb){
@@ -776,6 +798,15 @@ static void handleJingle(AsyncWebServerRequest *request) {
   sendOk(request);
 }
 
+static void handleTone(AsyncWebServerRequest *request) {
+  const bool on = request->hasParam("on") && request->getParam("on")->value().toInt() != 0;
+  const uint32_t freq = request->hasParam("freq") ? request->getParam("freq")->value().toInt() : 0;
+  const uint8_t mask = request->hasParam("mask") ? static_cast<uint8_t>(request->getParam("mask")->value().toInt()) : 0;
+  const uint8_t duty = request->hasParam("duty") ? static_cast<uint8_t>(request->getParam("duty")->value().toInt()) : 128;
+  labTone(on, freq, mask, duty);
+  sendOk(request);
+}
+
 // ---- uploads (SD asset upload + firmware OTA) ----
 
 static void handleSdUploadDone(AsyncWebServerRequest *request) {
@@ -953,6 +984,7 @@ void startWebServer() {
     webServer.on("/api/file/rename", M::HTTP_POST, handleFileRename);
     webServer.on("/api/sleep", M::HTTP_POST, handleSleep);
     webServer.on("/api/jingle", M::HTTP_POST, handleJingle);
+    webServer.on("/api/tone", M::HTTP_POST, handleTone);
     webServer.on("/api/upload", M::HTTP_POST, handleSdUploadDone, handleSdUpload);
     webServer.on("/api/ota", M::HTTP_POST, handleOtaDone, handleOtaUpload);
 

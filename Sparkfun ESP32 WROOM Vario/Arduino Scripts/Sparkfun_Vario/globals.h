@@ -237,6 +237,7 @@ extern bool liftAudioActive;
 extern bool sinkAudioActive;
 extern bool liftBeepOn;
 extern bool toneTestActive;
+extern bool buzzerLabActive;   // web Buzzer Lab is driving the buzzers; vario audio paused
 extern bool editingMenuItem;
 extern bool inMenuMode;       // false = data windows, true = settings menu
 extern bool pixelEnabled;
@@ -272,6 +273,7 @@ extern uint32_t lastVarioRateUpdateMs;
 extern uint32_t liftPhaseStartMs;
 extern uint32_t currentToneHz;
 extern uint32_t toneTestStartMs;
+extern uint32_t lastBuzzerLabMs;  // last Buzzer Lab keepalive; auto-stops if browser goes away
 extern uint8_t currentToneMask;
 extern uint16_t rainbowHue;
 

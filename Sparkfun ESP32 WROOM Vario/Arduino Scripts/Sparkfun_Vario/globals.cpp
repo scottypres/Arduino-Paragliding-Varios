@@ -52,6 +52,7 @@ bool liftAudioActive = false;
 bool sinkAudioActive = false;
 bool liftBeepOn = false;
 bool toneTestActive = false;
+bool buzzerLabActive = false;
 bool editingMenuItem = false;
 bool inMenuMode = false;
 bool pixelEnabled = false;
@@ -87,6 +88,7 @@ uint32_t lastVarioRateUpdateMs = 0;
 uint32_t liftPhaseStartMs = 0;
 uint32_t currentToneHz = 0;
 uint32_t toneTestStartMs = 0;
+uint32_t lastBuzzerLabMs = 0;
 uint8_t currentToneMask = 0;
 uint16_t rainbowHue = 0;
 
