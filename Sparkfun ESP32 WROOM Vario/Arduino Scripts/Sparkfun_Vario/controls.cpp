@@ -65,11 +65,11 @@ int8_t readEncoderDelta() {
   }
 
   accumulator += movement;
-  if (accumulator >= 4) {
+  if (accumulator >= 2) {
     accumulator = 0;
     return 1;
   }
-  if (accumulator <= -4) {
+  if (accumulator <= -2) {
     accumulator = 0;
     return -1;
   }

@@ -123,11 +123,14 @@ void oledText(uint8_t row, const String &text) {
   oled.print(text);
 }
 
-// Top-right "n/total" indicator (1-based) on the title row.
+// Top-right "n/N" indicator on the title row (shows position within total).
 static void drawIndicator(uint8_t index, uint8_t total) {
   oled.setTextSize(1);
   const String tag = String(index + 1) + "/" + String(total);
-  oled.setCursor(kOledWidth - static_cast<int16_t>(tag.length()) * 6, 0);
+  const int16_t x = kOledWidth - static_cast<int16_t>(tag.length()) * 6;
+  // Erase the indicator zone before drawing to prevent stale digits.
+  oled.fillRect(x - 2, 0, kOledWidth - x + 2, 9, SH110X_BLACK);
+  oled.setCursor(x, 0);
   oled.print(tag);
 }
 

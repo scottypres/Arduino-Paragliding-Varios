@@ -102,7 +102,9 @@ void completeBmpWarmup() {
     baselineSmoothedAltitudeFt = smoothedAltitudeFt;
   }
   previousVarioAltitudeFt = smoothedAltitudeFt;
-  displayAltitudeFt = smoothedAltitudeFt - baselineSmoothedAltitudeFt;
+  if (!useGpsAltitude) {
+    displayAltitudeFt = smoothedAltitudeFt - baselineSmoothedAltitudeFt;
+  }
   verticalSpeedMps = 0.0F;
   lastVarioRateUpdateMs = millis();
   varioRateInitialized = true;
@@ -152,7 +154,9 @@ void readSensors() {
         }
       }
     }
-    displayAltitudeFt = smoothedAltitudeFt - baselineSmoothedAltitudeFt;
+    if (!useGpsAltitude) {
+      displayAltitudeFt = smoothedAltitudeFt - baselineSmoothedAltitudeFt;
+    }
   }
 
   bool shtTempReadOk = false;
