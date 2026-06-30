@@ -4,6 +4,7 @@
 #include "display.h"
 #include "firmware.h"
 #include "logging.h"
+#include "power.h"
 #include "radio.h"
 #include "wifi_net.h"
 
@@ -229,10 +230,12 @@ void serviceControls() {
     if (encoderDelta != 0) {
       activeWindow = static_cast<uint8_t>(
           (activeWindow + encoderDelta + kOledWindowCount) % kOledWindowCount);
+      updateDisplay(true);  // redraw immediately; don't wait for the 100ms throttle
     }
     if (encoderButton.pressedEvent || confirmButton.pressedEvent || backButton.pressedEvent) {
       inMenuMode = true;
       editingMenuItem = false;
+      updateDisplay(true);
     }
     return;
   }
@@ -247,6 +250,7 @@ void serviceControls() {
     } else {
       selectedMenuItem = static_cast<uint8_t>((selectedMenuItem + encoderDelta + kMenuCount) % kMenuCount);
     }
+    updateDisplay(true);  // redraw immediately in menu mode too
   }
 
   if (encoderButton.pressedEvent || confirmButton.pressedEvent) {
