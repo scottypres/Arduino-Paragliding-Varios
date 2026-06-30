@@ -33,10 +33,14 @@ String menuValue(uint8_t item) {
       return String(kBatteryReadRateLabels[batteryReadRateIndex]);
     case kMenuGpsDisplay:
       return onOff(gpsDisplayEnabled);
+    case kMenuAltitudeSource:
+      return useGpsAltitude ? "GPS" : "Baro";
     case kMenuBluetooth:
       return bluetoothStatusText();
     case kMenuBatteryLogging:
       return batteryLoggingActive ? "Running" : "Start";
+    case kMenuWifiSetup:
+      return wifiPortalActive ? "Active" : "Start";
     case kMenuForgetWifi:
       return wifiNetworkCount == 0 ? "Cleared" : String(wifiNetworkCount) + " saved";
     case kMenuSwitchFirmware:
@@ -67,10 +71,14 @@ String menuLabel(uint8_t item) {
       return "Battery rate";
     case kMenuGpsDisplay:
       return "GPS display";
+    case kMenuAltitudeSource:
+      return "Altitude src";
     case kMenuBluetooth:
       return "Bluetooth";
     case kMenuBatteryLogging:
       return "Battery log";
+    case kMenuWifiSetup:
+      return "WiFi setup";
     case kMenuForgetWifi:
       return "Forget WiFi";
     case kMenuSwitchFirmware:

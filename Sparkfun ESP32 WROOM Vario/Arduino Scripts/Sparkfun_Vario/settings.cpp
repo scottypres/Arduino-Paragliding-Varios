@@ -26,6 +26,7 @@ void loadSettings() {
     batteryReadRateIndex = 2;
   }
   gpsDisplayEnabled = prefs.getBool(kPrefGpsDisplay, false);
+  useGpsAltitude = prefs.getBool(kPrefAltitudeSource, false);
   const bool savedBluetoothEnabled = prefs.getBool(kPrefBluetooth, false);
   altitudeZeroSaved = prefs.getBool(kPrefHasAltitudeZero, false);
   baselineSmoothedAltitudeFt = prefs.getFloat(kPrefAltitudeZeroFt, 0.0F);
@@ -54,6 +55,7 @@ String buildSettingsJson() {
   doc["battery_read_rate_label"] = kBatteryReadRateLabels[batteryReadRateIndex];
   doc["battery_gauge_ready"] = batteryGaugeReady;
   doc["gps_display"] = gpsDisplayEnabled;
+  doc["use_gps_altitude"] = useGpsAltitude;
   doc["bluetooth_enabled"] = bluetoothEnabled;
   doc["pixel_enabled"] = pixelEnabled;
   doc["pixel_mode"] = pixelModeName(pixelMode);
@@ -127,6 +129,10 @@ void applySettingsJson(JsonObjectConst obj) {
   if (obj["gps_display"].is<bool>()) {
     gpsDisplayEnabled = obj["gps_display"].as<bool>();
     prefs.putBool(kPrefGpsDisplay, gpsDisplayEnabled);
+  }
+  if (obj["use_gps_altitude"].is<bool>()) {
+    useGpsAltitude = obj["use_gps_altitude"].as<bool>();
+    prefs.putBool(kPrefAltitudeSource, useGpsAltitude);
   }
   if (obj["bluetooth_enabled"].is<bool>()) {
     setBluetoothEnabled(obj["bluetooth_enabled"].as<bool>(), true);

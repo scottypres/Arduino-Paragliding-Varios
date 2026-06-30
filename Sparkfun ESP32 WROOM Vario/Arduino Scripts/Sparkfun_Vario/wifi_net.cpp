@@ -296,6 +296,7 @@ void serviceWifi() {
 void initWifi() {}
 void serviceWifi() {}
 void loadWifiNetworks() {}
+void startWifiPortal() {}
 void forgetWifiAndStartPortal() {}
 void setBatteryLogWifiEnabled(bool enabled) { batteryLogWifiEnabled = enabled; }
 String wifiStatusText() { return "Off"; }

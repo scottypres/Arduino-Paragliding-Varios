@@ -339,6 +339,7 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <div class=row><label>Log rate</label><select id=log_rate_index></select></div>
 <div class=row><label>Battery update <span class=sub id=bat_rate_hint></span></label><select id=battery_read_rate_index></select></div>
 <div class=row><label>Show GPS on OLED</label><label class=sw><input type=checkbox id=gps_display><span class=sl></span></label></div>
+<div class=row><label>Altitude source</label><label class=sw><input type=checkbox id=use_gps_altitude><span class=sl></span></label><span class=sub id=altsrc_hint>Baro</span></div>
 </div>
 <div class=card><h2>Battery logging</h2>
 <div class=row><span class=sub id=blogstat>--</span><span><button class=btn id=blog_start>Start</button> <button class="btn dng" id=blog_stop>Stop</button></span></div>
@@ -355,6 +356,7 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <section class=tab id=wifi>
 <div class=card><h2>WiFi</h2><div id=wifistat class=muted>--</div><div id=wifilist></div>
 <div class=row><input type=text id=ssid placeholder=SSID maxlength=63><input type=password id=pass placeholder=Password maxlength=63><button class=btn id=wadd>Add</button></div>
+<div class=row><span class=sub>Open setup portal to add/change networks (keeps saved networks)</span><button class=btn id=wsetup>WiFi setup</button></div>
 <div class=row><span class=sub>Remove every saved network</span><button class="btn dng" id=wforget>Forget all</button></div>
 </div></section>
 
@@ -484,6 +486,7 @@ function opts(sel,list,idx){sel.innerHTML='';list.forEach(function(o,i){var e=do
 function patch(o){return fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)}).then(function(r){return r.json()}).then(fillSettings)}
 function fillSettings(s){
  $('audio').checked=s.audio;$('bluetooth_enabled').checked=s.bluetooth_enabled;$('data_logging').checked=s.data_logging;$('gps_display').checked=s.gps_display;
+ $('use_gps_altitude').checked=s.use_gps_altitude;$('altsrc_hint').textContent=s.use_gps_altitude?'GPS':'Baro';
  $('volume').value=s.volume;$('volv').textContent=s.volume+'%';
  if($('response').options.length!=s.response_options.length)opts($('response'),s.response_options,0);
  $('response').value=s.response;
@@ -501,6 +504,7 @@ $('audio').onchange=function(){patch({audio:this.checked})};
 $('bluetooth_enabled').onchange=function(){patch({bluetooth_enabled:this.checked})};
 $('data_logging').onchange=function(){patch({data_logging:this.checked})};
 $('gps_display').onchange=function(){patch({gps_display:this.checked})};
+$('use_gps_altitude').onchange=function(){patch({use_gps_altitude:this.checked})};
 $('volume').oninput=function(){$('volv').textContent=this.value+'%'};
 $('volume').onchange=function(){patch({volume:Number(this.value)})};
 $('response').onchange=function(){patch({response:Number(this.value)})};
@@ -526,6 +530,7 @@ function loadWifi(){fetch('/api/wifi',{cache:'no-store'}).then(function(r){retur
 })}
 function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
 $('wadd').onclick=function(){var d=new FormData();d.append('ssid',$('ssid').value);d.append('pass',$('pass').value);fetch('/wifi/add',{method:'POST',body:d}).then(function(){$('ssid').value='';$('pass').value='';loadWifi()})};
+$('wsetup').onclick=function(){fetch('/wifi/setup',{method:'POST'}).then(function(){$('wifistat').textContent='Setup portal starting — connect to '+JSON.stringify('SparkFun-Vario-Setup')})};
 $('wforget').onclick=function(){confirmAct('Forget all WiFi?','Removes every saved network. The device will start its setup AP.',null,function(){fetch('/wifi/forget-all',{method:'POST'}).then(loadWifi)})};
 // ---- sd ----
 function loadTail(){fetch('/tail',{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){$('tail').textContent=t+'\n\nBattery log:\n';return fetch('/battery-tail',{cache:'no-store'})}).then(function(r){return r.text()}).then(function(t){$('tail').textContent+=t})}
@@ -766,6 +771,11 @@ static void handleWifiForget(AsyncWebServerRequest *request) {
   sendOk(request);
 }
 
+static void handleWifiSetup(AsyncWebServerRequest *request) {
+  startWifiPortal();
+  sendOk(request);
+}
+
 static void handleWifiForgetAll(AsyncWebServerRequest *request) {
   clearWifiNetworks();
   sendOk(request);
@@ -974,6 +984,7 @@ void startWebServer() {
     webServer.on("/api/battery", M::HTTP_POST, handleBatteryAction);
     webServer.on("/wifi/add", M::HTTP_POST, handleWifiAdd);
     webServer.on("/wifi/forget", M::HTTP_POST, handleWifiForget);
+    webServer.on("/wifi/setup", M::HTTP_POST, handleWifiSetup);
     webServer.on("/wifi/forget-all", M::HTTP_POST, handleWifiForgetAll);
     webServer.on("/sd/clear", M::HTTP_POST, handleSdClear);
     webServer.on("/sd/wipe", M::HTTP_POST, handleSdWipe);

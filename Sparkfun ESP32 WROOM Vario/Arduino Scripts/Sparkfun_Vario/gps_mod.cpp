@@ -36,6 +36,10 @@ void serviceGps() {
   while (gpsSerial.available()) {
     gps.encode(gpsSerial.read());
   }
+  if (useGpsAltitude && gps.altitude.isValid() && gps.altitude.age() < 3000) {
+    displayAltitudeFt = static_cast<float>(gps.altitude.meters()) * kMetersToFeet
+                        - baselineSmoothedAltitudeFt;
+  }
 }
 
 void printGpsDebugIfDue() {

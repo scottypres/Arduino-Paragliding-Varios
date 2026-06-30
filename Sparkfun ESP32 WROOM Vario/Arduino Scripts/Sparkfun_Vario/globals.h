@@ -82,6 +82,7 @@ constexpr const char *kPrefDataLogging = "dataLog";
 constexpr const char *kPrefLogRate = "logRate";
 constexpr const char *kPrefGpsDisplay = "gpsDisp";
 constexpr const char *kPrefBluetooth = "btClassic";
+constexpr const char *kPrefAltitudeSource = "altSrc";  // false=baro, true=GPS
 constexpr const char *kPrefBatteryReadRate = "batRate";
 constexpr float kMetersToFeet = 3.28084F;
 constexpr float kFeetToMeters = 1.0F / kMetersToFeet;
@@ -140,8 +141,10 @@ enum MenuItem : uint8_t {
   kMenuGpsLogRate,
   kMenuBatteryReadRate,
   kMenuGpsDisplay,
+  kMenuAltitudeSource,
   kMenuBluetooth,
   kMenuBatteryLogging,
+  kMenuWifiSetup,
   kMenuForgetWifi,
   kMenuSwitchFirmware,
   kMenuCount
@@ -213,6 +216,7 @@ extern bool bmpReady;
 extern bool shtReady;
 extern bool dataLoggingEnabled;
 extern bool gpsDisplayEnabled;
+extern bool useGpsAltitude;
 extern bool audioEnabled;
 extern bool bluetoothEnabled;
 extern bool batteryGaugeReady;

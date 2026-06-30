@@ -54,7 +54,6 @@ void readBatteryIfDue() {
   }
 
   gpsSerial.end();
-  delay(2);
   batteryWire.begin(kBatteryI2cSdaPin, kBatteryI2cSclPin);
   batteryWire.setClock(400000);
 

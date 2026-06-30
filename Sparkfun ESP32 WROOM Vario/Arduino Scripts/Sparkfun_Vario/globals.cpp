@@ -28,6 +28,7 @@ bool bmpReady = false;
 bool shtReady = false;
 bool dataLoggingEnabled = true;
 bool gpsDisplayEnabled = false;
+bool useGpsAltitude = false;
 bool audioEnabled = true;
 bool bluetoothEnabled = false;
 bool batteryGaugeReady = false;

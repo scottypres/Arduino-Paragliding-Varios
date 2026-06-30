@@ -175,11 +175,18 @@ void activateSelectedMenuItem() {
     case kMenuGpsDisplay:
       gpsDisplayEnabled = !gpsDisplayEnabled;
       break;
+    case kMenuAltitudeSource:
+      useGpsAltitude = !useGpsAltitude;
+      prefs.putBool(kPrefAltitudeSource, useGpsAltitude);
+      break;
     case kMenuBluetooth:
       setBluetoothEnabled(!bluetoothEnabled, true);
       break;
     case kMenuBatteryLogging:
       startBatteryLogging();
+      break;
+    case kMenuWifiSetup:
+      startWifiPortal();
       break;
     case kMenuForgetWifi:
       forgetWifiAndStartPortal();
