@@ -31,8 +31,8 @@ String menuValue(uint8_t item) {
       return String(kLogRateLabels[logRateIndex]);
     case kMenuBatteryReadRate:
       return String(kBatteryReadRateLabels[batteryReadRateIndex]);
-    case kMenuGpsDisplay:
-      return onOff(gpsDisplayEnabled);
+    case kMenuGpsEnabled:
+      return onOff(gpsEnabled);
     case kMenuAltitudeSource:
       return useGpsAltitude ? "GPS" : "Baro";
     case kMenuBluetooth:
@@ -69,8 +69,8 @@ String menuLabel(uint8_t item) {
       return "Log rate";
     case kMenuBatteryReadRate:
       return "Battery rate";
-    case kMenuGpsDisplay:
-      return "GPS display";
+    case kMenuGpsEnabled:
+      return "GPS";
     case kMenuAltitudeSource:
       return "Altitude src";
     case kMenuBluetooth:

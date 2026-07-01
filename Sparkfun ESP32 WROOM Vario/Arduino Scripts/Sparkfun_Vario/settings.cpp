@@ -1,6 +1,7 @@
 #include "settings.h"
 
 #include "audio.h"
+#include "gps_mod.h"
 #include "power.h"
 #include "radio.h"
 #include "web.h"
@@ -29,7 +30,7 @@ void loadSettings() {
   lockBeepEnabled = prefs.getBool(kPrefLockBeep, true);
   lockHoldMs = constrain(prefs.getUInt(kPrefLockHoldMs, kDefaultLockHoldMs),
                          kMinLockHoldMs, kMaxLockHoldMs);
-  gpsDisplayEnabled = prefs.getBool(kPrefGpsDisplay, false);
+  gpsEnabled = prefs.getBool(kPrefGpsEnabled, true);
   useGpsAltitude = prefs.getBool(kPrefAltitudeSource, false);
   const bool savedBluetoothEnabled = prefs.getBool(kPrefBluetooth, false);
   altitudeZeroSaved = prefs.getBool(kPrefHasAltitudeZero, false);
@@ -58,7 +59,7 @@ String buildSettingsJson() {
   doc["battery_read_rate_index"] = batteryReadRateIndex;
   doc["battery_read_rate_label"] = kBatteryReadRateLabels[batteryReadRateIndex];
   doc["battery_gauge_ready"] = batteryGaugeReady;
-  doc["gps_display"] = gpsDisplayEnabled;
+  doc["gps_enabled"] = gpsEnabled;
   doc["use_gps_altitude"] = useGpsAltitude;
   doc["bluetooth_enabled"] = bluetoothEnabled;
   doc["pixel_enabled"] = pixelEnabled;
@@ -142,9 +143,8 @@ void applySettingsJson(JsonObjectConst obj) {
     lockBeepEnabled = obj["lock_beep"].as<bool>();
     prefs.putBool(kPrefLockBeep, lockBeepEnabled);
   }
-  if (obj["gps_display"].is<bool>()) {
-    gpsDisplayEnabled = obj["gps_display"].as<bool>();
-    prefs.putBool(kPrefGpsDisplay, gpsDisplayEnabled);
+  if (obj["gps_enabled"].is<bool>()) {
+    setGpsEnabled(obj["gps_enabled"].as<bool>());
   }
   if (obj["use_gps_altitude"].is<bool>()) {
     useGpsAltitude = obj["use_gps_altitude"].as<bool>();

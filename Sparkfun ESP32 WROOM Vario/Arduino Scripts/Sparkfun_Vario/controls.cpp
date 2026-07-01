@@ -3,6 +3,7 @@
 #include "audio.h"
 #include "display.h"
 #include "firmware.h"
+#include "gps_mod.h"
 #include "logging.h"
 #include "power.h"
 #include "radio.h"
@@ -173,8 +174,8 @@ void activateSelectedMenuItem() {
         setTone(0);
       }
       break;
-    case kMenuGpsDisplay:
-      gpsDisplayEnabled = !gpsDisplayEnabled;
+    case kMenuGpsEnabled:
+      setGpsEnabled(!gpsEnabled);
       break;
     case kMenuAltitudeSource:
       useGpsAltitude = !useGpsAltitude;

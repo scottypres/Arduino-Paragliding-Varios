@@ -80,7 +80,7 @@ constexpr const char *kPrefPixelMode = "pixMode";
 constexpr const char *kPrefPixelColor = "pixColor";
 constexpr const char *kPrefDataLogging = "dataLog";
 constexpr const char *kPrefLogRate = "logRate";
-constexpr const char *kPrefGpsDisplay = "gpsDisp";
+constexpr const char *kPrefGpsEnabled = "gpsEn";
 constexpr const char *kPrefBluetooth = "btClassic";
 constexpr const char *kPrefAltitudeSource = "altSrc";  // false=baro, true=GPS
 constexpr const char *kPrefBatteryReadRate = "batRate";
@@ -150,7 +150,7 @@ enum MenuItem : uint8_t {
   kMenuToneTest,
   kMenuGpsLogRate,
   kMenuBatteryReadRate,
-  kMenuGpsDisplay,
+  kMenuGpsEnabled,
   kMenuAltitudeSource,
   kMenuBluetooth,
   kMenuBatteryLogging,
@@ -225,7 +225,7 @@ extern bool sdReady;
 extern bool bmpReady;
 extern bool shtReady;
 extern bool dataLoggingEnabled;
-extern bool gpsDisplayEnabled;
+extern bool gpsEnabled;  // false = GPS UART never claimed, frees the shared pins for the battery gauge
 extern bool useGpsAltitude;
 extern bool audioEnabled;
 extern bool bluetoothEnabled;

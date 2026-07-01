@@ -32,7 +32,20 @@ String gpsSatSummary() {
   return value;
 }
 
+void setGpsEnabled(bool enabled) {
+  gpsEnabled = enabled;
+  prefs.putBool(kPrefGpsEnabled, gpsEnabled);
+  if (gpsEnabled) {
+    gpsSerial.begin(kGpsBaud, SERIAL_8N1, kGpsRxPin, kGpsTxPin);
+  } else {
+    gpsSerial.end();  // release the shared UART/I2C pins for the battery gauge
+  }
+}
+
 void serviceGps() {
+  if (!gpsEnabled) {
+    return;
+  }
   while (gpsSerial.available()) {
     gps.encode(gpsSerial.read());
   }
@@ -43,6 +56,9 @@ void serviceGps() {
 }
 
 void printGpsDebugIfDue() {
+  if (!gpsEnabled) {
+    return;
+  }
   const uint32_t nowMs = millis();
   if (nowMs - lastGpsDebugMs < kGpsDebugMs) {
     return;

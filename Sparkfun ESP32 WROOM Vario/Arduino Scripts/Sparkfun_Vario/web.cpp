@@ -345,7 +345,7 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <div class=row><label>SD data logging</label><label class=sw><input type=checkbox id=data_logging><span class=sl></span></label></div>
 <div class=row><label>Log rate</label><select id=log_rate_index></select></div>
 <div class=row><label>Battery update <span class=sub id=bat_rate_hint></span></label><select id=battery_read_rate_index></select></div>
-<div class=row><label>Show GPS on OLED</label><label class=sw><input type=checkbox id=gps_display><span class=sl></span></label></div>
+<div class=row><label>GPS enabled</label><label class=sw><input type=checkbox id=gps_enabled><span class=sl></span></label></div>
 <div class=row><label>Altitude source</label><label class=sw><input type=checkbox id=use_gps_altitude><span class=sl></span></label><span class=sub id=altsrc_hint>Baro</span></div>
 </div>
 <div class=card><h2>Battery logging</h2>
@@ -493,7 +493,7 @@ setInterval(poll,1000);poll();
 function opts(sel,list,idx){sel.innerHTML='';list.forEach(function(o,i){var e=document.createElement('option');e.value=(typeof o==='string'&&isNaN(idx)?o:i);e.textContent=o;sel.appendChild(e)})}
 function patch(o){return fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)}).then(function(r){return r.json()}).then(fillSettings)}
 function fillSettings(s){
- $('audio').checked=s.audio;$('bluetooth_enabled').checked=s.bluetooth_enabled;$('data_logging').checked=s.data_logging;$('gps_display').checked=s.gps_display;
+ $('audio').checked=s.audio;$('bluetooth_enabled').checked=s.bluetooth_enabled;$('data_logging').checked=s.data_logging;$('gps_enabled').checked=s.gps_enabled;
  $('use_gps_altitude').checked=s.use_gps_altitude;$('altsrc_hint').textContent=s.use_gps_altitude?'GPS':'Baro';
  $('volume').value=s.volume;$('volv').textContent=s.volume+'%';
  if($('response').options.length!=s.response_options.length)opts($('response'),s.response_options,0);
@@ -513,7 +513,7 @@ fetch('/api/settings').then(function(r){return r.json()}).then(fillSettings);
 $('audio').onchange=function(){patch({audio:this.checked})};
 $('bluetooth_enabled').onchange=function(){patch({bluetooth_enabled:this.checked})};
 $('data_logging').onchange=function(){patch({data_logging:this.checked})};
-$('gps_display').onchange=function(){patch({gps_display:this.checked})};
+$('gps_enabled').onchange=function(){patch({gps_enabled:this.checked})};
 $('use_gps_altitude').onchange=function(){patch({use_gps_altitude:this.checked})};
 $('volume').oninput=function(){$('volv').textContent=this.value+'%'};
 $('volume').onchange=function(){patch({volume:Number(this.value)})};

@@ -23,8 +23,10 @@ uint32_t gradientColor(float value, float low, float high) {
 }
 
 void initBatteryMonitor() {
-  gpsSerial.end();
-  delay(5);
+  if (gpsEnabled) {
+    gpsSerial.end();
+    delay(5);
+  }
 
   batteryWire.begin(kBatteryI2cSdaPin, kBatteryI2cSclPin);
   batteryWire.setClock(400000);
@@ -36,7 +38,9 @@ void initBatteryMonitor() {
   }
   batteryWire.end();
 
-  gpsSerial.begin(kGpsBaud, SERIAL_8N1, kGpsRxPin, kGpsTxPin);
+  if (gpsEnabled) {
+    gpsSerial.begin(kGpsBaud, SERIAL_8N1, kGpsRxPin, kGpsTxPin);
+  }
 }
 
 void readBatteryIfDue() {
@@ -53,7 +57,9 @@ void readBatteryIfDue() {
     return;
   }
 
-  gpsSerial.end();
+  if (gpsEnabled) {
+    gpsSerial.end();
+  }
   batteryWire.begin(kBatteryI2cSdaPin, kBatteryI2cSclPin);
   batteryWire.setClock(400000);
 
@@ -61,7 +67,9 @@ void readBatteryIfDue() {
   batteryPercent = clampFloat(batteryGauge.getSOC(), 0.0F, 100.0F);
 
   batteryWire.end();
-  gpsSerial.begin(kGpsBaud, SERIAL_8N1, kGpsRxPin, kGpsTxPin);
+  if (gpsEnabled) {
+    gpsSerial.begin(kGpsBaud, SERIAL_8N1, kGpsRxPin, kGpsTxPin);
+  }
 }
 
 void initPixel() {
