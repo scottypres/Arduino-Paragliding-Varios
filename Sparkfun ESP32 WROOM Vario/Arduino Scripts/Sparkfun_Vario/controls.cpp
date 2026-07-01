@@ -194,6 +194,9 @@ void activateSelectedMenuItem() {
       startBatteryLogging();
       break;
 #ifndef VARIO_DISABLE_WIFI
+    case kMenuWifiEnabled:
+      setWifiEnabled(!wifiEnabled, true);
+      break;
     case kMenuWifiSetup:
       startWifiPortal();
       break;

@@ -42,6 +42,8 @@ String menuValue(uint8_t item) {
     case kMenuBatteryLogging:
       return batteryLoggingActive ? "Running" : "Start";
 #ifndef VARIO_DISABLE_WIFI
+    case kMenuWifiEnabled:
+      return onOff(wifiEnabled);
     case kMenuWifiSetup:
       return wifiPortalActive ? "Active" : "Start";
     case kMenuForgetWifi:
@@ -84,6 +86,8 @@ String menuLabel(uint8_t item) {
     case kMenuBatteryLogging:
       return "Battery log";
 #ifndef VARIO_DISABLE_WIFI
+    case kMenuWifiEnabled:
+      return "WiFi";
     case kMenuWifiSetup:
       return "WiFi setup";
     case kMenuForgetWifi:

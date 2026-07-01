@@ -39,6 +39,7 @@ bool batteryLogOledEnabled = true;
 bool batteryLogSavedWifiEnabled = true;
 bool batteryLogSavedBluetoothEnabled = false;
 bool batteryLogSavedOledEnabled = true;
+bool wifiEnabled = true;
 bool wifiReady = false;
 bool otaReady = false;
 bool wifiAttemptActive = false;

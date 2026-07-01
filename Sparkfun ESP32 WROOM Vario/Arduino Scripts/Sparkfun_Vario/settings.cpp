@@ -50,6 +50,7 @@ void loadSettings() {
     pixelMode = kPixelModeColor;
   }
   pixelColor = prefs.getUInt(kPrefPixelColor, pixelColor) & 0xFFFFFF;
+  wifiEnabled = prefs.getBool(kPrefWifiEnabled, true);
   loadWifiNetworks();
   setBluetoothEnabled(savedBluetoothEnabled, false);
 }

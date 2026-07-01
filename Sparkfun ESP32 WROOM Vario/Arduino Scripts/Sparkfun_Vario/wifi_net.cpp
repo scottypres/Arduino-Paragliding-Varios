@@ -116,6 +116,11 @@ void startWifiPortal() {
     return;
   }
 
+  if (!wifiEnabled) {
+    wifiEnabled = true;
+    prefs.putBool(kPrefWifiEnabled, true);
+  }
+
   stopWebServer();
   wifiAttemptActive = false;
   wifiReady = false;
@@ -165,6 +170,11 @@ void startWifiAttempt(uint8_t index) {
 }
 
 void initWifi() {
+  if (!wifiEnabled) {
+    WiFi.mode(WIFI_OFF);
+    return;
+  }
+
   WiFi.mode(WIFI_STA);
   WiFi.setAutoReconnect(false);
   wifiReady = false;
@@ -180,6 +190,39 @@ void initWifi() {
   }
 
   startWifiAttempt(0);
+}
+
+void setWifiEnabled(bool enabled, bool persist) {
+  if (enabled == wifiEnabled) {
+    if (persist) {
+      prefs.putBool(kPrefWifiEnabled, wifiEnabled);
+    }
+    return;
+  }
+
+  wifiEnabled = enabled;
+  if (persist) {
+    prefs.putBool(kPrefWifiEnabled, wifiEnabled);
+  }
+
+  if (enabled) {
+    WiFi.mode(WIFI_STA);
+    if (wifiNetworkCount == 0) {
+      startWifiPortal();
+    } else if (!wifiReady && !wifiAttemptActive) {
+      startWifiAttempt(wifiAttemptIndex);
+    }
+    return;
+  }
+
+  stopWifiPortal();
+  stopWebServer();
+  WiFi.disconnect(false, false);
+  WiFi.mode(WIFI_OFF);
+  wifiReady = false;
+  otaReady = false;
+  wifiAttemptActive = false;
+  connectedWifiSsid = "";
 }
 
 void setBatteryLogWifiEnabled(bool enabled) {
@@ -205,6 +248,9 @@ void setBatteryLogWifiEnabled(bool enabled) {
 }
 
 String wifiStatusText() {
+  if (!wifiEnabled) {
+    return "Off";
+  }
   if (wifiReady) {
     return String("On ") + connectedWifiSsid;
   }
@@ -222,6 +268,13 @@ String wifiStatusText() {
 
 void serviceWifi() {
   const uint32_t nowMs = millis();
+
+  if (!wifiEnabled) {
+    if (WiFi.getMode() != WIFI_OFF) {
+      WiFi.mode(WIFI_OFF);
+    }
+    return;
+  }
 
   if (batteryLoggingActive && !batteryLogWifiEnabled) {
     if (WiFi.getMode() != WIFI_OFF) {
@@ -298,6 +351,7 @@ void serviceWifi() {}
 void loadWifiNetworks() {}
 void startWifiPortal() {}
 void forgetWifiAndStartPortal() {}
+void setWifiEnabled(bool enabled, bool persist) { wifiEnabled = false; }
 void setBatteryLogWifiEnabled(bool enabled) { batteryLogWifiEnabled = enabled; }
 String wifiStatusText() { return "Off"; }
 

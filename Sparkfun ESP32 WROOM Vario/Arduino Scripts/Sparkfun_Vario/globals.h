@@ -82,6 +82,7 @@ constexpr const char *kPrefDataLogging = "dataLog";
 constexpr const char *kPrefLogRate = "logRate";
 constexpr const char *kPrefGpsDisplay = "gpsDisp";
 constexpr const char *kPrefBluetooth = "btClassic";
+constexpr const char *kPrefWifiEnabled = "wifiOn";
 constexpr const char *kPrefAltitudeSource = "altSrc";  // false=baro, true=GPS
 constexpr const char *kPrefBatteryReadRate = "batRate";
 constexpr const char *kPrefBuzzerCount = "buzzCount";
@@ -147,6 +148,7 @@ enum MenuItem : uint8_t {
   kMenuBluetooth,
   kMenuBatteryLogging,
 #ifndef VARIO_DISABLE_WIFI
+  kMenuWifiEnabled,
   kMenuWifiSetup,
   kMenuForgetWifi,
 #endif
@@ -232,6 +234,7 @@ extern bool batteryLogOledEnabled;
 extern bool batteryLogSavedWifiEnabled;
 extern bool batteryLogSavedBluetoothEnabled;
 extern bool batteryLogSavedOledEnabled;
+extern bool wifiEnabled;
 extern bool wifiReady;
 extern bool otaReady;
 extern bool wifiAttemptActive;

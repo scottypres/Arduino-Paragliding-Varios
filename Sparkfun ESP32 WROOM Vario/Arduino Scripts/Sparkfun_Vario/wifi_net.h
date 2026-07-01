@@ -15,5 +15,6 @@ void forgetWifiAndStartPortal();
 void startWifiAttempt(uint8_t index);
 void initWifi();
 void serviceWifi();
+void setWifiEnabled(bool enabled, bool persist);
 void setBatteryLogWifiEnabled(bool enabled);
 String wifiStatusText();
