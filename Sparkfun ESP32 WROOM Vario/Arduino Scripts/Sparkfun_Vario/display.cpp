@@ -225,7 +225,7 @@ static void drawLockSplash() {
   oled.setTextSize(2);
   const String text = controlsLocked ? "Locked" : "Unlocked";
   const int16_t x = (kOledWidth - static_cast<int16_t>(text.length()) * 12) / 2;
-  oled.setCursor(max(x, 0), 24);
+  oled.setCursor(x < 0 ? 0 : x, 24);
   oled.print(text);
 }
 
