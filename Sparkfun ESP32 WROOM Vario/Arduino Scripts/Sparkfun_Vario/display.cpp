@@ -221,6 +221,14 @@ static void drawMenu() {
   }
 }
 
+static void drawLockSplash() {
+  oled.setTextSize(2);
+  const String text = controlsLocked ? "Locked" : "Unlocked";
+  const int16_t x = (kOledWidth - static_cast<int16_t>(text.length()) * 12) / 2;
+  oled.setCursor(max(x, 0), 24);
+  oled.print(text);
+}
+
 void updateDisplay(bool force) {
   if (!oledReady) {
     return;
@@ -240,7 +248,9 @@ void updateDisplay(bool force) {
   oled.setTextSize(1);
   oled.setTextColor(SH110X_WHITE);
 
-  if (inMenuMode) {
+  if (nowMs < lockSplashUntilMs) {
+    drawLockSplash();
+  } else if (inMenuMode) {
     drawMenu();
   } else if (batteryLoggingActive) {
     drawBatteryLogStatus();

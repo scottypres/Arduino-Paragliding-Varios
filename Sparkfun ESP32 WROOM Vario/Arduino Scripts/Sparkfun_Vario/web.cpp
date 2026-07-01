@@ -182,6 +182,7 @@ String dataJson() {
   json += ",\"oled_window\":" + String(activeWindow);
   json += ",\"oled_window_count\":" + String(kOledWindowCount);
   json += ",\"oled_in_menu\":" + String(inMenuMode ? "true" : "false");
+  json += ",\"locked\":" + String(controlsLocked ? "true" : "false");
   json += ",\"time_known\":" + String(timeKnown() ? "true" : "false");
   json += ",\"time_source\":\"" + String(clockSource()) + "\"";
   const String iso = isoTimestamp();
@@ -331,6 +332,12 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <div class=row><label>Volume <span class=sub id=volv></span></label><input type=range id=volume min=5 max=100 step=5></div>
 <div class=row><label>Response</label><select id=response></select></div>
 </div>
+<div class=card><h2>Button lock</h2>
+<div class=row><span class=sub>Status <b id=lockstat>--</b></span></div>
+<div class=row><label>Lock beep</label><label class=sw><input type=checkbox id=lock_beep><span class=sl></span></label></div>
+<div class=row><label>Hold time <span class=sub id=lockholdv></span></label><input type=range id=lock_hold_ms min=1 max=10 step=0.5></div>
+<div class=row><span class=sub>Hold Select + Back this long to lock/unlock the buttons</span></div>
+</div>
 <div class=card><h2>Altitude zero</h2>
 <div class=row><span class=sub>Display altitude <b id=zalt>--</b> ft &middot; <span id=zsaved>--</span></span><span><button class=btn id=zset>Set zero</button> <button class="btn ghost" id=zclr>Clear</button></span></div>
 </div>
@@ -463,6 +470,7 @@ function applyState(j){
   $('s_bt').textContent=j.bluetooth_status||'--';
   $('s_log').textContent=j.logging_enabled?(j.sd_ready?'On ('+j.log_size+' B)':'On (no SD)'):'Off';
   $('s_blog').textContent=j.battery_logging_active?('Running '+sw(j.battery_log_elapsed_s)):'Off';
+  $('lockstat').textContent=j.locked?'Locked':'Unlocked';
   $('logsz').textContent=j.sd_ready?j.log_size+' bytes':'SD off';
   $('blogsz').textContent=j.sd_ready?j.battery_log_size+' bytes':'SD off';
   $('blogstat').textContent=j.battery_logging_active?('Running '+sw(j.battery_log_elapsed_s)+' · '+(j.sd_ready?j.battery_log_size+' B':'no SD')):'Stopped';
@@ -498,6 +506,8 @@ function fillSettings(s){
  if($('pixel_mode').options.length!=s.pixel_mode_options.length){opts($('pixel_mode'),s.pixel_mode_options,NaN)}
  $('pixel_mode').value=s.pixel_mode;$('pixel_enabled').checked=s.pixel_enabled;$('pixel_color').value=s.pixel_color;
  $('zalt').textContent=f(s.display_altitude_ft,1);$('zsaved').textContent=s.altitude_zero_saved?'zero saved':'no saved zero';
+ $('lockstat').textContent=s.locked?'Locked':'Unlocked';$('lock_beep').checked=s.lock_beep;
+ $('lock_hold_ms').value=s.lock_hold_ms/1000;$('lockholdv').textContent=(s.lock_hold_ms/1000)+' s';
 }
 fetch('/api/settings').then(function(r){return r.json()}).then(fillSettings);
 $('audio').onchange=function(){patch({audio:this.checked})};
@@ -513,6 +523,9 @@ $('battery_read_rate_index').onchange=function(){patch({battery_read_rate_index:
 $('pixel_enabled').onchange=function(){patch({pixel_enabled:this.checked})};
 $('pixel_mode').onchange=function(){patch({pixel_mode:this.value})};
 $('pixel_color').onchange=function(){patch({pixel_color:this.value})};
+$('lock_beep').onchange=function(){patch({lock_beep:this.checked})};
+$('lock_hold_ms').oninput=function(){$('lockholdv').textContent=this.value+' s'};
+$('lock_hold_ms').onchange=function(){patch({lock_hold_ms:Math.round(Number(this.value)*1000)})};
 $('zset').onclick=function(){fetch('/api/zero/set',{method:'POST'}).then(function(r){return r.json()}).then(fillSettings)};
 $('zclr').onclick=function(){fetch('/api/zero/clear',{method:'POST'}).then(function(r){return r.json()}).then(fillSettings)};
 function batteryAction(a,en){var u='/api/battery?action='+encodeURIComponent(a);if(en!==undefined)u+='&enabled='+(en?1:0);fetch(u,{method:'POST'}).then(function(r){return r.json()}).then(applyState)}

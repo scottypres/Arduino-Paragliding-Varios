@@ -25,6 +25,10 @@ void loadSettings() {
   if (batteryReadRateIndex >= kBatteryReadRateCount) {
     batteryReadRateIndex = 2;
   }
+  controlsLocked = prefs.getBool(kPrefLocked, false);
+  lockBeepEnabled = prefs.getBool(kPrefLockBeep, true);
+  lockHoldMs = constrain(prefs.getUInt(kPrefLockHoldMs, kDefaultLockHoldMs),
+                         kMinLockHoldMs, kMaxLockHoldMs);
   gpsDisplayEnabled = prefs.getBool(kPrefGpsDisplay, false);
   useGpsAltitude = prefs.getBool(kPrefAltitudeSource, false);
   const bool savedBluetoothEnabled = prefs.getBool(kPrefBluetooth, false);
@@ -62,6 +66,9 @@ String buildSettingsJson() {
   doc["pixel_color"] = colorToHex(pixelColor);
   doc["altitude_zero_saved"] = altitudeZeroSaved;
   doc["display_altitude_ft"] = displayAltitudeFt;
+  doc["locked"] = controlsLocked;
+  doc["lock_hold_ms"] = lockHoldMs;
+  doc["lock_beep"] = lockBeepEnabled;
 
   JsonArray resp = doc["response_options"].to<JsonArray>();
   for (uint8_t i = 0; i < kVarioResponseCount; i++) {
@@ -125,6 +132,15 @@ void applySettingsJson(JsonObjectConst obj) {
       batteryReadRateIndex = static_cast<uint8_t>(r);
       prefs.putUChar(kPrefBatteryReadRate, batteryReadRateIndex);
     }
+  }
+  if (obj["lock_hold_ms"].is<int>()) {
+    lockHoldMs = constrain(static_cast<uint32_t>(obj["lock_hold_ms"].as<int>()),
+                           kMinLockHoldMs, kMaxLockHoldMs);
+    prefs.putUInt(kPrefLockHoldMs, lockHoldMs);
+  }
+  if (obj["lock_beep"].is<bool>()) {
+    lockBeepEnabled = obj["lock_beep"].as<bool>();
+    prefs.putBool(kPrefLockBeep, lockBeepEnabled);
   }
   if (obj["gps_display"].is<bool>()) {
     gpsDisplayEnabled = obj["gps_display"].as<bool>();

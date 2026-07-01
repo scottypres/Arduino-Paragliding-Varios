@@ -84,6 +84,9 @@ constexpr const char *kPrefGpsDisplay = "gpsDisp";
 constexpr const char *kPrefBluetooth = "btClassic";
 constexpr const char *kPrefAltitudeSource = "altSrc";  // false=baro, true=GPS
 constexpr const char *kPrefBatteryReadRate = "batRate";
+constexpr const char *kPrefLocked = "ctlLock";
+constexpr const char *kPrefLockHoldMs = "lockHold";
+constexpr const char *kPrefLockBeep = "lockBeep";
 constexpr float kMetersToFeet = 3.28084F;
 constexpr float kFeetToMeters = 1.0F / kMetersToFeet;
 constexpr float kSeaLevelPressureHpa = 1013.25F;
@@ -107,6 +110,13 @@ constexpr uint8_t kMinBuzzerVolumePercent = 5;
 constexpr uint8_t kMaxBuzzerVolumePercent = 100;
 constexpr uint32_t kBuzzerTestDurationMs = 3000;
 constexpr uint32_t kBuzzerTestToneHz = 1000;
+// Button lock (hold Select+Back to toggle; hold time set in the web UI).
+constexpr uint32_t kDefaultLockHoldMs = 3000;
+constexpr uint32_t kMinLockHoldMs = 1000;
+constexpr uint32_t kMaxLockHoldMs = 10000;
+constexpr uint32_t kLockSplashMs = 1500;
+constexpr uint32_t kLockBeepHz = 1000;
+constexpr uint32_t kLockBeepMs = 100;
 constexpr uint32_t kPixelUpdateMs = 50;
 constexpr uint16_t kLogTailBytes = 4096;
 constexpr uint32_t kBatteryLogIntervalMs = 30000;
@@ -244,6 +254,10 @@ extern bool toneTestActive;
 extern bool buzzerLabActive;   // web Buzzer Lab is driving the buzzers; vario audio paused
 extern bool editingMenuItem;
 extern bool inMenuMode;       // false = data windows, true = settings menu
+extern bool controlsLocked;   // buttons/encoder ignored except the unlock hold
+extern bool lockBeepEnabled;
+extern uint32_t lockHoldMs;
+extern uint32_t lockSplashUntilMs;  // show Locked/Unlocked splash until this time
 extern bool pixelEnabled;
 extern uint8_t activeWindow;  // 0..kOledWindowCount-1, cycled by encoder in view mode
 extern uint8_t selectedMenuItem;
