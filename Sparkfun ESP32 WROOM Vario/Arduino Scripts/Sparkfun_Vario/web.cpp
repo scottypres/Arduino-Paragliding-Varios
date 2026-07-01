@@ -327,9 +327,20 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <section class=tab id=set>
 <div class=card><h2>Vario &amp; Audio</h2>
 <div class=row><label>Vario audio</label><label class=sw><input type=checkbox id=audio><span class=sl></span></label></div>
-<div class=row><label>Bluetooth classic</label><label class=sw><input type=checkbox id=bluetooth_enabled><span class=sl></span></label></div>
 <div class=row><label>Volume <span class=sub id=volv></span></label><input type=range id=volume min=5 max=100 step=5></div>
+<div class=row><label>Buzzers <span class=sub>more = louder</span></label><select id=buzzer_count><option value=1>1</option><option value=2>2</option><option value=3>3</option></select></div>
 <div class=row><label>Response</label><select id=response></select></div>
+</div>
+<div class=card><h2>Vario Tone</h2>
+<div class=row><label>Climb starts <span class=sub id=liftonv></span></label><input type=range id=lift_on_mps min=0.05 max=1 step=0.05></div>
+<div class=row><label>Climb pitch <span class=sub id=lifthzv></span></label><input type=range id=lift_hz min=300 max=3000 step=20></div>
+<div class=row><label>Pitch rise <span class=sub id=liftslv></span></label><input type=range id=lift_slope_hz min=0 max=400 step=10></div>
+<div class=row><label>Beep tempo <span class=sub id=tempov></span></label><input type=range id=beep_tempo min=50 max=200 step=10></div>
+<div class=row><label>Two-tone climb <span class=sub>each beep steps up</span></label><label class=sw><input type=checkbox id=two_tone_lift><span class=sl></span></label></div>
+<div class=row><label>Sink alarm at <span class=sub id=sinkonv></span></label><input type=range id=sink_on_mps min=-5 max=-0.5 step=0.1></div>
+<div class=row><label>Sink pitch <span class=sub id=sinkhzv></span></label><input type=range id=sink_hz min=150 max=800 step=10></div>
+<div class=row><label>Two-tone sink <span class=sub>warble</span></label><label class=sw><input type=checkbox id=two_tone_sink><span class=sl></span></label></div>
+<div class=row><span class=sub>Back to the stock tone model</span><button class="btn ghost" id=tonedef>Reset defaults</button></div>
 </div>
 <div class=card><h2>Altitude zero</h2>
 <div class=row><span class=sub>Display altitude <b id=zalt>--</b> ft &middot; <span id=zsaved>--</span></span><span><button class=btn id=zset>Set zero</button> <button class="btn ghost" id=zclr>Clear</button></span></div>
@@ -363,6 +374,7 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <section class=tab id=sd>
 <div class=card><h2>Files</h2>
 <div class=row><span class=sub>Path <b id=fmpath>/</b></span><label class=btn style=cursor:pointer>Upload here<input type=file id=fmup multiple style=display:none></label></div>
+<div class=bar style=display:none id=fmbar><i id=fmbari></i></div><div class=muted id=fmmsg></div>
 <div id=fmlist class=muted>--</div></div>
 <div class=card><h2>SD card</h2>
 <div class=row><span class=sub>Log size</span><span class=sub id=logsz>--</span></div>
@@ -485,9 +497,18 @@ setInterval(poll,1000);poll();
 function opts(sel,list,idx){sel.innerHTML='';list.forEach(function(o,i){var e=document.createElement('option');e.value=(typeof o==='string'&&isNaN(idx)?o:i);e.textContent=o;sel.appendChild(e)})}
 function patch(o){return fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)}).then(function(r){return r.json()}).then(fillSettings)}
 function fillSettings(s){
- $('audio').checked=s.audio;$('bluetooth_enabled').checked=s.bluetooth_enabled;$('data_logging').checked=s.data_logging;$('gps_display').checked=s.gps_display;
+ $('audio').checked=s.audio;$('data_logging').checked=s.data_logging;$('gps_display').checked=s.gps_display;
  $('use_gps_altitude').checked=s.use_gps_altitude;$('altsrc_hint').textContent=s.use_gps_altitude?'GPS':'Baro';
  $('volume').value=s.volume;$('volv').textContent=s.volume+'%';
+ $('buzzer_count').value=s.buzzer_count;
+ $('lift_on_mps').value=s.lift_on_mps;$('liftonv').textContent=Number(s.lift_on_mps).toFixed(2)+' m/s';
+ $('lift_hz').value=s.lift_hz;$('lifthzv').textContent=s.lift_hz+' Hz';
+ $('lift_slope_hz').value=s.lift_slope_hz;$('liftslv').textContent='+'+s.lift_slope_hz+' Hz/m/s';
+ $('beep_tempo').value=s.beep_tempo;$('tempov').textContent=s.beep_tempo+'%';
+ $('two_tone_lift').checked=s.two_tone_lift;
+ $('sink_on_mps').value=s.sink_on_mps;$('sinkonv').textContent=Number(s.sink_on_mps).toFixed(1)+' m/s';
+ $('sink_hz').value=s.sink_hz;$('sinkhzv').textContent=s.sink_hz+' Hz';
+ $('two_tone_sink').checked=s.two_tone_sink;
  if($('response').options.length!=s.response_options.length)opts($('response'),s.response_options,0);
  $('response').value=s.response;
  if($('log_rate_index').options.length!=s.log_rate_options.length)opts($('log_rate_index'),s.log_rate_options,0);
@@ -501,8 +522,19 @@ function fillSettings(s){
 }
 fetch('/api/settings').then(function(r){return r.json()}).then(fillSettings);
 $('audio').onchange=function(){patch({audio:this.checked})};
-$('bluetooth_enabled').onchange=function(){patch({bluetooth_enabled:this.checked})};
 $('data_logging').onchange=function(){patch({data_logging:this.checked})};
+$('buzzer_count').onchange=function(){patch({buzzer_count:Number(this.value)})};
+[['lift_on_mps','liftonv',function(v){return Number(v).toFixed(2)+' m/s'}],
+ ['lift_hz','lifthzv',function(v){return v+' Hz'}],
+ ['lift_slope_hz','liftslv',function(v){return '+'+v+' Hz/m/s'}],
+ ['beep_tempo','tempov',function(v){return v+'%'}],
+ ['sink_on_mps','sinkonv',function(v){return Number(v).toFixed(1)+' m/s'}],
+ ['sink_hz','sinkhzv',function(v){return v+' Hz'}]
+].forEach(function(t){var e=$(t[0]);e.oninput=function(){$(t[1]).textContent=t[2](this.value)};
+ e.onchange=function(){var o={};o[t[0]]=Number(this.value);patch(o)}});
+$('two_tone_lift').onchange=function(){patch({two_tone_lift:this.checked})};
+$('two_tone_sink').onchange=function(){patch({two_tone_sink:this.checked})};
+$('tonedef').onclick=function(){patch({buzzer_count:1,lift_on_mps:0.18,lift_hz:720,lift_slope_hz:170,beep_tempo:100,two_tone_lift:false,sink_on_mps:-1.8,sink_hz:360,two_tone_sink:false})};
 $('gps_display').onchange=function(){patch({gps_display:this.checked})};
 $('use_gps_altitude').onchange=function(){patch({use_gps_altitude:this.checked})};
 $('volume').oninput=function(){$('volv').textContent=this.value+'%'};
@@ -552,10 +584,16 @@ function loadFiles(p){if(p)fmPath=p;$('fmpath').textContent=fmPath;
   $('fmlist').querySelectorAll('[data-del]').forEach(function(b){b.onclick=function(){confirmAct('Delete?',b.dataset.del+' — cannot be undone.',null,function(){var fd=new FormData();fd.append('path',b.dataset.del);fetch('/api/file/delete',{method:'POST',body:fd}).then(function(){loadFiles()})})}});
   $('fmlist').querySelectorAll('[data-rn]').forEach(function(b){b.onclick=function(){var from=b.dataset.rn,base=from.replace(/^.*\//,''),nn=prompt('Rename to:',base);if(!nn||nn===base)return;var to=from.replace(/[^/]*$/,nn);var fd=new FormData();fd.append('from',from);fd.append('to',to);fetch('/api/file/rename',{method:'POST',body:fd}).then(function(){loadFiles()})}});
  }).catch(function(){$('fmlist').innerHTML='<div class=muted>SD not available</div>'})}
-$('fmup').onchange=function(){var fs=this.files;if(!fs.length)return;var done=0,n=fs.length;$('fmlist').innerHTML='<div class=muted>Uploading...</div>';
- Array.prototype.forEach.call(fs,function(file){var fd=new FormData();fd.append('f',file,file.name);
-  fetch('/api/upload?path='+encodeURIComponent((fmPath==='/'?'':fmPath)+'/'+file.name),{method:'POST',body:fd}).then(function(){if(++done===n)loadFiles()}).catch(function(){if(++done===n)loadFiles()})});
- this.value='';}
+$('fmup').onchange=function(){var fs=Array.prototype.slice.call(this.files);if(!fs.length)return;this.value='';
+ var bar=$('fmbar'),bari=$('fmbari'),msg=$('fmmsg');bar.style.display='';bari.style.width='0%';
+ function upload(i){if(i>=fs.length){bar.style.display='none';msg.textContent='';loadFiles();return;}
+  var file=fs[i],fd=new FormData();fd.append('f',file,file.name);
+  msg.textContent='Uploading '+file.name+(fs.length>1?' ('+(i+1)+'/'+fs.length+')':'')+'...';
+  var x=new XMLHttpRequest();x.open('POST','/api/upload?path='+encodeURIComponent((fmPath==='/'?'':fmPath)+'/'+file.name));
+  x.upload.onprogress=function(e){if(e.lengthComputable)bari.style.width=Math.round(e.loaded/e.total*100)+'%'};
+  x.onload=function(){msg.textContent=x.status==200?file.name+' done':'Upload failed ('+x.status+')';upload(i+1)};
+  x.onerror=function(){msg.textContent='Upload error';upload(i+1)};x.send(fd);}
+ upload(0);}
 // ---- ota ----
 $('fw').onchange=function(){var file=this.files[0];if(!file)return;
  var fd=new FormData();fd.append('f',file,file.name);var x=new XMLHttpRequest();x.open('POST','/api/ota');

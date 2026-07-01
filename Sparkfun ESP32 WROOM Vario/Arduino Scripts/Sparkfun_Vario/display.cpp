@@ -23,6 +23,8 @@ String menuValue(uint8_t item) {
       return onOff(audioEnabled);
     case kMenuVolume:
       return String(buzzerVolumePercent) + "%";
+    case kMenuBuzzers:
+      return String(buzzerCount) + " of " + String(kBuzzerCount);
     case kMenuResponse:
       return String(kVarioResponseLabels[varioResponseIndex]);
     case kMenuToneTest:
@@ -39,10 +41,12 @@ String menuValue(uint8_t item) {
       return bluetoothStatusText();
     case kMenuBatteryLogging:
       return batteryLoggingActive ? "Running" : "Start";
+#ifndef VARIO_DISABLE_WIFI
     case kMenuWifiSetup:
       return wifiPortalActive ? "Active" : "Start";
     case kMenuForgetWifi:
       return wifiNetworkCount == 0 ? "Cleared" : String(wifiNetworkCount) + " saved";
+#endif
     case kMenuSwitchFirmware:
       return switchFirmwareTargetLabel();
   }
@@ -61,6 +65,8 @@ String menuLabel(uint8_t item) {
       return "Vario audio";
     case kMenuVolume:
       return "Volume";
+    case kMenuBuzzers:
+      return "Buzzers";
     case kMenuResponse:
       return "Response";
     case kMenuToneTest:
@@ -77,10 +83,12 @@ String menuLabel(uint8_t item) {
       return "Bluetooth";
     case kMenuBatteryLogging:
       return "Battery log";
+#ifndef VARIO_DISABLE_WIFI
     case kMenuWifiSetup:
       return "WiFi setup";
     case kMenuForgetWifi:
       return "Forget WiFi";
+#endif
     case kMenuSwitchFirmware:
       return "Switch FW";
   }
@@ -91,8 +99,10 @@ static String batteryLogMenuValue(uint8_t item) {
   switch (item) {
     case kBatteryLogMenuStop:
       return "Select";
+#ifndef VARIO_DISABLE_WIFI
     case kBatteryLogMenuWifi:
       return onOff(batteryLogWifiEnabled);
+#endif
     case kBatteryLogMenuBluetooth:
       return onOff(batteryLogBluetoothEnabled);
     case kBatteryLogMenuOled:
@@ -105,8 +115,10 @@ static String batteryLogMenuLabel(uint8_t item) {
   switch (item) {
     case kBatteryLogMenuStop:
       return "Stop log";
+#ifndef VARIO_DISABLE_WIFI
     case kBatteryLogMenuWifi:
       return "WiFi";
+#endif
     case kBatteryLogMenuBluetooth:
       return "Bluetooth";
     case kBatteryLogMenuOled:

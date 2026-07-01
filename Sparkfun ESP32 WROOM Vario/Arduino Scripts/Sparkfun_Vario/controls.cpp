@@ -94,6 +94,11 @@ void adjustSelectedValue(int8_t delta) {
         }
       }
       break;
+    case kMenuBuzzers:
+      buzzerCount = static_cast<uint8_t>(constrain(static_cast<int>(buzzerCount) + delta, 1,
+                                                   static_cast<int>(kBuzzerCount)));
+      prefs.putUChar(kPrefBuzzerCount, buzzerCount);
+      break;
     case kMenuResponse:
       varioResponseIndex = static_cast<uint8_t>((static_cast<int8_t>(varioResponseIndex) + delta + kVarioResponseCount) % kVarioResponseCount);
       prefs.putUChar(kPrefResponse, varioResponseIndex);
@@ -121,9 +126,11 @@ static void activateBatteryLogMenuItem() {
     case kBatteryLogMenuStop:
       stopBatteryLogging();
       break;
+#ifndef VARIO_DISABLE_WIFI
     case kBatteryLogMenuWifi:
       setBatteryLogWifiEnabled(!batteryLogWifiEnabled);
       break;
+#endif
     case kBatteryLogMenuBluetooth:
       batteryLogBluetoothEnabled = !batteryLogBluetoothEnabled;
       setBluetoothEnabled(batteryLogBluetoothEnabled, false);
@@ -186,16 +193,19 @@ void activateSelectedMenuItem() {
     case kMenuBatteryLogging:
       startBatteryLogging();
       break;
+#ifndef VARIO_DISABLE_WIFI
     case kMenuWifiSetup:
       startWifiPortal();
       break;
     case kMenuForgetWifi:
       forgetWifiAndStartPortal();
       break;
+#endif
     case kMenuSwitchFirmware:
       flashFirmwareFromSd();
       break;
     case kMenuVolume:
+    case kMenuBuzzers:
     case kMenuResponse:
     case kMenuGpsLogRate:
     case kMenuBatteryReadRate:

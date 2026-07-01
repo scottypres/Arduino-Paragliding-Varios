@@ -3,7 +3,6 @@
 #include <esp_sleep.h>
 
 #include "audio.h"
-#include "gps_mod.h"
 
 String batterySummary() {
   if (isnan(batteryVoltage)) {
@@ -23,20 +22,7 @@ uint32_t gradientColor(float value, float low, float high) {
 }
 
 void initBatteryMonitor() {
-  gpsSerial.end();
-  delay(5);
-
-  batteryWire.begin(kBatteryI2cSdaPin, kBatteryI2cSclPin);
-  batteryWire.setClock(400000);
-  batteryGaugeReady = batteryGauge.begin(batteryWire);
-  if (batteryGaugeReady) {
-    Serial.println("MAX17048 battery gauge ready on default Qwiic bus");
-  } else {
-    Serial.println("MAX17048 battery gauge not found on default Qwiic bus");
-  }
-  batteryWire.end();
-
-  gpsSerial.begin(kGpsBaud, SERIAL_8N1, kGpsRxPin, kGpsTxPin);
+  batteryGaugeReady = true;  // ADC always available
 }
 
 void readBatteryIfDue() {
@@ -47,21 +33,9 @@ void readBatteryIfDue() {
   }
   lastBatteryReadMs = nowMs;
 
-  if (!batteryGaugeReady) {
-    batteryVoltage = NAN;
-    batteryPercent = NAN;
-    return;
-  }
-
-  gpsSerial.end();
-  batteryWire.begin(kBatteryI2cSdaPin, kBatteryI2cSclPin);
-  batteryWire.setClock(400000);
-
-  batteryVoltage = batteryGauge.getVoltage();
-  batteryPercent = clampFloat(batteryGauge.getSOC(), 0.0F, 100.0F);
-
-  batteryWire.end();
-  gpsSerial.begin(kGpsBaud, SERIAL_8N1, kGpsRxPin, kGpsTxPin);
+  const uint32_t mv = analogReadMilliVolts(A1);
+  batteryVoltage = mv * 2.0F / 1000.0F;
+  batteryPercent = clampFloat((batteryVoltage - 3.2F) / (4.2F - 3.2F) * 100.0F, 0.0F, 100.0F);
 }
 
 void initPixel() {

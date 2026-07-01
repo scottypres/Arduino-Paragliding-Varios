@@ -84,6 +84,15 @@ constexpr const char *kPrefGpsDisplay = "gpsDisp";
 constexpr const char *kPrefBluetooth = "btClassic";
 constexpr const char *kPrefAltitudeSource = "altSrc";  // false=baro, true=GPS
 constexpr const char *kPrefBatteryReadRate = "batRate";
+constexpr const char *kPrefBuzzerCount = "buzzCount";
+constexpr const char *kPrefLiftOnMps = "liftOn";
+constexpr const char *kPrefLiftHz = "liftHz";
+constexpr const char *kPrefLiftSlopeHz = "liftSlope";
+constexpr const char *kPrefBeepTempo = "beepTempo";
+constexpr const char *kPrefTwoToneLift = "ttLift";
+constexpr const char *kPrefSinkOnMps = "sinkOn";
+constexpr const char *kPrefSinkHz = "sinkHz";
+constexpr const char *kPrefTwoToneSink = "ttSink";
 constexpr float kMetersToFeet = 3.28084F;
 constexpr float kFeetToMeters = 1.0F / kMetersToFeet;
 constexpr float kSeaLevelPressureHpa = 1013.25F;
@@ -91,16 +100,15 @@ constexpr float kAltitudeSmoothingAlpha = 0.25F;
 constexpr float kVarioResponseAlpha[] = {0.18F, 0.32F, 0.50F, 0.72F};
 const char *const kVarioResponseLabels[] = {"Smooth", "Normal", "Quick", "Direct"};
 constexpr uint8_t kVarioResponseCount = sizeof(kVarioResponseAlpha) / sizeof(kVarioResponseAlpha[0]);
+// Vario tone model defaults (runtime-tunable via web Settings -> Vario Tone).
 constexpr float kLiftThresholdMps = 0.18F;
-constexpr float kLiftOffThresholdMps = 0.08F;
 constexpr float kSinkThresholdMps = -1.80F;
-constexpr float kSinkOffThresholdMps = -1.40F;
 constexpr uint32_t kLiftFreqBaseHz = 720;
 constexpr uint32_t kLiftFreqIncrementHzPerMps = 170;
 constexpr uint32_t kSinkFreqBaseHz = 360;
 constexpr uint32_t kSinkFreqDecrementHzPerMps = 45;
 constexpr uint32_t kMinToneHz = 130;
-constexpr uint32_t kMaxToneHz = 1800;
+constexpr uint32_t kMaxToneHz = 4500;  // piezo resonance lives ~2.7-4.5 kHz (Buzzer Lab)
 constexpr uint32_t kToneQuantizeHz = 10;
 constexpr uint8_t kDefaultBuzzerVolumePercent = 40;
 constexpr uint8_t kMinBuzzerVolumePercent = 5;
@@ -123,19 +131,13 @@ struct StoredWifiNetwork {
   String password;
 };
 
-enum VolumeLevel : uint8_t {
-  kVolumeLow = 0,
-  kVolumeMedium,
-  kVolumeLoud,
-  kVolumeCount
-};
-
 enum MenuItem : uint8_t {
   kMenuDataLogging = 0,
   kMenuSetAltitudeZero,
   kMenuClearAltitudeZero,
   kMenuAudio,
   kMenuVolume,
+  kMenuBuzzers,
   kMenuResponse,
   kMenuToneTest,
   kMenuGpsLogRate,
@@ -144,15 +146,19 @@ enum MenuItem : uint8_t {
   kMenuAltitudeSource,
   kMenuBluetooth,
   kMenuBatteryLogging,
+#ifndef VARIO_DISABLE_WIFI
   kMenuWifiSetup,
   kMenuForgetWifi,
+#endif
   kMenuSwitchFirmware,
   kMenuCount
 };
 
 enum BatteryLogMenuItem : uint8_t {
   kBatteryLogMenuStop = 0,
+#ifndef VARIO_DISABLE_WIFI
   kBatteryLogMenuWifi,
+#endif
   kBatteryLogMenuBluetooth,
   kBatteryLogMenuOled,
   kBatteryLogMenuCount
@@ -182,7 +188,6 @@ const uint32_t kLogRatesMs[] = {1000, 2000, 5000, 10000, 30000, 60000};
 const char *const kLogRateLabels[] = {"1 sec", "2 sec", "5 sec", "10 sec", "30 sec", "60 sec"};
 const uint32_t kBatteryReadRatesMs[] = {5000, 10000, 30000, 60000, 120000, 300000};
 const char *const kBatteryReadRateLabels[] = {"5 sec", "10 sec", "30 sec", "60 sec", "2 min", "5 min"};
-const char *const kVolumeLabels[] = {"Low", "Medium", "Loud"};
 const char *const kBuzzerTestLabels[] = {"B1 pin13", "B2 pin26", "B3 pin27", "All"};
 constexpr uint8_t kLogRateCount = sizeof(kLogRatesMs) / sizeof(kLogRatesMs[0]);
 constexpr uint8_t kBatteryReadRateCount = sizeof(kBatteryReadRatesMs) / sizeof(kBatteryReadRatesMs[0]);
@@ -250,8 +255,18 @@ extern uint8_t selectedMenuItem;
 extern uint8_t selectedBatteryLogMenuItem;
 extern uint8_t logRateIndex;
 extern uint8_t batteryReadRateIndex;
-extern VolumeLevel volumeLevel;
 extern uint8_t buzzerVolumePercent;
+
+// Runtime-tunable vario tone model (web Settings -> Vario Tone).
+extern uint8_t buzzerCount;        // 1..kBuzzerCount simultaneous buzzers
+extern float liftThresholdMps;     // climb beeping starts here
+extern uint16_t liftFreqBaseHz;    // pitch at threshold
+extern uint16_t liftFreqSlopeHz;   // added Hz per m/s of climb
+extern uint8_t beepTempoPercent;   // 50..200, scales beep cadence
+extern bool twoToneLift;           // each climb beep steps up a major third
+extern float sinkThresholdMps;     // sink alarm starts here (negative)
+extern uint16_t sinkFreqBaseHz;    // sink tone pitch at threshold
+extern bool twoToneSink;           // sink tone warbles instead of droning
 extern uint8_t varioResponseIndex;
 extern uint8_t toneTestPatternIndex;
 extern uint8_t buzzerTestTargetIndex;

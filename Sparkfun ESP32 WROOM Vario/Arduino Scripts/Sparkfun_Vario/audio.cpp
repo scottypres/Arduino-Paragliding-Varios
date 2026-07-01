@@ -7,7 +7,7 @@ void setBuzzersLow() {
 }
 
 uint8_t activeBuzzerCount() {
-  return static_cast<uint8_t>(volumeLevel) + 1;
+  return constrain(buzzerCount, static_cast<uint8_t>(1), kBuzzerCount);
 }
 
 uint8_t activeBuzzerMask() {
@@ -246,45 +246,64 @@ void updateVarioAudio() {
     return;
   }
 
-  if (!liftAudioActive && verticalSpeedMps >= kLiftThresholdMps) {
+  // Hysteresis off-thresholds are derived from the on-thresholds so the web
+  // sliders stay a two-knob affair (climb on, sink on).
+  const float liftOffMps = liftThresholdMps * 0.45F;
+  const float sinkOffMps = sinkThresholdMps + 0.4F;
+
+  if (!liftAudioActive && verticalSpeedMps >= liftThresholdMps) {
     liftAudioActive = true;
     sinkAudioActive = false;
     liftBeepOn = true;
     liftPhaseStartMs = now;
-  } else if (liftAudioActive && verticalSpeedMps < kLiftOffThresholdMps) {
+  } else if (liftAudioActive && verticalSpeedMps < liftOffMps) {
     liftAudioActive = false;
     liftBeepOn = false;
   }
 
-  if (!sinkAudioActive && verticalSpeedMps <= kSinkThresholdMps) {
+  if (!sinkAudioActive && verticalSpeedMps <= sinkThresholdMps) {
     sinkAudioActive = true;
     liftAudioActive = false;
     liftBeepOn = false;
-  } else if (sinkAudioActive && verticalSpeedMps > kSinkOffThresholdMps) {
+  } else if (sinkAudioActive && verticalSpeedMps > sinkOffMps) {
     sinkAudioActive = false;
   }
 
+  // beepTempoPercent scales cadence: 200% = twice as fast (shorter phases).
+  const uint32_t tempo = constrain(beepTempoPercent, static_cast<uint8_t>(50), static_cast<uint8_t>(200));
+
   if (liftAudioActive) {
     const float climb = clampFloat(verticalSpeedMps, 0.0F, 8.0F);
-    const uint32_t frequency =
-        quantizeFrequency(kLiftFreqBaseHz + static_cast<uint32_t>(climb * kLiftFreqIncrementHzPerMps));
-    const uint32_t beepMs = static_cast<uint32_t>(clampFloat(155.0F - climb * 15.0F, 65.0F, 155.0F));
-    const uint32_t pauseMs = static_cast<uint32_t>(clampFloat(560.0F - climb * 75.0F, 95.0F, 560.0F));
+    uint32_t frequency =
+        quantizeFrequency(liftFreqBaseHz + static_cast<uint32_t>(climb * liftFreqSlopeHz));
+    const uint32_t beepMs = static_cast<uint32_t>(clampFloat(155.0F - climb * 15.0F, 65.0F, 155.0F)) * 100U / tempo;
+    const uint32_t pauseMs = static_cast<uint32_t>(clampFloat(560.0F - climb * 75.0F, 95.0F, 560.0F)) * 100U / tempo;
     const uint32_t phaseMs = liftBeepOn ? beepMs : pauseMs;
+    uint32_t phaseElapsed = now - liftPhaseStartMs;
 
-    if (now - liftPhaseStartMs >= phaseMs) {
+    if (phaseElapsed >= phaseMs) {
       liftBeepOn = !liftBeepOn;
       liftPhaseStartMs = now;
+      phaseElapsed = 0;
     }
 
+    // Two-tone: second half of each beep steps up a major third (x5/4).
+    if (twoToneLift && liftBeepOn && phaseElapsed >= phaseMs / 2) {
+      frequency = quantizeFrequency(frequency * 5U / 4U);
+    }
     setTone(liftBeepOn ? frequency : 0);
     return;
   }
 
   if (sinkAudioActive) {
     const float sink = clampFloat(-verticalSpeedMps, 0.0F, 8.0F);
-    const uint32_t frequency =
-        quantizeFrequency(kSinkFreqBaseHz - min(static_cast<uint32_t>(sink * kSinkFreqDecrementHzPerMps), 180UL));
+    uint32_t frequency =
+        quantizeFrequency(sinkFreqBaseHz - min(static_cast<uint32_t>(sink * kSinkFreqDecrementHzPerMps),
+                                               static_cast<uint32_t>(sinkFreqBaseHz) / 2U));
+    // Two-tone: warble between the tone and ~a minor third below, 160ms steps.
+    if (twoToneSink && ((now / 160U) & 1U)) {
+      frequency = quantizeFrequency(frequency * 5U / 6U);
+    }
     setTone(frequency);
     return;
   }
