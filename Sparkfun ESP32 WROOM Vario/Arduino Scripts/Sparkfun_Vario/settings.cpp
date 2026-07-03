@@ -1,6 +1,7 @@
 #include "settings.h"
 
 #include "audio.h"
+#include "gps_mod.h"
 #include "imu.h"
 #include "power.h"
 #include "radio.h"
@@ -40,7 +41,11 @@ void loadSettings() {
   if (batteryReadRateIndex >= kBatteryReadRateCount) {
     batteryReadRateIndex = 2;
   }
-  gpsDisplayEnabled = prefs.getBool(kPrefGpsDisplay, false);
+  controlsLocked = prefs.getBool(kPrefLocked, false);
+  lockBeepEnabled = prefs.getBool(kPrefLockBeep, true);
+  lockHoldMs = constrain(prefs.getUInt(kPrefLockHoldMs, kDefaultLockHoldMs),
+                         kMinLockHoldMs, kMaxLockHoldMs);
+  gpsEnabled = prefs.getBool(kPrefGpsEnabled, true);
   useGpsAltitude = prefs.getBool(kPrefAltitudeSource, false);
   imuEnabled = prefs.getBool(kPrefImuEnabled, true);
   imuLevelSaved = prefs.getBool(kPrefImuHasLevel, false);
@@ -92,7 +97,7 @@ String buildSettingsJson() {
   doc["battery_read_rate_index"] = batteryReadRateIndex;
   doc["battery_read_rate_label"] = kBatteryReadRateLabels[batteryReadRateIndex];
   doc["battery_gauge_ready"] = batteryGaugeReady;
-  doc["gps_display"] = gpsDisplayEnabled;
+  doc["gps_enabled"] = gpsEnabled;
   doc["use_gps_altitude"] = useGpsAltitude;
   doc["imu_enabled"] = imuEnabled;
   doc["imu_ready"] = imuReady;
@@ -112,6 +117,9 @@ String buildSettingsJson() {
   doc["pixel_color"] = colorToHex(pixelColor);
   doc["altitude_zero_saved"] = altitudeZeroSaved;
   doc["display_altitude_ft"] = displayAltitudeFt;
+  doc["locked"] = controlsLocked;
+  doc["lock_hold_ms"] = lockHoldMs;
+  doc["lock_beep"] = lockBeepEnabled;
 
   JsonArray resp = doc["response_options"].to<JsonArray>();
   for (uint8_t i = 0; i < kVarioResponseCount; i++) {
@@ -212,9 +220,17 @@ void applySettingsJson(JsonObjectConst obj) {
       prefs.putUChar(kPrefBatteryReadRate, batteryReadRateIndex);
     }
   }
-  if (obj["gps_display"].is<bool>()) {
-    gpsDisplayEnabled = obj["gps_display"].as<bool>();
-    prefs.putBool(kPrefGpsDisplay, gpsDisplayEnabled);
+  if (obj["lock_hold_ms"].is<int>()) {
+    lockHoldMs = constrain(static_cast<uint32_t>(obj["lock_hold_ms"].as<int>()),
+                           kMinLockHoldMs, kMaxLockHoldMs);
+    prefs.putUInt(kPrefLockHoldMs, lockHoldMs);
+  }
+  if (obj["lock_beep"].is<bool>()) {
+    lockBeepEnabled = obj["lock_beep"].as<bool>();
+    prefs.putBool(kPrefLockBeep, lockBeepEnabled);
+  }
+  if (obj["gps_enabled"].is<bool>()) {
+    setGpsEnabled(obj["gps_enabled"].as<bool>());
   }
   if (obj["imu_enabled"].is<bool>()) {
     setImuEnabled(obj["imu_enabled"].as<bool>());

@@ -192,6 +192,7 @@ String dataJson() {
   json += ",\"oled_window\":" + String(activeWindow);
   json += ",\"oled_window_count\":" + String(oledWindowCount);
   json += ",\"oled_in_menu\":" + String(inMenuMode ? "true" : "false");
+  json += ",\"locked\":" + String(controlsLocked ? "true" : "false");
   json += ",\"time_known\":" + String(timeKnown() ? "true" : "false");
   json += ",\"time_source\":\"" + String(clockSource()) + "\"";
   const String iso = isoTimestamp();
@@ -355,6 +356,12 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <div class=row><label>Two-tone sink <span class=sub>warble</span></label><label class=sw><input type=checkbox id=two_tone_sink><span class=sl></span></label></div>
 <div class=row><span class=sub>Back to the stock tone model</span><button class="btn ghost" id=tonedef>Reset defaults</button></div>
 </div>
+<div class=card><h2>Button lock</h2>
+<div class=row><span class=sub>Status <b id=lockstat>--</b></span></div>
+<div class=row><label>Lock beep</label><label class=sw><input type=checkbox id=lock_beep><span class=sl></span></label></div>
+<div class=row><label>Hold time <span class=sub id=lockholdv></span></label><input type=range id=lock_hold_ms min=1 max=10 step=0.5></div>
+<div class=row><span class=sub>Hold Select + Back this long to lock/unlock the buttons</span></div>
+</div>
 <div class=card><h2>Altitude zero</h2>
 <div class=row><span class=sub>Display altitude <b id=zalt>--</b> ft &middot; <span id=zsaved>--</span></span><span><button class=btn id=zset>Set zero</button> <button class="btn ghost" id=zclr>Clear</button></span></div>
 </div>
@@ -362,7 +369,7 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <div class=row><label>SD data logging</label><label class=sw><input type=checkbox id=data_logging><span class=sl></span></label></div>
 <div class=row><label>Log rate</label><select id=log_rate_index></select></div>
 <div class=row><label>Battery update <span class=sub id=bat_rate_hint></span></label><select id=battery_read_rate_index></select></div>
-<div class=row><label>Show GPS on OLED</label><label class=sw><input type=checkbox id=gps_display><span class=sl></span></label></div>
+<div class=row><label>GPS enabled</label><label class=sw><input type=checkbox id=gps_enabled><span class=sl></span></label></div>
 <div class=row><label>Altitude source</label><label class=sw><input type=checkbox id=use_gps_altitude><span class=sl></span></label><span class=sub id=altsrc_hint>Baro</span></div>
 </div>
 <div class=card><h2>IMU (6DoF)</h2>
@@ -513,6 +520,7 @@ function applyState(j){
   $('s_bt').textContent=j.bluetooth_status||'--';
   $('s_log').textContent=j.logging_enabled?(j.sd_ready?'On ('+j.log_size+' B)':'On (no SD)'):'Off';
   $('s_blog').textContent=j.battery_logging_active?('Running '+sw(j.battery_log_elapsed_s)):'Off';
+  $('lockstat').textContent=j.locked?'Locked':'Unlocked';
   $('logsz').textContent=j.sd_ready?j.log_size+' bytes':'SD off';
   $('blogsz').textContent=j.sd_ready?j.battery_log_size+' bytes':'SD off';
   $('blogstat').textContent=j.battery_logging_active?('Running '+sw(j.battery_log_elapsed_s)+' · '+(j.sd_ready?j.battery_log_size+' B':'no SD')):'Stopped';
@@ -535,7 +543,7 @@ setInterval(poll,1000);poll();
 function opts(sel,list,idx){sel.innerHTML='';list.forEach(function(o,i){var e=document.createElement('option');e.value=(typeof o==='string'&&isNaN(idx)?o:i);e.textContent=o;sel.appendChild(e)})}
 function patch(o){return fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(o)}).then(function(r){return r.json()}).then(fillSettings)}
 function fillSettings(s){
- $('audio').checked=s.audio;$('data_logging').checked=s.data_logging;$('gps_display').checked=s.gps_display;
+ $('audio').checked=s.audio;$('bluetooth_enabled').checked=s.bluetooth_enabled;$('data_logging').checked=s.data_logging;$('gps_enabled').checked=s.gps_enabled;
  $('use_gps_altitude').checked=s.use_gps_altitude;$('altsrc_hint').textContent=s.use_gps_altitude?'GPS':'Baro';
  $('imu_enabled').checked=s.imu_enabled;$('i_lvl').textContent=s.imu_level_saved?'saved':'none';
  $('imu_swap_axes').checked=s.imu_swap_axes;$('imu_mirror_pitch').checked=s.imu_mirror_pitch;$('imu_mirror_roll').checked=s.imu_mirror_roll;
@@ -561,6 +569,8 @@ function fillSettings(s){
  if($('pixel_mode').options.length!=s.pixel_mode_options.length){opts($('pixel_mode'),s.pixel_mode_options,NaN)}
  $('pixel_mode').value=s.pixel_mode;$('pixel_enabled').checked=s.pixel_enabled;$('pixel_color').value=s.pixel_color;
  $('zalt').textContent=f(s.display_altitude_ft,1);$('zsaved').textContent=s.altitude_zero_saved?'zero saved':'no saved zero';
+ $('lockstat').textContent=s.locked?'Locked':'Unlocked';$('lock_beep').checked=s.lock_beep;
+ $('lock_hold_ms').value=s.lock_hold_ms/1000;$('lockholdv').textContent=(s.lock_hold_ms/1000)+' s';
 }
 fetch('/api/settings').then(function(r){return r.json()}).then(fillSettings);
 $('audio').onchange=function(){patch({audio:this.checked})};
@@ -577,7 +587,7 @@ $('buzzer_count').onchange=function(){patch({buzzer_count:Number(this.value)})};
 $('two_tone_lift').onchange=function(){patch({two_tone_lift:this.checked})};
 $('two_tone_sink').onchange=function(){patch({two_tone_sink:this.checked})};
 $('tonedef').onclick=function(){patch({buzzer_count:1,lift_on_mps:0.18,lift_hz:720,lift_slope_hz:170,beep_tempo:100,two_tone_lift:false,sink_on_mps:-1.8,sink_hz:360,two_tone_sink:false})};
-$('gps_display').onchange=function(){patch({gps_display:this.checked})};
+$('gps_enabled').onchange=function(){patch({gps_enabled:this.checked})};
 $('use_gps_altitude').onchange=function(){patch({use_gps_altitude:this.checked})};
 $('imu_enabled').onchange=function(){patch({imu_enabled:this.checked})};
 $('imulvl').onclick=function(){fetch('/api/imu/level',{method:'POST'}).then(function(r){return r.json()}).then(fillSettings)};
@@ -597,6 +607,9 @@ $('battery_read_rate_index').onchange=function(){patch({battery_read_rate_index:
 $('pixel_enabled').onchange=function(){patch({pixel_enabled:this.checked})};
 $('pixel_mode').onchange=function(){patch({pixel_mode:this.value})};
 $('pixel_color').onchange=function(){patch({pixel_color:this.value})};
+$('lock_beep').onchange=function(){patch({lock_beep:this.checked})};
+$('lock_hold_ms').oninput=function(){$('lockholdv').textContent=this.value+' s'};
+$('lock_hold_ms').onchange=function(){patch({lock_hold_ms:Math.round(Number(this.value)*1000)})};
 $('zset').onclick=function(){fetch('/api/zero/set',{method:'POST'}).then(function(r){return r.json()}).then(fillSettings)};
 $('zclr').onclick=function(){fetch('/api/zero/clear',{method:'POST'}).then(function(r){return r.json()}).then(fillSettings)};
 function batteryAction(a,en){var u='/api/battery?action='+encodeURIComponent(a);if(en!==undefined)u+='&enabled='+(en?1:0);fetch(u,{method:'POST'}).then(function(r){return r.json()}).then(applyState)}

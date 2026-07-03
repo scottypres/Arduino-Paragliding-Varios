@@ -27,7 +27,7 @@ bool sdReady = false;
 bool bmpReady = false;
 bool shtReady = false;
 bool dataLoggingEnabled = true;
-bool gpsDisplayEnabled = false;
+bool gpsEnabled = true;
 bool useGpsAltitude = false;
 bool imuEnabled = true;
 bool imuReady = false;
@@ -64,6 +64,9 @@ bool buzzerLabActive = false;
 bool editingMenuItem = false;
 bool inMenuMode = false;
 bool controlsLocked = false;
+bool lockBeepEnabled = true;
+uint32_t lockHoldMs = kDefaultLockHoldMs;
+uint32_t lockSplashUntilMs = 0;
 bool pixelEnabled = false;
 uint8_t activeWindow = 0;
 uint8_t selectedMenuItem = kMenuDataLogging;
@@ -80,7 +83,7 @@ static const uint8_t kCatAltitude[] = {kMenuSetAltitudeZero, kMenuClearAltitudeZ
 static const uint8_t kCatImu[] = {kMenuImuEnabled,   kMenuImuLevel,      kMenuImuClearLevel,
                                   kMenuImuSwapAxes,  kMenuImuMirrorPitch, kMenuImuMirrorRoll};
 static const uint8_t kCatFlight[] = {kMenuFlight, kMenuFlightAutoStart, kMenuFlightAutoStop};
-static const uint8_t kCatGps[] = {kMenuGpsDisplay, kMenuGpsLogRate};
+static const uint8_t kCatGps[] = {kMenuGpsEnabled, kMenuGpsLogRate};
 static const uint8_t kCatLogging[] = {kMenuDataLogging, kMenuBatteryReadRate, kMenuBatteryLogging};
 static const uint8_t kCatSystem[] = {
     kMenuBluetooth,

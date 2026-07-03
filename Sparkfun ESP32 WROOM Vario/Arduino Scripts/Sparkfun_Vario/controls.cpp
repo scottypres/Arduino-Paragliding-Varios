@@ -4,6 +4,7 @@
 #include "display.h"
 #include "firmware.h"
 #include "flight.h"
+#include "gps_mod.h"
 #include "imu.h"
 #include "logging.h"
 #include "power.h"
@@ -188,8 +189,8 @@ void activateSelectedMenuItem() {
         setTone(0);
       }
       break;
-    case kMenuGpsDisplay:
-      gpsDisplayEnabled = !gpsDisplayEnabled;
+    case kMenuGpsEnabled:
+      setGpsEnabled(!gpsEnabled);
       break;
     case kMenuAltitudeSource:
       useGpsAltitude = !useGpsAltitude;
@@ -265,11 +266,60 @@ void activateSelectedMenuItem() {
   }
 }
 
+// Hold Back + Select (confirm) for lockHoldMs to toggle the button lock.
+// Tracked separately from the debounced Button structs since it needs a
+// continuous hold, not a press event.
+static uint32_t lockComboStartMs = 0;
+static bool lockComboArmed = false;
+
+static void playLockBeep() {
+  if (!lockBeepEnabled) {
+    return;
+  }
+  setToneMask(kLockBeepHz, activeBuzzerMask(), false);
+  delay(kLockBeepMs);
+  setToneMask(0, 0, false);
+}
+
+static void toggleControlsLock() {
+  controlsLocked = !controlsLocked;
+  prefs.putBool(kPrefLocked, controlsLocked);
+  playLockBeep();
+  if (oledReady) {
+    lockSplashUntilMs = millis() + kLockSplashMs;
+    updateDisplay(true);
+  }
+}
+
+static void serviceLockCombo() {
+  const bool bothHeld = backButton.stablePressed && confirmButton.stablePressed;
+
+  if (!bothHeld) {
+    lockComboArmed = false;
+    return;
+  }
+
+  if (!lockComboArmed) {
+    lockComboArmed = true;
+    lockComboStartMs = millis();
+    return;
+  }
+
+  if (millis() - lockComboStartMs >= lockHoldMs) {
+    toggleControlsLock();
+    lockComboArmed = false;  // require a fresh press-and-hold to toggle again
+  }
+}
+
 void serviceControls() {
   updateButton(backButton);
   updateButton(encoderButton);
   updateButton(confirmButton);
 
+  serviceLockCombo();
+
+  // Keep the quadrature state machine in sync even while locked so an
+  // unlock doesn't see a stale lastState and misread a spurious step.
   const int8_t encoderDelta = readEncoderDelta();
   const uint32_t nowMs = millis();
 
@@ -333,6 +383,14 @@ void serviceControls() {
 
   // While locked, ignore every control except the unlock combo handled above.
   if (controlsLocked) {
+    return;
+  }
+
+  if (controlsLocked) {
+    // Swallow all button/encoder input except the unlock hold above.
+    backButton.pressedEvent = false;
+    encoderButton.pressedEvent = false;
+    confirmButton.pressedEvent = false;
     return;
   }
 

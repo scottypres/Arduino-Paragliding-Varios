@@ -62,8 +62,8 @@ String menuValue(uint8_t item) {
       return String(kLogRateLabels[logRateIndex]);
     case kMenuBatteryReadRate:
       return String(kBatteryReadRateLabels[batteryReadRateIndex]);
-    case kMenuGpsDisplay:
-      return onOff(gpsDisplayEnabled);
+    case kMenuGpsEnabled:
+      return onOff(gpsEnabled);
     case kMenuAltitudeSource:
       return useGpsAltitude ? "GPS" : "Baro";
     case kMenuImuEnabled:
@@ -124,8 +124,8 @@ String menuLabel(uint8_t item) {
       return "Log rate";
     case kMenuBatteryReadRate:
       return "Battery rate";
-    case kMenuGpsDisplay:
-      return "GPS display";
+    case kMenuGpsEnabled:
+      return "GPS";
     case kMenuAltitudeSource:
       return "Altitude src";
     case kMenuImuEnabled:
@@ -345,6 +345,14 @@ static void drawMenu() {
   }
 }
 
+static void drawLockSplash() {
+  oled.setTextSize(2);
+  const String text = controlsLocked ? "Locked" : "Unlocked";
+  const int16_t x = (kOledWidth - static_cast<int16_t>(text.length()) * 12) / 2;
+  oled.setCursor(x < 0 ? 0 : x, 24);
+  oled.print(text);
+}
+
 void updateDisplay(bool force) {
   if (!oledReady) {
     return;
@@ -364,7 +372,9 @@ void updateDisplay(bool force) {
   oled.setTextSize(1);
   oled.setTextColor(SH110X_WHITE);
 
-  if (inMenuMode) {
+  if (nowMs < lockSplashUntilMs) {
+    drawLockSplash();
+  } else if (inMenuMode) {
     drawMenu();
   } else if (batteryLoggingActive) {
     drawBatteryLogStatus();

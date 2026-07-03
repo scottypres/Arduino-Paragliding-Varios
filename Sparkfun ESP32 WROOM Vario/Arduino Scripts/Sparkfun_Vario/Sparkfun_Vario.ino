@@ -36,7 +36,9 @@ void setup() {
   initButton(encoderButton);
   initButton(confirmButton);
 
-  gpsSerial.begin(kGpsBaud, SERIAL_8N1, kGpsRxPin, kGpsTxPin);
+  if (gpsEnabled) {
+    gpsSerial.begin(kGpsBaud, SERIAL_8N1, kGpsRxPin, kGpsTxPin);
+  }
   initPixel();
   initBatteryMonitor();
   initDisplay();
