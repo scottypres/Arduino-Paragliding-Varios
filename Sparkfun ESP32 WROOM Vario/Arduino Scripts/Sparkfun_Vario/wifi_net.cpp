@@ -68,7 +68,6 @@ void clearWifiNetworks() {
   wifiNetworkCount = 0;
   wifiAttemptIndex = 0;
   connectedWifiSsid = "";
-  wifiManager.resetSettings();
   saveWifiNetworks();
   WiFi.disconnect(false, false);
   wifiReady = false;
@@ -99,44 +98,37 @@ void stopWifiPortal() {
   if (!wifiPortalActive) {
     return;
   }
-  wifiManager.stopConfigPortal();
+  dnsServer.stop();
   wifiPortalActive = false;
 }
 
-void rememberWifiManagerCredentials() {
-  const String ssid = wifiManager.getWiFiSSID();
-  if (ssid.length() == 0) {
-    return;
-  }
-  addWifiNetwork(ssid, wifiManager.getWiFiPass());
-}
-
+// Bring up our own open SoftAP and serve the full vario web app over it, with
+// a wildcard DNS server so a phone's captive-portal check pops the same UI you
+// get over a real network. WiFi credentials are added from that web app
+// (WiFi section), so no separate WiFiManager config portal is needed.
 void startWifiPortal() {
   if (wifiPortalActive) {
     return;
   }
 
-  stopWebServer();
   wifiAttemptActive = false;
   wifiReady = false;
   otaReady = false;
   connectedWifiSsid = "";
-  WiFi.mode(WIFI_STA);
-  WiFi.disconnect(false, false);
 
-  wifiManager.setConfigPortalBlocking(false);
-  wifiManager.setConfigPortalTimeout(0);
-  wifiManager.setConnectTimeout(kWifiConnectTimeoutMs / 1000);
-  wifiManager.setBreakAfterConfig(true);
-  wifiManager.setClass("invert");
-  wifiManager.setSaveConfigCallback([]() {
-    rememberWifiManagerCredentials();
-  });
+  WiFi.mode(WIFI_AP);
+  WiFi.softAP(kWifiPortalSsid);
+  delay(100);  // let the AP settle before we read its IP
+  dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
+  dnsServer.start(53, "*", WiFi.softAPIP());  // send every lookup to us
+  wifiPortalActive = true;
 
-  Serial.print("Starting setup portal: ");
-  Serial.println(kWifiPortalSsid);
-  wifiManager.startConfigPortal(kWifiPortalSsid);
-  wifiPortalActive = wifiManager.getConfigPortalActive();
+  startWebServer();  // same server/routes as the station-mode web app
+
+  Serial.print("AP portal up: ");
+  Serial.print(kWifiPortalSsid);
+  Serial.print(" -> http://");
+  Serial.println(WiFi.softAPIP());
 }
 
 void forgetWifiAndStartPortal() {
@@ -151,6 +143,7 @@ void startWifiAttempt(uint8_t index) {
     return;
   }
 
+  stopWifiPortal();  // drop the AP/DNS before switching to station mode
   WiFi.mode(WIFI_STA);
   WiFi.disconnect(false, false);
   delay(1);
@@ -231,7 +224,7 @@ void serviceWifi() {
   }
 
   if (wifiPortalActive) {
-    wifiManager.process();
+    dnsServer.processNextRequest();
   }
 
   if (WiFi.status() == WL_CONNECTED) {

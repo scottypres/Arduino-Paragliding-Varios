@@ -9,7 +9,6 @@ bool removeWifiNetwork(uint8_t removeIndex);
 void clearWifiNetworks();
 void loadWifiNetworks();
 void stopWifiPortal();
-void rememberWifiManagerCredentials();
 void startWifiPortal();
 void forgetWifiAndStartPortal();
 void startWifiAttempt(uint8_t index);

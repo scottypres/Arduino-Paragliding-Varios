@@ -1036,6 +1036,12 @@ void startWebServer() {
     webServer.serveStatic("/www/", SD, "/www/");
 
     webServer.onNotFound([](AsyncWebServerRequest *request) {
+      // While broadcasting our AP, bounce every unknown probe (captive-portal
+      // detection URLs included) to the app root so the phone opens the UI.
+      if (wifiPortalActive) {
+        request->redirect("http://" + WiFi.softAPIP().toString() + "/");
+        return;
+      }
       request->send(404, "text/plain", "Not found");
     });
     webServerRoutesConfigured = true;

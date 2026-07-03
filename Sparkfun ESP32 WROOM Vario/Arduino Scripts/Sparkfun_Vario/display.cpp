@@ -13,6 +13,10 @@ String onOff(bool value) {
 
 String menuValue(uint8_t item) {
   switch (item) {
+    case kMenuLock:
+      return "Select";
+    case kMenuOled:
+      return onOff(oledDisplayEnabled);
     case kMenuDataLogging:
       return onOff(dataLoggingEnabled);
     case kMenuSetAltitudeZero:
@@ -35,14 +39,18 @@ String menuValue(uint8_t item) {
       return onOff(gpsEnabled);
     case kMenuAltitudeSource:
       return useGpsAltitude ? "GPS" : "Baro";
+#ifndef VARIO_DISABLE_BT
     case kMenuBluetooth:
       return bluetoothStatusText();
+#endif
     case kMenuBatteryLogging:
       return batteryLoggingActive ? "Running" : "Start";
+#ifndef VARIO_DISABLE_WIFI
     case kMenuWifiSetup:
       return wifiPortalActive ? "Active" : "Start";
     case kMenuForgetWifi:
       return wifiNetworkCount == 0 ? "Cleared" : String(wifiNetworkCount) + " saved";
+#endif
     case kMenuSwitchFirmware:
       return switchFirmwareTargetLabel();
   }
@@ -51,6 +59,10 @@ String menuValue(uint8_t item) {
 
 String menuLabel(uint8_t item) {
   switch (item) {
+    case kMenuLock:
+      return "Lock screen";
+    case kMenuOled:
+      return "OLED";
     case kMenuDataLogging:
       return "SD logging";
     case kMenuSetAltitudeZero:
@@ -73,14 +85,18 @@ String menuLabel(uint8_t item) {
       return "GPS";
     case kMenuAltitudeSource:
       return "Altitude src";
+#ifndef VARIO_DISABLE_BT
     case kMenuBluetooth:
       return "Bluetooth";
+#endif
     case kMenuBatteryLogging:
       return "Battery log";
+#ifndef VARIO_DISABLE_WIFI
     case kMenuWifiSetup:
       return "WiFi setup";
     case kMenuForgetWifi:
       return "Forget WiFi";
+#endif
     case kMenuSwitchFirmware:
       return "Switch FW";
   }
@@ -93,8 +109,10 @@ static String batteryLogMenuValue(uint8_t item) {
       return "Select";
     case kBatteryLogMenuWifi:
       return onOff(batteryLogWifiEnabled);
+#ifndef VARIO_DISABLE_BT
     case kBatteryLogMenuBluetooth:
       return onOff(batteryLogBluetoothEnabled);
+#endif
     case kBatteryLogMenuOled:
       return onOff(batteryLogOledEnabled);
   }
@@ -107,8 +125,10 @@ static String batteryLogMenuLabel(uint8_t item) {
       return "Stop log";
     case kBatteryLogMenuWifi:
       return "WiFi";
+#ifndef VARIO_DISABLE_BT
     case kBatteryLogMenuBluetooth:
       return "Bluetooth";
+#endif
     case kBatteryLogMenuOled:
       return "OLED";
   }
@@ -230,7 +250,7 @@ static void drawLockSplash() {
 }
 
 void updateDisplay(bool force) {
-  if (!oledReady) {
+  if (!oledReady || !oledDisplayEnabled) {
     return;
   }
 
@@ -259,6 +279,23 @@ void updateDisplay(bool force) {
   }
 
   oled.display();
+}
+
+// Menu OLED toggle. Powers the panel down (not persisted — a blank screen on
+// boot would be a footgun); any button press re-enables it from serviceControls.
+void setOledDisplayEnabled(bool enabled) {
+  oledDisplayEnabled = enabled;
+  if (!oledReady) {
+    return;
+  }
+  if (enabled) {
+    oled.oled_command(SH110X_DISPLAYON);
+    updateDisplay(true);
+  } else {
+    oled.clearDisplay();
+    oled.display();
+    oled.oled_command(SH110X_DISPLAYOFF);
+  }
 }
 
 void setBatteryLogOledEnabled(bool enabled) {

@@ -15,7 +15,7 @@ TwoWire batteryWire(1);
 SFE_MAX1704X batteryGauge(MAX1704X_MAX17048);
 #ifndef VARIO_DISABLE_WIFI
 AsyncWebServer webServer(kWebServerPort);
-WiFiManager wifiManager;
+DNSServer dnsServer;
 #endif
 
 Button backButton = {kBackButtonPin, false, false, false, 0, false};
@@ -23,6 +23,7 @@ Button encoderButton = {kEncoderButtonPin, false, false, false, 0, false};
 Button confirmButton = {kConfirmButtonPin, true, false, false, 0, false};
 
 bool oledReady = false;
+bool oledDisplayEnabled = true;
 bool sdReady = false;
 bool bmpReady = false;
 bool shtReady = false;
