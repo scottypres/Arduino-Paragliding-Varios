@@ -1,6 +1,7 @@
 #include "settings.h"
 
 #include "audio.h"
+#include "imu.h"
 #include "power.h"
 #include "radio.h"
 #include "web.h"
@@ -41,6 +42,19 @@ void loadSettings() {
   }
   gpsDisplayEnabled = prefs.getBool(kPrefGpsDisplay, false);
   useGpsAltitude = prefs.getBool(kPrefAltitudeSource, false);
+  imuEnabled = prefs.getBool(kPrefImuEnabled, true);
+  imuLevelSaved = prefs.getBool(kPrefImuHasLevel, false);
+  imuPitchOffsetDeg = prefs.getFloat(kPrefImuPitchZero, 0.0F);
+  imuRollOffsetDeg = prefs.getFloat(kPrefImuRollZero, 0.0F);
+  imuSwapAxes = prefs.getBool(kPrefImuSwapAxes, true);
+  imuMirrorPitch = prefs.getBool(kPrefImuMirrorPitch, false);
+  imuMirrorRoll = prefs.getBool(kPrefImuMirrorRoll, false);
+  flightStartSpeedMph = prefs.getUChar(kPrefFlightStartMph, 10);
+  flightStartSecs = prefs.getUChar(kPrefFlightStartSecs, 5);
+  flightStopSpeedMph = prefs.getUChar(kPrefFlightStopMph, 10);
+  flightStopSecs = prefs.getUChar(kPrefFlightStopSecs, 3);
+  flightAutoStart = prefs.getBool(kPrefFlightAutoStart, true);
+  flightAutoStop = prefs.getBool(kPrefFlightAutoStop, true);
   const bool savedBluetoothEnabled = prefs.getBool(kPrefBluetooth, false);
   altitudeZeroSaved = prefs.getBool(kPrefHasAltitudeZero, false);
   baselineSmoothedAltitudeFt = prefs.getFloat(kPrefAltitudeZeroFt, 0.0F);
@@ -80,6 +94,18 @@ String buildSettingsJson() {
   doc["battery_gauge_ready"] = batteryGaugeReady;
   doc["gps_display"] = gpsDisplayEnabled;
   doc["use_gps_altitude"] = useGpsAltitude;
+  doc["imu_enabled"] = imuEnabled;
+  doc["imu_ready"] = imuReady;
+  doc["imu_level_saved"] = imuLevelSaved;
+  doc["imu_swap_axes"] = imuSwapAxes;
+  doc["imu_mirror_pitch"] = imuMirrorPitch;
+  doc["imu_mirror_roll"] = imuMirrorRoll;
+  doc["flight_start_mph"] = flightStartSpeedMph;
+  doc["flight_start_secs"] = flightStartSecs;
+  doc["flight_stop_mph"] = flightStopSpeedMph;
+  doc["flight_stop_secs"] = flightStopSecs;
+  doc["flight_auto_start"] = flightAutoStart;
+  doc["flight_auto_stop"] = flightAutoStop;
   doc["bluetooth_enabled"] = bluetoothEnabled;
   doc["pixel_enabled"] = pixelEnabled;
   doc["pixel_mode"] = pixelModeName(pixelMode);
@@ -189,6 +215,45 @@ void applySettingsJson(JsonObjectConst obj) {
   if (obj["gps_display"].is<bool>()) {
     gpsDisplayEnabled = obj["gps_display"].as<bool>();
     prefs.putBool(kPrefGpsDisplay, gpsDisplayEnabled);
+  }
+  if (obj["imu_enabled"].is<bool>()) {
+    setImuEnabled(obj["imu_enabled"].as<bool>());
+  }
+  if (obj["imu_swap_axes"].is<bool>()) {
+    imuSwapAxes = obj["imu_swap_axes"].as<bool>();
+    prefs.putBool(kPrefImuSwapAxes, imuSwapAxes);
+  }
+  if (obj["imu_mirror_pitch"].is<bool>()) {
+    imuMirrorPitch = obj["imu_mirror_pitch"].as<bool>();
+    prefs.putBool(kPrefImuMirrorPitch, imuMirrorPitch);
+  }
+  if (obj["imu_mirror_roll"].is<bool>()) {
+    imuMirrorRoll = obj["imu_mirror_roll"].as<bool>();
+    prefs.putBool(kPrefImuMirrorRoll, imuMirrorRoll);
+  }
+  if (obj["flight_start_mph"].is<int>()) {
+    flightStartSpeedMph = constrain(obj["flight_start_mph"].as<int>(), 0, 200);
+    prefs.putUChar(kPrefFlightStartMph, flightStartSpeedMph);
+  }
+  if (obj["flight_start_secs"].is<int>()) {
+    flightStartSecs = constrain(obj["flight_start_secs"].as<int>(), 0, 120);
+    prefs.putUChar(kPrefFlightStartSecs, flightStartSecs);
+  }
+  if (obj["flight_stop_mph"].is<int>()) {
+    flightStopSpeedMph = constrain(obj["flight_stop_mph"].as<int>(), 0, 200);
+    prefs.putUChar(kPrefFlightStopMph, flightStopSpeedMph);
+  }
+  if (obj["flight_stop_secs"].is<int>()) {
+    flightStopSecs = constrain(obj["flight_stop_secs"].as<int>(), 0, 120);
+    prefs.putUChar(kPrefFlightStopSecs, flightStopSecs);
+  }
+  if (obj["flight_auto_start"].is<bool>()) {
+    flightAutoStart = obj["flight_auto_start"].as<bool>();
+    prefs.putBool(kPrefFlightAutoStart, flightAutoStart);
+  }
+  if (obj["flight_auto_stop"].is<bool>()) {
+    flightAutoStop = obj["flight_auto_stop"].as<bool>();
+    prefs.putBool(kPrefFlightAutoStop, flightAutoStop);
   }
   if (obj["use_gps_altitude"].is<bool>()) {
     useGpsAltitude = obj["use_gps_altitude"].as<bool>();

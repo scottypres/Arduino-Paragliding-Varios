@@ -29,6 +29,12 @@ bool shtReady = false;
 bool dataLoggingEnabled = true;
 bool gpsDisplayEnabled = false;
 bool useGpsAltitude = false;
+bool imuEnabled = true;
+bool imuReady = false;
+bool imuLevelSaved = false;
+bool imuSwapAxes = true;  // default: unit is mounted rotated 90 deg to the right
+bool imuMirrorPitch = false;
+bool imuMirrorRoll = false;
 bool audioEnabled = true;
 bool bluetoothEnabled = false;
 bool batteryGaugeReady = false;
@@ -57,10 +63,42 @@ bool toneTestActive = false;
 bool buzzerLabActive = false;
 bool editingMenuItem = false;
 bool inMenuMode = false;
+bool controlsLocked = false;
 bool pixelEnabled = false;
 uint8_t activeWindow = 0;
 uint8_t selectedMenuItem = kMenuDataLogging;
+uint8_t selectedCategory = 0;
+bool menuInCategory = false;
+uint8_t categoryItemIndex = 0;
 uint8_t selectedBatteryLogMenuItem = kBatteryLogMenuStop;
+
+// Settings-menu categories. Every MenuItem lives in exactly one category.
+static const uint8_t kCatVarioAudio[] = {kMenuAudio, kMenuVolume, kMenuBuzzers,
+                                         kMenuResponse, kMenuToneTest};
+static const uint8_t kCatAltitude[] = {kMenuSetAltitudeZero, kMenuClearAltitudeZero,
+                                       kMenuAltitudeSource};
+static const uint8_t kCatImu[] = {kMenuImuEnabled,   kMenuImuLevel,      kMenuImuClearLevel,
+                                  kMenuImuSwapAxes,  kMenuImuMirrorPitch, kMenuImuMirrorRoll};
+static const uint8_t kCatFlight[] = {kMenuFlight, kMenuFlightAutoStart, kMenuFlightAutoStop};
+static const uint8_t kCatGps[] = {kMenuGpsDisplay, kMenuGpsLogRate};
+static const uint8_t kCatLogging[] = {kMenuDataLogging, kMenuBatteryReadRate, kMenuBatteryLogging};
+static const uint8_t kCatSystem[] = {
+    kMenuBluetooth,
+#ifndef VARIO_DISABLE_WIFI
+    kMenuWifiEnabled, kMenuWifiSetup, kMenuForgetWifi,
+#endif
+    kMenuSwitchFirmware};
+
+const MenuCategory kMenuCategories[] = {
+    {"Vario & Audio", kCatVarioAudio, sizeof(kCatVarioAudio)},
+    {"Altitude", kCatAltitude, sizeof(kCatAltitude)},
+    {"IMU", kCatImu, sizeof(kCatImu)},
+    {"Flight", kCatFlight, sizeof(kCatFlight)},
+    {"GPS", kCatGps, sizeof(kCatGps)},
+    {"Logging", kCatLogging, sizeof(kCatLogging)},
+    {"System", kCatSystem, sizeof(kCatSystem)},
+};
+const uint8_t kMenuCategoryCount = sizeof(kMenuCategories) / sizeof(kMenuCategories[0]);
 uint8_t logRateIndex = 2;
 uint8_t batteryReadRateIndex = 2;
 uint8_t buzzerVolumePercent = kDefaultBuzzerVolumePercent;
@@ -89,6 +127,7 @@ uint32_t lastBatteryLogMs = 0;
 uint32_t lastGpsDebugMs = 0;
 uint32_t lastSensorReadMs = 0;
 uint32_t lastBmpInitAttemptMs = 0;
+uint32_t lastImuInitAttemptMs = 0;
 uint32_t lastWifiAttemptMs = 0;
 uint32_t wifiAttemptStartMs = 0;
 uint32_t lastPixelUpdateMs = 0;
@@ -110,6 +149,22 @@ float displayAltitudeFt = 0.0F;
 float verticalSpeedMps = 0.0F;
 float temperatureF = NAN;
 float humidityPercent = NAN;
+float imuPitchDeg = NAN;
+float imuRollDeg = NAN;
+float imuGForce = NAN;
+float imuPitchOffsetDeg = 0.0F;
+float imuRollOffsetDeg = 0.0F;
+uint8_t oledWindowCount = kDefaultOledWindowCount;
+bool flightActive = false;
+uint32_t flightStartMs = 0;
+uint32_t flightElapsedSec = 0;
+float avgSpeedKmph = NAN;
+uint8_t flightStartSpeedMph = 10;
+uint8_t flightStartSecs = 5;
+uint8_t flightStopSpeedMph = 10;
+uint8_t flightStopSecs = 3;
+bool flightAutoStart = true;
+bool flightAutoStop = true;
 float batteryVoltage = NAN;
 float batteryPercent = NAN;
 String connectedWifiSsid;

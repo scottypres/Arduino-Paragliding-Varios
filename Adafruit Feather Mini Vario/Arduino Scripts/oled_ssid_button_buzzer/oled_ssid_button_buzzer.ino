@@ -1,11 +1,13 @@
 #include <Arduino.h>
+#include <math.h>
+#include <string.h>
 #include <WiFi.h>
 #include <ESPmDNS.h>
 #include <NetworkUdp.h>
 #include <ArduinoOTA.h>
 #include <Preferences.h>
 #include <WebServer.h>
-#include <BluetoothSerial.h>
+#include <BluetoothA2DPSource.h>
 #include <SPIFFS.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -29,7 +31,9 @@ constexpr uint8_t kBuzzerResolutionBits = 8;
 const char *const kPrefsNamespace = "vario";
 const char *const kPrefWifi = "bootWifi";
 const char *const kPrefBluetooth = "bootBt";
+const char *const kPrefBluetoothTarget = "btTarget";
 const char *const kPrefAudio = "bootAudio";
+const char *const kPrefBuzzerOutput = "buzzOut";
 const char *const kPrefStartupBeeps = "startBeeps";
 const char *const kPrefBuzzerVolume = "buzzVol";
 const char *const kPrefDirectSettings = "directAP";
@@ -38,7 +42,7 @@ const char *const kPrefResponse = "response";
 const char *const kPrefBatteryLogMs = "batLogMs";
 const char *const kPrefHasAltitudeZero = "hasZero";
 const char *const kPrefAltitudeZeroFt = "zeroFt";
-const char *const kBluetoothName = "VarioFeatherBT";
+const char *const kBluetoothAudioLocalName = "VarioFeatherA2DP";
 const char *const kBatteryLogPath = "/battery_log.csv";
 
 constexpr uint8_t kButtonA = 15;
@@ -64,12 +68,16 @@ constexpr uint32_t kSinkFreqDecrementHzPerMps = 45;
 constexpr uint32_t kMinToneHz = 130;
 constexpr uint32_t kMaxToneHz = 1800;
 constexpr uint32_t kToneQuantizeHz = 10;
+constexpr uint32_t kBluetoothAudioSampleRateHz = 44100;
+constexpr uint8_t kBluetoothTargetMaxChars = 64;
+constexpr float kBluetoothAudioMaxAmplitude = 12000.0F;
+constexpr float kTwoPi = 6.28318530718F;
 constexpr uint8_t kDefaultBuzzerVolumePercent = 40;
 constexpr uint8_t kMinBuzzerVolumePercent = 5;
 constexpr uint8_t kMaxBuzzerVolumePercent = 100;
 constexpr uint32_t kMenuLongPressMs = 800;
 constexpr uint32_t kButtonDebounceMs = 45;
-constexpr uint8_t kMenuItemCount = 11;
+constexpr uint8_t kMenuItemCount = 12;
 constexpr uint8_t kBatteryLogMenuItemCount = 4;
 constexpr uint8_t kMenuVisibleRows = 8;
 constexpr uint8_t kToneTestCount = 4;
@@ -101,7 +109,7 @@ WiFiManager wifiManager;
 WiFiManagerParameter noRouterLink(kNoRouterLinkHtml);
 WebServer settingsServer(kSettingsPort);
 WebServer apSettingsServer(kApSettingsPort);
-BluetoothSerial SerialBT;
+BluetoothA2DPSource a2dpSource;
 
 bool bmpReady = false;
 bool shtReady = false;
@@ -115,9 +123,11 @@ bool wifiEnabled = true;
 bool bootWifiEnabled = true;
 bool bluetoothEnabled = false;
 bool bootBluetoothEnabled = false;
-bool bluetoothStarted = false;
+bool bluetoothAudioStarted = false;
+bool bluetoothAudioStartFailed = false;
 bool otaStarted = false;
-bool audioEnabled = true;
+volatile bool audioEnabled = true;
+bool buzzerOutputEnabled = true;
 bool startupBeepsEnabled = true;
 bool menuActive = false;
 bool toneOn = false;
@@ -176,7 +186,7 @@ uint32_t liftPhaseStartMs = 0;
 uint32_t buttonAPressStartMs = 0;
 uint32_t lastButtonBEventMs = 0;
 uint32_t lastButtonCEventMs = 0;
-uint32_t currentToneHz = 0;
+volatile uint32_t currentToneHz = 0;
 uint32_t toneTestStartMs = 0;
 uint32_t bmpWarmupStartMs = 0;
 uint32_t lastBmpInitAttemptMs = 0;
@@ -190,6 +200,8 @@ uint32_t batteryLogStartMs = 0;
 uint32_t lastBatteryLogMs = 0;
 uint32_t batteryLogSampleCount = 0;
 String batteryLogRamCsv;
+String bluetoothAudioTargetName;
+float bluetoothAudioPhase = 0.0F;
 
 void disableWifi();
 void setWifiEnabled(bool enabled, bool persist);
@@ -248,6 +260,54 @@ uint8_t buzzerDuty() {
   return static_cast<uint8_t>(duty);
 }
 
+int32_t getBluetoothAudioData(uint8_t *data, int32_t len) {
+  if (data == nullptr || len <= 0) {
+    return 0;
+  }
+
+  const uint32_t toneHz = currentToneHz;
+  if (!audioEnabled || toneHz == 0) {
+    memset(data, 0, len);
+    return len;
+  }
+
+  const uint8_t volume = constrain(buzzerVolumePercent,
+                                   kMinBuzzerVolumePercent,
+                                   kMaxBuzzerVolumePercent);
+  const float amplitude = kBluetoothAudioMaxAmplitude *
+                          static_cast<float>(volume) / 100.0F;
+  const float phaseStep =
+    kTwoPi * static_cast<float>(toneHz) / static_cast<float>(kBluetoothAudioSampleRateHz);
+  int16_t *samples = reinterpret_cast<int16_t *>(data);
+  const int32_t sampleCount = len / static_cast<int32_t>(sizeof(int16_t));
+  float phase = bluetoothAudioPhase;
+
+  for (int32_t i = 0; i + 1 < sampleCount; i += 2) {
+    const int16_t sample = static_cast<int16_t>(sinf(phase) * amplitude);
+    samples[i] = sample;
+    samples[i + 1] = sample;
+    phase += phaseStep;
+    while (phase >= kTwoPi) {
+      phase -= kTwoPi;
+    }
+  }
+  if ((sampleCount & 1) != 0) {
+    samples[sampleCount - 1] = 0;
+  }
+  bluetoothAudioPhase = phase;
+  return len;
+}
+
+void applyBuzzerOutput(uint32_t frequencyHz) {
+  if (frequencyHz > 0 && buzzerOutputEnabled) {
+    ledcWriteTone(kBuzzerPin, frequencyHz);
+    ledcWrite(kBuzzerPin, buzzerDuty());
+  } else {
+    ledcWriteTone(kBuzzerPin, 0);
+    digitalWrite(kBuzzerPin, LOW);
+  }
+}
+
 void setTone(uint32_t frequencyHz) {
   if (!audioEnabled) {
     frequencyHz = 0;
@@ -255,19 +315,13 @@ void setTone(uint32_t frequencyHz) {
 
   frequencyHz = frequencyHz > 0 ? quantizeFrequency(frequencyHz) : 0;
   if (frequencyHz == currentToneHz) {
+    applyBuzzerOutput(frequencyHz);
     return;
-  }
-
-  if (frequencyHz > 0) {
-    ledcWriteTone(kBuzzerPin, frequencyHz);
-    ledcWrite(kBuzzerPin, buzzerDuty());
-  } else {
-    ledcWriteTone(kBuzzerPin, 0);
-    digitalWrite(kBuzzerPin, LOW);
   }
 
   currentToneHz = frequencyHz;
   toneOn = frequencyHz > 0;
+  applyBuzzerOutput(frequencyHz);
 }
 
 void loadSettings() {
@@ -276,7 +330,13 @@ void loadSettings() {
   wifiEnabled = bootWifiEnabled;
   bootBluetoothEnabled = prefs.getBool(kPrefBluetooth, false);
   bluetoothEnabled = bootBluetoothEnabled;
+  bluetoothAudioTargetName = prefs.getString(kPrefBluetoothTarget, "");
+  bluetoothAudioTargetName.trim();
+  if (bluetoothAudioTargetName.length() > kBluetoothTargetMaxChars) {
+    bluetoothAudioTargetName.remove(kBluetoothTargetMaxChars);
+  }
   audioEnabled = prefs.getBool(kPrefAudio, true);
+  buzzerOutputEnabled = prefs.getBool(kPrefBuzzerOutput, true);
   startupBeepsEnabled = prefs.getBool(kPrefStartupBeeps, true);
   buzzerVolumePercent =
     constrain(prefs.getUChar(kPrefBuzzerVolume, kDefaultBuzzerVolumePercent),
@@ -395,6 +455,48 @@ String selected(uint8_t value, uint8_t option) {
   return value == option ? " selected" : "";
 }
 
+String htmlEscape(const String &value) {
+  String escaped;
+  escaped.reserve(value.length());
+  for (size_t i = 0; i < value.length(); i++) {
+    const char c = value[i];
+    switch (c) {
+      case '&':
+        escaped += F("&amp;");
+        break;
+      case '<':
+        escaped += F("&lt;");
+        break;
+      case '>':
+        escaped += F("&gt;");
+        break;
+      case '"':
+        escaped += F("&quot;");
+        break;
+      case '\'':
+        escaped += F("&#39;");
+        break;
+      default:
+        escaped += c;
+        break;
+    }
+  }
+  return escaped;
+}
+
+String sanitizedBluetoothTarget(String value) {
+  value.trim();
+  if (value.length() > kBluetoothTargetMaxChars) {
+    value.remove(kBluetoothTargetMaxChars);
+  }
+  return value;
+}
+
+void saveBluetoothTarget(const String &targetName) {
+  bluetoothAudioTargetName = sanitizedBluetoothTarget(targetName);
+  prefs.putString(kPrefBluetoothTarget, bluetoothAudioTargetName);
+}
+
 String savedWifiSsid() {
   String ssid = wifiManager.getWiFiSSID(true);
   if (ssid.length() == 0) {
@@ -441,7 +543,16 @@ String bluetoothStatusText() {
   if (!bluetoothEnabled) {
     return "off";
   }
-  return bluetoothStarted ? "classic on" : "starting";
+  if (bluetoothAudioTargetName.length() == 0) {
+    return "no audio target";
+  }
+  if (bluetoothAudioStarted && a2dpSource.is_active()) {
+    return "audio connected";
+  }
+  if (bluetoothAudioStarted) {
+    return "audio scanning";
+  }
+  return bluetoothAudioStartFailed ? "audio start failed" : "starting";
 }
 
 float batteryLogFrequencyHz() {
@@ -716,6 +827,10 @@ String settingsPage(const String &message = "") {
   html += wifiStatusText();
   html += F("<br>Bluetooth ");
   html += bluetoothStatusText();
+  if (bluetoothAudioTargetName.length() > 0) {
+    html += F(" / ");
+    html += htmlEscape(bluetoothAudioTargetName);
+  }
   html += F("<br>Battery logging ");
   html += batteryLoggingActive ? stopwatchText(millis() - batteryLogStartMs) : String("off");
   html += F("<br>Battery log rate ");
@@ -747,12 +862,18 @@ String settingsPage(const String &message = "") {
   html += F("> Direct AP / no-router mode</label></div>");
   html += F("<div class='row'><label><input type='checkbox' name='bootBt'");
   html += checked(bootBluetoothEnabled);
-  html += F("> Boot Bluetooth classic</label></div>");
+  html += F("> Boot Bluetooth audio</label><label>Earbuds name <input name='btTarget' maxlength='");
+  html += String(kBluetoothTargetMaxChars);
+  html += F("' value=\"");
+  html += htmlEscape(bluetoothAudioTargetName);
+  html += F("\"></label></div>");
   html += F("<div class='row'><label><input type='checkbox' name='buzz'");
   html += checked(audioEnabled);
-  html += F("> Buzzer enabled</label><label><input type='checkbox' name='startupBeeps'");
+  html += F("> Audio enabled</label><label><input type='checkbox' name='buzzerOut'");
+  html += checked(buzzerOutputEnabled);
+  html += F("> Buzzer output</label><label><input type='checkbox' name='startupBeeps'");
   html += checked(startupBeepsEnabled);
-  html += F("> Startup triple beep</label><label>Buzzer volume <input name='volume' type='number' min='");
+  html += F("> Startup triple beep</label><label>Tone volume <input name='volume' type='number' min='");
   html += String(kMinBuzzerVolumePercent);
   html += F("' max='");
   html += String(kMaxBuzzerVolumePercent);
@@ -779,7 +900,7 @@ String settingsPage(const String &message = "") {
   html += F("<form method='POST' action='");
   html += bluetoothEnabled ? F("/bt-off") : F("/bt-on");
   html += F("'><button>");
-  html += buttonLabel(bluetoothEnabled, "Disable Bluetooth now", "Enable Bluetooth classic now");
+  html += buttonLabel(bluetoothEnabled, "Disable Bluetooth audio now", "Enable Bluetooth audio now");
   html += F("</button></form></div>");
   html += F("<div class='row'>");
   html += F("<form method='POST' action='");
@@ -818,6 +939,7 @@ void handleSettingsGet(WebServer &server, const String &message = "") {
 }
 
 void handleSettingsSave(WebServer &server) {
+  const String previousBluetoothTarget = bluetoothAudioTargetName;
   bootWifiEnabled = server.hasArg("bootWifi");
   directSettingsMode = server.hasArg("direct");
   if (directSettingsMode) {
@@ -825,11 +947,13 @@ void handleSettingsSave(WebServer &server) {
     wifiSetupRequired = false;
   }
   audioEnabled = server.hasArg("buzz");
+  buzzerOutputEnabled = server.hasArg("buzzerOut");
   if (server.hasArg("response")) {
     varioResponseIndex = constrain(server.arg("response").toInt(), 0, kVarioResponseCount - 1);
   }
   startupBeepsEnabled = server.hasArg("startupBeeps");
   bootBluetoothEnabled = server.hasArg("bootBt");
+  saveBluetoothTarget(server.hasArg("btTarget") ? server.arg("btTarget") : "");
   if (server.hasArg("volume")) {
     buzzerVolumePercent = constrain(server.arg("volume").toInt(),
                                     kMinBuzzerVolumePercent,
@@ -837,6 +961,7 @@ void handleSettingsSave(WebServer &server) {
   }
   saveBoolSetting(kPrefWifi, bootWifiEnabled);
   saveBoolSetting(kPrefAudio, audioEnabled);
+  saveBoolSetting(kPrefBuzzerOutput, buzzerOutputEnabled);
   saveBoolSetting(kPrefBluetooth, bootBluetoothEnabled);
   saveBoolSetting(kPrefStartupBeeps, startupBeepsEnabled);
   saveBoolSetting(kPrefDirectSettings, directSettingsMode);
@@ -848,10 +973,14 @@ void handleSettingsSave(WebServer &server) {
     readyBeepActive = false;
   }
   if (toneOn) {
-    ledcWrite(kBuzzerPin, buzzerDuty());
+    applyBuzzerOutput(currentToneHz);
+  }
+  if (bluetoothEnabled && bluetoothAudioTargetName != previousBluetoothTarget) {
+    setBluetoothEnabled(false, false);
+    setBluetoothEnabled(true, false);
   }
   requestDisplayRefresh();
-  handleSettingsGet(server, "Saved. WiFi boot mode is saved; use the WiFi button for immediate radio changes.");
+  handleSettingsGet(server, "Saved. Use the WiFi and Bluetooth buttons for immediate radio changes.");
 }
 
 void handleSettingsZero(WebServer &server) {
@@ -883,14 +1012,14 @@ void handleWifiOff(WebServer &server) {
 
 void handleBluetoothOn(WebServer &server) {
   setBluetoothEnabled(true, !batteryLoggingActive);
-  handleSettingsGet(server, batteryLoggingActive ? "Logging Bluetooth enabled temporarily."
-                                                : "Bluetooth classic enabled.");
+  handleSettingsGet(server, batteryLoggingActive ? "Logging Bluetooth audio enabled temporarily."
+                                                : "Bluetooth audio enabled.");
 }
 
 void handleBluetoothOff(WebServer &server) {
   setBluetoothEnabled(false, !batteryLoggingActive);
-  handleSettingsGet(server, batteryLoggingActive ? "Logging Bluetooth disabled temporarily."
-                                                : "Bluetooth disabled.");
+  handleSettingsGet(server, batteryLoggingActive ? "Logging Bluetooth audio disabled temporarily."
+                                                : "Bluetooth audio disabled.");
 }
 
 void handleBatteryLogStart(WebServer &server) {
@@ -1331,7 +1460,7 @@ String menuItemText(uint8_t index) {
       case 1:
         return String("WiFi:") + boolText(wifiEnabled);
       case 2:
-        return String("BT:") + boolText(bluetoothEnabled);
+        return String("BT aud:") + boolText(bluetoothEnabled);
       case 3:
         return String("OLED:") + boolText(oledEnabled);
     }
@@ -1342,25 +1471,27 @@ String menuItemText(uint8_t index) {
     case 0:
       return String("WiFi:") + boolText(wifiEnabled);
     case 1:
-      return String("BT:") + boolText(bluetoothEnabled);
+      return String("BT aud:") + boolText(bluetoothEnabled);
     case 2:
       return "Start batt log";
     case 3:
       return String("Boot WiFi:") + boolText(bootWifiEnabled);
     case 4:
-      return String("Boot Buzz:") + boolText(audioEnabled);
+      return String("Audio:") + boolText(audioEnabled);
     case 5:
-      return String("Start beep:") + boolText(startupBeepsEnabled);
+      return String("Buzzer:") + boolText(buzzerOutputEnabled);
     case 6:
-      return String("Volume:") + String(buzzerVolumePercent) + "%";
+      return String("Start beep:") + boolText(startupBeepsEnabled);
     case 7:
-      return String("Response:") + kVarioResponseLabel[varioResponseIndex];
+      return String("Volume:") + String(buzzerVolumePercent) + "%";
     case 8:
+      return String("Response:") + kVarioResponseLabel[varioResponseIndex];
+    case 9:
       return String("Test:") + (toneTestActive ? kToneTestLabel[toneTestPlayingIndex]
                                                : kToneTestLabel[toneTestPatternIndex]);
-    case 9:
-      return "Reset WiFi";
     case 10:
+      return "Reset WiFi";
+    case 11:
       return "Deep sleep";
   }
   return "";
@@ -1764,15 +1895,25 @@ void setBluetoothEnabled(bool enabled, bool persist) {
   }
 
   if (enabled) {
-    if (!bluetoothStarted) {
-      bluetoothStarted = SerialBT.begin(kBluetoothName);
-      Serial.println(bluetoothStarted ? "Bluetooth classic started"
-                                      : "Bluetooth classic start failed");
+    if (bluetoothAudioTargetName.length() == 0) {
+      bluetoothAudioStartFailed = false;
+      Serial.println("Bluetooth audio target is empty; set earbuds name first");
+    } else if (!bluetoothAudioStarted) {
+      bluetoothAudioStartFailed = false;
+      a2dpSource.set_local_name(kBluetoothAudioLocalName);
+      a2dpSource.set_auto_reconnect(true, 3);
+      a2dpSource.set_data_callback(getBluetoothAudioData);
+      a2dpSource.start(bluetoothAudioTargetName.c_str());
+      bluetoothAudioStarted = true;
+      Serial.print("Bluetooth A2DP scanning for ");
+      Serial.println(bluetoothAudioTargetName);
     }
-  } else if (bluetoothStarted) {
-    SerialBT.end();
-    bluetoothStarted = false;
-    Serial.println("Bluetooth classic stopped");
+  } else if (bluetoothAudioStarted) {
+    a2dpSource.end(false);
+    bluetoothAudioStarted = false;
+    bluetoothAudioStartFailed = false;
+    bluetoothAudioPhase = 0.0F;
+    Serial.println("Bluetooth A2DP stopped");
   }
 
   requestDisplayRefresh();
@@ -1987,6 +2128,8 @@ void enterDeepSleep() {
   display.println("to wake");
   display.display();
 
+  setTone(0);
+  setBluetoothEnabled(false, false);
   disableWifi();
   disableOnboardPixel();
 
@@ -2076,29 +2219,33 @@ void serviceButtons() {
             readyBeepActive = false;
           }
         } else if (menuIndex == 5) {
+          buzzerOutputEnabled = !buzzerOutputEnabled;
+          saveBoolSetting(kPrefBuzzerOutput, buzzerOutputEnabled);
+          applyBuzzerOutput(currentToneHz);
+        } else if (menuIndex == 6) {
           startupBeepsEnabled = !startupBeepsEnabled;
           saveBoolSetting(kPrefStartupBeeps, startupBeepsEnabled);
           if (!startupBeepsEnabled) {
             readyBeepActive = false;
             setTone(0);
           }
-        } else if (menuIndex == 6) {
+        } else if (menuIndex == 7) {
           buzzerVolumePercent += 10;
           if (buzzerVolumePercent > kMaxBuzzerVolumePercent) {
             buzzerVolumePercent = kMinBuzzerVolumePercent;
           }
           saveTuningSettings();
           if (toneOn) {
-            ledcWrite(kBuzzerPin, buzzerDuty());
+            applyBuzzerOutput(currentToneHz);
           }
-        } else if (menuIndex == 7) {
+        } else if (menuIndex == 8) {
           varioResponseIndex = (varioResponseIndex + 1) % kVarioResponseCount;
           saveTuningSettings();
-        } else if (menuIndex == 8) {
-          startToneTest();
         } else if (menuIndex == 9) {
-          resetWifiCredentials();
+          startToneTest();
         } else if (menuIndex == 10) {
+          resetWifiCredentials();
+        } else if (menuIndex == 11) {
           enterDeepSleep();
         }
       }

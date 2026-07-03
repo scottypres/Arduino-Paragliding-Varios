@@ -45,6 +45,8 @@ constexpr uint8_t kEncoderButtonPin = 34;
 constexpr uint8_t kConfirmButtonPin = 4;
 
 constexpr uint32_t kDebounceMs = 35;
+constexpr uint32_t kBatteryRefreshHoldMs = 800;   // hold select alone -> refresh battery
+constexpr uint32_t kLockHoldMs = 3000;            // hold select+back -> lock/unlock buttons
 constexpr uint32_t kDisplayRefreshMs = 100;
 constexpr uint32_t kGpsDebugMs = 1000;
 constexpr uint32_t kSensorReadMs = 100;
@@ -63,7 +65,8 @@ constexpr uint8_t kOledAddress = 0x3C;
 constexpr int8_t kOledResetPin = -1;
 constexpr int16_t kOledWidth = 128;
 constexpr int16_t kOledHeight = 64;
-constexpr uint8_t kOledWindowCount = 3;  // data screens cycled by the encoder in view mode
+constexpr uint8_t kMaxOledWindows = 8;         // capacity; runtime count is oledWindowCount
+constexpr uint8_t kDefaultOledWindowCount = 3;  // data screens cycled by the encoder in view mode
 constexpr const char *kOtaHostname = "sparkfun-vario";
 constexpr const char *kOtaPassword = "password";
 constexpr const char *kWifiPortalSsid = "SparkFun-Vario-Setup";
@@ -94,6 +97,19 @@ constexpr const char *kPrefTwoToneLift = "ttLift";
 constexpr const char *kPrefSinkOnMps = "sinkOn";
 constexpr const char *kPrefSinkHz = "sinkHz";
 constexpr const char *kPrefTwoToneSink = "ttSink";
+constexpr const char *kPrefImuEnabled = "imuEn";
+constexpr const char *kPrefImuHasLevel = "imuLvl";
+constexpr const char *kPrefImuPitchZero = "imuP0";
+constexpr const char *kPrefImuRollZero = "imuR0";
+constexpr const char *kPrefImuSwapAxes = "imuSwap";
+constexpr const char *kPrefImuMirrorPitch = "imuMirP";
+constexpr const char *kPrefImuMirrorRoll = "imuMirR";
+constexpr const char *kPrefFlightStartMph = "flStartV";
+constexpr const char *kPrefFlightStartSecs = "flStartT";
+constexpr const char *kPrefFlightStopMph = "flStopV";
+constexpr const char *kPrefFlightStopSecs = "flStopT";
+constexpr const char *kPrefFlightAutoStart = "flAutoS";
+constexpr const char *kPrefFlightAutoStop = "flAutoE";
 constexpr float kMetersToFeet = 3.28084F;
 constexpr float kFeetToMeters = 1.0F / kMetersToFeet;
 constexpr float kSeaLevelPressureHpa = 1013.25F;
@@ -122,7 +138,8 @@ constexpr uint32_t kBatteryLogIntervalMs = 30000;
 constexpr const char *kDataLogHeader =
     "millis,iso_utc,display_altitude_ft,raw_altitude_ft,vario_mps,temp_f,humidity_pct,"
     "gps_fix,latitude,longitude,gps_altitude_m,gps_speed_kmph,gps_sats_used,"
-    "gps_sats_seen,gps_hdop,battery_voltage,battery_percent";
+    "gps_sats_seen,gps_hdop,battery_voltage,battery_percent,"
+    "pitch_deg,roll_deg,g_force";
 constexpr const char *kBatteryLogHeader =
     "millis,elapsed_s,iso_utc,battery_voltage,battery_percent,wifi_enabled,wifi_status,"
     "wifi_ssid,bluetooth_enabled,oled_enabled";
@@ -145,6 +162,15 @@ enum MenuItem : uint8_t {
   kMenuBatteryReadRate,
   kMenuGpsDisplay,
   kMenuAltitudeSource,
+  kMenuImuEnabled,
+  kMenuImuLevel,
+  kMenuImuClearLevel,
+  kMenuImuSwapAxes,
+  kMenuImuMirrorPitch,
+  kMenuImuMirrorRoll,
+  kMenuFlight,
+  kMenuFlightAutoStart,
+  kMenuFlightAutoStop,
   kMenuBluetooth,
   kMenuBatteryLogging,
 #ifndef VARIO_DISABLE_WIFI
@@ -155,6 +181,16 @@ enum MenuItem : uint8_t {
   kMenuSwitchFirmware,
   kMenuCount
 };
+
+// Two-level settings menu: the top level lists categories, each opening into a
+// subset of MenuItem entries (see kMenuCategories in globals.cpp).
+struct MenuCategory {
+  const char *name;
+  const uint8_t *items;  // MenuItem values, in display order
+  uint8_t count;
+};
+extern const MenuCategory kMenuCategories[];
+extern const uint8_t kMenuCategoryCount;
 
 enum BatteryLogMenuItem : uint8_t {
   kBatteryLogMenuStop = 0,
@@ -183,7 +219,9 @@ struct Button {
   bool stablePressed;
   bool lastRawPressed;
   uint32_t lastChangeMs;
-  bool pressedEvent;
+  bool pressedEvent;    // rising edge (press down)
+  bool releasedEvent;   // falling edge (release)
+  uint32_t pressStartMs;  // millis() when the current/last press began
 };
 
 const uint32_t kLogRatesMs[] = {1000, 2000, 5000, 10000, 30000, 60000};
@@ -224,6 +262,12 @@ extern bool shtReady;
 extern bool dataLoggingEnabled;
 extern bool gpsDisplayEnabled;
 extern bool useGpsAltitude;
+extern bool imuEnabled;
+extern bool imuReady;      // LSM6DSV16X accel/gyro responding
+extern bool imuLevelSaved;
+extern bool imuSwapAxes;     // swap pitch/roll axes for a 90-deg rotated mount
+extern bool imuMirrorPitch;  // negate pitch after axis mapping
+extern bool imuMirrorRoll;   // negate roll after axis mapping
 extern bool audioEnabled;
 extern bool bluetoothEnabled;
 extern bool batteryGaugeReady;
@@ -252,9 +296,13 @@ extern bool toneTestActive;
 extern bool buzzerLabActive;   // web Buzzer Lab is driving the buzzers; vario audio paused
 extern bool editingMenuItem;
 extern bool inMenuMode;       // false = data windows, true = settings menu
+extern bool controlsLocked;   // true = ignore all buttons except the unlock combo
 extern bool pixelEnabled;
-extern uint8_t activeWindow;  // 0..kOledWindowCount-1, cycled by encoder in view mode
-extern uint8_t selectedMenuItem;
+extern uint8_t activeWindow;  // 0..oledWindowCount-1, cycled by encoder in view mode
+extern uint8_t selectedMenuItem;      // MenuItem currently highlighted (within a category)
+extern uint8_t selectedCategory;      // highlighted category at the top level
+extern bool menuInCategory;           // false = category list, true = item list
+extern uint8_t categoryItemIndex;     // highlighted position within the open category
 extern uint8_t selectedBatteryLogMenuItem;
 extern uint8_t logRateIndex;
 extern uint8_t batteryReadRateIndex;
@@ -286,6 +334,7 @@ extern uint32_t lastBatteryLogMs;
 extern uint32_t lastGpsDebugMs;
 extern uint32_t lastSensorReadMs;
 extern uint32_t lastBmpInitAttemptMs;
+extern uint32_t lastImuInitAttemptMs;
 extern uint32_t lastWifiAttemptMs;
 extern uint32_t wifiAttemptStartMs;
 extern uint32_t lastPixelUpdateMs;
@@ -307,6 +356,22 @@ extern float displayAltitudeFt;
 extern float verticalSpeedMps;
 extern float temperatureF;
 extern float humidityPercent;
+extern float imuPitchDeg;        // level-adjusted, smoothed
+extern float imuRollDeg;         // level-adjusted, smoothed
+extern float imuGForce;          // total acceleration in g
+extern float imuPitchOffsetDeg;  // level-to-horizon calibration
+extern float imuRollOffsetDeg;
+extern uint8_t oledWindowCount;      // active OLED windows (1..kMaxOledWindows)
+extern bool flightActive;
+extern uint32_t flightStartMs;
+extern uint32_t flightElapsedSec;
+extern float avgSpeedKmph;           // running average ground speed during flight
+extern uint8_t flightStartSpeedMph;  // flight-start ground speed threshold (mph)
+extern uint8_t flightStartSecs;      // hold time above start speed (s)
+extern uint8_t flightStopSpeedMph;   // flight-stop ground speed threshold (mph)
+extern uint8_t flightStopSecs;       // hold time below stop speed (s)
+extern bool flightAutoStart;         // auto-detect flight start from ground speed
+extern bool flightAutoStop;          // auto-detect flight end from ground speed
 extern float batteryVoltage;
 extern float batteryPercent;
 extern String connectedWifiSsid;

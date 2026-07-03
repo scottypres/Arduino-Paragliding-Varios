@@ -7,7 +7,9 @@
 #include "audio.h"
 #include "controls.h"
 #include "display.h"
+#include "flight.h"
 #include "gps_mod.h"
+#include "imu.h"
 #include "logging.h"
 #include "power.h"
 #include "sensors.h"
@@ -40,6 +42,8 @@ void setup() {
   initDisplay();
   Wire.setClock(400000);
   initSensors();
+  initImu();
+  initFlight();
   readSensors();
   readBatteryIfDue();
   initSdCard();
@@ -54,12 +58,14 @@ void loop() {
   serviceWebPush();
   serviceOta();
   serviceGps();
+  serviceFlight();
   serviceClock();
   printGpsDebugIfDue();
   serviceControls();
   if (millis() - lastSensorReadMs >= kSensorReadMs) {
     lastSensorReadMs = millis();
     readSensors();
+    readImu();
   }
   readBatteryIfDue();
   servicePixel();

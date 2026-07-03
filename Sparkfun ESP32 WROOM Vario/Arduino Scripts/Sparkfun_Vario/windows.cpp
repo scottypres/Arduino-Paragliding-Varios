@@ -2,12 +2,15 @@
 
 #include <ArduinoJson.h>
 
+#include "flight.h"
 #include "gps_mod.h"
 #include "radio.h"
 #include "timekeeping.h"
 #include "wifi_net.h"
 
-OledWindow oledWindows[kOledWindowCount];
+OledWindow oledWindows[kMaxOledWindows];
+
+constexpr float kKmphToMphWin = 0.621371F;
 
 static const char *kWindowConfigPath = "/config/windows.json";
 
@@ -26,10 +29,18 @@ String fieldDisplayValue(const OledField &f) {
     v = numOrDash(altitudeFt, f.dec);
   } else if (k == "vario_mps") {
     v = numOrDash(verticalSpeedMps, f.dec);
+  } else if (k == "vario_fps") {
+    v = numOrDash(verticalSpeedMps * kMetersToFeet, f.dec);
   } else if (k == "temp_f") {
     v = numOrDash(temperatureF, f.dec);
   } else if (k == "humidity_pct") {
     v = numOrDash(humidityPercent, f.dec);
+  } else if (k == "pitch_deg") {
+    v = numOrDash(imuPitchDeg, f.dec);
+  } else if (k == "roll_deg") {
+    v = numOrDash(imuRollDeg, f.dec);
+  } else if (k == "g_force") {
+    v = numOrDash(imuGForce, f.dec);
   } else if (k == "battery_pct") {
     v = numOrDash(batteryPercent, f.dec);
   } else if (k == "battery_v") {
@@ -52,6 +63,14 @@ String fieldDisplayValue(const OledField &f) {
     v = gps.altitude.isValid() ? String(gps.altitude.meters(), static_cast<unsigned int>(f.dec)) : String("--");
   } else if (k == "gps_speed_kmph") {
     v = gps.speed.isValid() ? String(gps.speed.kmph(), static_cast<unsigned int>(f.dec)) : String("--");
+  } else if (k == "gps_speed_mph") {
+    v = gps.speed.isValid() ? String(gps.speed.kmph() * kKmphToMphWin, static_cast<unsigned int>(f.dec)) : String("--");
+  } else if (k == "avg_speed_kmph") {
+    v = numOrDash(avgSpeedKmph, f.dec);
+  } else if (k == "avg_speed_mph") {
+    v = numOrDash(isnan(avgSpeedKmph) ? NAN : avgSpeedKmph * kKmphToMphWin, f.dec);
+  } else if (k == "flight_time") {
+    v = flightTimeText();
   } else if (k == "date") {
     const String iso = isoTimestamp();
     v = iso.length() >= 10 ? iso.substring(0, 10) : String("----");
@@ -71,11 +90,13 @@ static void setField(OledField &f, const char *data, int16_t x, int16_t y, uint8
   f.y = y;
   f.size = size;
   f.dec = dec;
+  f.font = 0;
   f.prefix = prefix;
   f.suffix = suffix;
 }
 
 static void loadDefaults() {
+  oledWindowCount = kDefaultOledWindowCount;
   // Window 0 — Flight
   OledWindow &w0 = oledWindows[0];
   setField(w0.fields[0], "altitude_ft", 0, 14, 2, 0, "", " ft");
@@ -113,7 +134,7 @@ static bool parseInto(const String &json) {
   }
   uint8_t wi = 0;
   for (JsonObjectConst win : wins) {
-    if (wi >= kOledWindowCount) {
+    if (wi >= kMaxOledWindows) {
       break;
     }
     OledWindow &w = oledWindows[wi];
@@ -128,14 +149,16 @@ static bool parseInto(const String &json) {
       f.y = constrain(static_cast<int>(fo["y"] | 0), 0, kOledHeight - 1);
       f.size = constrain(static_cast<int>(fo["size"] | 1), 1, 4);
       f.dec = constrain(static_cast<int>(fo["dec"] | 0), 0, 6);
+      f.font = constrain(static_cast<int>(fo["font"] | 0), 0, 4);
       f.prefix = fo["prefix"] | "";
       f.suffix = fo["suffix"] | "";
       w.fieldCount++;
     }
     wi++;
   }
-  for (; wi < kOledWindowCount; wi++) {
-    oledWindows[wi].fieldCount = 0;
+  oledWindowCount = wi > 0 ? wi : kDefaultOledWindowCount;
+  for (uint8_t clear = wi; clear < kMaxOledWindows; clear++) {
+    oledWindows[clear].fieldCount = 0;
   }
   return true;
 }
@@ -143,7 +166,7 @@ static bool parseInto(const String &json) {
 String windowConfigJson() {
   JsonDocument doc;
   JsonArray wins = doc["windows"].to<JsonArray>();
-  for (uint8_t wi = 0; wi < kOledWindowCount; wi++) {
+  for (uint8_t wi = 0; wi < oledWindowCount; wi++) {
     JsonObject win = wins.add<JsonObject>();
     JsonArray fields = win["fields"].to<JsonArray>();
     const OledWindow &w = oledWindows[wi];
@@ -155,6 +178,7 @@ String windowConfigJson() {
       fo["y"] = f.y;
       fo["size"] = f.size;
       fo["dec"] = f.dec;
+      fo["font"] = f.font;
       fo["prefix"] = f.prefix;
       fo["suffix"] = f.suffix;
     }

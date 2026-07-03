@@ -36,7 +36,7 @@ void initSdCard() {
   }
   const String firstLine = file.readStringUntil('\n');
   file.close();
-  if (firstLine.indexOf("iso_utc") >= 0) {
+  if (firstLine.indexOf("pitch_deg") >= 0) {  // current header includes the IMU columns
     return;
   }
 
@@ -290,8 +290,99 @@ void serviceBatteryLogging() {
   file.close();
 }
 
+static String csvFloatOrBlank(float value, uint8_t decimals) {
+  return isnan(value) ? String("") : String(value, static_cast<unsigned int>(decimals));
+}
+
+// Build one CSV data row; column order matches kDataLogHeader.
+static String buildLogRow(uint32_t nowMs) {
+  String r;
+  r.reserve(180);
+  r += nowMs;
+  r += ',';
+  r += isoTimestamp();  // empty until clock is known
+  r += ',';
+  r += csvFloatOrBlank(displayAltitudeFt, 2);
+  r += ',';
+  r += csvFloatOrBlank(altitudeFt, 2);
+  r += ',';
+  r += csvFloatOrBlank(verticalSpeedMps, 2);
+  r += ',';
+  r += csvFloatOrBlank(temperatureF, 1);
+  r += ',';
+  r += csvFloatOrBlank(humidityPercent, 1);
+  r += ',';
+  r += gps.location.isValid() ? "1" : "0";
+  r += ',';
+  r += gps.location.isValid() ? String(gps.location.lat(), 6) : String("");
+  r += ',';
+  r += gps.location.isValid() ? String(gps.location.lng(), 6) : String("");
+  r += ',';
+  r += gps.altitude.isValid() ? String(gps.altitude.meters(), 2) : String("");
+  r += ',';
+  r += gps.speed.isValid() ? String(gps.speed.kmph(), 2) : String("");
+  r += ',';
+  r += String(gpsSatellitesUsed());
+  r += ',';
+  r += String(gpsSatellitesSeen());
+  r += ',';
+  r += gps.hdop.isValid() ? String(gps.hdop.hdop(), 2) : String("");
+  r += ',';
+  r += csvFloatOrBlank(batteryVoltage, 2);
+  r += ',';
+  r += csvFloatOrBlank(batteryPercent, 0);
+  r += ',';
+  r += csvFloatOrBlank(imuPitchDeg, 1);
+  r += ',';
+  r += csvFloatOrBlank(imuRollDeg, 1);
+  r += ',';
+  r += csvFloatOrBlank(imuGForce, 2);
+  return r;
+}
+
+static bool flightLogOpen = false;
+static String flightLogPath;
+
+void beginFlightLog() {
+  flightLogOpen = false;
+  flightLogPath = "";
+  if (!sdReady) {
+    return;
+  }
+  if (!SD.exists("/logs")) {
+    SD.mkdir("/logs");
+  }
+  const String stamp = isoTimestamp();  // e.g. 2026-07-02T18:30:00Z
+  String name;
+  if (stamp.length() >= 19) {
+    name = stamp.substring(0, 19);
+    name.replace(":", "-");
+    name.replace("T", "_");
+  } else {
+    name = "flight-" + String(millis());
+  }
+  flightLogPath = "/logs/" + name + ".csv";
+  File f = SD.open(flightLogPath.c_str(), FILE_WRITE);
+  if (!f) {
+    flightLogPath = "";
+    return;
+  }
+  f.println(kDataLogHeader);
+  f.close();
+  flightLogOpen = true;
+  Serial.print("Flight log: ");
+  Serial.println(flightLogPath);
+}
+
+void endFlightLog() {
+  flightLogOpen = false;
+}
+
 void logDataIfDue() {
-  if (!dataLoggingEnabled || !sdReady) {
+  if (!sdReady) {
+    return;
+  }
+  if (!dataLoggingEnabled && !flightLogOpen) {
     return;
   }
 
@@ -301,57 +392,26 @@ void logDataIfDue() {
   }
   lastGpsLogMs = nowMs;
 
-  File file = SD.open(kDataLogPath, FILE_APPEND);
-  if (!file) {
-    sdReady = false;
-    Serial.println("Data log open failed");
-    return;
+  const String row = buildLogRow(nowMs);
+
+  if (dataLoggingEnabled) {
+    File file = SD.open(kDataLogPath, FILE_APPEND);
+    if (!file) {
+      sdReady = false;
+      Serial.println("Data log open failed");
+      return;
+    }
+    file.println(row);
+    file.flush();
+    file.close();
   }
 
-  file.print(nowMs);
-  file.print(',');
-  file.print(isoTimestamp());  // empty until clock is known
-  file.print(',');
-  printCsvFloat(file, displayAltitudeFt, 2);
-  file.print(',');
-  printCsvFloat(file, altitudeFt, 2);
-  file.print(',');
-  printCsvFloat(file, verticalSpeedMps, 2);
-  file.print(',');
-  printCsvFloat(file, temperatureF, 1);
-  file.print(',');
-  printCsvFloat(file, humidityPercent, 1);
-  file.print(',');
-  file.print(gps.location.isValid() ? 1 : 0);
-  file.print(',');
-  if (gps.location.isValid()) {
-    file.print(gps.location.lat(), 6);
+  if (flightLogOpen && flightLogPath.length()) {
+    File ff = SD.open(flightLogPath.c_str(), FILE_APPEND);
+    if (ff) {
+      ff.println(row);
+      ff.flush();
+      ff.close();
+    }
   }
-  file.print(',');
-  if (gps.location.isValid()) {
-    file.print(gps.location.lng(), 6);
-  }
-  file.print(',');
-  if (gps.altitude.isValid()) {
-    file.print(gps.altitude.meters(), 2);
-  }
-  file.print(',');
-  if (gps.speed.isValid()) {
-    file.print(gps.speed.kmph(), 2);
-  }
-  file.print(',');
-  file.print(gpsSatellitesUsed());
-  file.print(',');
-  file.print(gpsSatellitesSeen());
-  file.print(',');
-  if (gps.hdop.isValid()) {
-    file.print(gps.hdop.hdop(), 2);
-  }
-  file.print(',');
-  printCsvFloat(file, batteryVoltage, 2);
-  file.print(',');
-  printCsvFloat(file, batteryPercent, 0);
-  file.println();
-  file.flush();
-  file.close();
 }

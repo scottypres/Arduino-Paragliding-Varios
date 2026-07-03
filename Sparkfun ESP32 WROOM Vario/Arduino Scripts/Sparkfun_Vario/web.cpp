@@ -8,7 +8,9 @@
 #include "audio.h"
 #include "controls.h"
 #include "display.h"
+#include "flight.h"
 #include "gps_mod.h"
+#include "imu.h"
 #include "logging.h"
 #include "power.h"
 #include "radio.h"
@@ -156,6 +158,14 @@ String dataJson() {
   json += ",\"latitude\":" + (gps.location.isValid() ? String(gps.location.lat(), 6) : String("null"));
   json += ",\"longitude\":" + (gps.location.isValid() ? String(gps.location.lng(), 6) : String("null"));
   json += ",\"gps_speed_kmph\":" + (gps.speed.isValid() ? String(gps.speed.kmph(), 1) : String("null"));
+  json += ",\"avg_speed_kmph\":" + jsonFloat(avgSpeedKmph, 1);
+  json += ",\"flight_active\":" + String(flightActive ? "true" : "false");
+  json += ",\"flight_time\":\"" + flightTimeText() + "\"";
+  json += ",\"imu_enabled\":" + String(imuEnabled ? "true" : "false");
+  json += ",\"imu_ready\":" + String(imuReady ? "true" : "false");
+  json += ",\"pitch_deg\":" + jsonFloat(imuPitchDeg, 1);
+  json += ",\"roll_deg\":" + jsonFloat(imuRollDeg, 1);
+  json += ",\"g_force\":" + jsonFloat(imuGForce, 2);
   json += ",\"battery_voltage\":" + jsonFloat(batteryVoltage, 2);
   json += ",\"battery_percent\":" + jsonFloat(batteryPercent, 0);
   json += ",\"battery_gauge_ready\":" + String(batteryGaugeReady ? "true" : "false");
@@ -180,7 +190,7 @@ String dataJson() {
   json += ",\"pixel_enabled\":" + String(pixelEnabled ? "true" : "false");
   json += ",\"pixel_mode\":\"" + String(pixelModeName(pixelMode)) + "\"";
   json += ",\"oled_window\":" + String(activeWindow);
-  json += ",\"oled_window_count\":" + String(kOledWindowCount);
+  json += ",\"oled_window_count\":" + String(oledWindowCount);
   json += ",\"oled_in_menu\":" + String(inMenuMode ? "true" : "false");
   json += ",\"time_known\":" + String(timeKnown() ? "true" : "false");
   json += ",\"time_source\":\"" + String(clockSource()) + "\"";
@@ -308,6 +318,9 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <div class=metric><b>GPS sat</b><span id=m_sat>--</span></div>
 <div class=metric><b>Speed</b><span id=m_spd>--</span></div>
 <div class=metric><b>Battery</b><span id=m_bat>--</span></div>
+<div class=metric><b>Pitch / Roll</b><span id=m_pr>--</span></div>
+<div class=metric><b>Avg spd</b><span id=m_avg>--</span></div>
+<div class=metric><b>Flight</b><span id=m_ft>--</span></div>
 </div></div>
 <div class=card><h2>Status</h2>
 <div class=row><span class=sub><span class=dot id=d_link></span>Connection</span><span id=s_link class=sub>--</span></div>
@@ -351,6 +364,23 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <div class=row><label>Battery update <span class=sub id=bat_rate_hint></span></label><select id=battery_read_rate_index></select></div>
 <div class=row><label>Show GPS on OLED</label><label class=sw><input type=checkbox id=gps_display><span class=sl></span></label></div>
 <div class=row><label>Altitude source</label><label class=sw><input type=checkbox id=use_gps_altitude><span class=sl></span></label><span class=sub id=altsrc_hint>Baro</span></div>
+</div>
+<div class=card><h2>IMU (6DoF)</h2>
+<div class=row><label>IMU enabled</label><label class=sw><input type=checkbox id=imu_enabled><span class=sl></span></label></div>
+<div class=row><span class=sub>Sensor <b id=imustat>--</b></span><span class=sub>Pitch <b id=i_pitch>--</b>&deg; &middot; Roll <b id=i_roll>--</b>&deg; &middot; <b id=i_g>--</b> g</span></div>
+<div class=row><span class=sub>Level calibration <b id=i_lvl>--</b></span><span><button class=btn id=imulvl>Level to horizon</button> <button class="btn ghost" id=imuclr>Clear</button></span></div>
+<div class=row><label>Swap pitch/roll axes</label><label class=sw><input type=checkbox id=imu_swap_axes><span class=sl></span></label></div>
+<div class=row><label>Mirror pitch</label><label class=sw><input type=checkbox id=imu_mirror_pitch><span class=sl></span></label></div>
+<div class=row><label>Mirror roll</label><label class=sw><input type=checkbox id=imu_mirror_roll><span class=sl></span></label></div>
+</div>
+<div class=card><h2>Flight detection</h2>
+<div class=row><span class=sub>Auto flight timer <b id=fltstat>--</b></span><span><button class=btn id=flt_start>Start flight</button> <button class="btn dng" id=flt_stop>Stop flight</button></span></div>
+<div class=row><label>Auto start</label><label class=sw><input type=checkbox id=flight_auto_start><span class=sl></span></label></div>
+<div class=row><label>Auto stop</label><label class=sw><input type=checkbox id=flight_auto_stop><span class=sl></span></label></div>
+<div class=row><label>Start speed (mph)</label><input type=number id=flight_start_mph min=0 max=200 style=width:74px></div>
+<div class=row><label>Start hold (s)</label><input type=number id=flight_start_secs min=0 max=120 style=width:74px></div>
+<div class=row><label>Stop speed (mph)</label><input type=number id=flight_stop_mph min=0 max=200 style=width:74px></div>
+<div class=row><label>Stop hold (s)</label><input type=number id=flight_stop_secs min=0 max=120 style=width:74px></div>
 </div>
 <div class=card><h2>Battery logging</h2>
 <div class=row><span class=sub id=blogstat>--</span><span><button class=btn id=blog_start>Start</button> <button class="btn dng" id=blog_stop>Stop</button></span></div>
@@ -408,7 +438,7 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 
 <section class=tab id=oled>
 <div class=card><h2>OLED Designer</h2>
-<div class=row><span class=sub>Window</span><span id=owbtns><button class=ghost data-ow=0>1</button> <button class=ghost data-ow=1>2</button> <button class=ghost data-ow=2>3</button></span></div>
+<div class=row><span class=sub>Window</span><span><span id=owbtns></span> <button class=ghost id=addwin>+ Win</button> <button class="btn dng" id=delwin>&minus; Win</button></span></div>
 <div id=stage></div>
 <div class=muted>128&times;64 preview (live data). Drag a field to position it; tap to edit.</div>
 <div class=row><button class=btn id=addfield>+ Field</button><span><button class=btn id=savewin>Save to device</button> <button class=ghost id=dlwin>Download</button> <button class=ghost id=ulwin>Upload</button></span></div>
@@ -418,8 +448,10 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <div class=card id=editcard style=display:none><h2>Field</h2>
 <div class=row><label>Data</label><select id=fdata></select></div>
 <div class=row><label>Prefix</label><input type=text id=fpre maxlength=16></div>
-<div class=row><label>Suffix</label><input type=text id=fsuf maxlength=16></div>
+<div class=row><label>Suffix</label><input type=text id=fsuf list=units maxlength=16></div>
+<datalist id=units><option value=" ft"></option><option value=" m"></option><option value=" mph"></option><option value=" km/h"></option><option value=" m/s"></option><option value=" %"></option><option value=" V"></option><option value=" F"></option><option value=" C"></option><option value=" deg"></option><option value=" UTC"></option></datalist>
 <div class=row><label>Text size</label><select id=fsize><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+<div class=row><label>Font</label><select id=ffont><option value=0>Standard</option><option value=1>Tiny</option><option value=2>Small</option><option value=3>Bold</option><option value=4>Mono</option></select></div>
 <div class=row><label>Decimals</label><input type=number id=fdec min=0 max=6 style=width:74px></div>
 <div class=row><label>X / Y</label><span><input type=number id=fx min=0 max=127 style=width:66px> <input type=number id=fy min=0 max=63 style=width:66px></span></div>
 <div class=row><span class=sub>Remove this field</span><button class="btn dng" id=delfield>Delete</button></div>
@@ -468,6 +500,12 @@ function applyState(j){
  $('m_sat').textContent=(j.gps_sats_used<0?'--':j.gps_sats_used)+'/'+(j.gps_sats_seen<0?'--':j.gps_sats_seen);
  $('m_spd').textContent=f(j.gps_speed_kmph,1,' km/h');
  $('m_bat').textContent=j.battery_voltage===null?'n/a':f(j.battery_voltage,2,'V')+' '+f(j.battery_percent,0,'%');
+ $('m_pr').textContent=j.pitch_deg===null?'--':f(j.pitch_deg,0,'°')+' / '+f(j.roll_deg,0,'°');
+ $('m_avg').textContent=j.avg_speed_kmph===null?'--':f(j.avg_speed_kmph*0.621371,1,' mph');
+ $('m_ft').textContent=(j.flight_active?'▶ ':'')+(j.flight_time||'0:00');
+ if($('fltstat'))$('fltstat').textContent=j.flight_active?('in flight '+(j.flight_time||'')):'on the ground';
+ $('imustat').textContent=j.imu_enabled?(j.imu_ready?'ok':'missing'):'disabled';
+ $('i_pitch').textContent=f(j.pitch_deg,1);$('i_roll').textContent=f(j.roll_deg,1);$('i_g').textContent=f(j.g_force,2);
  var link=j.wifi_ready?'Connected ('+j.wifi_ssid+')':(j.wifi_portal?'Setup AP '+j.wifi_portal_ssid:'Connecting');
   $('s_link').textContent=link;$('s_ip').textContent=j.ip||'--';
   $('d_link').className='dot '+(j.wifi_ready?'ok':'bad');
@@ -499,6 +537,10 @@ function patch(o){return fetch('/api/settings',{method:'POST',headers:{'Content-
 function fillSettings(s){
  $('audio').checked=s.audio;$('data_logging').checked=s.data_logging;$('gps_display').checked=s.gps_display;
  $('use_gps_altitude').checked=s.use_gps_altitude;$('altsrc_hint').textContent=s.use_gps_altitude?'GPS':'Baro';
+ $('imu_enabled').checked=s.imu_enabled;$('i_lvl').textContent=s.imu_level_saved?'saved':'none';
+ $('imu_swap_axes').checked=s.imu_swap_axes;$('imu_mirror_pitch').checked=s.imu_mirror_pitch;$('imu_mirror_roll').checked=s.imu_mirror_roll;
+ $('flight_start_mph').value=s.flight_start_mph;$('flight_start_secs').value=s.flight_start_secs;$('flight_stop_mph').value=s.flight_stop_mph;$('flight_stop_secs').value=s.flight_stop_secs;
+ $('flight_auto_start').checked=s.flight_auto_start;$('flight_auto_stop').checked=s.flight_auto_stop;
  $('volume').value=s.volume;$('volv').textContent=s.volume+'%';
  $('buzzer_count').value=s.buzzer_count;
  $('lift_on_mps').value=s.lift_on_mps;$('liftonv').textContent=Number(s.lift_on_mps).toFixed(2)+' m/s';
@@ -537,6 +579,16 @@ $('two_tone_sink').onchange=function(){patch({two_tone_sink:this.checked})};
 $('tonedef').onclick=function(){patch({buzzer_count:1,lift_on_mps:0.18,lift_hz:720,lift_slope_hz:170,beep_tempo:100,two_tone_lift:false,sink_on_mps:-1.8,sink_hz:360,two_tone_sink:false})};
 $('gps_display').onchange=function(){patch({gps_display:this.checked})};
 $('use_gps_altitude').onchange=function(){patch({use_gps_altitude:this.checked})};
+$('imu_enabled').onchange=function(){patch({imu_enabled:this.checked})};
+$('imulvl').onclick=function(){fetch('/api/imu/level',{method:'POST'}).then(function(r){return r.json()}).then(fillSettings)};
+$('imuclr').onclick=function(){fetch('/api/imu/level/clear',{method:'POST'}).then(function(r){return r.json()}).then(fillSettings)};
+$('imu_swap_axes').onchange=function(){patch({imu_swap_axes:this.checked})};
+$('imu_mirror_pitch').onchange=function(){patch({imu_mirror_pitch:this.checked})};
+$('imu_mirror_roll').onchange=function(){patch({imu_mirror_roll:this.checked})};
+['flight_start_mph','flight_start_secs','flight_stop_mph','flight_stop_secs'].forEach(function(id){var e=$(id);if(e)e.onchange=function(){var o={};o[id]=Number(this.value);patch(o)}});
+['flight_auto_start','flight_auto_stop'].forEach(function(id){var e=$(id);if(e)e.onchange=function(){var o={};o[id]=this.checked;patch(o)}});
+$('flt_start').onclick=function(){fetch('/api/flight/start',{method:'POST'}).then(function(r){return r.json()}).then(applyState)};
+$('flt_stop').onclick=function(){fetch('/api/flight/stop',{method:'POST'}).then(function(r){return r.json()}).then(applyState)};
 $('volume').oninput=function(){$('volv').textContent=this.value+'%'};
 $('volume').onchange=function(){patch({volume:Number(this.value)})};
 $('response').onchange=function(){patch({response:Number(this.value)})};
@@ -631,46 +683,65 @@ $('mno').onclick=function(){$('modal').classList.remove('on');mcb=null};
 $('myes').onclick=function(){var t=$('mtype');if(t.dataset.w&&t.value!==t.dataset.w)return;$('modal').classList.remove('on');if(mcb)mcb();mcb=null};
 // ---- OLED designer ----
 var SC=3,WCFG=null,curWin=0,curField=-1,lastData={},owDrag=false;
-var DKEYS=[['text','Static text'],['altitude_ft','Altitude ft'],['raw_altitude_ft','Raw alt ft'],['vario_mps','Vario m/s'],['temp_f','Temp F'],['humidity_pct','Humidity %'],['battery_pct','Battery %'],['battery_v','Battery V'],['wifi_ssid','WiFi SSID'],['wifi_status','WiFi status'],['bt_status','Bluetooth status'],['sat_used','Sat used'],['sat_seen','Sat seen'],['lat','Latitude'],['lng','Longitude'],['gps_alt_m','GPS alt m'],['gps_speed_kmph','GPS speed'],['date','Date'],['time','Time (UTC)']];
+var DKEYS=[['text','Static text'],['altitude_ft','Altitude ft'],['raw_altitude_ft','Raw alt ft'],['vario_mps','Vario m/s'],['vario_fps','Vario ft/s'],['temp_f','Temp F'],['humidity_pct','Humidity %'],['pitch_deg','Pitch deg'],['roll_deg','Roll deg'],['g_force','G force'],['battery_pct','Battery %'],['battery_v','Battery V'],['wifi_ssid','WiFi SSID'],['wifi_status','WiFi status'],['bt_status','Bluetooth status'],['sat_used','Sat used'],['sat_seen','Sat seen'],['lat','Latitude'],['lng','Longitude'],['gps_alt_m','GPS alt m'],['gps_speed_kmph','GPS speed km/h'],['gps_speed_mph','GPS speed mph'],['avg_speed_kmph','Avg speed km/h'],['avg_speed_mph','Avg speed mph'],['flight_time','Flight time'],['date','Date'],['time','Time (UTC)']];
+// preview font metrics per index: [capPx, letterSpacingPx, fontFamily, weight]
+var FONTS=[[8,1.2,"'Courier New',Courier,monospace",700],[6,0.5,"'Courier New',Courier,monospace",700],[7,0.7,"'Courier New',Courier,monospace",700],[13,0.4,"Arial,Helvetica,sans-serif",700],[13,0.8,"'Courier New',Courier,monospace",700]];
+var LBLSET={};DKEYS.forEach(function(k){LBLSET[k[1]]=1});
+function labelFor(k){for(var i=0;i<DKEYS.length;i++)if(DKEYS[i][0]==k)return DKEYS[i][1];return k;}
 function nd(x,d){return (x===null||x===undefined||isNaN(x))?'--':Number(x).toFixed(d|0)}
 function valFor(f){var d=lastData,k=f.data,v;
  if(k=='text')return (f.prefix||'')+(f.suffix||'');
  if(k=='altitude_ft')v=nd(d.altitude_ft,f.dec);else if(k=='raw_altitude_ft')v=nd(d.raw_altitude_ft,f.dec);
- else if(k=='vario_mps')v=nd(d.vario_mps,f.dec);else if(k=='temp_f')v=nd(d.temp_f,f.dec);
+ else if(k=='vario_mps')v=nd(d.vario_mps,f.dec);else if(k=='vario_fps')v=(d.vario_mps==null?'--':nd(d.vario_mps*3.28084,f.dec));else if(k=='temp_f')v=nd(d.temp_f,f.dec);
  else if(k=='humidity_pct')v=nd(d.humidity_pct,f.dec);else if(k=='battery_pct')v=nd(d.battery_percent,f.dec);
+ else if(k=='pitch_deg')v=nd(d.pitch_deg,f.dec);else if(k=='roll_deg')v=nd(d.roll_deg,f.dec);else if(k=='g_force')v=nd(d.g_force,f.dec);
  else if(k=='battery_v')v=nd(d.battery_voltage,f.dec);else if(k=='sat_used')v=(d.gps_sats_used==null?'--':d.gps_sats_used);
  else if(k=='wifi_ssid')v=(d.wifi_ssid||'--');else if(k=='wifi_status')v=(d.wifi_status||'--');else if(k=='bt_status')v=(d.bluetooth_status||'--');
  else if(k=='sat_seen')v=(d.gps_sats_seen==null?'--':d.gps_sats_seen);else if(k=='lat')v=(d.latitude==null?'--':Number(d.latitude).toFixed(f.dec|0));
  else if(k=='lng')v=(d.longitude==null?'--':Number(d.longitude).toFixed(f.dec|0));else if(k=='gps_alt_m')v=nd(d.gps_altitude_m,f.dec);
- else if(k=='gps_speed_kmph')v=nd(d.gps_speed_kmph,f.dec);else if(k=='date')v=(d.time_utc?d.time_utc.substr(0,10):'----');
+ else if(k=='gps_speed_kmph')v=nd(d.gps_speed_kmph,f.dec);
+ else if(k=='gps_speed_mph')v=(d.gps_speed_kmph==null?'--':nd(d.gps_speed_kmph*0.621371,f.dec));
+ else if(k=='avg_speed_kmph')v=nd(d.avg_speed_kmph,f.dec);
+ else if(k=='avg_speed_mph')v=(d.avg_speed_kmph==null?'--':nd(d.avg_speed_kmph*0.621371,f.dec));
+ else if(k=='flight_time')v=(d.flight_time||'0:00');
+ else if(k=='date')v=(d.time_utc?d.time_utc.substr(0,10):'----');
  else if(k=='time')v=(d.time_utc?d.time_utc.substr(11,8):'--:--:--');else v='?';
  return (f.prefix||'')+v+(f.suffix||'');}
 function curW(){return WCFG&&WCFG.windows&&WCFG.windows[curWin]?WCFG.windows[curWin]:null}
 function clamp(v,a,b){v=parseInt(v,10);if(isNaN(v))v=a;return Math.max(a,Math.min(b,v))}
 function renderStage(){var st=$('stage');if(!st)return;st.innerHTML='';var w=curW();if(!w)return;
  (w.fields||[]).forEach(function(f,i){var e=document.createElement('div');e.className='fld'+(i==curField?' sel':'');
-  e.style.left=(f.x*SC)+'px';e.style.top=(f.y*SC)+'px';var s=f.size||1;e.style.fontSize=(8*s*SC)+'px';e.style.letterSpacing=(1.2*s*SC)+'px';
+  var s=f.size||1,ft=FONTS[f.font||0]||FONTS[0];
+  e.style.left=(f.x*SC)+'px';e.style.top=(f.y*SC)+'px';
+  e.style.fontSize=(ft[0]*s*SC)+'px';e.style.letterSpacing=(ft[1]*s*SC)+'px';e.style.fontFamily=ft[2];e.style.fontWeight=ft[3];
   e.textContent=valFor(f)||' ';e.dataset.i=i;
-  e.onpointerdown=function(ev){ev.preventDefault();selField(i);owDrag=true;var sx=ev.clientX,sy=ev.clientY,ox=f.x,oy=f.y;
+  e.onpointerdown=function(ev){ev.preventDefault();selField(i);owDrag=true;
+   var el=st.querySelector('.fld[data-i="'+i+'"]')||e;var sx=ev.clientX,sy=ev.clientY,ox=f.x,oy=f.y;
+   if(el.setPointerCapture){try{el.setPointerCapture(ev.pointerId)}catch(_){}}
    function mv(g){f.x=clamp(Math.round(ox+(g.clientX-sx)/SC),0,127);f.y=clamp(Math.round(oy+(g.clientY-sy)/SC),0,63);
-    e.style.left=(f.x*SC)+'px';e.style.top=(f.y*SC)+'px';if(curField==i){$('fx').value=f.x;$('fy').value=f.y}}
+    el.style.left=(f.x*SC)+'px';el.style.top=(f.y*SC)+'px';if(curField==i){$('fx').value=f.x;$('fy').value=f.y}}
    function up(){owDrag=false;document.removeEventListener('pointermove',mv);document.removeEventListener('pointerup',up)}
    document.addEventListener('pointermove',mv);document.addEventListener('pointerup',up)};
   st.appendChild(e)});}
 function selField(i){curField=i;var w=curW(),f=w&&w.fields[i];$('editcard').style.display=f?'block':'none';
- if(f){$('fdata').value=f.data;$('fpre').value=f.prefix||'';$('fsuf').value=f.suffix||'';$('fsize').value=f.size||1;$('fdec').value=f.dec||0;$('fx').value=f.x;$('fy').value=f.y}renderStage();}
-function selWin(n){curWin=n;curField=-1;$('editcard').style.display='none';
- document.querySelectorAll('#owbtns button').forEach(function(b){b.classList.toggle('on',+b.dataset.ow==n)});renderStage();}
-function normalize(c){if(!c||!c.windows)c={windows:[]};while(c.windows.length<3)c.windows.push({fields:[]});c.windows.forEach(function(w){if(!w.fields)w.fields=[]});return c;}
+ if(f){$('fdata').value=f.data;$('fpre').value=f.prefix||'';$('fsuf').value=f.suffix||'';$('fsize').value=f.size||1;$('ffont').value=f.font||0;$('fdec').value=f.dec||0;$('fx').value=f.x;$('fy').value=f.y}renderStage();}
+function renderWinTabs(){var box=$('owbtns');if(!box||!WCFG)return;box.innerHTML='';
+ WCFG.windows.forEach(function(w,i){var b=document.createElement('button');b.className='ghost'+(i==curWin?' on':'');b.textContent=(i+1);b.onclick=function(){selWin(i)};box.appendChild(b);box.appendChild(document.createTextNode(' '))});
+ $('delwin').style.display=WCFG.windows.length>1?'':'none';$('addwin').style.display=WCFG.windows.length<8?'':'none';}
+function selWin(n){if(!WCFG)return;if(n>=WCFG.windows.length)n=WCFG.windows.length-1;if(n<0)n=0;curWin=n;curField=-1;$('editcard').style.display='none';renderWinTabs();renderStage();}
+function normalize(c){if(!c||!c.windows||!c.windows.length)c={windows:[{fields:[]}]};if(c.windows.length>8)c.windows=c.windows.slice(0,8);c.windows.forEach(function(w){if(!w.fields)w.fields=[]});return c;}
 function loadWindows(){if($('fdata').options.length==0)DKEYS.forEach(function(k){var o=document.createElement('option');o.value=k[0];o.textContent=k[1];$('fdata').appendChild(o)});
  fetch('/api/windows',{cache:'no-store'}).then(function(r){return r.json()}).then(function(c){WCFG=normalize(c);selWin(0)}).catch(function(){WCFG=normalize(null);selWin(0)});}
 function upd(k,v){var w=curW();if(!w||curField<0||!w.fields[curField])return;w.fields[curField][k]=v;renderStage();}
-document.querySelectorAll('#owbtns button').forEach(function(b){b.onclick=function(){selWin(+b.dataset.ow)}});
+$('addwin').onclick=function(){if(!WCFG||WCFG.windows.length>=8)return;WCFG.windows.push({fields:[]});selWin(WCFG.windows.length-1);$('winmsg').textContent='Window added — press Save to device to apply.'};
+$('delwin').onclick=function(){if(!WCFG||WCFG.windows.length<=1)return;WCFG.windows.splice(curWin,1);selWin(Math.min(curWin,WCFG.windows.length-1));$('winmsg').textContent='Window removed — press Save to device to apply.'};
 $('addfield').onclick=function(){var w=curW();if(!w)return;if(w.fields.length>=8){$('winmsg').textContent='Max 8 fields per window';return}
- w.fields.push({data:'text',x:0,y:0,size:1,dec:0,prefix:'Label',suffix:''});selField(w.fields.length-1)};
+ w.fields.push({data:'altitude_ft',x:0,y:0,size:1,dec:0,font:0,prefix:labelFor('altitude_ft'),suffix:''});selField(w.fields.length-1)};
 $('delfield').onclick=function(){var w=curW();if(!w||curField<0)return;w.fields.splice(curField,1);curField=-1;$('editcard').style.display='none';renderStage()};
-$('fdata').onchange=function(){upd('data',this.value)};$('fpre').oninput=function(){upd('prefix',this.value)};$('fsuf').oninput=function(){upd('suffix',this.value)};
-$('fsize').onchange=function(){upd('size',+this.value)};$('fdec').oninput=function(){upd('dec',clamp(this.value,0,6))};
+$('fdata').onchange=function(){var w=curW(),f=w&&w.fields[curField];upd('data',this.value);
+ if(f&&this.value!='text'&&(!f.prefix||LBLSET[f.prefix])){f.prefix=labelFor(this.value);$('fpre').value=f.prefix;renderStage()}};
+$('fpre').oninput=function(){upd('prefix',this.value)};$('fsuf').oninput=function(){upd('suffix',this.value)};
+$('fsize').onchange=function(){upd('size',+this.value)};$('ffont').onchange=function(){upd('font',+this.value)};$('fdec').oninput=function(){upd('dec',clamp(this.value,0,6))};
 $('fx').oninput=function(){upd('x',clamp(this.value,0,127))};$('fy').oninput=function(){upd('y',clamp(this.value,0,63))};
 $('savewin').onclick=function(){$('winmsg').textContent='Saving...';fetch('/api/windows',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(WCFG)}).then(function(r){return r.json()}).then(function(c){WCFG=normalize(c);$('winmsg').textContent='Saved to device.';renderStage()}).catch(function(){$('winmsg').textContent='Save failed.'})};
 $('dlwin').onclick=function(){var b=new Blob([JSON.stringify(WCFG,null,1)],{type:'application/json'});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download='windows.json';a.click();URL.revokeObjectURL(u)};
@@ -721,6 +792,26 @@ static void handleZeroSet(AsyncWebServerRequest *request) {
 
 static void handleZeroClear(AsyncWebServerRequest *request) {
   clearAltitudeZero();
+  sendNoStore(request, "application/json", buildSettingsJson());
+}
+
+static void handleImuLevel(AsyncWebServerRequest *request) {
+  saveImuLevel();
+  sendNoStore(request, "application/json", buildSettingsJson());
+}
+
+static void handleFlightStart(AsyncWebServerRequest *request) {
+  startFlightManual();
+  sendNoStore(request, "application/json", dataJson());
+}
+
+static void handleFlightStop(AsyncWebServerRequest *request) {
+  stopFlightManual();
+  sendNoStore(request, "application/json", dataJson());
+}
+
+static void handleImuLevelClear(AsyncWebServerRequest *request) {
+  clearImuLevel();
   sendNoStore(request, "application/json", buildSettingsJson());
 }
 
@@ -1013,6 +1104,10 @@ void startWebServer() {
     webServer.on("/api/wifi", M::HTTP_GET, handleWifiList);
     webServer.on("/api/zero/set", M::HTTP_POST, handleZeroSet);
     webServer.on("/api/zero/clear", M::HTTP_POST, handleZeroClear);
+    webServer.on("/api/imu/level", M::HTTP_POST, handleImuLevel);
+    webServer.on("/api/imu/level/clear", M::HTTP_POST, handleImuLevelClear);
+    webServer.on("/api/flight/start", M::HTTP_POST, handleFlightStart);
+    webServer.on("/api/flight/stop", M::HTTP_POST, handleFlightStop);
     webServer.on("/log", M::HTTP_GET, handleLogView);
     webServer.on("/download", M::HTTP_GET, handleLogDownload);
     webServer.on("/battery-log", M::HTTP_GET, handleBatteryLogView);

@@ -10,8 +10,9 @@ struct OledField {
   String data;    // data key, e.g. "altitude_ft", "time", or "text" (static label)
   int16_t x;
   int16_t y;
-  uint8_t size;   // GFX text size (1 or 2)
+  uint8_t size;   // GFX text size multiplier (1..4)
   uint8_t dec;    // decimal places for numeric values
+  uint8_t font;   // 0=built-in, 1=tiny, 2=small, 3=bold, 4=mono
   String prefix;  // label drawn before the value
   String suffix;  // units drawn after the value
 };
@@ -21,7 +22,7 @@ struct OledWindow {
   uint8_t fieldCount;
 };
 
-extern OledWindow oledWindows[kOledWindowCount];
+extern OledWindow oledWindows[kMaxOledWindows];
 
 void initWindowConfig();                  // load /config/windows.json, else defaults
 String windowConfigJson();                // serialize the live config

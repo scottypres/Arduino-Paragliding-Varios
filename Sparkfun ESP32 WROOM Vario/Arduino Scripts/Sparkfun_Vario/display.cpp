@@ -1,11 +1,40 @@
 #include "display.h"
 
+#include <Fonts/FreeMonoBold9pt7b.h>
+#include <Fonts/FreeSansBold9pt7b.h>
+#include <Fonts/Picopixel.h>
+#include <Fonts/TomThumb.h>
+
 #include "firmware.h"
+#include "flight.h"
 #include "gps_mod.h"
 #include "radio.h"
 #include "timekeeping.h"
 #include "wifi_net.h"
 #include "windows.h"
+
+// OLED field font table. Index 0 is the built-in 6x8 GFX font (size-scalable);
+// 1-4 are Adafruit GFX custom fonts. Custom fonts position text by baseline, so
+// each carries an approximate top-of-cap offset to keep the field's y as top.
+static const GFXfont *fontForIndex(uint8_t idx) {
+  switch (idx) {
+    case 1: return &TomThumb;
+    case 2: return &Picopixel;
+    case 3: return &FreeSansBold9pt7b;
+    case 4: return &FreeMonoBold9pt7b;
+    default: return nullptr;
+  }
+}
+
+static int16_t fontBaselineOffset(uint8_t idx) {
+  switch (idx) {
+    case 1: return 5;   // TomThumb ~5px cap
+    case 2: return 5;   // Picopixel ~5px cap
+    case 3: return 12;  // FreeSansBold9pt ascent
+    case 4: return 12;  // FreeMonoBold9pt ascent
+    default: return 0;  // built-in font: y is already the top
+  }
+}
 
 String onOff(bool value) {
   return value ? "On" : "Off";
@@ -37,6 +66,24 @@ String menuValue(uint8_t item) {
       return onOff(gpsDisplayEnabled);
     case kMenuAltitudeSource:
       return useGpsAltitude ? "GPS" : "Baro";
+    case kMenuImuEnabled:
+      return imuEnabled ? (imuReady ? "On" : "No sensor") : "Off";
+    case kMenuImuLevel:
+      return floatOrDash(imuPitchDeg, 0, "/") + floatOrDash(imuRollDeg, 0, "");
+    case kMenuImuClearLevel:
+      return imuLevelSaved ? "Saved" : "None";
+    case kMenuImuSwapAxes:
+      return imuSwapAxes ? "Swapped" : "Normal";
+    case kMenuImuMirrorPitch:
+      return onOff(imuMirrorPitch);
+    case kMenuImuMirrorRoll:
+      return onOff(imuMirrorRoll);
+    case kMenuFlight:
+      return flightActive ? flightTimeText() : "Start";
+    case kMenuFlightAutoStart:
+      return onOff(flightAutoStart);
+    case kMenuFlightAutoStop:
+      return onOff(flightAutoStop);
     case kMenuBluetooth:
       return bluetoothStatusText();
     case kMenuBatteryLogging:
@@ -81,6 +128,24 @@ String menuLabel(uint8_t item) {
       return "GPS display";
     case kMenuAltitudeSource:
       return "Altitude src";
+    case kMenuImuEnabled:
+      return "IMU";
+    case kMenuImuLevel:
+      return "Set level";
+    case kMenuImuClearLevel:
+      return "Clear level";
+    case kMenuImuSwapAxes:
+      return "P/R axes";
+    case kMenuImuMirrorPitch:
+      return "Mirror pitch";
+    case kMenuImuMirrorRoll:
+      return "Mirror roll";
+    case kMenuFlight:
+      return flightActive ? "Stop flight" : "Start flight";
+    case kMenuFlightAutoStart:
+      return "Auto start";
+    case kMenuFlightAutoStop:
+      return "Auto stop";
     case kMenuBluetooth:
       return "Bluetooth";
     case kMenuBatteryLogging:
@@ -139,6 +204,22 @@ void oledText(uint8_t row, const String &text) {
   oled.print(text);
 }
 
+void showLockSplash(bool locked) {
+  if (!oledReady) {
+    return;
+  }
+  oled.setFont(nullptr);
+  oled.clearDisplay();
+  oled.setTextSize(2);
+  oled.setTextColor(SH110X_WHITE);
+  // "LOCKED" (6 chars) and "UNLOCKED" (8) centred-ish for a 128px wide, size-2 font.
+  oled.setCursor(locked ? 20 : 4, 24);
+  oled.print(locked ? "LOCKED" : "UNLOCKED");
+  oled.display();
+  delay(800);
+  oled.setTextSize(1);
+}
+
 // Top-right "n/N" indicator on the title row (shows position within total).
 static void drawIndicator(uint8_t index, uint8_t total) {
   oled.setTextSize(1);
@@ -187,12 +268,16 @@ static void drawConfiguredWindow(uint8_t index) {
   const OledWindow &w = oledWindows[index];
   for (uint8_t i = 0; i < w.fieldCount; i++) {
     const OledField &f = w.fields[i];
-    oled.setTextSize(f.size == 0 ? 1 : f.size);
-    oled.setCursor(f.x, f.y);
+    const uint8_t sz = f.size == 0 ? 1 : f.size;
+    const GFXfont *gf = fontForIndex(f.font);
+    oled.setFont(gf);
+    oled.setTextSize(sz);
+    oled.setCursor(f.x, f.y + fontBaselineOffset(f.font) * sz);
     oled.print(fieldDisplayValue(f));
   }
+  oled.setFont(nullptr);
   oled.setTextSize(1);
-  drawIndicator(index, kOledWindowCount);
+  drawIndicator(index, oledWindowCount);
 }
 
 static void drawMenu() {
@@ -211,29 +296,52 @@ static void drawMenu() {
     return;
   }
 
-  oled.setCursor(0, 0);
-  oled.print("Settings");
-  drawIndicator(selectedMenuItem, kMenuCount);
+  // Top level: list the categories.
+  if (!menuInCategory) {
+    oled.setCursor(0, 0);
+    oled.print("Settings");
+    drawIndicator(selectedCategory, kMenuCategoryCount);
+    const uint8_t visible = 5;
+    uint8_t start = 0;
+    if (selectedCategory >= visible) {
+      start = selectedCategory - visible + 1;
+    }
+    for (uint8_t i = 0; i < visible; i++) {
+      const uint8_t c = start + i;
+      if (c >= kMenuCategoryCount) {
+        break;
+      }
+      String line = c == selectedCategory ? ">" : " ";
+      line += kMenuCategories[c].name;
+      oledText(i + 1, fitLine(line));
+    }
+    return;
+  }
 
-  // Scroll a 5-row window so the selected item stays visible.
+  // Second level: the items inside the open category.
+  const MenuCategory &cat = kMenuCategories[selectedCategory];
+  oled.setCursor(0, 0);
+  oled.print(cat.name);
+  drawIndicator(categoryItemIndex, cat.count);
   const uint8_t visible = 5;
   uint8_t start = 0;
-  if (selectedMenuItem >= visible) {
-    start = selectedMenuItem - visible + 1;
+  if (categoryItemIndex >= visible) {
+    start = categoryItemIndex - visible + 1;
   }
   for (uint8_t i = 0; i < visible; i++) {
-    const uint8_t item = start + i;
-    if (item >= kMenuCount) {
+    const uint8_t idx = start + i;
+    if (idx >= cat.count) {
       break;
     }
-    String line = item == selectedMenuItem ? ">" : " ";
+    const uint8_t item = cat.items[idx];
+    String line = idx == categoryItemIndex ? ">" : " ";
     line += menuLabel(item);
     line += ": ";
     line += menuValue(item);
-    if (item == selectedMenuItem && editingMenuItem) {
+    if (idx == categoryItemIndex && editingMenuItem) {
       line += " *";
     }
-    oledText(i + 1, line);
+    oledText(i + 1, fitLine(line));
   }
 }
 
@@ -261,7 +369,7 @@ void updateDisplay(bool force) {
   } else if (batteryLoggingActive) {
     drawBatteryLogStatus();
   } else {
-    drawConfiguredWindow(activeWindow < kOledWindowCount ? activeWindow : 0);
+    drawConfiguredWindow(activeWindow < oledWindowCount ? activeWindow : 0);
   }
 
   oled.display();
