@@ -110,6 +110,7 @@ const uint8_t kMenuCategoryCount = sizeof(kMenuCategories) / sizeof(kMenuCategor
 uint8_t logRateIndex = 2;
 uint8_t batteryReadRateIndex = 2;
 uint8_t buzzerVolumePercent = kDefaultBuzzerVolumePercent;
+String btEarbudName = kDefaultEarbudName;
 uint8_t buzzerCount = 1;
 float liftThresholdMps = kLiftThresholdMps;
 uint16_t liftFreqBaseHz = kLiftFreqBaseHz;

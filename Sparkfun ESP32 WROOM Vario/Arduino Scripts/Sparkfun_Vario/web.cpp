@@ -356,6 +356,10 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <div class=row><label>Two-tone sink <span class=sub>warble</span></label><label class=sw><input type=checkbox id=two_tone_sink><span class=sl></span></label></div>
 <div class=row><span class=sub>Back to the stock tone model</span><button class="btn ghost" id=tonedef>Reset defaults</button></div>
 </div>
+<div class=card><h2>Bluetooth audio</h2>
+<div class=row><label>Earbud name</label><input type=text id=bt_earbud_name placeholder=TOZO-A1 maxlength=63></div>
+<div class=row><span class=sub>Exact Bluetooth name the Bluetooth firmware pairs to. Saved on the device; blank resets to TOZO-A1.</span></div>
+</div>
 <div class=card><h2>Button lock</h2>
 <div class=row><span class=sub>Status <b id=lockstat>--</b></span></div>
 <div class=row><label>Lock beep</label><label class=sw><input type=checkbox id=lock_beep><span class=sl></span></label></div>
@@ -549,6 +553,7 @@ function fillSettings(s){
  $('imu_swap_axes').checked=s.imu_swap_axes;$('imu_mirror_pitch').checked=s.imu_mirror_pitch;$('imu_mirror_roll').checked=s.imu_mirror_roll;
  $('flight_start_mph').value=s.flight_start_mph;$('flight_start_secs').value=s.flight_start_secs;$('flight_stop_mph').value=s.flight_stop_mph;$('flight_stop_secs').value=s.flight_stop_secs;
  $('flight_auto_start').checked=s.flight_auto_start;$('flight_auto_stop').checked=s.flight_auto_stop;
+ $('bt_earbud_name').value=s.bt_earbud_name||'';
  $('volume').value=s.volume;$('volv').textContent=s.volume+'%';
  $('buzzer_count').value=s.buzzer_count;
  $('lift_on_mps').value=s.lift_on_mps;$('liftonv').textContent=Number(s.lift_on_mps).toFixed(2)+' m/s';
@@ -608,6 +613,7 @@ $('pixel_enabled').onchange=function(){patch({pixel_enabled:this.checked})};
 $('pixel_mode').onchange=function(){patch({pixel_mode:this.value})};
 $('pixel_color').onchange=function(){patch({pixel_color:this.value})};
 $('lock_beep').onchange=function(){patch({lock_beep:this.checked})};
+$('bt_earbud_name').onchange=function(){patch({bt_earbud_name:this.value})};
 $('lock_hold_ms').oninput=function(){$('lockholdv').textContent=this.value+' s'};
 $('lock_hold_ms').onchange=function(){patch({lock_hold_ms:Math.round(Number(this.value)*1000)})};
 $('zset').onclick=function(){fetch('/api/zero/set',{method:'POST'}).then(function(r){return r.json()}).then(fillSettings)};
