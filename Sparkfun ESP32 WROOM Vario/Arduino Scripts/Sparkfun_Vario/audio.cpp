@@ -69,10 +69,15 @@ void setTone(uint32_t frequencyHz) {
 }
 
 void startBuzzers() {
-  for (uint8_t pin : kBuzzerPins) {
+  // Each buzzer needs its OWN LEDC timer for independent chord voices. Auto
+  // ledcAttach() hands out channels 0,1,2 -> timers 0,0,1, so pins 13 & 26
+  // would share timer 0 and be locked to one frequency. Attach to channels
+  // 0,2,4 (even -> distinct timers 0,1,2) to give all three real voices.
+  for (uint8_t index = 0; index < kBuzzerCount; index++) {
+    const uint8_t pin = kBuzzerPins[index];
     pinMode(pin, OUTPUT);
     digitalWrite(pin, LOW);
-    if (!ledcAttach(pin, kLiftFreqBaseHz, kBuzzerResolutionBits)) {
+    if (!ledcAttachChannel(pin, kLiftFreqBaseHz, kBuzzerResolutionBits, index * 2)) {
       Serial.print("Buzzer PWM setup failed on pin ");
       Serial.println(pin);
     }
@@ -120,13 +125,17 @@ struct JingleNote {
   uint16_t ms;
 };
 
-// Note frequencies (Hz): C5 523 D5 587 E5 659 F5 698 G5 784 A5 880 B5 988 C6 1047
+// Note freqs (Hz): C5 523 D5 587 E5 659 F5 698 G5 784 A5 880 B5 988
+//                  C6 1047 D6 1175 E6 1319 G6 1568
+// Chime: three rising major triads resolving up an octave (all 3 buzzers).
 static const JingleNote kChimeNotes[] = {
-    {659, 0, 0, 130}, {784, 0, 0, 130}, {1047, 0, 0, 150},
-    {523, 659, 784, 440}, {0, 0, 0, 60}};
+    {523, 659, 784, 140}, {659, 784, 988, 140}, {784, 988, 1175, 180},
+    {1047, 1319, 1568, 480}, {0, 0, 0, 60}};
+// Arp: voices enter one at a time, then spread into a wide chord.
 static const JingleNote kArpNotes[] = {
-    {523, 0, 0, 105}, {659, 0, 0, 105}, {784, 0, 0, 105}, {1047, 0, 0, 105},
-    {784, 0, 0, 105}, {1047, 659, 523, 380}, {0, 0, 0, 40}};
+    {523, 0, 0, 90}, {523, 659, 0, 90}, {523, 659, 784, 90},
+    {1047, 659, 784, 90}, {1047, 784, 988, 90}, {1047, 1319, 784, 400},
+    {0, 0, 0, 40}};
 static const JingleNote kChordNotes[] = {
     {523, 659, 784, 280}, {587, 740, 880, 280}, {659, 831, 988, 280},
     {523, 659, 1047, 520}, {0, 0, 0, 40}};
