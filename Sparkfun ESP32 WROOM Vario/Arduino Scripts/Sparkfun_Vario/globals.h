@@ -113,6 +113,9 @@ constexpr const char *kPrefFlightAutoStop = "flAutoE";
 constexpr const char *kPrefLocked = "ctlLock";
 constexpr const char *kPrefLockHoldMs = "lockHold";
 constexpr const char *kPrefLockBeep = "lockBeep";
+constexpr const char *kPrefEarbudName = "btEarbud";  // A2DP target name (BT firmware)
+constexpr char kDefaultEarbudName[] = "TOZO-A1";
+constexpr uint8_t kMaxEarbudNameLen = 63;
 constexpr float kMetersToFeet = 3.28084F;
 constexpr float kFeetToMeters = 1.0F / kMetersToFeet;
 constexpr float kSeaLevelPressureHpa = 1013.25F;
@@ -330,6 +333,7 @@ extern uint8_t selectedBatteryLogMenuItem;
 extern uint8_t logRateIndex;
 extern uint8_t batteryReadRateIndex;
 extern uint8_t buzzerVolumePercent;
+extern String btEarbudName;  // Bluetooth earbud name the BT firmware connects to
 
 // Runtime-tunable vario tone model (web Settings -> Vario Tone).
 extern uint8_t buzzerCount;        // 1..kBuzzerCount simultaneous buzzers
