@@ -15,8 +15,8 @@
 #include <SparkFun_MAX1704x_Fuel_Gauge_Arduino_Library.h>
 #include <TinyGPSPlus.h>
 #include <ESPAsyncWebServer.h>
+#include <DNSServer.h>
 #include <WiFi.h>
-#include <WiFiManager.h>
 #include <Wire.h>
 
 // SparkFun Thing Plus ESP32 WROOM-C pin mapping for this carrier board.
@@ -159,8 +159,13 @@ struct StoredWifiNetwork {
   String password;
 };
 
+// Radios are split across firmwares (see radio_config.h): the WiFi build has
+// no Bluetooth and the BT build has no WiFi. Hide the menu items a given build
+// can't act on so the OLED never offers a dead toggle.
 enum MenuItem : uint8_t {
-  kMenuDataLogging = 0,
+  kMenuLock = 0,
+  kMenuOled,
+  kMenuDataLogging,
   kMenuSetAltitudeZero,
   kMenuClearAltitudeZero,
   kMenuAudio,
@@ -181,7 +186,9 @@ enum MenuItem : uint8_t {
   kMenuFlight,
   kMenuFlightAutoStart,
   kMenuFlightAutoStop,
+#ifndef VARIO_DISABLE_BT
   kMenuBluetooth,
+#endif
   kMenuBatteryLogging,
 #ifndef VARIO_DISABLE_WIFI
   kMenuWifiEnabled,
@@ -207,7 +214,9 @@ enum BatteryLogMenuItem : uint8_t {
 #ifndef VARIO_DISABLE_WIFI
   kBatteryLogMenuWifi,
 #endif
+#ifndef VARIO_DISABLE_BT
   kBatteryLogMenuBluetooth,
+#endif
   kBatteryLogMenuOled,
   kBatteryLogMenuCount
 };
@@ -258,7 +267,7 @@ extern HardwareSerial gpsSerial;
 extern TwoWire batteryWire;
 extern SFE_MAX1704X batteryGauge;
 extern AsyncWebServer webServer;
-extern WiFiManager wifiManager;
+extern DNSServer dnsServer;  // captive-portal DNS while broadcasting the AP
 
 extern Button backButton;
 extern Button encoderButton;
@@ -266,6 +275,7 @@ extern Button confirmButton;
 
 // Shared mutable state (defined in globals.cpp).
 extern bool oledReady;
+extern bool oledDisplayEnabled;  // OLED menu toggle; any button press re-enables
 extern bool sdReady;
 extern bool bmpReady;
 extern bool shtReady;

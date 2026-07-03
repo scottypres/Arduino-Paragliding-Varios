@@ -15,7 +15,7 @@ TwoWire batteryWire(1);
 SFE_MAX1704X batteryGauge(MAX1704X_MAX17048);
 #ifndef VARIO_DISABLE_WIFI
 AsyncWebServer webServer(kWebServerPort);
-WiFiManager wifiManager;
+DNSServer dnsServer;
 #endif
 
 Button backButton = {kBackButtonPin, false, false, false, 0, false};
@@ -23,6 +23,7 @@ Button encoderButton = {kEncoderButtonPin, false, false, false, 0, false};
 Button confirmButton = {kConfirmButtonPin, true, false, false, 0, false};
 
 bool oledReady = false;
+bool oledDisplayEnabled = true;
 bool sdReady = false;
 bool bmpReady = false;
 bool shtReady = false;
@@ -76,6 +77,7 @@ uint8_t categoryItemIndex = 0;
 uint8_t selectedBatteryLogMenuItem = kBatteryLogMenuStop;
 
 // Settings-menu categories. Every MenuItem lives in exactly one category.
+static const uint8_t kCatDisplay[] = {kMenuLock, kMenuOled};
 static const uint8_t kCatVarioAudio[] = {kMenuAudio, kMenuVolume, kMenuBuzzers,
                                          kMenuResponse, kMenuToneTest};
 static const uint8_t kCatAltitude[] = {kMenuSetAltitudeZero, kMenuClearAltitudeZero,
@@ -86,13 +88,16 @@ static const uint8_t kCatFlight[] = {kMenuFlight, kMenuFlightAutoStart, kMenuFli
 static const uint8_t kCatGps[] = {kMenuGpsEnabled, kMenuGpsLogRate};
 static const uint8_t kCatLogging[] = {kMenuDataLogging, kMenuBatteryReadRate, kMenuBatteryLogging};
 static const uint8_t kCatSystem[] = {
+#ifndef VARIO_DISABLE_BT
     kMenuBluetooth,
+#endif
 #ifndef VARIO_DISABLE_WIFI
     kMenuWifiEnabled, kMenuWifiSetup, kMenuForgetWifi,
 #endif
     kMenuSwitchFirmware};
 
 const MenuCategory kMenuCategories[] = {
+    {"Display", kCatDisplay, sizeof(kCatDisplay)},
     {"Vario & Audio", kCatVarioAudio, sizeof(kCatVarioAudio)},
     {"Altitude", kCatAltitude, sizeof(kCatAltitude)},
     {"IMU", kCatImu, sizeof(kCatImu)},

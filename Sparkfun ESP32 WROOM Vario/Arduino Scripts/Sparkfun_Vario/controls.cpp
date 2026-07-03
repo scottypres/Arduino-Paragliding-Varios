@@ -11,6 +11,8 @@
 #include "radio.h"
 #include "wifi_net.h"
 
+static void toggleControlsLock();  // defined below; also used by the menu Lock item
+
 void initButton(Button &button) {
   pinMode(button.pin, button.usePullup ? INPUT_PULLUP : INPUT);
   const bool rawPressed = digitalRead(button.pin) == LOW;
@@ -140,10 +142,12 @@ static void activateBatteryLogMenuItem() {
       setBatteryLogWifiEnabled(!batteryLogWifiEnabled);
       break;
 #endif
+#ifndef VARIO_DISABLE_BT
     case kBatteryLogMenuBluetooth:
       batteryLogBluetoothEnabled = !batteryLogBluetoothEnabled;
       setBluetoothEnabled(batteryLogBluetoothEnabled, false);
       break;
+#endif
     case kBatteryLogMenuOled:
       setBatteryLogOledEnabled(!batteryLogOledEnabled);
       break;
@@ -172,6 +176,12 @@ void clearAltitudeZero() {
 
 void activateSelectedMenuItem() {
   switch (selectedMenuItem) {
+    case kMenuLock:
+      toggleControlsLock();  // from the menu you're unlocked, so this locks
+      break;
+    case kMenuOled:
+      setOledDisplayEnabled(!oledDisplayEnabled);
+      break;
     case kMenuDataLogging:
       dataLoggingEnabled = !dataLoggingEnabled;
       break;
@@ -232,9 +242,11 @@ void activateSelectedMenuItem() {
       flightAutoStop = !flightAutoStop;
       prefs.putBool(kPrefFlightAutoStop, flightAutoStop);
       break;
+#ifndef VARIO_DISABLE_BT
     case kMenuBluetooth:
       setBluetoothEnabled(!bluetoothEnabled, true);
       break;
+#endif
     case kMenuBatteryLogging:
       startBatteryLogging();
       break;
@@ -388,6 +400,16 @@ void serviceControls() {
 
   if (controlsLocked) {
     // Swallow all button/encoder input except the unlock hold above.
+    backButton.pressedEvent = false;
+    encoderButton.pressedEvent = false;
+    confirmButton.pressedEvent = false;
+    return;
+  }
+
+  // OLED turned off from the menu: the first button press just wakes it.
+  if (!oledDisplayEnabled &&
+      (backButton.pressedEvent || encoderButton.pressedEvent || confirmButton.pressedEvent)) {
+    setOledDisplayEnabled(true);
     backButton.pressedEvent = false;
     encoderButton.pressedEvent = false;
     confirmButton.pressedEvent = false;

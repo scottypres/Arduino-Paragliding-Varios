@@ -9,4 +9,5 @@ void oledText(uint8_t row, const String &text);
 void showLockSplash(bool locked);  // brief LOCKED / UNLOCKED full-screen message
 void updateDisplay(bool force = false);
 void initDisplay();
+void setOledDisplayEnabled(bool enabled);
 void setBatteryLogOledEnabled(bool enabled);
