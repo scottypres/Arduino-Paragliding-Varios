@@ -49,6 +49,22 @@ String fieldDisplayValue(const OledField &f) {
     v = connectedWifiSsid.length() ? connectedWifiSsid : String("--");
   } else if (k == "wifi_status") {
     v = wifiStatusText();
+  } else if (k == "ip") {
+#ifndef VARIO_DISABLE_WIFI
+    // Device's own IP; in setup-portal mode that's the AP address you browse to.
+    v = wifiReady ? WiFi.localIP().toString()
+                  : (wifiPortalActive ? WiFi.softAPIP().toString() : String("--"));
+#else
+    v = "--";
+#endif
+  } else if (k == "router_ip") {
+#ifndef VARIO_DISABLE_WIFI
+    // Gateway of the joined network; in portal mode the login IP is the vario itself.
+    v = wifiReady ? WiFi.gatewayIP().toString()
+                  : (wifiPortalActive ? WiFi.softAPIP().toString() : String("--"));
+#else
+    v = "--";
+#endif
   } else if (k == "bt_status") {
     v = bluetoothStatusText();
   } else if (k == "sat_used") {

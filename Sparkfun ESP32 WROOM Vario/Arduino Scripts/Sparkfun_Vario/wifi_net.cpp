@@ -122,7 +122,7 @@ void startWifiPortal() {
   connectedWifiSsid = "";
 
   WiFi.mode(WIFI_AP);
-  WiFi.softAP(kWifiPortalSsid);
+  WiFi.softAP(kWifiPortalSsid, kWifiPortalPassword);
   delay(100);  // let the AP settle before we read its IP
   dnsServer.setErrorReplyCode(DNSReplyCode::NoError);
   dnsServer.start(53, "*", WiFi.softAPIP());  // send every lookup to us

@@ -184,7 +184,8 @@ String dataJson() {
   json += ",\"wifi_portal\":" + String(wifiPortalActive ? "true" : "false");
   json += ",\"wifi_portal_ssid\":\"" + String(kWifiPortalSsid) + "\"";
   json += ",\"wifi_ssid\":\"" + jsonEscape(connectedWifiSsid) + "\"";
-  json += ",\"ip\":\"" + (wifiReady ? WiFi.localIP().toString() : String("")) + "\"";
+  json += ",\"ip\":\"" + (wifiReady ? WiFi.localIP().toString() : (wifiPortalActive ? WiFi.softAPIP().toString() : String(""))) + "\"";
+  json += ",\"router_ip\":\"" + (wifiReady ? WiFi.gatewayIP().toString() : (wifiPortalActive ? WiFi.softAPIP().toString() : String(""))) + "\"";
   json += ",\"bluetooth_enabled\":" + String(bluetoothEnabled ? "true" : "false");
   json += ",\"bluetooth_status\":\"" + jsonEscape(bluetoothStatusText()) + "\"";
   json += ",\"pixel_enabled\":" + String(pixelEnabled ? "true" : "false");
@@ -702,7 +703,7 @@ $('mno').onclick=function(){$('modal').classList.remove('on');mcb=null};
 $('myes').onclick=function(){var t=$('mtype');if(t.dataset.w&&t.value!==t.dataset.w)return;$('modal').classList.remove('on');if(mcb)mcb();mcb=null};
 // ---- OLED designer ----
 var SC=3,WCFG=null,curWin=0,curField=-1,lastData={},owDrag=false;
-var DKEYS=[['text','Static text'],['altitude_ft','Altitude ft'],['raw_altitude_ft','Raw alt ft'],['vario_mps','Vario m/s'],['vario_fps','Vario ft/s'],['temp_f','Temp F'],['humidity_pct','Humidity %'],['pitch_deg','Pitch deg'],['roll_deg','Roll deg'],['g_force','G force'],['battery_pct','Battery %'],['battery_v','Battery V'],['wifi_ssid','WiFi SSID'],['wifi_status','WiFi status'],['bt_status','Bluetooth status'],['sat_used','Sat used'],['sat_seen','Sat seen'],['lat','Latitude'],['lng','Longitude'],['gps_alt_m','GPS alt m'],['gps_speed_kmph','GPS speed km/h'],['gps_speed_mph','GPS speed mph'],['avg_speed_kmph','Avg speed km/h'],['avg_speed_mph','Avg speed mph'],['flight_time','Flight time'],['date','Date'],['time','Time (UTC)']];
+var DKEYS=[['text','Static text'],['altitude_ft','Altitude ft'],['raw_altitude_ft','Raw alt ft'],['vario_mps','Vario m/s'],['vario_fps','Vario ft/s'],['temp_f','Temp F'],['humidity_pct','Humidity %'],['pitch_deg','Pitch deg'],['roll_deg','Roll deg'],['g_force','G force'],['battery_pct','Battery %'],['battery_v','Battery V'],['wifi_ssid','WiFi SSID'],['wifi_status','WiFi status'],['bt_status','Bluetooth status'],['sat_used','Sat used'],['sat_seen','Sat seen'],['lat','Latitude'],['lng','Longitude'],['gps_alt_m','GPS alt m'],['gps_speed_kmph','GPS speed km/h'],['gps_speed_mph','GPS speed mph'],['avg_speed_kmph','Avg speed km/h'],['avg_speed_mph','Avg speed mph'],['flight_time','Flight time'],['date','Date'],['time','Time (UTC)'],['ip','Device IP'],['router_ip','Router IP']];
 // preview font metrics per index: [capPx, letterSpacingPx, fontFamily, weight]
 var FONTS=[[8,1.2,"'Courier New',Courier,monospace",700],[6,0.5,"'Courier New',Courier,monospace",700],[7,0.7,"'Courier New',Courier,monospace",700],[13,0.4,"Arial,Helvetica,sans-serif",700],[13,0.8,"'Courier New',Courier,monospace",700]];
 var LBLSET={};DKEYS.forEach(function(k){LBLSET[k[1]]=1});
@@ -724,7 +725,8 @@ function valFor(f){var d=lastData,k=f.data,v;
  else if(k=='avg_speed_mph')v=(d.avg_speed_kmph==null?'--':nd(d.avg_speed_kmph*0.621371,f.dec));
  else if(k=='flight_time')v=(d.flight_time||'0:00');
  else if(k=='date')v=(d.time_utc?d.time_utc.substr(0,10):'----');
- else if(k=='time')v=(d.time_utc?d.time_utc.substr(11,8):'--:--:--');else v='?';
+ else if(k=='time')v=(d.time_utc?d.time_utc.substr(11,8):'--:--:--');
+ else if(k=='ip')v=(d.ip||'--');else if(k=='router_ip')v=(d.router_ip||'--');else v='?';
  return (f.prefix||'')+v+(f.suffix||'');}
 function curW(){return WCFG&&WCFG.windows&&WCFG.windows[curWin]?WCFG.windows[curWin]:null}
 function clamp(v,a,b){v=parseInt(v,10);if(isNaN(v))v=a;return Math.max(a,Math.min(b,v))}

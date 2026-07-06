@@ -11,7 +11,7 @@
 #include "radio.h"
 #include "wifi_net.h"
 
-static void toggleControlsLock();  // defined below; also used by the menu Lock item
+static void applyPowerAndLock();  // defined below; used by the menu "Lock now" item
 
 void initButton(Button &button) {
   pinMode(button.pin, button.usePullup ? INPUT_PULLUP : INPUT);
@@ -177,11 +177,21 @@ void clearAltitudeZero() {
 void activateSelectedMenuItem() {
   switch (selectedMenuItem) {
     case kMenuLock:
-      toggleControlsLock();  // from the menu you're unlocked, so this locks
+      applyPowerAndLock();  // applies the staged OLED/WiFi/BT toggles, then locks
       break;
     case kMenuOled:
-      setOledDisplayEnabled(!oledDisplayEnabled);
+      pendingOledOn = !pendingOledOn;  // staged; applied by "Lock now"
       break;
+#ifndef VARIO_DISABLE_WIFI
+    case kMenuLockWifi:
+      pendingWifiOn = !pendingWifiOn;  // staged; applied by "Lock now"
+      break;
+#endif
+#ifndef VARIO_DISABLE_BT
+    case kMenuLockBt:
+      pendingBtOn = !pendingBtOn;  // staged; applied by "Lock now"
+      break;
+#endif
     case kMenuDataLogging:
       dataLoggingEnabled = !dataLoggingEnabled;
       break;
@@ -278,12 +288,6 @@ void activateSelectedMenuItem() {
   }
 }
 
-// Hold Back + Select (confirm) for lockHoldMs to toggle the button lock.
-// Tracked separately from the debounced Button structs since it needs a
-// continuous hold, not a press event.
-static uint32_t lockComboStartMs = 0;
-static bool lockComboArmed = false;
-
 static void playLockBeep() {
   if (!lockBeepEnabled) {
     return;
@@ -293,33 +297,25 @@ static void playLockBeep() {
   setToneMask(0, 0, false);
 }
 
-static void toggleControlsLock() {
-  controlsLocked = !controlsLocked;
-  prefs.putBool(kPrefLocked, controlsLocked);
+// "Lock now": apply the staged Power & Lock toggles together, then lock the
+// buttons. Staging means the panel never turns off before you finish choosing.
+static void applyPowerAndLock() {
+#ifndef VARIO_DISABLE_WIFI
+  setWifiEnabled(pendingWifiOn, true);
+#endif
+#ifndef VARIO_DISABLE_BT
+  setBluetoothEnabled(pendingBtOn, true);
+#endif
+  controlsLocked = true;
+  prefs.putBool(kPrefLocked, true);
+  inMenuMode = false;  // a peek shows the last data window, never the menu
+  editingMenuItem = false;
   playLockBeep();
-  if (oledReady) {
-    lockSplashUntilMs = millis() + kLockSplashMs;
+  showLockSplash(true);  // visible before the panel goes dark
+  if (!pendingOledOn) {
+    setOledDisplayEnabled(false);
+  } else {
     updateDisplay(true);
-  }
-}
-
-static void serviceLockCombo() {
-  const bool bothHeld = backButton.stablePressed && confirmButton.stablePressed;
-
-  if (!bothHeld) {
-    lockComboArmed = false;
-    return;
-  }
-
-  if (!lockComboArmed) {
-    lockComboArmed = true;
-    lockComboStartMs = millis();
-    return;
-  }
-
-  if (millis() - lockComboStartMs >= lockHoldMs) {
-    toggleControlsLock();
-    lockComboArmed = false;  // require a fresh press-and-hold to toggle again
   }
 }
 
@@ -327,8 +323,6 @@ void serviceControls() {
   updateButton(backButton);
   updateButton(encoderButton);
   updateButton(confirmButton);
-
-  serviceLockCombo();
 
   // Keep the quadrature state machine in sync even while locked so an
   // unlock doesn't see a stale lastState and misread a spurious step.
@@ -345,19 +339,24 @@ void serviceControls() {
   static uint32_t selectHoldStartMs = 0;
   static bool selectHoldHandled = false;
 
-  // Lock / unlock: hold SELECT + BACK together for kLockHoldMs.
+  // Lock / unlock: hold SELECT + BACK together for lockHoldMs (web-tunable).
   if (selectDown && backDown) {
     if (lockComboStartMs == 0) {
       lockComboStartMs = nowMs;
     }
-    if (!lockHandled && nowMs - lockComboStartMs >= kLockHoldMs) {
+    if (!lockHandled && nowMs - lockComboStartMs >= lockHoldMs) {
       lockHandled = true;
       selectHoldHandled = true;  // a combined hold is a lock, not a battery refresh
       controlsLocked = !controlsLocked;
+      prefs.putBool(kPrefLocked, controlsLocked);
+      playLockBeep();
+      oledPeekUntilMs = 0;
       if (controlsLocked) {
         // Keep a data window in front while locked, never the menu.
         inMenuMode = false;
         editingMenuItem = false;
+      } else if (!oledDisplayEnabled) {
+        setOledDisplayEnabled(true);  // unlocking always brings the screen back
       }
       showLockSplash(controlsLocked);
       updateDisplay(true);
@@ -393,16 +392,23 @@ void serviceControls() {
   const bool backTap = !controlsLocked && backButton.releasedEvent &&
                        nowMs - backButton.pressStartMs < kLockHoldMs;
 
-  // While locked, ignore every control except the unlock combo handled above.
-  if (controlsLocked) {
-    return;
+  // Locked-peek timeout: re-darken the panel when the peek window ends.
+  if (oledPeekUntilMs != 0 && nowMs >= oledPeekUntilMs) {
+    oledPeekUntilMs = 0;
+    if (controlsLocked) {
+      setOledDisplayEnabled(false);
+    }
   }
 
+  // While locked, controls are ignored except the unlock combo above; if the
+  // panel is dark, any key or encoder turn peeks at the last data window.
   if (controlsLocked) {
-    // Swallow all button/encoder input except the unlock hold above.
-    backButton.pressedEvent = false;
-    encoderButton.pressedEvent = false;
-    confirmButton.pressedEvent = false;
+    if (!oledDisplayEnabled &&
+        (backButton.pressedEvent || encoderButton.pressedEvent ||
+         confirmButton.pressedEvent || encoderDelta != 0)) {
+      setOledDisplayEnabled(true);
+      oledPeekUntilMs = nowMs + kLockPeekMs;
+    }
     return;
   }
 
@@ -469,6 +475,11 @@ void serviceControls() {
       menuInCategory = true;  // open the highlighted category
       categoryItemIndex = 0;
       selectedMenuItem = kMenuCategories[selectedCategory].items[0];
+      // Re-stage the Power & Lock toggles from live state on every open so the
+      // menu never shows a stale pending value.
+      pendingOledOn = oledDisplayEnabled;
+      pendingWifiOn = wifiEnabled;
+      pendingBtOn = bluetoothEnabled;
     } else {
       activateSelectedMenuItem();
     }

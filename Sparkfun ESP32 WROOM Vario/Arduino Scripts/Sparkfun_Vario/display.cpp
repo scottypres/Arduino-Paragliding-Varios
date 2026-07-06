@@ -45,7 +45,16 @@ String menuValue(uint8_t item) {
     case kMenuLock:
       return "Select";
     case kMenuOled:
-      return onOff(oledDisplayEnabled);
+      // Staged value; '*' marks a change that "Lock now" will apply.
+      return onOff(pendingOledOn) + (pendingOledOn == oledDisplayEnabled ? "" : "*");
+#ifndef VARIO_DISABLE_WIFI
+    case kMenuLockWifi:
+      return onOff(pendingWifiOn) + (pendingWifiOn == wifiEnabled ? "" : "*");
+#endif
+#ifndef VARIO_DISABLE_BT
+    case kMenuLockBt:
+      return onOff(pendingBtOn) + (pendingBtOn == bluetoothEnabled ? "" : "*");
+#endif
     case kMenuDataLogging:
       return onOff(dataLoggingEnabled);
     case kMenuSetAltitudeZero:
@@ -111,9 +120,17 @@ String menuValue(uint8_t item) {
 String menuLabel(uint8_t item) {
   switch (item) {
     case kMenuLock:
-      return "Lock screen";
+      return "Lock now";
     case kMenuOled:
       return "OLED";
+#ifndef VARIO_DISABLE_WIFI
+    case kMenuLockWifi:
+      return "WiFi";
+#endif
+#ifndef VARIO_DISABLE_BT
+    case kMenuLockBt:
+      return "Bluetooth";
+#endif
     case kMenuDataLogging:
       return "SD logging";
     case kMenuSetAltitudeZero:

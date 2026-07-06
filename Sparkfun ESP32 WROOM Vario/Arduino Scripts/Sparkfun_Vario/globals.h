@@ -69,7 +69,8 @@ constexpr uint8_t kMaxOledWindows = 8;         // capacity; runtime count is ole
 constexpr uint8_t kDefaultOledWindowCount = 3;  // data screens cycled by the encoder in view mode
 constexpr const char *kOtaHostname = "sparkfun-vario";
 constexpr const char *kOtaPassword = "password";
-constexpr const char *kWifiPortalSsid = "SparkFun-Vario-Setup";
+constexpr const char *kWifiPortalSsid = "SparkFun-Vario pw:password";  // SSID advertises the AP password
+constexpr const char *kWifiPortalPassword = "password";  // WPA2 minimum is 8 chars; this is exactly 8
 constexpr const char *kPrefsNamespace = "vario";
 constexpr const char *kPrefAudio = "audio";
 constexpr const char *kPrefVolume = "volume";
@@ -143,6 +144,7 @@ constexpr uint32_t kDefaultLockHoldMs = 3000;
 constexpr uint32_t kMinLockHoldMs = 1000;
 constexpr uint32_t kMaxLockHoldMs = 10000;
 constexpr uint32_t kLockSplashMs = 1500;
+constexpr uint32_t kLockPeekMs = 8000;  // locked + OLED off: how long a key press shows the screen
 constexpr uint32_t kLockBeepHz = 1000;
 constexpr uint32_t kLockBeepMs = 100;
 constexpr uint32_t kPixelUpdateMs = 50;
@@ -168,6 +170,12 @@ struct StoredWifiNetwork {
 enum MenuItem : uint8_t {
   kMenuLock = 0,
   kMenuOled,
+#ifndef VARIO_DISABLE_WIFI
+  kMenuLockWifi,  // staged WiFi toggle in Power & Lock; applied by "Lock now"
+#endif
+#ifndef VARIO_DISABLE_BT
+  kMenuLockBt,    // staged Bluetooth toggle in Power & Lock; applied by "Lock now"
+#endif
   kMenuDataLogging,
   kMenuSetAltitudeZero,
   kMenuClearAltitudeZero,
@@ -323,6 +331,12 @@ extern bool controlsLocked;   // buttons/encoder ignored except the unlock hold
 extern bool lockBeepEnabled;
 extern uint32_t lockHoldMs;
 extern uint32_t lockSplashUntilMs;  // show Locked/Unlocked splash until this time
+// Power & Lock staging: the OLED/WiFi/BT toggles in that menu don't act until
+// "Lock now" applies them all at once — so the panel never dies under you.
+extern bool pendingOledOn;
+extern bool pendingWifiOn;
+extern bool pendingBtOn;
+extern uint32_t oledPeekUntilMs;  // locked peek: panel re-darkens at this time (0 = idle)
 extern bool pixelEnabled;
 extern uint8_t activeWindow;  // 0..oledWindowCount-1, cycled by encoder in view mode
 extern uint8_t selectedMenuItem;      // MenuItem currently highlighted (within a category)
