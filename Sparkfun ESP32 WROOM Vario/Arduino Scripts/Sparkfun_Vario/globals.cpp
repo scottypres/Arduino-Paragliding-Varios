@@ -68,6 +68,8 @@ bool controlsLocked = false;
 bool lockBeepEnabled = true;
 uint32_t lockHoldMs = kDefaultLockHoldMs;
 uint32_t lockSplashUntilMs = 0;
+bool clock12h = false;
+int16_t tzOffsetMinutes = 0;
 bool pendingOledOn = true;
 bool pendingWifiOn = true;
 bool pendingBtOn = false;
@@ -94,6 +96,7 @@ static const uint8_t kCatDisplay[] = {
     kMenuLock};
 static const uint8_t kCatVarioAudio[] = {kMenuAudio, kMenuVolume, kMenuBuzzers,
                                          kMenuResponse, kMenuToneTest};
+static const uint8_t kCatClock[] = {kMenuClockFormat, kMenuTzOffset};
 static const uint8_t kCatAltitude[] = {kMenuSetAltitudeZero, kMenuClearAltitudeZero,
                                        kMenuAltitudeSource};
 static const uint8_t kCatImu[] = {kMenuImuEnabled,   kMenuImuLevel,      kMenuImuClearLevel,
@@ -113,6 +116,7 @@ static const uint8_t kCatSystem[] = {
 const MenuCategory kMenuCategories[] = {
     {"Power & Lock", kCatDisplay, sizeof(kCatDisplay)},
     {"Vario & Audio", kCatVarioAudio, sizeof(kCatVarioAudio)},
+    {"Clock", kCatClock, sizeof(kCatClock)},
     {"Altitude", kCatAltitude, sizeof(kCatAltitude)},
     {"IMU", kCatImu, sizeof(kCatImu)},
     {"Flight", kCatFlight, sizeof(kCatFlight)},

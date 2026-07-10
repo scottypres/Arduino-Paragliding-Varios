@@ -116,6 +116,8 @@ constexpr const char *kPrefFlightAutoStop = "flAutoE";
 constexpr const char *kPrefLocked = "ctlLock";
 constexpr const char *kPrefLockHoldMs = "lockHold";
 constexpr const char *kPrefLockBeep = "lockBeep";
+constexpr const char *kPrefClock12h = "clk12";    // false=24h, true=12h AM/PM
+constexpr const char *kPrefTzMinutes = "tzMin";   // local time = UTC + this
 constexpr const char *kPrefEarbudName = "btEarbud";  // A2DP target name (BT firmware)
 constexpr char kDefaultEarbudName[] = "TOZO-A1";
 constexpr uint8_t kMaxEarbudNameLen = 63;
@@ -178,6 +180,8 @@ enum MenuItem : uint8_t {
 #ifndef VARIO_DISABLE_BT
   kMenuLockBt,    // staged Bluetooth toggle in Power & Lock; applied by "Lock now"
 #endif
+  kMenuClockFormat,
+  kMenuTzOffset,
   kMenuDataLogging,
   kMenuSetAltitudeZero,
   kMenuClearAltitudeZero,
@@ -332,6 +336,8 @@ extern bool inMenuMode;       // false = data windows, true = settings menu
 extern bool controlsLocked;   // buttons/encoder ignored except the unlock hold
 extern bool lockBeepEnabled;
 extern uint32_t lockHoldMs;
+extern bool clock12h;            // false=24h, true=12h AM/PM
+extern int16_t tzOffsetMinutes;  // local time = UTC + this
 extern uint32_t lockSplashUntilMs;  // show Locked/Unlocked splash until this time
 // Power & Lock staging: the OLED/WiFi/BT toggles in that menu don't act until
 // "Lock now" applies them all at once — so the panel never dies under you.

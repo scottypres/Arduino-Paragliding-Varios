@@ -88,11 +88,9 @@ String fieldDisplayValue(const OledField &f) {
   } else if (k == "flight_time") {
     v = flightTimeText();
   } else if (k == "date") {
-    const String iso = isoTimestamp();
-    v = iso.length() >= 10 ? iso.substring(0, 10) : String("----");
+    v = localDateString();
   } else if (k == "time") {
-    const String iso = isoTimestamp();
-    v = iso.length() >= 19 ? iso.substring(11, 19) : String("--:--:--");
+    v = localTimeString();
   } else {
     v = "?";
   }

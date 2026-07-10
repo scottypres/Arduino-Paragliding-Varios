@@ -5,6 +5,7 @@
 #include "imu.h"
 #include "power.h"
 #include "radio.h"
+#include "timekeeping.h"
 #include "web.h"
 #include "wifi_net.h"
 
@@ -46,6 +47,9 @@ void loadSettings() {
   lockBeepEnabled = prefs.getBool(kPrefLockBeep, true);
   lockHoldMs = constrain(prefs.getUInt(kPrefLockHoldMs, kDefaultLockHoldMs),
                          kMinLockHoldMs, kMaxLockHoldMs);
+  clock12h = prefs.getBool(kPrefClock12h, false);
+  tzOffsetMinutes = constrain(prefs.getShort(kPrefTzMinutes, 0),
+                              static_cast<int16_t>(-720), static_cast<int16_t>(840));
   gpsEnabled = prefs.getBool(kPrefGpsEnabled, true);
   useGpsAltitude = prefs.getBool(kPrefAltitudeSource, false);
   imuEnabled = prefs.getBool(kPrefImuEnabled, true);
@@ -122,6 +126,8 @@ String buildSettingsJson() {
   doc["locked"] = controlsLocked;
   doc["lock_hold_ms"] = lockHoldMs;
   doc["lock_beep"] = lockBeepEnabled;
+  doc["clock_12h"] = clock12h;
+  doc["tz_offset_min"] = tzOffsetMinutes;
 
   JsonArray resp = doc["response_options"].to<JsonArray>();
   for (uint8_t i = 0; i < kVarioResponseCount; i++) {
@@ -241,6 +247,14 @@ void applySettingsJson(JsonObjectConst obj) {
   if (obj["lock_beep"].is<bool>()) {
     lockBeepEnabled = obj["lock_beep"].as<bool>();
     prefs.putBool(kPrefLockBeep, lockBeepEnabled);
+  }
+  if (obj["clock_12h"].is<bool>()) {
+    clock12h = obj["clock_12h"].as<bool>();
+    prefs.putBool(kPrefClock12h, clock12h);
+  }
+  if (obj["tz_offset_min"].is<int>()) {
+    tzOffsetMinutes = constrain(obj["tz_offset_min"].as<int>(), -720, 840);
+    prefs.putShort(kPrefTzMinutes, tzOffsetMinutes);
   }
   if (obj["gps_enabled"].is<bool>()) {
     setGpsEnabled(obj["gps_enabled"].as<bool>());

@@ -55,6 +55,10 @@ String menuValue(uint8_t item) {
     case kMenuLockBt:
       return onOff(pendingBtOn) + (pendingBtOn == bluetoothEnabled ? "" : "*");
 #endif
+    case kMenuClockFormat:
+      return clock12h ? "12h" : "24h";
+    case kMenuTzOffset:
+      return tzOffsetString() + " " + localTimeString();
     case kMenuDataLogging:
       return onOff(dataLoggingEnabled);
     case kMenuSetAltitudeZero:
@@ -131,6 +135,10 @@ String menuLabel(uint8_t item) {
     case kMenuLockBt:
       return "Bluetooth";
 #endif
+    case kMenuClockFormat:
+      return "Clock format";
+    case kMenuTzOffset:
+      return "Time zone";
     case kMenuDataLogging:
       return "SD logging";
     case kMenuSetAltitudeZero:

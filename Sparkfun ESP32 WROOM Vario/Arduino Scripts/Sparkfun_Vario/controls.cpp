@@ -121,6 +121,11 @@ void adjustSelectedValue(int8_t delta) {
       batteryReadRateIndex = static_cast<uint8_t>((static_cast<int8_t>(batteryReadRateIndex) + delta + kBatteryReadRateCount) % kBatteryReadRateCount);
       prefs.putUChar(kPrefBatteryReadRate, batteryReadRateIndex);
       break;
+    case kMenuTzOffset:
+      // 15-minute steps so 30/45-min zones are reachable; UTC-12..+14.
+      tzOffsetMinutes = constrain(tzOffsetMinutes + delta * 15, -720, 840);
+      prefs.putShort(kPrefTzMinutes, tzOffsetMinutes);
+      break;
     case kMenuToneTest:
       buzzerTestTargetIndex = static_cast<uint8_t>((static_cast<int8_t>(buzzerTestTargetIndex) + delta + kBuzzerTestTargetCount) % kBuzzerTestTargetCount);
       if (toneTestActive) {
@@ -192,6 +197,10 @@ void activateSelectedMenuItem() {
       pendingBtOn = !pendingBtOn;  // staged; applied by "Lock now"
       break;
 #endif
+    case kMenuClockFormat:
+      clock12h = !clock12h;
+      prefs.putBool(kPrefClock12h, clock12h);
+      break;
     case kMenuDataLogging:
       dataLoggingEnabled = !dataLoggingEnabled;
       break;
@@ -279,7 +288,8 @@ void activateSelectedMenuItem() {
     case kMenuResponse:
     case kMenuGpsLogRate:
     case kMenuBatteryReadRate:
-      editingMenuItem = !editingMenuItem;
+    case kMenuTzOffset:
+      editingMenuItem = !editingMenuItem;  // turn the knob to set; live local time shows
       break;
     case kMenuToneTest:
       startToneTest();

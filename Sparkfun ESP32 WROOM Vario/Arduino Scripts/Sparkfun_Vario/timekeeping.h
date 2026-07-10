@@ -8,3 +8,6 @@ void serviceClock();         // seed from GPS when NTP hasn't synced yet
 bool timeKnown();
 String isoTimestamp();       // UTC ISO8601 ("...Z"), empty string if unknown
 const char *clockSource();   // "ntp", "gps", or "none"
+String localTimeString();    // clock12h + tzOffsetMinutes applied, "--:--:--" if unknown
+String localDateString();    // local calendar date, "----" if unknown
+String tzOffsetString();     // e.g. "+05:30", "-08:00", or "UTC" for zero offset

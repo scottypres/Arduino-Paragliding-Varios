@@ -94,3 +94,52 @@ String isoTimestamp() {
   strftime(buf, sizeof(buf), "%Y-%m-%dT%H:%M:%SZ", &tmNow);
   return String(buf);
 }
+
+// Local (tzOffsetMinutes-shifted) wall clock, independent of isoTimestamp()'s
+// UTC — logging always stays UTC, only the OLED/web display is localized.
+static struct tm localBrokenDownTime() {
+  const time_t local = time(nullptr) + static_cast<time_t>(tzOffsetMinutes) * 60;
+  struct tm t;
+  gmtime_r(&local, &t);  // shift already applied; gmtime_r just splits the fields
+  return t;
+}
+
+String localTimeString() {
+  if (!timeKnown()) {
+    return String("--:--:--");
+  }
+  const struct tm t = localBrokenDownTime();
+  char buf[16];
+  if (clock12h) {
+    int hour12 = t.tm_hour % 12;
+    if (hour12 == 0) {
+      hour12 = 12;
+    }
+    snprintf(buf, sizeof(buf), "%d:%02d:%02d %s", hour12, t.tm_min, t.tm_sec,
+             t.tm_hour < 12 ? "AM" : "PM");
+  } else {
+    snprintf(buf, sizeof(buf), "%02d:%02d:%02d", t.tm_hour, t.tm_min, t.tm_sec);
+  }
+  return String(buf);
+}
+
+String localDateString() {
+  if (!timeKnown()) {
+    return String("----");
+  }
+  const struct tm t = localBrokenDownTime();
+  char buf[12];
+  snprintf(buf, sizeof(buf), "%04d-%02d-%02d", t.tm_year + 1900, t.tm_mon + 1, t.tm_mday);
+  return String(buf);
+}
+
+String tzOffsetString() {
+  if (tzOffsetMinutes == 0) {
+    return String("UTC");
+  }
+  const int16_t absMinutes = tzOffsetMinutes < 0 ? -tzOffsetMinutes : tzOffsetMinutes;
+  char buf[8];
+  snprintf(buf, sizeof(buf), "%c%02d:%02d", tzOffsetMinutes < 0 ? '-' : '+',
+           absMinutes / 60, absMinutes % 60);
+  return String(buf);
+}
