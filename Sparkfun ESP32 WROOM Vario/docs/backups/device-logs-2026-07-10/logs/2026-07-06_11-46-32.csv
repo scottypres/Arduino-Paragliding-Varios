@@ -1,0 +1,1 @@
+millis,iso_utc,display_altitude_ft,raw_altitude_ft,vario_mps,temp_f,humidity_pct,gps_fix,latitude,longitude,gps_altitude_m,gps_speed_kmph,gps_sats_used,gps_sats_seen,gps_hdop,battery_voltage,battery_percent,pitch_deg,roll_deg,g_force

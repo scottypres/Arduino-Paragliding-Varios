@@ -1,0 +1,2 @@
+millis,iso_utc,display_altitude_ft,raw_altitude_ft,vario_mps,temp_f,humidity_pct,gps_fix,latitude,longitude,gps_altitude_m,gps_speed_kmph,gps_sats_used,gps_sats_seen,gps_hdop,battery_voltage,battery_percent,pitch_deg,roll_deg,g_force
+30002,2026-07-02T17:56:37Z,32.27,-99.06,0.00,77.4,37.9,0,,,,,0,0,99.99,0.00, 0,32.9,18.0,1.01

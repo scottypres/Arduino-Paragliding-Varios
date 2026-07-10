@@ -1,0 +1,16 @@
+millis,elapsed_s,iso_utc,battery_voltage,battery_percent,wifi_enabled,wifi_status,wifi_ssid,bluetooth_enabled,oled_enabled
+154905,0,2026-06-30T08:57:42Z,,,1,"Off","",0,1
+4643,0,2026-06-30T08:58:27Z,,,1,"On helloworld","helloworld",0,1
+34671,30,2026-06-30T08:58:58Z,,,1,"Connecting helloworld","",0,1
+16555,0,2026-06-30T09:19:56Z,,,1,"On helloworld","helloworld",0,1
+46555,30,2026-06-30T09:20:26Z,,,0,"Off","",0,1
+76557,60,2026-06-30T09:20:56Z,,,0,"Off","",0,1
+106558,90,2026-06-30T09:21:26Z,,,0,"Off","",0,1
+136570,120,2026-06-30T09:21:57Z,,,0,"Off","",0,1
+166572,150,2026-06-30T09:22:27Z,,,0,"Off","",0,1
+196572,180,2026-06-30T09:22:57Z,,,0,"Off","",0,1
+130701,0,2026-07-01T21:40:58Z,0.00,0,1,"On Warehouse_2G","Warehouse_2G",0,1
+295629,0,2026-07-01T21:43:43Z,0.00,0,1,"On Warehouse_2G","Warehouse_2G",0,1
+2092786,0,2026-07-02T07:23:45Z,0.00,0,1,"On helloworld","helloworld",0,1
+10871,0,2026-07-02T07:24:13Z,0.00,0,1,"On helloworld","helloworld",0,1
+40884,30,2026-07-02T07:24:43Z,0.00,0,0,"Off","",0,1

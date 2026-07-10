@@ -1,0 +1,5 @@
+millis,iso_utc,display_altitude_ft,raw_altitude_ft,vario_mps,temp_f,humidity_pct,gps_fix,latitude,longitude,gps_altitude_m,gps_speed_kmph,gps_sats_used,gps_sats_seen,gps_hdop,battery_voltage,battery_percent,pitch_deg,roll_deg,g_force
+330261,2026-07-06T10:42:20Z,166.71,1175.96,0.03,86.0,45.9,0,,,,,3,5,11.88,4.02,82,15.2,10.2,1.04
+335261,2026-07-06T10:42:25Z,166.92,1176.07,0.00,85.9,45.4,0,,,,,3,5,11.87,4.04,84,14.2,13.4,1.00
+340261,2026-07-06T10:42:30Z,166.95,1176.03,-0.01,85.7,45.2,0,,,,,4,5,19.99,4.03,83,14.5,9.7,1.12
+345261,2026-07-06T10:42:35Z,166.87,1176.11,0.05,85.9,46.0,0,,,,,4,5,20.20,4.02,82,17.0,0.4,1.02
