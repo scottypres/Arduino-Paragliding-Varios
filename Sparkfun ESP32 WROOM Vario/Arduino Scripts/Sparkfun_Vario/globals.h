@@ -34,6 +34,8 @@ constexpr uint8_t kBatteryI2cSclPin = 22;  // Onboard MAX17048 default I2C SCL.
 constexpr uint8_t kGpsRxPin = 21;  // GPS TX on Qwiic SDA into ESP32 RX.
 constexpr uint8_t kGpsTxPin = 22;  // GPS RX on Qwiic SCL from ESP32 TX.
 constexpr uint32_t kGpsBaud = 115200;
+constexpr uint32_t kGpsClockResyncMs = 60000;  // re-seed the RTC from a fresh GPS fix this often
+constexpr uint32_t kGpsFixMaxAgeMs = 1500;     // only re-seed from a GPS time this recent
 
 constexpr uint8_t kBuzzerPins[] = {13, 26, 27};
 constexpr uint8_t kBuzzerResolutionBits = 8;
