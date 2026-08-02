@@ -213,6 +213,7 @@ enum MenuItem : uint8_t {
   kMenuForgetWifi,
 #endif
   kMenuSwitchFirmware,
+  kMenuAbout,  // read-only: firmware version + build date
   kMenuCount
 };
 

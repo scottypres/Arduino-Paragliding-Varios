@@ -16,6 +16,7 @@
 #include "radio.h"
 #include "settings.h"
 #include "timekeeping.h"
+#include "version.h"
 #include "windows.h"
 #include "wifi_net.h"
 
@@ -307,7 +308,7 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <link rel=stylesheet href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </head><body>
-<header><h1>SparkFun <small>Vario</small></h1>
+<header><h1>SparkFun <small>Vario</small> <span class=muted style=font-size:12px;font-weight:400>v)HTMLPAGE" VARIO_FW_STRING R"HTMLPAGE(</span></h1>
 <nav id=nav>
 <button data-t=live class=on>Live</button><button data-t=set>Settings</button>
 <button data-t=oled>OLED</button><button data-t=map>Map</button><button data-t=wifi>WiFi</button><button data-t=sd>SD / Logs</button><button data-t=sys>System</button>
@@ -448,6 +449,11 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <div class=card><h2>Board</h2>
 <div class=row><span class=sub>Restart the device</span><button class="btn dng" id=reset>Reset board</button></div>
 <div class=row><span class=sub>Deep sleep (wake by pressing the encoder knob)</span><button class="btn dng" id=sleep>Sleep</button></div>
+</div>
+<div class=card><h2>About</h2>
+<div class=row><span class=sub>Firmware version</span><span>)HTMLPAGE" VARIO_FW_VERSION R"HTMLPAGE(</span></div>
+<div class=row><span class=sub>Radio build</span><span>)HTMLPAGE" VARIO_FW_RADIO R"HTMLPAGE(</span></div>
+<div class=row><span class=sub>Built</span><span>)HTMLPAGE" VARIO_FW_BUILD R"HTMLPAGE(</span></div>
 </div></section>
 
 <section class=tab id=oled>

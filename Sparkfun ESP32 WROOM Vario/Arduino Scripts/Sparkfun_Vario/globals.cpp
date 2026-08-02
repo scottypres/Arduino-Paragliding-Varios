@@ -111,7 +111,7 @@ static const uint8_t kCatSystem[] = {
 #ifndef VARIO_DISABLE_WIFI
     kMenuWifiEnabled, kMenuWifiSetup, kMenuForgetWifi,
 #endif
-    kMenuSwitchFirmware};
+    kMenuSwitchFirmware, kMenuAbout};
 
 const MenuCategory kMenuCategories[] = {
     {"Power & Lock", kCatDisplay, sizeof(kCatDisplay)},

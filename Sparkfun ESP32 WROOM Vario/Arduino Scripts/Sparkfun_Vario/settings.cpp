@@ -6,6 +6,7 @@
 #include "power.h"
 #include "radio.h"
 #include "timekeeping.h"
+#include "version.h"
 #include "web.h"
 #include "wifi_net.h"
 
@@ -81,6 +82,9 @@ void loadSettings() {
 
 String buildSettingsJson() {
   JsonDocument doc;
+  doc["fw_version"] = VARIO_FW_VERSION;
+  doc["fw_radio"] = VARIO_FW_RADIO;
+  doc["fw_build"] = VARIO_FW_BUILD;
   doc["data_logging"] = dataLoggingEnabled;
   doc["audio"] = audioEnabled;
   doc["volume"] = buzzerVolumePercent;

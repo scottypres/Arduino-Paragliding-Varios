@@ -7,6 +7,7 @@
 
 #include "firmware.h"
 #include "flight.h"
+#include "version.h"
 #include "gps_mod.h"
 #include "radio.h"
 #include "timekeeping.h"
@@ -117,6 +118,8 @@ String menuValue(uint8_t item) {
 #endif
     case kMenuSwitchFirmware:
       return switchFirmwareTargetLabel();
+    case kMenuAbout:
+      return VARIO_FW_STRING;
   }
   return "";
 }
@@ -197,6 +200,8 @@ String menuLabel(uint8_t item) {
 #endif
     case kMenuSwitchFirmware:
       return "Switch FW";
+    case kMenuAbout:
+      return "About";
   }
   return "";
 }

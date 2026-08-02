@@ -8,6 +8,9 @@ Arduino Script/**/arduino_secrets.h
 
 # Arduino build output
 **/build/
+**/build-wifi/
+**/build-bt/
+**/.pio/
 
 # macOS metadata
 **/.DS_Store
