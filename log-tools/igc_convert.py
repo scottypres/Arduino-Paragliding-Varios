@@ -65,30 +65,64 @@ def to_gpx(fixes, header, gps_alt=False):
     return "\n".join(out)
 
 
+SPIKE_M = 12  # a real paraglider never changes pressure altitude this fast (obs. max 9 m/s)
+
+
+def despike(alt):
+    """Repair BlueFlyVario dropouts: fixes that jump away and snap straight back.
+
+    A dropped BLE packet makes FlySkyHy log a stale/garbage pressure altitude for
+    one or two fixes -- e.g. 1061 -> 1031 -> 1061 in consecutive seconds while GPS
+    moves 0 m. Left in, each one adds ~2x its depth of phantom climb and sink.
+
+    Compares every fix to the median of its 6 nearest neighbours, so a run of one
+    or two bad samples is outvoted by the clean ones around it. Returns
+    (repaired_alt, count). ponytail: median-of-neighbours, not a Kalman filter --
+    these are discrete dropouts, not noise.
+    """
+    out, n = list(alt), 0
+    for i in range(len(alt)):
+        # symmetric window only -- a lopsided one biases the median on a steady
+        # climb and would "repair" real lift near the start/end of the file
+        k = min(3, i, len(alt) - 1 - i)
+        if k < 2:
+            continue
+        nb = sorted(alt[i - k:i] + alt[i + 1:i + 1 + k])
+        ref = (nb[k - 1] + nb[k]) // 2
+        if abs(alt[i] - ref) > SPIKE_M:
+            out[i], n = ref, n + 1
+    return out, n
+
+
 def to_gaggle(lines):
-    """Overwrite the GPS-altitude column with the barometric one, line for line.
+    """Overwrite the GPS-altitude column with the (despiked) barometric one.
 
     Both columns are 5 chars, so every I-record extension offset stays valid and
     the rest of the file passes through untouched. G (signature) records are
     dropped -- they no longer match the fixes.
     """
-    out, tagged, has_baro = [], False, False
-    for line in lines:
-        line = line.rstrip("\r\n")
+    lines = [l.rstrip("\r\n") for l in lines]
+    bidx = [i for i, l in enumerate(lines) if B.match(l)]
+    baro = [int(lines[i][25:30]) for i in bidx]
+    if not any(baro):
+        sys.exit("pressure column is all zeros -- no baro altitude to copy. "
+                 "Import the original file instead.")
+    fixed, nspikes = despike(baro)
+    if nspikes:
+        print(f"repaired {nspikes} baro dropout spike(s) >{SPIKE_M} m", file=sys.stderr)
+
+    repaired = dict(zip(bidx, fixed))
+    out, tagged = [], False
+    for i, line in enumerate(lines):
         if line[:1] == "G":
             continue
-        if B.match(line):
-            press = line[25:30]
-            if press.lstrip("-0"):
-                has_baro = True
+        if i in repaired:
+            alt = f"{repaired[i]:05d}"
             if not tagged:  # one provenance line, right before the first fix
                 out.append("LXFHGPS ALTITUDE COLUMN REPLACED WITH BARO BY igc_convert.py --gaggle")
                 tagged = True
-            line = line[:30] + press + line[35:]
+            line = line[:25] + alt + alt + line[35:]
         out.append(line)
-    if not has_baro:
-        sys.exit("pressure column is all zeros -- no baro altitude to copy. "
-                 "Import the original file instead.")
     return "\n".join(out) + "\n"
 
 
@@ -139,6 +173,16 @@ def selfcheck():
         assert "all zeros" in str(e), e
     else:
         raise AssertionError("empty baro column must abort")
+
+    # despike: a 1- and a 2-sample dropout go, a genuine steady climb stays
+    flat = [1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010]
+    assert despike(flat) == (flat, 0), despike(flat)
+    one = flat[:]; one[5] = 970
+    assert despike(one)[1] == 1 and abs(despike(one)[0][5] - 1005) <= 1, despike(one)
+    two = flat[:]; two[5] = two[6] = 970
+    assert despike(two)[1] == 2, despike(two)
+    climb = [1000 + 9 * i for i in range(11)]        # 9 m/s, the fastest real rate seen
+    assert despike(climb) == (climb, 0), "a real 9 m/s climb must survive"
 
     print("selfcheck ok")
 
