@@ -36,6 +36,7 @@ void loadSettings() {
   if (varioResponseIndex >= kVarioResponseCount) {
     varioResponseIndex = 1;
   }
+  maxLogMb = prefs.getUShort(kPrefMaxLogMb, 0);
   logRateIndex = prefs.getUChar(kPrefLogRate, logRateIndex);
   if (logRateIndex >= kLogRateCount) {
     logRateIndex = 2;
@@ -102,6 +103,7 @@ String buildSettingsJson() {
   doc["two_tone_sink"] = twoToneSink;
   doc["response"] = varioResponseIndex;
   doc["response_label"] = kVarioResponseLabels[varioResponseIndex];
+  doc["max_log_mb"] = maxLogMb;
   doc["log_rate_index"] = logRateIndex;
   doc["log_rate_label"] = kLogRateLabels[logRateIndex];
   doc["battery_read_rate_index"] = batteryReadRateIndex;
@@ -228,6 +230,10 @@ void applySettingsJson(JsonObjectConst obj) {
       varioResponseIndex = static_cast<uint8_t>(r);
       prefs.putUChar(kPrefResponse, varioResponseIndex);
     }
+  }
+  if (obj["max_log_mb"].is<int>()) {
+    maxLogMb = static_cast<uint16_t>(constrain(obj["max_log_mb"].as<int>(), 0, 30000));
+    prefs.putUShort(kPrefMaxLogMb, maxLogMb);
   }
   if (obj["log_rate_index"].is<int>()) {
     const int r = obj["log_rate_index"].as<int>();

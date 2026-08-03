@@ -172,6 +172,8 @@ String dataJson() {
   json += ",\"battery_gauge_ready\":" + String(batteryGaugeReady ? "true" : "false");
   json += ",\"battery_read_rate_label\":\"" + String(kBatteryReadRateLabels[batteryReadRateIndex]) + "\"";
   json += ",\"sd_ready\":" + String(sdReady ? "true" : "false");
+  json += ",\"sd_total_bytes\":" + String(static_cast<unsigned long long>(sdTotalBytes));
+  json += ",\"sd_used_bytes\":" + String(static_cast<unsigned long long>(sdUsedBytes));
   json += ",\"logging_enabled\":" + String(dataLoggingEnabled ? "true" : "false");
   json += ",\"log_size\":" + String(logFileSize());
   json += ",\"battery_logging_active\":" + String(batteryLoggingActive ? "true" : "false");
@@ -360,9 +362,10 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <div class=row><label>Two-tone sink <span class=sub>warble</span></label><label class=sw><input type=checkbox id=two_tone_sink><span class=sl></span></label></div>
 <div class=row><span class=sub>Back to the stock tone model</span><button class="btn ghost" id=tonedef>Reset defaults</button></div>
 </div>
-<div class=card><h2>Bluetooth audio</h2>
+<div class=card><h2>Bluetooth (BT firmware)</h2>
+<div class=row><span class=sub>The BT firmware advertises as <b>SparkFun Vario</b> over BLE and streams LK8EX1 vario data to iPhone apps (Gaggle, Flyskyhy). Connect from inside the app, not iOS Settings.</span></div>
 <div class=row><label>Earbud name</label><input type=text id=bt_earbud_name placeholder=TOZO-A1 maxlength=63></div>
-<div class=row><span class=sub>Exact Bluetooth name the Bluetooth firmware pairs to. Saved on the device; blank resets to TOZO-A1.</span></div>
+<div class=row><span class=sub>Reserved for A2DP earbud audio (not implemented yet). Blank resets to TOZO-A1.</span></div>
 </div>
 <div class=card><h2>Button lock</h2>
 <div class=row><span class=sub>Status <b id=lockstat>--</b></span></div>
@@ -376,6 +379,7 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <div class=card><h2>Logging &amp; GPS</h2>
 <div class=row><label>SD data logging</label><label class=sw><input type=checkbox id=data_logging><span class=sl></span></label></div>
 <div class=row><label>Log rate</label><select id=log_rate_index></select></div>
+<div class=row><label>Idle log limit <span class=sub>MB, 0 = unlimited</span></label><input type=number id=max_log_mb min=0 max=30000 style=width:90px></div>
 <div class=row><label>Battery update <span class=sub id=bat_rate_hint></span></label><select id=battery_read_rate_index></select></div>
 <div class=row><label>GPS enabled</label><label class=sw><input type=checkbox id=gps_enabled><span class=sl></span></label></div>
 <div class=row><label>Altitude source</label><label class=sw><input type=checkbox id=use_gps_altitude><span class=sl></span></label><span class=sub id=altsrc_hint>Baro</span></div>
@@ -422,6 +426,8 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <div class=bar style=display:none id=fmbar><i id=fmbari></i></div><div class=muted id=fmmsg></div>
 <div id=fmlist class=muted>--</div></div>
 <div class=card><h2>SD card</h2>
+<div class=row><span class=sub>Card usage</span><span class=sub id=sdusage>--</span></div>
+<div class=bar><i id=sdbar></i></div>
 <div class=row><span class=sub>Log size</span><span class=sub id=logsz>--</span></div>
 <div class=row><span class=sub><a href=/log target=_blank>View CSV</a> &middot; <a href=/download>Download CSV</a></span></div>
 <div class=row><span class=sub>Battery log size</span><span class=sub id=blogsz>--</span></div>
@@ -458,6 +464,8 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 
 <section class=tab id=oled>
 <div class=card><h2>OLED Designer</h2>
+<div class=row><label>Layout for</label><select id=owfw><option value=wifi>WiFi firmware</option><option value=bt>BT firmware</option></select></div>
+<div class=muted id=owfwmsg></div>
 <div class=row><span class=sub>Window</span><span><span id=owbtns></span> <button class=ghost id=addwin>+ Win</button> <button class="btn dng" id=delwin>&minus; Win</button></span></div>
 <div id=stage></div>
 <div class=muted>128&times;64 preview (live data). Drag a field to position it; tap to edit.</div>
@@ -535,6 +543,10 @@ function applyState(j){
   $('s_blog').textContent=j.battery_logging_active?('Running '+sw(j.battery_log_elapsed_s)):'Off';
   $('lockstat').textContent=j.locked?'Locked':'Unlocked';
   $('logsz').textContent=j.sd_ready?j.log_size+' bytes':'SD off';
+  if(j.sd_ready&&j.sd_total_bytes>0){var gU=j.sd_used_bytes/1073741824,gT=j.sd_total_bytes/1073741824;
+   $('sdusage').textContent=gU.toFixed(2)+' / '+gT.toFixed(1)+' GB ('+(gT-gU).toFixed(1)+' GB free)';
+   $('sdbar').style.width=Math.min(100,Math.round(gU/gT*100))+'%';}
+  else{$('sdusage').textContent='SD off';$('sdbar').style.width='0%';}
   $('blogsz').textContent=j.sd_ready?j.battery_log_size+' bytes':'SD off';
   $('blogstat').textContent=j.battery_logging_active?('Running '+sw(j.battery_log_elapsed_s)+' · '+(j.sd_ready?j.battery_log_size+' B':'no SD')):'Stopped';
   $('blog_wifi').checked=!!j.battery_log_wifi_enabled;$('blog_bt').checked=!!j.battery_log_bluetooth_enabled;$('blog_oled').checked=!!j.battery_log_oled_enabled;
@@ -577,6 +589,7 @@ function fillSettings(s){
  $('response').value=s.response;
  if($('log_rate_index').options.length!=s.log_rate_options.length)opts($('log_rate_index'),s.log_rate_options,0);
  $('log_rate_index').value=s.log_rate_index;
+ $('max_log_mb').value=s.max_log_mb;
  if($('battery_read_rate_index').options.length!=s.battery_read_rate_options.length)opts($('battery_read_rate_index'),s.battery_read_rate_options,0);
  $('battery_read_rate_index').value=s.battery_read_rate_index;
  $('bat_rate_hint').textContent=s.battery_gauge_ready?'pauses GPS briefly':'gauge not found';
@@ -617,6 +630,7 @@ $('volume').oninput=function(){$('volv').textContent=this.value+'%'};
 $('volume').onchange=function(){patch({volume:Number(this.value)})};
 $('response').onchange=function(){patch({response:Number(this.value)})};
 $('log_rate_index').onchange=function(){patch({log_rate_index:Number(this.value)})};
+$('max_log_mb').onchange=function(){patch({max_log_mb:Number(this.value)})};
 $('battery_read_rate_index').onchange=function(){patch({battery_read_rate_index:Number(this.value)})};
 $('pixel_enabled').onchange=function(){patch({pixel_enabled:this.checked})};
 $('pixel_mode').onchange=function(){patch({pixel_mode:this.value})};
@@ -711,7 +725,8 @@ $('mno').onclick=function(){$('modal').classList.remove('on');mcb=null};
 $('myes').onclick=function(){var t=$('mtype');if(t.dataset.w&&t.value!==t.dataset.w)return;$('modal').classList.remove('on');if(mcb)mcb();mcb=null};
 // ---- OLED designer ----
 var SC=3,WCFG=null,curWin=0,curField=-1,lastData={},owDrag=false;
-var DKEYS=[['text','Static text'],['altitude_ft','Altitude ft'],['raw_altitude_ft','Raw alt ft'],['vario_mps','Vario m/s'],['vario_fps','Vario ft/s'],['temp_f','Temp F'],['humidity_pct','Humidity %'],['pitch_deg','Pitch deg'],['roll_deg','Roll deg'],['g_force','G force'],['battery_pct','Battery %'],['battery_v','Battery V'],['wifi_ssid','WiFi SSID'],['wifi_status','WiFi status'],['bt_status','Bluetooth status'],['sat_used','Sat used'],['sat_seen','Sat seen'],['lat','Latitude'],['lng','Longitude'],['gps_alt_m','GPS alt m'],['gps_speed_kmph','GPS speed km/h'],['gps_speed_mph','GPS speed mph'],['avg_speed_kmph','Avg speed km/h'],['avg_speed_mph','Avg speed mph'],['flight_time','Flight time'],['date','Date'],['time','Time'],['ip','Device IP'],['router_ip','Router IP']];
+var RUNFW=')HTMLPAGE" VARIO_FW_RADIO R"HTMLPAGE('.toLowerCase()=='bt'?'bt':'wifi';
+var DKEYS=[['text','Static text'],['altitude_ft','Altitude ft'],['raw_altitude_ft','Raw alt ft'],['vario_mps','Vario m/s'],['vario_fps','Vario ft/s'],['temp_f','Temp F'],['humidity_pct','Humidity %'],['pitch_deg','Pitch deg'],['roll_deg','Roll deg'],['g_force','G force'],['battery_pct','Battery %'],['battery_v','Battery V'],['wifi_ssid','WiFi SSID'],['wifi_status','WiFi status'],['bt_status','Bluetooth status'],['sd_usage','SD usage'],['sat_used','Sat used'],['sat_seen','Sat seen'],['lat','Latitude'],['lng','Longitude'],['gps_alt_m','GPS alt m'],['gps_speed_kmph','GPS speed km/h'],['gps_speed_mph','GPS speed mph'],['avg_speed_kmph','Avg speed km/h'],['avg_speed_mph','Avg speed mph'],['flight_time','Flight time'],['date','Date'],['time','Time'],['ip','Device IP'],['router_ip','Router IP']];
 // preview font metrics per index: [capPx, letterSpacingPx, fontFamily, weight]
 var FONTS=[[8,1.2,"'Courier New',Courier,monospace",700],[6,0.5,"'Courier New',Courier,monospace",700],[7,0.7,"'Courier New',Courier,monospace",700],[13,0.4,"Arial,Helvetica,sans-serif",700],[13,0.8,"'Courier New',Courier,monospace",700]];
 var LBLSET={};DKEYS.forEach(function(k){LBLSET[k[1]]=1});
@@ -725,6 +740,7 @@ function valFor(f){var d=lastData,k=f.data,v;
  else if(k=='pitch_deg')v=nd(d.pitch_deg,f.dec);else if(k=='roll_deg')v=nd(d.roll_deg,f.dec);else if(k=='g_force')v=nd(d.g_force,f.dec);
  else if(k=='battery_v')v=nd(d.battery_voltage,f.dec);else if(k=='sat_used')v=(d.gps_sats_used==null?'--':d.gps_sats_used);
  else if(k=='wifi_ssid')v=(d.wifi_ssid||'--');else if(k=='wifi_status')v=(d.wifi_status||'--');else if(k=='bt_status')v=(d.bluetooth_status||'--');
+ else if(k=='sd_usage')v=(d.sd_total_bytes>0?(d.sd_used_bytes/1073741824).toFixed(1)+'/'+(d.sd_total_bytes/1073741824).toFixed(d.sd_total_bytes>=10737418240?0:1)+'G':'--');
  else if(k=='sat_seen')v=(d.gps_sats_seen==null?'--':d.gps_sats_seen);else if(k=='lat')v=(d.latitude==null?'--':Number(d.latitude).toFixed(f.dec|0));
  else if(k=='lng')v=(d.longitude==null?'--':Number(d.longitude).toFixed(f.dec|0));else if(k=='gps_alt_m')v=nd(d.gps_altitude_m,f.dec);
  else if(k=='gps_speed_kmph')v=nd(d.gps_speed_kmph,f.dec);
@@ -759,8 +775,12 @@ function renderWinTabs(){var box=$('owbtns');if(!box||!WCFG)return;box.innerHTML
  $('delwin').style.display=WCFG.windows.length>1?'':'none';$('addwin').style.display=WCFG.windows.length<8?'':'none';}
 function selWin(n){if(!WCFG)return;if(n>=WCFG.windows.length)n=WCFG.windows.length-1;if(n<0)n=0;curWin=n;curField=-1;$('editcard').style.display='none';renderWinTabs();renderStage();}
 function normalize(c){if(!c||!c.windows||!c.windows.length)c={windows:[{fields:[]}]};if(c.windows.length>8)c.windows=c.windows.slice(0,8);c.windows.forEach(function(w){if(!w.fields)w.fields=[]});return c;}
+function owFwMsg(){var e=$('owfw').value;
+ $('owfwmsg').textContent=e==RUNFW?'Editing the running firmware’s layout — saves apply to the screen immediately.':'Editing the '+e.toUpperCase()+' firmware’s layout — saved to SD, loads when that firmware next boots.';}
 function loadWindows(){if($('fdata').options.length==0)DKEYS.forEach(function(k){var o=document.createElement('option');o.value=k[0];o.textContent=k[1];$('fdata').appendChild(o)});
- fetch('/api/windows',{cache:'no-store'}).then(function(r){return r.json()}).then(function(c){WCFG=normalize(c);selWin(0)}).catch(function(){WCFG=normalize(null);selWin(0)});}
+ if(!$('owfw').dataset.init){$('owfw').dataset.init=1;$('owfw').value=RUNFW;$('owfw').onchange=function(){loadWindows()};}
+ owFwMsg();
+ fetch('/api/windows?fw='+$('owfw').value,{cache:'no-store'}).then(function(r){return r.json()}).then(function(c){WCFG=normalize(c);selWin(0)}).catch(function(){WCFG=normalize(null);selWin(0)});}
 function upd(k,v){var w=curW();if(!w||curField<0||!w.fields[curField])return;w.fields[curField][k]=v;renderStage();}
 $('addwin').onclick=function(){if(!WCFG||WCFG.windows.length>=8)return;WCFG.windows.push({fields:[]});selWin(WCFG.windows.length-1);$('winmsg').textContent='Window added — press Save to device to apply.'};
 $('delwin').onclick=function(){if(!WCFG||WCFG.windows.length<=1)return;WCFG.windows.splice(curWin,1);selWin(Math.min(curWin,WCFG.windows.length-1));$('winmsg').textContent='Window removed — press Save to device to apply.'};
@@ -772,7 +792,7 @@ $('fdata').onchange=function(){var w=curW(),f=w&&w.fields[curField];upd('data',t
 $('fpre').oninput=function(){upd('prefix',this.value)};$('fsuf').oninput=function(){upd('suffix',this.value)};
 $('fsize').onchange=function(){upd('size',+this.value)};$('ffont').onchange=function(){upd('font',+this.value)};$('fdec').oninput=function(){upd('dec',clamp(this.value,0,6))};
 $('fx').oninput=function(){upd('x',clamp(this.value,0,127))};$('fy').oninput=function(){upd('y',clamp(this.value,0,63))};
-$('savewin').onclick=function(){$('winmsg').textContent='Saving...';fetch('/api/windows',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(WCFG)}).then(function(r){return r.json()}).then(function(c){WCFG=normalize(c);$('winmsg').textContent='Saved to device.';renderStage()}).catch(function(){$('winmsg').textContent='Save failed.'})};
+$('savewin').onclick=function(){$('winmsg').textContent='Saving...';fetch('/api/windows?fw='+$('owfw').value,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(WCFG)}).then(function(r){return r.json()}).then(function(c){WCFG=normalize(c);$('winmsg').textContent=$('owfw').value==RUNFW?'Saved to device.':'Saved — loads when the '+$('owfw').value.toUpperCase()+' firmware boots.';renderStage()}).catch(function(){$('winmsg').textContent='Save failed.'})};
 $('dlwin').onclick=function(){var b=new Blob([JSON.stringify(WCFG,null,1)],{type:'application/json'});var u=URL.createObjectURL(b);var a=document.createElement('a');a.href=u;a.download='windows.json';a.click();URL.revokeObjectURL(u)};
 $('ulwin').onclick=function(){$('winfile').click()};
 $('winfile').onchange=function(){var fl=this.files[0];if(!fl)return;var rd=new FileReader();rd.onload=function(){try{WCFG=normalize(JSON.parse(rd.result));selWin(0);$('winmsg').textContent='Loaded — press Save to device to apply.'}catch(e){$('winmsg').textContent='Invalid JSON file.'}};rd.readAsText(fl);this.value=''};
@@ -794,7 +814,24 @@ static void handleSettingsGet(AsyncWebServerRequest *request) {
   sendNoStore(request, "application/json", buildSettingsJson());
 }
 
+// ?fw=wifi|bt selects which firmware's layout to read/write. The running
+// firmware's layout is the live config; the other one is edited as a plain SD
+// file that its firmware loads at next boot.
+static String requestedFw(AsyncWebServerRequest *request) {
+  return request->hasParam("fw") ? request->getParam("fw")->value() : String("");
+}
+
 static void handleWindowsGet(AsyncWebServerRequest *request) {
+  const String fw = requestedFw(request);
+  if (fw.length() && !runningFirmwareIs(fw)) {
+    const char *path = windowConfigPathFor(fw);
+    if (sdReady && SD.exists(path)) {
+      request->send(SD, path, "application/json");
+    } else {
+      sendNoStore(request, "application/json", "{\"windows\":[{\"fields\":[]}]}");
+    }
+    return;
+  }
   sendNoStore(request, "application/json", windowConfigJson());
 }
 
@@ -941,11 +978,13 @@ static void handleWifiForgetAll(AsyncWebServerRequest *request) {
 
 static void handleSdClear(AsyncWebServerRequest *request) {
   wipeSdData(true);
+  refreshSdUsage();
   sendOk(request);
 }
 
 static void handleSdWipe(AsyncWebServerRequest *request) {
   wipeSdData(false);
+  refreshSdUsage();
   sendOk(request);
 }
 
@@ -1096,6 +1135,9 @@ static void handleFileDelete(AsyncWebServerRequest *request) {
     f.close();
   }
   const bool ok = isDir ? deleteRecursive(path) : SD.remove(path);
+  if (ok) {
+    refreshSdUsage();
+  }
   request->send(ok ? 200 : 500, "text/plain", ok ? "ok" : "fail");
 }
 
@@ -1175,6 +1217,26 @@ void startWebServer() {
     windowsPost->onRequest([](AsyncWebServerRequest *request, JsonVariant &json) {
       String body;
       serializeJson(json, body);
+      const String fw = requestedFw(request);
+      if (fw.length() && !runningFirmwareIs(fw)) {
+        // Other firmware's layout: sanity-check the shape, then write its file.
+        if (!json.as<JsonObjectConst>()["windows"].is<JsonArrayConst>() || !sdReady) {
+          sendNoStore(request, "application/json", "{\"error\":\"bad config\"}");
+          return;
+        }
+        if (!SD.exists("/config")) {
+          SD.mkdir("/config");
+        }
+        File f = SD.open(windowConfigPathFor(fw), FILE_WRITE);
+        if (!f) {
+          sendNoStore(request, "application/json", "{\"error\":\"sd write failed\"}");
+          return;
+        }
+        f.print(body);
+        f.close();
+        sendNoStore(request, "application/json", body);
+        return;
+      }
       const bool ok = applyWindowConfigJson(body, true);
       updateDisplay(true);
       sendNoStore(request, "application/json",

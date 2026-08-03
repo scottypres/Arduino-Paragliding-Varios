@@ -126,6 +126,8 @@ void readSensors() {
   if (bmpReady && bmp.performReading()) {
     bmpReadOk = true;
     bmpTemperatureF = bmp.temperature * 9.0F / 5.0F + 32.0F;
+    // ponytail: library reports hPa or Pa depending on version; <2000 must be hPa
+    baroPressurePa = bmp.pressure < 2000.0F ? bmp.pressure * 100.0F : bmp.pressure;
     const uint32_t now = millis();
     altitudeFt = bmp.readAltitude(kSeaLevelPressureHpa) * kMetersToFeet;
 

@@ -119,6 +119,7 @@ constexpr const char *kPrefLockBeep = "lockBeep";
 constexpr const char *kPrefClock12h = "clk12";    // false=24h, true=12h AM/PM
 constexpr const char *kPrefTzMinutes = "tzMin";   // local time = UTC + this
 constexpr const char *kPrefEarbudName = "btEarbud";  // A2DP target name (BT firmware)
+constexpr const char *kPrefMaxLogMb = "maxLogMb";    // idle log size cap, MB (0 = unlimited)
 constexpr char kDefaultEarbudName[] = "TOZO-A1";
 constexpr uint8_t kMaxEarbudNameLen = 63;
 constexpr float kMetersToFeet = 3.28084F;
@@ -261,8 +262,8 @@ struct Button {
   uint32_t pressStartMs;  // millis() when the current/last press began
 };
 
-const uint32_t kLogRatesMs[] = {1000, 2000, 5000, 10000, 30000, 60000};
-const char *const kLogRateLabels[] = {"1 sec", "2 sec", "5 sec", "10 sec", "30 sec", "60 sec"};
+const uint32_t kLogRatesMs[] = {200, 500, 1000, 2000, 5000, 10000, 30000, 60000};
+const char *const kLogRateLabels[] = {"0.2 sec", "0.5 sec", "1 sec", "2 sec", "5 sec", "10 sec", "30 sec", "60 sec"};
 const uint32_t kBatteryReadRatesMs[] = {5000, 10000, 30000, 60000, 120000, 300000};
 const char *const kBatteryReadRateLabels[] = {"5 sec", "10 sec", "30 sec", "60 sec", "2 min", "5 min"};
 const char *const kBuzzerTestLabels[] = {"B1 pin13", "B2 pin26", "B3 pin27", "All"};
@@ -398,6 +399,10 @@ extern uint32_t lastBuzzerLabMs;  // last Buzzer Lab keepalive; auto-stops if br
 extern uint8_t currentToneMask;
 extern uint16_t rainbowHue;
 
+extern float baroPressurePa;      // raw BMP pressure in Pa (NAN until first read)
+extern uint16_t maxLogMb;         // idle log rotates past this size; 0 = unlimited
+extern uint64_t sdTotalBytes;     // cached card capacity (refreshed by refreshSdUsage)
+extern uint64_t sdUsedBytes;
 extern float altitudeFt;
 extern float smoothedAltitudeFt;
 extern float previousVarioAltitudeFt;

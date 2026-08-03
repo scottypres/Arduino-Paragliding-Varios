@@ -12,7 +12,27 @@ OledWindow oledWindows[kMaxOledWindows];
 
 constexpr float kKmphToMphWin = 0.621371F;
 
-static const char *kWindowConfigPath = "/config/windows.json";
+// Layouts are stored per firmware so the WiFi build's designer can edit the BT
+// build's screens (and vice versa) without clobbering its own. The legacy
+// shared file is only read as a fallback for cards written by older firmware.
+#if defined(VARIO_RADIO_BT)
+static const char *kWindowConfigPath = "/config/windows_bt.json";
+#else
+static const char *kWindowConfigPath = "/config/windows_wifi.json";
+#endif
+static const char *kLegacyWindowConfigPath = "/config/windows.json";
+
+const char *windowConfigPathFor(const String &fw) {
+  return fw == "bt" ? "/config/windows_bt.json" : "/config/windows_wifi.json";
+}
+
+bool runningFirmwareIs(const String &fw) {
+#if defined(VARIO_RADIO_BT)
+  return fw == "bt";
+#else
+  return fw != "bt";
+#endif
+}
 
 static String numOrDash(float value, uint8_t dec) {
   return isnan(value) ? String("--") : String(value, static_cast<unsigned int>(dec));
@@ -67,6 +87,14 @@ String fieldDisplayValue(const OledField &f) {
 #endif
   } else if (k == "bt_status") {
     v = bluetoothStatusText();
+  } else if (k == "sd_usage") {
+    if (!sdReady || sdTotalBytes == 0) {
+      v = "--";
+    } else {
+      const float usedGb = sdUsedBytes / 1073741824.0F;
+      const float totalGb = sdTotalBytes / 1073741824.0F;
+      v = String(usedGb, 1) + "/" + String(totalGb, totalGb >= 10.0F ? 0 : 1) + "G";
+    }
   } else if (k == "sat_used") {
     v = String(gpsSatellitesUsed());
   } else if (k == "sat_seen") {
@@ -229,10 +257,16 @@ bool applyWindowConfigJson(const String &json, bool persist) {
 
 void initWindowConfig() {
   loadDefaults();
-  if (!sdReady || !SD.exists(kWindowConfigPath)) {
+  if (!sdReady) {
     return;
   }
-  File file = SD.open(kWindowConfigPath, FILE_READ);
+  const char *path = SD.exists(kWindowConfigPath)
+                         ? kWindowConfigPath
+                         : (SD.exists(kLegacyWindowConfigPath) ? kLegacyWindowConfigPath : nullptr);
+  if (!path) {
+    return;
+  }
+  File file = SD.open(path, FILE_READ);
   if (!file) {
     return;
   }

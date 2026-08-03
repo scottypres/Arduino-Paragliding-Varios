@@ -17,3 +17,5 @@ void endFlightLog();    // close out the current per-flight CSV
 void startBatteryLogging();
 void stopBatteryLogging();
 void serviceBatteryLogging();
+void refreshSdUsage();   // recompute cached sdTotalBytes/sdUsedBytes (can take ~1s on big cards)
+void serviceSdUsage();   // periodic refresh, skipped while a flight is active

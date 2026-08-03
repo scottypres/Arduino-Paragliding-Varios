@@ -11,3 +11,4 @@ const char *clockSource();   // "ntp", "gps", or "none"
 String localTimeString();    // clock12h + tzOffsetMinutes applied, "--:--:--" if unknown
 String localDateString();    // local calendar date, "----" if unknown
 String tzOffsetString();     // e.g. "+05:30", "-08:00", or "UTC" for zero offset
+String fileTimestamp();      // local "YYYY_MM_DD_HH-MM-SS" for FAT filenames, empty if unknown

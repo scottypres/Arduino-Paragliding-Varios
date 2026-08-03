@@ -12,6 +12,7 @@
 #include "imu.h"
 #include "logging.h"
 #include "power.h"
+#include "radio.h"
 #include "sensors.h"
 #include "settings.h"
 #include "timekeeping.h"
@@ -75,5 +76,7 @@ void loop() {
   updateVarioAudio();
   serviceBatteryLogging();
   logDataIfDue();
+  serviceBleTelemetry();
+  serviceSdUsage();
   updateDisplay();
 }

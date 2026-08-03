@@ -6,6 +6,28 @@
 #include "timekeeping.h"
 #include "wifi_net.h"
 
+void refreshSdUsage() {
+  if (!sdReady) {
+    sdTotalBytes = 0;
+    sdUsedBytes = 0;
+    return;
+  }
+  sdTotalBytes = SD.totalBytes();
+  sdUsedBytes = SD.usedBytes();  // FAT free-cluster scan; ~1s on a big card
+}
+
+void serviceSdUsage() {
+  // ponytail: usedBytes() can stall the loop ~1s, so refresh only every 10 min
+  // and never mid-flight — log writes barely move the number anyway.
+  static uint32_t lastMs = 0;
+  const uint32_t nowMs = millis();
+  if (flightActive || !sdReady || nowMs - lastMs < 600000UL) {
+    return;
+  }
+  lastMs = nowMs;
+  refreshSdUsage();
+}
+
 void initSdCard() {
   SPI.begin(kSdSckPin, kSdMisoPin, kSdMosiPin, kSdCsPin);
   sdReady = SD.begin(kSdCsPin);
@@ -13,6 +35,7 @@ void initSdCard() {
     Serial.println("SD init failed");
     return;
   }
+  refreshSdUsage();
 
   if (!SD.exists(kDataLogPath)) {
     File file = SD.open(kDataLogPath, FILE_WRITE);
@@ -352,15 +375,10 @@ void beginFlightLog() {
   if (!SD.exists("/logs")) {
     SD.mkdir("/logs");
   }
-  const String stamp = isoTimestamp();  // e.g. 2026-07-02T18:30:00Z
-  String name;
-  if (stamp.length() >= 19) {
-    name = stamp.substring(0, 19);
-    name.replace(":", "-");
-    name.replace("T", "_");
-  } else {
-    name = "flight-" + String(millis());
-  }
+  // flight_<local start time>, e.g. /logs/flight_2026_08_03_15-36-23.csv
+  // (FAT can't do ":" so the time is dash-separated)
+  const String stamp = fileTimestamp();
+  const String name = stamp.length() ? "flight_" + stamp : "flight_boot" + String(millis());
   flightLogPath = "/logs/" + name + ".csv";
   File f = SD.open(flightLogPath.c_str(), FILE_WRITE);
   if (!f) {
@@ -400,6 +418,18 @@ void logDataIfDue() {
       sdReady = false;
       Serial.println("Data log open failed");
       return;
+    }
+    // Size cap on the idle append log: rotate current -> _old and start fresh.
+    // Worst case on disk is 2x the cap, and the newest data always survives.
+    if (maxLogMb > 0 && file.size() > static_cast<uint32_t>(maxLogMb) * 1024UL * 1024UL) {
+      file.close();
+      SD.remove(kOldDataLogPath);
+      SD.rename(kDataLogPath, kOldDataLogPath);
+      writeLogHeader();
+      file = SD.open(kDataLogPath, FILE_APPEND);
+      if (!file) {
+        return;
+      }
     }
     file.println(row);
     file.flush();

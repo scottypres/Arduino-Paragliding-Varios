@@ -123,6 +123,20 @@ String localTimeString() {
   return String(buf);
 }
 
+// Local-time stamp safe for FAT filenames, e.g. "2026_08_03_15-36-23"
+// (colons are illegal on FAT, so the time uses dashes). Empty until the clock
+// is known.
+String fileTimestamp() {
+  if (!timeKnown()) {
+    return String();
+  }
+  const struct tm t = localBrokenDownTime();
+  char buf[24];
+  snprintf(buf, sizeof(buf), "%04d_%02d_%02d_%02d-%02d-%02d", t.tm_year + 1900,
+           t.tm_mon + 1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec);
+  return String(buf);
+}
+
 String localDateString() {
   if (!timeKnown()) {
     return String("----");

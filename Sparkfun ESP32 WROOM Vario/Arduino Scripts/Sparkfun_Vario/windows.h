@@ -24,7 +24,9 @@ struct OledWindow {
 
 extern OledWindow oledWindows[kMaxOledWindows];
 
-void initWindowConfig();                  // load /config/windows.json, else defaults
+void initWindowConfig();                  // load this firmware's layout file, else legacy, else defaults
 String windowConfigJson();                // serialize the live config
 bool applyWindowConfigJson(const String &json, bool persist);  // replace + optionally save
 String fieldDisplayValue(const OledField &field);  // prefix + formatted value + suffix
+const char *windowConfigPathFor(const String &fw); // "wifi"/"bt" -> its SD layout path
+bool runningFirmwareIs(const String &fw);          // does fw name match this build?

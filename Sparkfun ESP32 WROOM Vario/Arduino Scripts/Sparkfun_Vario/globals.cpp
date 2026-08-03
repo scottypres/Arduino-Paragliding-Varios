@@ -168,6 +168,10 @@ uint32_t lastBuzzerLabMs = 0;
 uint8_t currentToneMask = 0;
 uint16_t rainbowHue = 0;
 
+float baroPressurePa = NAN;
+uint16_t maxLogMb = 0;
+uint64_t sdTotalBytes = 0;
+uint64_t sdUsedBytes = 0;
 float altitudeFt = 0.0F;
 float smoothedAltitudeFt = 0.0F;
 float previousVarioAltitudeFt = 0.0F;
