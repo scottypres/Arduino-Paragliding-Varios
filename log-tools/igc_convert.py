@@ -1,14 +1,21 @@
 #!/usr/bin/env python3
-"""Convert an IGC flight log to GPX (for Insta360 Studio).
+"""Convert an IGC flight log for Insta360 Studio (GPX) or for Gaggle (IGC).
 
-  ./igc_convert.py flight.IGC --gpx            -> flight.gpx     (baro altitude)
-  ./igc_convert.py flight.IGC --gpx --gps-alt  -> flight.gpx     (GPS altitude)
+  ./igc_convert.py flight.IGC --gpx            -> flight.gpx        (baro altitude)
+  ./igc_convert.py flight.IGC --gpx --gps-alt  -> flight.gpx        (GPS altitude)
+  ./igc_convert.py flight.IGC --gaggle         -> flight.gaggle.igc (baro as GPS alt)
   ./igc_convert.py --selfcheck
 
-Gaggle imports FlySkyHy's IGC directly -- no conversion needed for that path.
-
-Baro altitude is the point of the GPX path: Insta360 Studio only ever has GPS
+Baro altitude is the point of both paths. Insta360 Studio only ever has GPS
 altitude, and a FlySkyHy log flown with a BlueFlyVario has real pressure altitude.
+
+Gaggle does NOT import the pressure column -- verified 2026-08-03 by diffing a
+FlySkyHy log against Gaggle's own re-export of it: Gaggle's altitude matched the
+GPS column on 4000/5359 fixes exactly (rest +/-1 m rounding) and the baro column
+on 45, and every B record it wrote had PPPPP=00000. So Gaggle derives climb rate
+from GPS altitude, which on that flight drifted 68 m from baro by landing and gave
+a visibly different max climb. --gaggle copies PPPPP over GGGGG so Gaggle's own
+math lands on the baro trace.
 """
 import sys, re, datetime, xml.sax.saxutils as xe
 
@@ -58,6 +65,33 @@ def to_gpx(fixes, header, gps_alt=False):
     return "\n".join(out)
 
 
+def to_gaggle(lines):
+    """Overwrite the GPS-altitude column with the barometric one, line for line.
+
+    Both columns are 5 chars, so every I-record extension offset stays valid and
+    the rest of the file passes through untouched. G (signature) records are
+    dropped -- they no longer match the fixes.
+    """
+    out, tagged, has_baro = [], False, False
+    for line in lines:
+        line = line.rstrip("\r\n")
+        if line[:1] == "G":
+            continue
+        if B.match(line):
+            press = line[25:30]
+            if press.lstrip("-0"):
+                has_baro = True
+            if not tagged:  # one provenance line, right before the first fix
+                out.append("LXFHGPS ALTITUDE COLUMN REPLACED WITH BARO BY igc_convert.py --gaggle")
+                tagged = True
+            line = line[:30] + press + line[35:]
+        out.append(line)
+    if not has_baro:
+        sys.exit("pressure column is all zeros -- no baro altitude to copy. "
+                 "Import the original file instead.")
+    return "\n".join(out) + "\n"
+
+
 SAMPLE = """AXFH000
 HFDTE020826
 HFPLTPILOT:Test Pilot
@@ -87,6 +121,25 @@ def selfcheck():
     assert '<ele>1580</ele>' in gpx and '2026-08-02T10:26:04Z' in gpx, gpx
     assert '<ele>1581</ele>' in to_gpx(fixes, header, gps_alt=True)
 
+    # --gaggle: GPS column becomes the baro column, round-tripped through parse()
+    g = to_gaggle(SAMPLE.splitlines())
+    assert "G0123456789" not in g, "invalid signature must be dropped"
+    assert "LXFH" in g, "provenance line missing"
+    open(p, "w").write(g)
+    _, gfixes, _ = parse(p)
+    assert len(gfixes) == 2, gfixes
+    for _t, _la, _lo, press, gnss in gfixes:
+        assert press == gnss, (press, gnss)
+    assert gfixes[0][3] == 1580 and gfixes[1][3] == 1581, gfixes  # baro survived, GPS overwritten
+
+    # a file with no baro must refuse rather than silently emit GPS altitude
+    try:
+        to_gaggle(["B1026044642840N00749431EA0000000158100400300007109" + "9"])
+    except SystemExit as e:
+        assert "all zeros" in str(e), e
+    else:
+        raise AssertionError("empty baro column must abort")
+
     print("selfcheck ok")
 
 
@@ -97,7 +150,12 @@ if __name__ == "__main__":
     if len(a) < 2:
         sys.exit(__doc__)
     src = a[0]
-    _, fixes, header = parse(src)
-    dst = re.sub(r"\.igc$", "", src, flags=re.I) + ".gpx"
-    open(dst, "w").write(to_gpx(fixes, header, "--gps-alt" in a))
+    stem = re.sub(r"\.igc$", "", src, flags=re.I)
+    if "--gaggle" in a:
+        dst = stem + ".gaggle.igc"
+        open(dst, "w").write(to_gaggle(open(src, errors="replace")))
+    else:
+        _, fixes, header = parse(src)
+        dst = stem + ".gpx"
+        open(dst, "w").write(to_gpx(fixes, header, "--gps-alt" in a))
     print(dst)
