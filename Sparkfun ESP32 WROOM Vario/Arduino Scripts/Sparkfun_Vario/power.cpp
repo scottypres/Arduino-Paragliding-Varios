@@ -64,6 +64,12 @@ void refreshBattery() {
   }
 }
 
+// The Thing Plus C variant routes digitalWrite(RGB_BUILTIN) through the
+// neopixel RMT driver, which drags ~2 KB of IRAM into the link — exactly the
+// margin WiFi + BLE coexistence needs. We never drive that LED, so satisfy
+// the core's reference with a stub and the whole RMT stack stays out.
+extern "C" void rgbLedWrite(uint8_t, uint8_t, uint8_t, uint8_t) {}
+
 void initPixel() {
 }
 

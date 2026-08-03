@@ -3,6 +3,21 @@
 Versions track the SparkFun `Sparkfun_Vario` firmware (`version.h`). Bump
 `VARIO_FW_VERSION` in the same commit that changes behaviour.
 
+## 1.2.0 — 2026-08-04
+
+- **WiFi + BLE in one image.** The WiFi build now carries BLE LK8EX1 telemetry
+  alongside the web app — no more firmware-switching to feed Gaggle/Flyskyhy.
+  Made possible by NimBLE (the 2023 split was forced by Bluedroid Classic) plus
+  stubbing the unused RGB-LED/RMT driver to claw back the last ~2 KB of IRAM.
+  The BT-only build remains as a low-power variant.
+- **Fix: toggling Bluetooth off rebooted the device** — `NimBLEDevice::deinit()`
+  crashes in practice; the stack now inits once and "off" just stops advertising
+  and drops the client.
+- **Fix: Settings tab JS died** referencing a Bluetooth toggle that didn't exist;
+  the toggle now actually exists (Settings → Bluetooth → BLE telemetry).
+- Note: generic BLE devices never appear in iOS/macOS Settings scan lists —
+  connect from inside the flight app (or verify with LightBlue).
+
 ## 1.1.0 — 2026-08-03
 
 - **BLE vario telemetry (BT build).** The BT firmware now advertises as

@@ -55,13 +55,17 @@ restructure — they contain no source, only build and history junk.
 
 ## The two firmware builds (SparkFun)
 
-The ESP32-WROOM cannot fit the WiFi and Bluetooth stacks in IRAM at the same time, so
-`Sparkfun_Vario` ships as **two mutually exclusive images**, selected in `radio_config.h`:
+Since v1.2.0 the WiFi build also carries **BLE vario telemetry** (NimBLE — small enough
+to coexist with WiFi in IRAM; the old split existed because Bluedroid *Classic* wasn't).
+The BT-only build remains as a no-WiFi variant. Selected in `radio_config.h`:
 
-| Build | Radio | Gets you | Loses |
+| Build | Radios | Gets you | Loses |
 |---|---|---|---|
-| **WiFi** (default) | WiFi | web app, OTA, WiFi portal | Bluetooth audio |
-| **BT** | Bluetooth A2DP | vario tones to earbuds | web app, OTA |
+| **WiFi** (default) | WiFi + BLE | web app, OTA, WiFi portal, LK8EX1 telemetry to phone apps | — |
+| **BT** | BLE only | LK8EX1 telemetry, lower power | web app, OTA |
+
+IRAM is within ~2 KB of full on the combined build — `rgbLedWrite` is stubbed in
+`power.cpp` to keep the RMT driver out; don't add libraries without watching the link.
 
 ```sh
 cd "Sparkfun ESP32 WROOM Vario/Arduino Scripts/Sparkfun_Vario"

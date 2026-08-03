@@ -49,29 +49,38 @@ void setBluetoothEnabled(bool enabled, bool persist) {
   }
 
   if (enabled) {
-    NimBLEDevice::init(kBleName);
-    bleServer = NimBLEDevice::createServer();
-    bleServer->setCallbacks(&bleCallbacks);
-    NimBLEService *service = bleServer->createService(kBleServiceUuid);
-    // NimBLE auto-creates the CCCD for NOTIFY characteristics.
-    bleChar = service->createCharacteristic(
-        kBleCharUuid,
-        NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY | NIMBLE_PROPERTY::WRITE_NR);
-    service->start();
-    NimBLEAdvertising *adv = NimBLEDevice::getAdvertising();
-    adv->setName(kBleName);
-    adv->addServiceUUID(kBleServiceUuid);
-    adv->enableScanResponse(true);
-    adv->start();
+    // Init the stack once and keep it up for the rest of the session —
+    // NimBLEDevice::deinit() reboots the board in practice, so "off" just
+    // means not advertising / not connected.
+    if (bleServer == nullptr) {
+      NimBLEDevice::init(kBleName);
+      bleServer = NimBLEDevice::createServer();
+      bleServer->setCallbacks(&bleCallbacks);
+      NimBLEService *service = bleServer->createService(kBleServiceUuid);
+      // NimBLE auto-creates the CCCD for NOTIFY characteristics.
+      bleChar = service->createCharacteristic(
+          kBleCharUuid,
+          NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::NOTIFY | NIMBLE_PROPERTY::WRITE_NR);
+      service->start();
+      NimBLEAdvertising *adv = NimBLEDevice::getAdvertising();
+      adv->setName(kBleName);
+      adv->addServiceUUID(kBleServiceUuid);
+      adv->enableScanResponse(true);
+    }
+    NimBLEDevice::startAdvertising();
     bluetoothEnabled = true;
     Serial.println("BLE vario telemetry advertising");
   } else {
-    NimBLEDevice::deinit(true);
-    bleServer = nullptr;
-    bleChar = nullptr;
+    NimBLEDevice::stopAdvertising();
+    if (bleServer != nullptr) {
+      // Kick any connected app so "Off" really goes quiet.
+      for (uint16_t connHandle : bleServer->getPeerDevices()) {
+        bleServer->disconnect(connHandle);
+      }
+    }
     bleClientConnected = false;
     bluetoothEnabled = false;
-    Serial.println("BLE stopped");
+    Serial.println("BLE off (advertising stopped)");
   }
 
   if (persist) {

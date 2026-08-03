@@ -362,8 +362,9 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 <div class=row><label>Two-tone sink <span class=sub>warble</span></label><label class=sw><input type=checkbox id=two_tone_sink><span class=sl></span></label></div>
 <div class=row><span class=sub>Back to the stock tone model</span><button class="btn ghost" id=tonedef>Reset defaults</button></div>
 </div>
-<div class=card><h2>Bluetooth (BT firmware)</h2>
-<div class=row><span class=sub>The BT firmware advertises as <b>SparkFun Vario</b> over BLE and streams LK8EX1 vario data to iPhone apps (Gaggle, Flyskyhy). Connect from inside the app, not iOS Settings.</span></div>
+<div class=card><h2>Bluetooth</h2>
+<div class=row><label>BLE telemetry</label><label class=sw><input type=checkbox id=bluetooth_enabled><span class=sl></span></label></div>
+<div class=row><span class=sub>Advertises as <b>SparkFun Vario</b> and streams LK8EX1 vario data to iPhone flight apps (Gaggle, Flyskyhy). Connect from inside the app, not iOS Settings — generic BLE devices never appear there.</span></div>
 <div class=row><label>Earbud name</label><input type=text id=bt_earbud_name placeholder=TOZO-A1 maxlength=63></div>
 <div class=row><span class=sub>Reserved for A2DP earbud audio (not implemented yet). Blank resets to TOZO-A1.</span></div>
 </div>
@@ -637,6 +638,7 @@ $('pixel_mode').onchange=function(){patch({pixel_mode:this.value})};
 $('pixel_color').onchange=function(){patch({pixel_color:this.value})};
 $('lock_beep').onchange=function(){patch({lock_beep:this.checked})};
 $('bt_earbud_name').onchange=function(){patch({bt_earbud_name:this.value})};
+$('bluetooth_enabled').onchange=function(){patch({bluetooth_enabled:this.checked})};
 $('lock_hold_ms').oninput=function(){$('lockholdv').textContent=this.value+' s'};
 $('lock_hold_ms').onchange=function(){patch({lock_hold_ms:Math.round(Number(this.value)*1000)})};
 $('zset').onclick=function(){fetch('/api/zero/set',{method:'POST'}).then(function(r){return r.json()}).then(fillSettings)};

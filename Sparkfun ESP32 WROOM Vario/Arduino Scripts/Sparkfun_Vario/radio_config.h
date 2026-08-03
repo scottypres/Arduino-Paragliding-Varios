@@ -1,8 +1,11 @@
 #pragma once
 
 // === Radio build selector ============================================
-// The ESP32-WROOM can't fit WiFi + Bluetooth in IRAM at once, so each
-// firmware build ships ONE radio. Pick it here.
+// History: the original split existed because WiFi + Bluedroid CLASSIC
+// (BluetoothSerial/A2DP) couldn't fit in IRAM together. BLE telemetry now
+// uses NimBLE, which is small enough to coexist with WiFi — so the WiFi
+// build carries BLE too and is the everyday image. The BT-only build
+// remains as a low-power/no-WiFi variant.
 //
 // Arduino IDE: comment/uncomment ONE #define below, build, then
 // Sketch -> Export Compiled Binary. Copy the two images to the SD card
@@ -11,12 +14,10 @@
 //
 // Command line: override with -DVARIO_RADIO_BT or -DVARIO_RADIO_WIFI.
 #if !defined(VARIO_RADIO_WIFI) && !defined(VARIO_RADIO_BT)
-#define VARIO_RADIO_WIFI   // <-- default: WiFi + web/OTA, no Bluetooth
-// #define VARIO_RADIO_BT  // <-- Bluetooth A2DP audio, no WiFi
+#define VARIO_RADIO_WIFI   // <-- default: WiFi + web/OTA + BLE telemetry
+// #define VARIO_RADIO_BT  // <-- BLE telemetry only, no WiFi
 #endif
 
-#if defined(VARIO_RADIO_WIFI)
-#define VARIO_DISABLE_BT
-#elif defined(VARIO_RADIO_BT)
+#if defined(VARIO_RADIO_BT)
 #define VARIO_DISABLE_WIFI
 #endif
