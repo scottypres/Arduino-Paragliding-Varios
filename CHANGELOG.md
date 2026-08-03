@@ -3,6 +3,22 @@
 Versions track the SparkFun `Sparkfun_Vario` firmware (`version.h`). Bump
 `VARIO_FW_VERSION` in the same commit that changes behaviour.
 
+## 1.3.0 — 2026-08-04
+
+- **Dual BLE serial services.** Sentences now stream simultaneously over the
+  HM-10 dialect (FFE0/FFE1, what Flyskyhy documents) AND Nordic UART
+  (6E4000xx, the XCTracer-style dialect Gaggle handles best) — aimed at the
+  "Gaggle stuck on connecting / Flyskyhy lists but won't select" reports.
+  Standard Battery (180F, live percent) and Device Information (180A)
+  services added too; apps probe these right after connecting.
+- **GPS over BLE.** $GPGGA + $GPRMC at 1 Hz to the phone apps, with a
+  Settings → Bluetooth toggle ("Send GPS to apps") and an OLED menu item
+  (GPS → BLE GPS out). Automatically silent while GPS is disabled, has no
+  fix, or the fix is >5 s stale.
+- **Configurable BLE name** (Settings → Bluetooth, applied at next boot) —
+  some apps recognise varios by advertised name, so this makes
+  experimenting easy. Blank resets to "SparkFun Vario".
+
 ## 1.2.0 — 2026-08-04
 
 - **WiFi + BLE in one image.** The WiFi build now carries BLE LK8EX1 telemetry

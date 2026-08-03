@@ -364,7 +364,11 @@ pre{white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto;ba
 </div>
 <div class=card><h2>Bluetooth</h2>
 <div class=row><label>BLE telemetry</label><label class=sw><input type=checkbox id=bluetooth_enabled><span class=sl></span></label></div>
-<div class=row><span class=sub>Advertises as <b>SparkFun Vario</b> and streams LK8EX1 vario data to iPhone flight apps (Gaggle, Flyskyhy). Connect from inside the app, not iOS Settings — generic BLE devices never appear there.</span></div>
+<div class=row><span class=sub>Streams LK8EX1 vario data to iPhone flight apps (Gaggle, Flyskyhy) over both HM-10 (FFE0) and Nordic UART services. Connect from inside the app, not iOS Settings — generic BLE devices never appear there.</span></div>
+<div class=row><label>Send GPS to apps</label><label class=sw><input type=checkbox id=ble_send_gps><span class=sl></span></label></div>
+<div class=row><span class=sub>Adds $GPGGA/$GPRMC at 1 Hz — only while GPS is enabled and has a fresh fix.</span></div>
+<div class=row><label>BLE name</label><input type=text id=ble_name placeholder="SparkFun Vario" maxlength=29></div>
+<div class=row><span class=sub>Advertised device name; some apps recognise varios by name. Applied at next boot. Blank resets to SparkFun Vario.</span></div>
 <div class=row><label>Earbud name</label><input type=text id=bt_earbud_name placeholder=TOZO-A1 maxlength=63></div>
 <div class=row><span class=sub>Reserved for A2DP earbud audio (not implemented yet). Blank resets to TOZO-A1.</span></div>
 </div>
@@ -576,6 +580,7 @@ function fillSettings(s){
  $('flight_start_mph').value=s.flight_start_mph;$('flight_start_secs').value=s.flight_start_secs;$('flight_stop_mph').value=s.flight_stop_mph;$('flight_stop_secs').value=s.flight_stop_secs;
  $('flight_auto_start').checked=s.flight_auto_start;$('flight_auto_stop').checked=s.flight_auto_stop;
  $('bt_earbud_name').value=s.bt_earbud_name||'';
+ $('ble_send_gps').checked=s.ble_send_gps;$('ble_name').value=s.ble_name||'';
  $('volume').value=s.volume;$('volv').textContent=s.volume+'%';
  $('buzzer_count').value=s.buzzer_count;
  $('lift_on_mps').value=s.lift_on_mps;$('liftonv').textContent=Number(s.lift_on_mps).toFixed(2)+' m/s';
@@ -639,6 +644,8 @@ $('pixel_color').onchange=function(){patch({pixel_color:this.value})};
 $('lock_beep').onchange=function(){patch({lock_beep:this.checked})};
 $('bt_earbud_name').onchange=function(){patch({bt_earbud_name:this.value})};
 $('bluetooth_enabled').onchange=function(){patch({bluetooth_enabled:this.checked})};
+$('ble_send_gps').onchange=function(){patch({ble_send_gps:this.checked})};
+$('ble_name').onchange=function(){patch({ble_name:this.value})};
 $('lock_hold_ms').oninput=function(){$('lockholdv').textContent=this.value+' s'};
 $('lock_hold_ms').onchange=function(){patch({lock_hold_ms:Math.round(Number(this.value)*1000)})};
 $('zset').onclick=function(){fetch('/api/zero/set',{method:'POST'}).then(function(r){return r.json()}).then(fillSettings)};

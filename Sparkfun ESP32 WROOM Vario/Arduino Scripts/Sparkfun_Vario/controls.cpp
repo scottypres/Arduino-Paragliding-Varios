@@ -221,6 +221,12 @@ void activateSelectedMenuItem() {
     case kMenuGpsEnabled:
       setGpsEnabled(!gpsEnabled);
       break;
+#ifndef VARIO_DISABLE_BT
+    case kMenuBleGps:
+      bleSendGps = !bleSendGps;
+      prefs.putBool(kPrefBleGps, bleSendGps);
+      break;
+#endif
     case kMenuAltitudeSource:
       useGpsAltitude = !useGpsAltitude;
       prefs.putBool(kPrefAltitudeSource, useGpsAltitude);

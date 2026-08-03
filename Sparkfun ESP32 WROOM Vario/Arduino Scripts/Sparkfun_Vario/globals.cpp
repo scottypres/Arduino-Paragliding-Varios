@@ -102,7 +102,11 @@ static const uint8_t kCatAltitude[] = {kMenuSetAltitudeZero, kMenuClearAltitudeZ
 static const uint8_t kCatImu[] = {kMenuImuEnabled,   kMenuImuLevel,      kMenuImuClearLevel,
                                   kMenuImuSwapAxes,  kMenuImuMirrorPitch, kMenuImuMirrorRoll};
 static const uint8_t kCatFlight[] = {kMenuFlight, kMenuFlightAutoStart, kMenuFlightAutoStop};
-static const uint8_t kCatGps[] = {kMenuGpsEnabled, kMenuGpsLogRate};
+static const uint8_t kCatGps[] = {kMenuGpsEnabled,
+#ifndef VARIO_DISABLE_BT
+                                  kMenuBleGps,
+#endif
+                                  kMenuGpsLogRate};
 static const uint8_t kCatLogging[] = {kMenuDataLogging, kMenuBatteryReadRate, kMenuBatteryLogging};
 static const uint8_t kCatSystem[] = {
 #ifndef VARIO_DISABLE_BT
@@ -129,6 +133,8 @@ uint8_t logRateIndex = 2;
 uint8_t batteryReadRateIndex = 2;
 uint8_t buzzerVolumePercent = kDefaultBuzzerVolumePercent;
 String btEarbudName = kDefaultEarbudName;
+bool bleSendGps = true;
+String bleDeviceName = kDefaultBleName;
 uint8_t buzzerCount = 1;
 float liftThresholdMps = kLiftThresholdMps;
 uint16_t liftFreqBaseHz = kLiftFreqBaseHz;

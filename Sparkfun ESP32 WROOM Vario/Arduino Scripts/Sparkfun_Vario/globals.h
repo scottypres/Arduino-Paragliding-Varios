@@ -120,6 +120,9 @@ constexpr const char *kPrefClock12h = "clk12";    // false=24h, true=12h AM/PM
 constexpr const char *kPrefTzMinutes = "tzMin";   // local time = UTC + this
 constexpr const char *kPrefEarbudName = "btEarbud";  // A2DP target name (BT firmware)
 constexpr const char *kPrefMaxLogMb = "maxLogMb";    // idle log size cap, MB (0 = unlimited)
+constexpr const char *kPrefBleGps = "bleGps";        // stream $GPGGA/$GPRMC to phone apps
+constexpr const char *kPrefBleName = "bleName";      // BLE advertised name (applied at boot)
+constexpr char kDefaultBleName[] = "SparkFun Vario";
 constexpr char kDefaultEarbudName[] = "TOZO-A1";
 constexpr uint8_t kMaxEarbudNameLen = 63;
 constexpr float kMetersToFeet = 3.28084F;
@@ -194,6 +197,9 @@ enum MenuItem : uint8_t {
   kMenuGpsLogRate,
   kMenuBatteryReadRate,
   kMenuGpsEnabled,
+#ifndef VARIO_DISABLE_BT
+  kMenuBleGps,  // stream GPS sentences over BLE to phone apps
+#endif
   kMenuAltitudeSource,
   kMenuImuEnabled,
   kMenuImuLevel,
@@ -358,6 +364,8 @@ extern uint8_t logRateIndex;
 extern uint8_t batteryReadRateIndex;
 extern uint8_t buzzerVolumePercent;
 extern String btEarbudName;  // Bluetooth earbud name the BT firmware connects to
+extern bool bleSendGps;      // stream $GPGGA/$GPRMC over BLE when GPS has a fix
+extern String bleDeviceName; // advertised BLE name (read at boot; some apps key on it)
 
 // Runtime-tunable vario tone model (web Settings -> Vario Tone).
 extern uint8_t buzzerCount;        // 1..kBuzzerCount simultaneous buzzers

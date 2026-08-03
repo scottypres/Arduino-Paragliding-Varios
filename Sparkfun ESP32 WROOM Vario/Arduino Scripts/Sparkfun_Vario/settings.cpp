@@ -20,6 +20,11 @@ void loadSettings() {
   buzzerCount = constrain(prefs.getUChar(kPrefBuzzerCount, buzzerCount),
                           static_cast<uint8_t>(1), kBuzzerCount);
   btEarbudName = prefs.getString(kPrefEarbudName, kDefaultEarbudName);
+  bleSendGps = prefs.getBool(kPrefBleGps, true);
+  bleDeviceName = prefs.getString(kPrefBleName, kDefaultBleName);
+  if (bleDeviceName.length() == 0) {
+    bleDeviceName = kDefaultBleName;
+  }
   liftThresholdMps = clampFloat(prefs.getFloat(kPrefLiftOnMps, liftThresholdMps), 0.05F, 1.0F);
   liftFreqBaseHz = constrain(prefs.getUShort(kPrefLiftHz, liftFreqBaseHz),
                              static_cast<uint16_t>(300), static_cast<uint16_t>(3000));
@@ -93,6 +98,8 @@ String buildSettingsJson() {
   doc["volume_max"] = kMaxBuzzerVolumePercent;
   doc["buzzer_count"] = buzzerCount;
   doc["bt_earbud_name"] = btEarbudName;
+  doc["ble_send_gps"] = bleSendGps;
+  doc["ble_name"] = bleDeviceName;
   doc["lift_on_mps"] = liftThresholdMps;
   doc["lift_hz"] = liftFreqBaseHz;
   doc["lift_slope_hz"] = liftFreqSlopeHz;
@@ -191,6 +198,21 @@ void applySettingsJson(JsonObjectConst obj) {
     }
     btEarbudName = name;
     prefs.putString(kPrefEarbudName, btEarbudName);
+  }
+  if (obj["ble_send_gps"].is<bool>()) {
+    bleSendGps = obj["ble_send_gps"].as<bool>();
+    prefs.putBool(kPrefBleGps, bleSendGps);
+  }
+  if (obj["ble_name"].is<const char *>()) {
+    String name = obj["ble_name"].as<const char *>();
+    name.trim();
+    if (name.length() == 0) {
+      name = kDefaultBleName;
+    } else if (name.length() > 29) {
+      name = name.substring(0, 29);  // BLE adv name budget
+    }
+    bleDeviceName = name;
+    prefs.putString(kPrefBleName, bleDeviceName);  // applied at next boot
   }
   if (obj["lift_on_mps"].is<float>()) {
     liftThresholdMps = clampFloat(obj["lift_on_mps"].as<float>(), 0.05F, 1.0F);

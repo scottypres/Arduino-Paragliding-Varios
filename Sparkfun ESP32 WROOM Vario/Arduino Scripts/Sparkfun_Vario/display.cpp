@@ -82,6 +82,10 @@ String menuValue(uint8_t item) {
       return String(kBatteryReadRateLabels[batteryReadRateIndex]);
     case kMenuGpsEnabled:
       return onOff(gpsEnabled);
+#ifndef VARIO_DISABLE_BT
+    case kMenuBleGps:
+      return onOff(bleSendGps);
+#endif
     case kMenuAltitudeSource:
       return useGpsAltitude ? "GPS" : "Baro";
     case kMenuImuEnabled:
@@ -164,6 +168,10 @@ String menuLabel(uint8_t item) {
       return "Battery rate";
     case kMenuGpsEnabled:
       return "GPS";
+#ifndef VARIO_DISABLE_BT
+    case kMenuBleGps:
+      return "BLE GPS out";
+#endif
     case kMenuAltitudeSource:
       return "Altitude src";
     case kMenuImuEnabled:
