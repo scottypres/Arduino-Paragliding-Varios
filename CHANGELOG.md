@@ -3,6 +3,30 @@
 Versions track the SparkFun `Sparkfun_Vario` firmware (`version.h`). Bump
 `VARIO_FW_VERSION` in the same commit that changes behaviour.
 
+## 1.4.0 — 2026-08-04
+
+- **Fix: Flyskyhy/Gaggle connect but receive no telemetry.** Devices named
+  `BlueFly-*` are handled as real BlueFlyVarios, whose RN4677 radio exposes
+  Microchip Transparent UART (`49535343-...`), not Nordic UART or HM-10.
+  The firmware now streams on all three profiles. It also exposes standard
+  Environmental Sensing Pressure (2A6D) at Flyskyhy's required 10 Hz and
+  logs notification subscriptions over USB serial for field diagnosis.
+- **Temperature over BLE.** Environmental Sensing (181A) with the standard
+  Temperature characteristic (2A6E), notified at 1 Hz — drives Flyskyhy's
+  Temperature instrument. Same reading the LK8EX1 temp field carries: SHT41
+  when present, the BMP's own sensor otherwise.
+- **Buttons over BLE.** Automation IO (1815) with the Digital characteristic
+  (2A56), 2 bits per button (back / encoder push / confirm) plus the Number
+  of Digitals descriptor. Notified on change, not on a tick, so a click
+  reaches the app immediately.
+- **Fix: LK8EX1 battery field.** Was sent as 1000+volts×10 (4.1 V read as
+  "41%" by spec-compliant apps). Now sends 1000+percent when the fuel gauge
+  reports one, plain voltage float otherwise, per the LK8EX1 spec.
+- **Fix: keep advertising while connected** (up to 3 concurrent centrals).
+  Previously the first client (a Mac, Flyskyhy left in the background) made
+  the vario invisible to everyone else — the usual cause of Gaggle's
+  "connection failed". Telemetry notifies fan out to every subscriber.
+
 ## 1.3.0 — 2026-08-04
 
 - **Dual BLE serial services.** Sentences now stream simultaneously over the

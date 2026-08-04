@@ -4,7 +4,7 @@
 
 // Bump this on every change that gets flashed to a device, then note it in
 // CHANGELOG.md. Shown in Menu -> System -> About and in the web app header.
-#define VARIO_FW_VERSION "1.3.0"
+#define VARIO_FW_VERSION "1.4.0"
 
 #if defined(VARIO_RADIO_BT)
 #define VARIO_FW_RADIO "BT"
