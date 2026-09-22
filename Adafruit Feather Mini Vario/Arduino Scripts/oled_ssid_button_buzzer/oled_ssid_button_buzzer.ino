@@ -42,6 +42,9 @@ const char *const kPrefResponse = "response";
 const char *const kPrefBatteryLogMs = "batLogMs";
 const char *const kPrefHasAltitudeZero = "hasZero";
 const char *const kPrefAltitudeZeroFt = "zeroFt";
+const char *const kPrefBootBlinds = "bootBlinds";
+// ponytail: SmartBlinds ESP32 has a DHCP reservation; hardcode IP, skip mDNS
+const char *const kBlindsHost = "192.168.50.112";
 const char *const kBluetoothAudioLocalName = "VarioFeatherA2DP";
 const char *const kBatteryLogPath = "/battery_log.csv";
 
@@ -77,13 +80,15 @@ constexpr uint8_t kMinBuzzerVolumePercent = 5;
 constexpr uint8_t kMaxBuzzerVolumePercent = 100;
 constexpr uint32_t kMenuLongPressMs = 800;
 constexpr uint32_t kButtonDebounceMs = 45;
-constexpr uint8_t kMenuItemCount = 12;
+constexpr uint8_t kMenuItemCount = 14;
 constexpr uint8_t kBatteryLogMenuItemCount = 4;
 constexpr uint8_t kMenuVisibleRows = 8;
 constexpr uint8_t kToneTestCount = 4;
 constexpr uint32_t kToneTestDurationMs = 3000;
 constexpr uint32_t kSensorReadMs = 100;
 constexpr uint32_t kDisplayUpdateMs = 100;
+constexpr uint32_t kBlindsPingMs = 3000;
+constexpr uint32_t kBlindsHttpTimeoutMs = 1500;
 constexpr uint32_t kBmpWarmupMs = 5000;
 constexpr uint32_t kBmpRetryMs = 2000;
 constexpr uint32_t kWifiConnectTimeoutMs = 20000;
@@ -130,6 +135,11 @@ volatile bool audioEnabled = true;
 bool buzzerOutputEnabled = true;
 bool startupBeepsEnabled = true;
 bool menuActive = false;
+bool blindsMode = false;
+bool bootBlindsMode = false;
+bool blindsOnline = false;
+const char *blindsMotion = "Idle";
+uint32_t lastBlindsPingMs = 0;
 bool toneOn = false;
 bool liftAudioActive = false;
 bool sinkAudioActive = false;
@@ -349,6 +359,8 @@ void loadSettings() {
     varioResponseIndex = 1;
   }
   altitudeZeroSaved = prefs.getBool(kPrefHasAltitudeZero, false);
+  bootBlindsMode = prefs.getBool(kPrefBootBlinds, false);
+  blindsMode = bootBlindsMode;
   baselineSmoothedAltitudeFt = prefs.getFloat(kPrefAltitudeZeroFt, 0.0F);
   batteryLogIntervalMs = constrain(prefs.getUInt(kPrefBatteryLogMs, kDefaultBatteryLogIntervalMs),
                                    static_cast<uint32_t>(1000.0F / kMaxBatteryLogFrequencyHz),
@@ -1311,7 +1323,7 @@ void updateVarioAudio() {
     return;
   }
 
-  if (menuActive || !audioEnabled || !bmpWarmupComplete || !varioRateInitialized) {
+  if (menuActive || blindsMode || !audioEnabled || !bmpWarmupComplete || !varioRateInitialized) {
     setTone(0);
     liftAudioActive = false;
     sinkAudioActive = false;
@@ -1493,8 +1505,68 @@ String menuItemText(uint8_t index) {
       return "Reset WiFi";
     case 11:
       return "Deep sleep";
+    case 12:
+      return "Blinds ctrl";
+    case 13:
+      return String("Boot blinds:") + boolText(bootBlindsMode);
   }
   return "";
+}
+
+void serviceBlinds() {
+  if (!blindsMode || millis() - lastBlindsPingMs < kBlindsPingMs) {
+    return;
+  }
+  lastBlindsPingMs = millis();
+  bool online = false;
+  if (wifiEnabled && WiFi.status() == WL_CONNECTED) {
+    WiFiClient probe;
+    online = probe.connect(kBlindsHost, 80, 300);
+    probe.stop();
+  }
+  if (online != blindsOnline) {
+    blindsOnline = online;
+    requestDisplayRefresh();
+  }
+}
+
+void sendBlindsCommand(const char *path, const char *motion) {
+  if (!wifiEnabled || WiFi.status() != WL_CONNECTED) {
+    blindsMotion = "WiFi off";
+    return;
+  }
+  // ponytail: raw POST over WiFiClient; HTTPClient drags in TLS and overflows IRAM
+  WiFiClient client;
+  bool ok = false;
+  if (client.connect(kBlindsHost, 80, kBlindsHttpTimeoutMs)) {
+    client.print(String("POST ") + path + " HTTP/1.0\r\nHost: " + kBlindsHost +
+                 "\r\nContent-Length: 0\r\n\r\n");
+    client.setTimeout(kBlindsHttpTimeoutMs);
+    ok = client.readStringUntil('\n').indexOf(" 204") > 0;
+  }
+  client.stop();
+  blindsOnline = ok;
+  blindsMotion = blindsOnline ? motion : "Send failed";
+  lastBlindsPingMs = millis();
+  requestDisplayRefresh();
+}
+
+void drawBlindsDisplay() {
+  display.setTextSize(1);
+  display.println("Blinds control");
+  display.print("Blinds: ");
+  if (!wifiEnabled || WiFi.status() != WL_CONNECTED) {
+    display.println("WiFi off");
+  } else {
+    display.println(blindsOnline ? "ONLINE" : "not found");
+  }
+  display.println();
+  display.setTextSize(2);
+  display.println(blindsMotion);
+  display.setTextSize(1);
+  display.println();
+  display.println("A=Up B=Stop C=Down");
+  display.println("Hold A: menu");
 }
 
 uint8_t activeMenuItemCount() {
@@ -1557,6 +1629,12 @@ void drawDisplay() {
 
   if (menuActive) {
     drawMenu();
+    display.display();
+    return;
+  }
+
+  if (blindsMode) {
+    drawBlindsDisplay();
     display.display();
     return;
   }
@@ -2185,6 +2263,7 @@ void serviceButtons() {
     const bool longPress = millis() - buttonAPressStartMs >= kMenuLongPressMs;
     if (longPress) {
       menuActive = !menuActive;
+      blindsMode = false;
       if (menuIndex >= activeMenuItemCount()) {
         menuIndex = 0;
       }
@@ -2247,9 +2326,19 @@ void serviceButtons() {
           resetWifiCredentials();
         } else if (menuIndex == 11) {
           enterDeepSleep();
+        } else if (menuIndex == 12) {
+          blindsMode = true;
+          menuActive = false;
+          blindsMotion = "Idle";
+          lastBlindsPingMs = 0;
+        } else if (menuIndex == 13) {
+          bootBlindsMode = !bootBlindsMode;
+          saveBoolSetting(kPrefBootBlinds, bootBlindsMode);
         }
       }
       requestDisplayRefresh();
+    } else if (blindsMode) {
+      sendBlindsCommand("/up", "UP");
     } else {
       saveAltitudeZero();
       requestDisplayRefresh();
@@ -2264,6 +2353,8 @@ void serviceButtons() {
       const uint8_t itemCount = activeMenuItemCount();
       menuIndex = (menuIndex + itemCount - 1) % itemCount;
       requestDisplayRefresh();
+    } else if (blindsMode) {
+      sendBlindsCommand("/stop", "STOP");
     }
   }
 
@@ -2273,6 +2364,8 @@ void serviceButtons() {
     if (menuActive) {
       menuIndex = (menuIndex + 1) % activeMenuItemCount();
       requestDisplayRefresh();
+    } else if (blindsMode) {
+      sendBlindsCommand("/down", "DOWN");
     }
   }
 
@@ -2330,6 +2423,7 @@ void loop() {
   }
   serviceSettingsServers();
   serviceButtons();
+  serviceBlinds();
   updateVarioAudio();
 
   const uint32_t now = millis();
