@@ -361,6 +361,9 @@ void loadSettings() {
   altitudeZeroSaved = prefs.getBool(kPrefHasAltitudeZero, false);
   bootBlindsMode = prefs.getBool(kPrefBootBlinds, false);
   blindsMode = bootBlindsMode;
+  if (blindsMode) {
+    wifiEnabled = true;  // blinds control needs the network even if boot WiFi is off
+  }
   baselineSmoothedAltitudeFt = prefs.getFloat(kPrefAltitudeZeroFt, 0.0F);
   batteryLogIntervalMs = constrain(prefs.getUInt(kPrefBatteryLogMs, kDefaultBatteryLogIntervalMs),
                                    static_cast<uint32_t>(1000.0F / kMaxBatteryLogFrequencyHz),
@@ -1555,8 +1558,10 @@ void drawBlindsDisplay() {
   display.setTextSize(1);
   display.println("Blinds control");
   display.print("Blinds: ");
-  if (!wifiEnabled || WiFi.status() != WL_CONNECTED) {
+  if (!wifiEnabled) {
     display.println("WiFi off");
+  } else if (WiFi.status() != WL_CONNECTED) {
+    display.println("WiFi conn..");
   } else {
     display.println(blindsOnline ? "ONLINE" : "not found");
   }
@@ -2331,6 +2336,9 @@ void serviceButtons() {
           menuActive = false;
           blindsMotion = "Idle";
           lastBlindsPingMs = 0;
+          if (!wifiEnabled) {
+            setWifiEnabled(true, false);
+          }
         } else if (menuIndex == 13) {
           bootBlindsMode = !bootBlindsMode;
           saveBoolSetting(kPrefBootBlinds, bootBlindsMode);

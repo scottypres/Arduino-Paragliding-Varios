@@ -2,6 +2,7 @@
 
 #ifndef VARIO_DISABLE_WIFI
 
+#include "display.h"
 #include "timekeeping.h"
 #include "web.h"
 
@@ -337,7 +338,65 @@ void serviceWifi() {
   }
 }
 
+// ---- SmartBlinds remote (POST /up /down /stop on the blinds ESP32) ----
+constexpr uint32_t kBlindsPingMs = 3000;
+constexpr uint32_t kBlindsHttpTimeoutMs = 1500;
+static uint32_t lastBlindsPingMs = 0;
+
+void enterBlindsMode() {
+  blindsMode = true;
+  inMenuMode = false;
+  blindsMotion = "Idle";
+  lastBlindsPingMs = 0;
+  if (!wifiEnabled) {
+    setWifiEnabled(true, false);
+  }
+}
+
+void serviceBlinds() {
+  if (!blindsMode || millis() - lastBlindsPingMs < kBlindsPingMs) {
+    return;
+  }
+  lastBlindsPingMs = millis();
+  bool online = false;
+  if (wifiEnabled && WiFi.status() == WL_CONNECTED) {
+    WiFiClient probe;
+    online = probe.connect(kBlindsHost, 80, 300);
+    probe.stop();
+  }
+  if (online != blindsOnline) {
+    blindsOnline = online;
+    updateDisplay(true);
+  }
+}
+
+void sendBlindsCommand(const char *path, const char *motion) {
+  if (!wifiEnabled || WiFi.status() != WL_CONNECTED) {
+    blindsMotion = "No WiFi";
+    updateDisplay(true);
+    return;
+  }
+  // ponytail: raw POST over WiFiClient; HTTPClient drags in TLS and the WROOM's IRAM is full
+  WiFiClient client;
+  bool ok = false;
+  if (client.connect(kBlindsHost, 80, kBlindsHttpTimeoutMs)) {
+    client.print(String("POST ") + path + " HTTP/1.0\r\nHost: " + kBlindsHost +
+                 "\r\nContent-Length: 0\r\n\r\n");
+    client.setTimeout(kBlindsHttpTimeoutMs);
+    ok = client.readStringUntil('\n').indexOf(" 204") > 0;
+  }
+  client.stop();
+  blindsOnline = ok;
+  blindsMotion = ok ? motion : "Send failed";
+  lastBlindsPingMs = millis();
+  updateDisplay(true);
+}
+
 #else  // VARIO_DISABLE_WIFI — radio-free stubs so the BT firmware links without WiFi.
+
+void enterBlindsMode() {}
+void serviceBlinds() {}
+void sendBlindsCommand(const char *, const char *) {}
 
 void initWifi() {}
 void serviceWifi() {}

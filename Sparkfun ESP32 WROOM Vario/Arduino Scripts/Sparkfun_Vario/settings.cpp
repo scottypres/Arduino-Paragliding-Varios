@@ -82,6 +82,13 @@ void loadSettings() {
   }
   pixelColor = prefs.getUInt(kPrefPixelColor, pixelColor) & 0xFFFFFF;
   wifiEnabled = prefs.getBool(kPrefWifiEnabled, true);
+#ifndef VARIO_DISABLE_WIFI
+  bootBlindsMode = prefs.getBool(kPrefBootBlinds, false);
+  blindsMode = bootBlindsMode;
+  if (blindsMode) {
+    wifiEnabled = true;  // blinds control needs the network even if WiFi was left off
+  }
+#endif
   loadWifiNetworks();
   setBluetoothEnabled(savedBluetoothEnabled, false);
 }

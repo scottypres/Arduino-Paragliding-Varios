@@ -17,3 +17,6 @@ void serviceWifi();
 void setWifiEnabled(bool enabled, bool persist);
 void setBatteryLogWifiEnabled(bool enabled);
 String wifiStatusText();
+void enterBlindsMode();      // switch the OLED to the blinds screen (forces WiFi on)
+void serviceBlinds();        // periodic reachability probe of kBlindsHost
+void sendBlindsCommand(const char *path, const char *motion);  // POST /up /down /stop

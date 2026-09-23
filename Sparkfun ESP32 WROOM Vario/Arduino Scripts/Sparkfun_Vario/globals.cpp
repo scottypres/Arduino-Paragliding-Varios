@@ -47,6 +47,10 @@ bool batteryLogSavedWifiEnabled = true;
 bool batteryLogSavedBluetoothEnabled = false;
 bool batteryLogSavedOledEnabled = true;
 bool wifiEnabled = true;
+bool blindsMode = false;
+bool bootBlindsMode = false;
+bool blindsOnline = false;
+const char *blindsMotion = "Idle";
 bool wifiReady = false;
 bool otaReady = false;
 bool wifiAttemptActive = false;
@@ -113,7 +117,7 @@ static const uint8_t kCatSystem[] = {
     kMenuBluetooth,
 #endif
 #ifndef VARIO_DISABLE_WIFI
-    kMenuWifiEnabled, kMenuWifiSetup, kMenuForgetWifi,
+    kMenuWifiEnabled, kMenuWifiSetup, kMenuForgetWifi, kMenuBlinds, kMenuBootBlinds,
 #endif
     kMenuSwitchFirmware, kMenuAbout};
 

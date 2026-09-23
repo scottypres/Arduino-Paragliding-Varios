@@ -119,6 +119,10 @@ String menuValue(uint8_t item) {
       return wifiPortalActive ? "Active" : "Start";
     case kMenuForgetWifi:
       return wifiNetworkCount == 0 ? "Cleared" : String(wifiNetworkCount) + " saved";
+    case kMenuBlinds:
+      return "Open";
+    case kMenuBootBlinds:
+      return onOff(bootBlindsMode);
 #endif
     case kMenuSwitchFirmware:
       return switchFirmwareTargetLabel();
@@ -205,6 +209,10 @@ String menuLabel(uint8_t item) {
       return "WiFi setup";
     case kMenuForgetWifi:
       return "Forget WiFi";
+    case kMenuBlinds:
+      return "Blinds ctrl";
+    case kMenuBootBlinds:
+      return "Boot blinds";
 #endif
     case kMenuSwitchFirmware:
       return "Switch FW";
@@ -399,6 +407,23 @@ static void drawMenu() {
   }
 }
 
+static void drawBlindsScreen() {
+  oled.setTextSize(1);
+  oledText(0, "Blinds control");
+  String status = "WiFi off";
+  if (wifiEnabled) {
+    status = WiFi.status() == WL_CONNECTED ? (blindsOnline ? "ONLINE" : "not found")
+                                           : "WiFi conn..";
+  }
+  oledText(1, String("Blinds: ") + status);
+  oled.setTextSize(2);
+  oled.setCursor(0, 24);
+  oled.print(blindsMotion);
+  oled.setTextSize(1);
+  oledText(6, "Back=Up  Sel=Down");
+  oledText(7, "Turn=Stop HoldBk=Exit");
+}
+
 static void drawLockSplash() {
   oled.setTextSize(2);
   const String text = controlsLocked ? "Locked" : "Unlocked";
@@ -430,6 +455,8 @@ void updateDisplay(bool force) {
     drawLockSplash();
   } else if (inMenuMode) {
     drawMenu();
+  } else if (blindsMode) {
+    drawBlindsScreen();
   } else if (batteryLoggingActive) {
     drawBatteryLogStatus();
   } else {

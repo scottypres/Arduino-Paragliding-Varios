@@ -89,6 +89,9 @@ constexpr const char *kPrefLogRate = "logRate";
 constexpr const char *kPrefGpsEnabled = "gpsEn";
 constexpr const char *kPrefBluetooth = "btClassic";
 constexpr const char *kPrefWifiEnabled = "wifiOn";
+constexpr const char *kPrefBootBlinds = "bootBlinds";
+// ponytail: SmartBlinds ESP32 has a DHCP reservation; hardcode IP, skip mDNS
+constexpr const char *kBlindsHost = "192.168.50.112";
 constexpr const char *kPrefAltitudeSource = "altSrc";  // false=baro, true=GPS
 constexpr const char *kPrefBatteryReadRate = "batRate";
 constexpr const char *kPrefBuzzerCount = "buzzCount";
@@ -218,6 +221,8 @@ enum MenuItem : uint8_t {
   kMenuWifiEnabled,
   kMenuWifiSetup,
   kMenuForgetWifi,
+  kMenuBlinds,      // enter SmartBlinds remote screen
+  kMenuBootBlinds,  // boot straight into the blinds screen
 #endif
   kMenuSwitchFirmware,
   kMenuAbout,  // read-only: firmware version + build date
@@ -324,6 +329,10 @@ extern bool batteryLogSavedWifiEnabled;
 extern bool batteryLogSavedBluetoothEnabled;
 extern bool batteryLogSavedOledEnabled;
 extern bool wifiEnabled;
+extern bool blindsMode;          // SmartBlinds remote screen is in front
+extern bool bootBlindsMode;      // persisted: boot into blindsMode
+extern bool blindsOnline;        // last TCP probe of kBlindsHost succeeded
+extern const char *blindsMotion; // last command result shown on the OLED
 extern bool wifiReady;
 extern bool otaReady;
 extern bool wifiAttemptActive;

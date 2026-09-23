@@ -57,6 +57,7 @@ void setup() {
 
 void loop() {
   serviceWifi();
+  serviceBlinds();
   serviceWebServer();
   serviceWebPush();
   serviceOta();

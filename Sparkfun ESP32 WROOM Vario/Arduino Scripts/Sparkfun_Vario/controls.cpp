@@ -285,6 +285,13 @@ void activateSelectedMenuItem() {
     case kMenuForgetWifi:
       forgetWifiAndStartPortal();
       break;
+    case kMenuBlinds:
+      enterBlindsMode();
+      break;
+    case kMenuBootBlinds:
+      bootBlindsMode = !bootBlindsMode;
+      prefs.putBool(kPrefBootBlinds, bootBlindsMode);
+      break;
 #endif
     case kMenuSwitchFirmware:
       flashFirmwareFromSd();
@@ -445,6 +452,29 @@ void serviceControls() {
     backButton.pressedEvent = false;
     encoderButton.pressedEvent = false;
     confirmButton.pressedEvent = false;
+    return;
+  }
+
+  // Blinds remote: back tap = up, select tap = down, encoder turn = stop.
+  // Holding back (>= kBatteryRefreshHoldMs) exits to the menu on release.
+  if (blindsMode && !inMenuMode) {
+    if (backButton.releasedEvent) {
+      if (nowMs - backButton.pressStartMs >= kBatteryRefreshHoldMs) {
+        blindsMode = false;
+        inMenuMode = true;
+        editingMenuItem = false;
+        menuInCategory = false;
+        updateDisplay(true);
+      } else {
+        sendBlindsCommand("/up", "UP");
+      }
+    }
+    if (selectTap) {
+      sendBlindsCommand("/down", "DOWN");
+    }
+    if (encoderDelta != 0) {
+      sendBlindsCommand("/stop", "STOP");
+    }
     return;
   }
 
