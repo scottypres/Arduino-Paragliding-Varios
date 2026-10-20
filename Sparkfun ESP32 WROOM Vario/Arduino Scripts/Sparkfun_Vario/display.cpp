@@ -6,6 +6,7 @@
 #include <Fonts/TomThumb.h>
 
 #include "firmware.h"
+#include "driving.h"
 #include "flight.h"
 #include "version.h"
 #include "gps_mod.h"
@@ -43,6 +44,16 @@ String onOff(bool value) {
 
 String menuValue(uint8_t item) {
   switch (item) {
+    case kMenuDriving:
+      return drivingActive ? "Stop" : (flightActive ? "End flight first" : "Start");
+    case kMenuDriveAxis:
+      return driving::axisName(drivingAxis);
+    case kMenuDriveAccel:
+      return String(drivingAccelLimit, 1);
+    case kMenuDriveBrake:
+      return String(drivingBrakeLimit, 1);
+    case kMenuDriveBeeps:
+      return onOff(drivingBeeps);
     case kMenuLock:
       return "Select";
     case kMenuOled:
@@ -134,6 +145,16 @@ String menuValue(uint8_t item) {
 
 String menuLabel(uint8_t item) {
   switch (item) {
+    case kMenuDriving:
+      return "Practice";
+    case kMenuDriveAxis:
+      return "Forward axis";
+    case kMenuDriveAccel:
+      return "Accel mph/s";
+    case kMenuDriveBrake:
+      return "Brake mph/s";
+    case kMenuDriveBeeps:
+      return "Alert beeps";
     case kMenuLock:
       return "Lock now";
     case kMenuOled:
@@ -424,6 +445,38 @@ static void drawBlindsScreen() {
   oledText(7, "Turn=Stop HoldBk=Exit");
 }
 
+static void drawDrivingScreen() {
+  const auto &r = drivingDetector.reading;
+  oled.setTextSize(1);
+  oled.setCursor(0, 0);
+  oled.print("IMU ");
+  oled.print(driving::axisName(drivingAxis));
+  oled.print(" ");
+  oled.print(floatOrDash(r.linearG, 2, "g"));
+  if (!drivingBeeps) oled.print(" MUTE");
+  oled.setCursor(0, 12);
+  oled.setTextSize(2);
+  if (isfinite(r.rateMphS)) {
+    if (r.rateMphS >= 0) oled.print('+');
+    oled.print(r.rateMphS, 1);
+  } else {
+    oled.print("--");
+  }
+  oled.setTextSize(1);
+  oled.setCursor(85, 18);
+  oled.print("mph/s");
+  oled.setCursor(0, 31);
+  oled.print(drivingStatus());
+  oled.setCursor(0, 42);
+  oled.print("A:");
+  oled.print(drivingDetector.accelerations);
+  oled.print(" B:");
+  oled.print(drivingDetector.brakes);
+  oled.print(drivingLogOk ? " REC" : " NO LOG");
+  oled.setCursor(0, 54);
+  oled.print("Bk Stop Sel Zero");
+}
+
 static void drawLockSplash() {
   oled.setTextSize(2);
   const String text = controlsLocked ? "Locked" : "Unlocked";
@@ -455,6 +508,8 @@ void updateDisplay(bool force) {
     drawLockSplash();
   } else if (inMenuMode) {
     drawMenu();
+  } else if (drivingActive) {
+    drawDrivingScreen();
   } else if (blindsMode) {
     drawBlindsScreen();
   } else if (batteryLoggingActive) {

@@ -8,6 +8,8 @@
 // magnetometer on this board, so magnetic heading is not available.
 void initImu();
 void setImuEnabled(bool enabled);
-void readImu();          // call on the sensor-read cadence
+void readImu();          // every loop; internally throttled and FIFO buffered
+bool beginDrivingImu();
+void endDrivingImu();
 void saveImuLevel();     // capture current attitude as "level"
 void clearImuLevel();

@@ -225,6 +225,11 @@ enum MenuItem : uint8_t {
   kMenuBootBlinds,  // boot straight into the blinds screen
 #endif
   kMenuSwitchFirmware,
+  kMenuDriving,
+  kMenuDriveAccel,
+  kMenuDriveBrake,
+  kMenuDriveBeeps,
+  kMenuDriveAxis,
   kMenuAbout,  // read-only: firmware version + build date
   kMenuCount
 };

@@ -7,6 +7,7 @@
 #include "audio.h"
 #include "controls.h"
 #include "display.h"
+#include "driving.h"
 #include "flight.h"
 #include "gps_mod.h"
 #include "imu.h"
@@ -47,6 +48,7 @@ void setup() {
   initSensors();
   initImu();
   initFlight();
+  initDriving();
   readSensors();
   readBatteryIfDue();
   initSdCard();
@@ -62,6 +64,8 @@ void loop() {
   serviceWebPush();
   serviceOta();
   serviceGps();
+  readImu();
+  serviceDriving();
   serviceFlight();
   serviceClock();
   printGpsDebugIfDue();
@@ -69,8 +73,8 @@ void loop() {
   if (millis() - lastSensorReadMs >= kSensorReadMs) {
     lastSensorReadMs = millis();
     readSensors();
-    readImu();
   }
+  readImu();
   readBatteryIfDue();
   servicePixel();
   serviceJingle();

@@ -1,4 +1,5 @@
 #include "audio.h"
+#include "driving.h"
 
 void setBuzzersLow() {
   for (uint8_t pin : kBuzzerPins) {
@@ -176,6 +177,7 @@ uint8_t jingleCount() { return kJingleCount; }
 bool jingleActive() { return jinglePlaying; }
 
 void playJingle(uint8_t index) {
+  if (drivingActive) return;
   if (index >= kJingleCount) {
     return;
   }
@@ -192,6 +194,10 @@ void playJingle(uint8_t index) {
 }
 
 void serviceJingle() {
+  if (drivingActive) {
+    jinglePlaying = false;
+    return;
+  }
   if (!jinglePlaying) {
     return;
   }
@@ -211,6 +217,7 @@ void serviceJingle() {
 }
 
 void labTone(bool on, uint32_t freq, uint8_t mask, uint8_t duty) {
+  if (drivingActive && on) return;
   buzzerLabActive = on;
   if (!on) {
     setToneMask(0, 0, false);  // resets currentTone state + silences
@@ -231,6 +238,11 @@ void labTone(bool on, uint32_t freq, uint8_t mask, uint8_t duty) {
 
 void updateVarioAudio() {
   const uint32_t now = millis();
+  if (serviceDrivingAudio()) {
+    buzzerLabActive = false;
+    toneTestActive = false;
+    return;
+  }
 
   if (buzzerLabActive) {
     if (now - lastBuzzerLabMs <= 8000) {

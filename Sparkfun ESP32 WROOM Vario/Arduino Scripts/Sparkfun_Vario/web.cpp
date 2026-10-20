@@ -8,6 +8,7 @@
 #include "audio.h"
 #include "controls.h"
 #include "display.h"
+#include "driving.h"
 #include "flight.h"
 #include "gps_mod.h"
 #include "imu.h"
@@ -167,6 +168,7 @@ String dataJson() {
   json += ",\"pitch_deg\":" + jsonFloat(imuPitchDeg, 1);
   json += ",\"roll_deg\":" + jsonFloat(imuRollDeg, 1);
   json += ",\"g_force\":" + jsonFloat(imuGForce, 2);
+  json += ",\"driving\":" + drivingJson();
   json += ",\"battery_voltage\":" + jsonFloat(batteryVoltage, 2);
   json += ",\"battery_percent\":" + jsonFloat(batteryPercent, 0);
   json += ",\"battery_gauge_ready\":" + String(batteryGaugeReady ? "true" : "false");
@@ -1180,6 +1182,25 @@ void startWebServer() {
     webServer.on("/data.json", M::HTTP_GET, handleState);
     webServer.on("/api/state", M::HTTP_GET, handleState);
     webServer.on("/api/settings", M::HTTP_GET, handleSettingsGet);
+    webServer.on("/api/driving", M::HTTP_GET, [](AsyncWebServerRequest *request) {
+      request->send(200, "application/json", drivingJson());
+    });
+    webServer.on("/api/driving/start", M::HTTP_POST, [](AsyncWebServerRequest *request) {
+      if (flightActive || batteryLoggingActive) {
+        request->send(409, "text/plain", "End the flight or battery log first");
+        return;
+      }
+      drivingRequest = 1;
+      request->send(202, "text/plain", "Starting driving practice");
+    });
+    webServer.on("/api/driving/calibrate", M::HTTP_POST, [](AsyncWebServerRequest *request) {
+      drivingRequest = 2;
+      request->send(202, "text/plain", "Park and keep still: zero queued");
+    });
+    webServer.on("/api/driving/stop", M::HTTP_POST, [](AsyncWebServerRequest *request) {
+      drivingRequest = -1;
+      request->send(202, "text/plain", "Stopping driving practice");
+    });
     webServer.on("/api/windows", M::HTTP_GET, handleWindowsGet);
     webServer.on("/api/wifi", M::HTTP_GET, handleWifiList);
     webServer.on("/api/zero/set", M::HTTP_POST, handleZeroSet);

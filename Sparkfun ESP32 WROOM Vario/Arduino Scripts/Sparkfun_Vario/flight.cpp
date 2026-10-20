@@ -1,6 +1,7 @@
 #include "flight.h"
 
 #include "gps_mod.h"
+#include "driving.h"
 #include "logging.h"
 
 constexpr float kKmphToMph = 0.621371F;
@@ -45,6 +46,7 @@ void initFlight() {
 }
 
 void startFlightManual() {
+  if (drivingActive) return;
   if (!flightActive) {
     startFlight(millis());
   }
@@ -59,6 +61,10 @@ void stopFlightManual() {
 }
 
 void serviceFlight() {
+  if (drivingActive) {
+    aboveSinceMs = belowSinceMs = 0;
+    return;
+  }
   const uint32_t now = millis();
   // isValid() latches true forever after the first fix, so also require the
   // reading to be fresh — otherwise a lost fix leaves stale speed that could

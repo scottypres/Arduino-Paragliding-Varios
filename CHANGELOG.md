@@ -3,6 +3,34 @@
 Versions track the SparkFun `Sparkfun_Vario` firmware (`version.h`). Bump
 `VARIO_FW_VERSION` in the same commit that changes behaviour.
 
+## 1.6.0 — 2026-10-20
+
+- **IMU driving practice:** replaces GPS speed differentiation with paired
+  accelerometer/gyro samples buffered at 120 Hz. GPS is no longer needed or
+  changed by the mode. Display signed longitudinal g and mph/s.
+- **Mounting and gravity:** select one of six forward axes, zero while parked
+  for two seconds, and use gyro compensation for changing tilt. Short Select
+  re-zeros while parked; calibration never silently restarts after data loss.
+- **Alerts and recording:** 60 ms smoothing, 200 ms threshold qualification,
+  hysteresis, 10 Hz SD snapshots, and exact event frames. Invalid/saturated
+  samples or FIFO loss suppress alerts and require another parked zero.
+- **Verification:** portable synthetic IMU tests and a device smoke test for
+  calibration, measured sample rate, GPS independence, and session CSV output.
+
+## 1.5.0 — 2026-10-20
+
+- **Driving practice:** new OLED Driving menu shows GPS mph and signed
+  acceleration/deceleration in mph per second. Adjustable acceleration and
+  braking limits trigger distinct non-blocking beep patterns and event counts.
+- **Session logs:** separate `/logs/drive_*.csv` files record measurements,
+  detected events, thresholds, and GPS availability. Recording failures are
+  visible on the OLED. Existing flight and battery logs are preserved.
+- **GPS validation:** reject stale fixes, duplicate timestamps, implausible
+  jumps, and long gaps; reset the baseline on reacquisition. Driving practice
+  suspends flight auto-start and vario tones, and is off at boot.
+- **Driving telemetry:** `/api/driving` plus queued start/stop endpoints.
+  See `Sparkfun ESP32 WROOM Vario/docs/driving-practice.md`.
+
 ## 1.4.0 — 2026-08-04
 
 - **Fix: Flyskyhy/Gaggle connect but receive no telemetry.** Devices named

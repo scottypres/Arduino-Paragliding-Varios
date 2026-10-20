@@ -1,6 +1,7 @@
 #include "logging.h"
 
 #include "display.h"
+#include "driving.h"
 #include "gps_mod.h"
 #include "radio.h"
 #include "timekeeping.h"
@@ -21,7 +22,7 @@ void serviceSdUsage() {
   // and never mid-flight — log writes barely move the number anyway.
   static uint32_t lastMs = 0;
   const uint32_t nowMs = millis();
-  if (flightActive || !sdReady || nowMs - lastMs < 600000UL) {
+  if (flightActive || drivingActive || !sdReady || nowMs - lastMs < 600000UL) {
     return;
   }
   lastMs = nowMs;
@@ -221,7 +222,7 @@ static void printCsvString(File &file, const String &value) {
 }
 
 void startBatteryLogging() {
-  if (batteryLoggingActive) {
+  if (batteryLoggingActive || drivingActive) {
     return;
   }
 

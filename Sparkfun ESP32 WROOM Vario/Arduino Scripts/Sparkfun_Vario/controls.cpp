@@ -2,6 +2,7 @@
 
 #include "audio.h"
 #include "display.h"
+#include "driving.h"
 #include "firmware.h"
 #include "flight.h"
 #include "gps_mod.h"
@@ -94,6 +95,18 @@ void adjustSelectedValue(int8_t delta) {
   }
 
   switch (selectedMenuItem) {
+    case kMenuDriveAxis:
+      drivingAxis = (drivingAxis + delta + 6) % 6;
+      saveDrivingSettings();
+      break;
+    case kMenuDriveAccel:
+      drivingAccelLimit = constrain(drivingAccelLimit + delta * 0.5F, 2.0F, 15.0F);
+      saveDrivingSettings();
+      break;
+    case kMenuDriveBrake:
+      drivingBrakeLimit = constrain(drivingBrakeLimit + delta * 0.5F, 2.0F, 15.0F);
+      saveDrivingSettings();
+      break;
     case kMenuVolume:
       buzzerVolumePercent = constrain(static_cast<int>(buzzerVolumePercent) + delta * 5,
                                       kMinBuzzerVolumePercent,
@@ -181,6 +194,14 @@ void clearAltitudeZero() {
 
 void activateSelectedMenuItem() {
   switch (selectedMenuItem) {
+    case kMenuDriving:
+      if (drivingActive) stopDriving();
+      else startDriving();
+      break;
+    case kMenuDriveBeeps:
+      drivingBeeps = !drivingBeeps;
+      saveDrivingSettings();
+      break;
     case kMenuLock:
       applyPowerAndLock();  // applies the staged OLED/WiFi/BT toggles, then locks
       break;
@@ -297,6 +318,9 @@ void activateSelectedMenuItem() {
       flashFirmwareFromSd();
       break;
     case kMenuVolume:
+    case kMenuDriveAxis:
+    case kMenuDriveAccel:
+    case kMenuDriveBrake:
     case kMenuBuzzers:
     case kMenuResponse:
     case kMenuGpsLogRate:
@@ -452,6 +476,20 @@ void serviceControls() {
     backButton.pressedEvent = false;
     encoderButton.pressedEvent = false;
     confirmButton.pressedEvent = false;
+    return;
+  }
+
+  // A short Back press ends the practice session and closes its log. Other
+  // Select requests parked re-zeroing; no buttons are needed in motion.
+  if (drivingActive && !inMenuMode) {
+    if (selectTap) calibrateDriving();
+    if (backTap) {
+      stopDriving();
+      inMenuMode = true;
+      menuInCategory = false;
+      editingMenuItem = false;
+      updateDisplay(true);
+    }
     return;
   }
 

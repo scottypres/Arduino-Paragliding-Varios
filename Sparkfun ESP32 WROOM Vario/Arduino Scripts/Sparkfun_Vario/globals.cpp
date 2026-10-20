@@ -112,6 +112,8 @@ static const uint8_t kCatGps[] = {kMenuGpsEnabled,
 #endif
                                   kMenuGpsLogRate};
 static const uint8_t kCatLogging[] = {kMenuDataLogging, kMenuBatteryReadRate, kMenuBatteryLogging};
+static const uint8_t kCatDriving[] = {
+    kMenuDriving, kMenuDriveAxis, kMenuDriveAccel, kMenuDriveBrake, kMenuDriveBeeps, kMenuVolume};
 static const uint8_t kCatSystem[] = {
 #ifndef VARIO_DISABLE_BT
     kMenuBluetooth,
@@ -122,6 +124,7 @@ static const uint8_t kCatSystem[] = {
     kMenuSwitchFirmware, kMenuAbout};
 
 const MenuCategory kMenuCategories[] = {
+    {"Driving", kCatDriving, sizeof(kCatDriving)},
     {"Power & Lock", kCatDisplay, sizeof(kCatDisplay)},
     {"Vario & Audio", kCatVarioAudio, sizeof(kCatVarioAudio)},
     {"Clock", kCatClock, sizeof(kCatClock)},
