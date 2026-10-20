@@ -18,8 +18,11 @@ The detector must preserve sustained acceleration rather than absorb it as tilt.
 Read paired accel/gyro FIFO frames at their nominal 120 Hz rate. FIFO buffers
 main-loop storage/display latency. Smooth with a 60 ms low-pass filter and
 qualify threshold crossings for 200 ms. Defaults remain +9/-7 mph/s; both are
-adjustable. Hysteresis limits repeated alerts. Sensor gaps and saturation
-invalidate the measurement and require explicit parked re-zeroing.
+adjustable. Hysteresis limits repeated alerts. Sensor gaps and gyro saturation invalidate gravity tracking and require
+explicit parked re-zeroing. Since 1.6.2, driving uses ±16 g / ±2,000°/s ranges
+and acceleration-only clipping suppresses a frame plus 250 ms filter recovery
+without losing gyro tracking or calibration. ST's reserved FIFO settling codes
+are discarded during explicit calibration with a bounded startup wait.
 
 ## Integration
 

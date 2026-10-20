@@ -3,6 +3,28 @@
 Versions track the SparkFun `Sparkfun_Vario` firmware (`version.h`). Bump
 `VARIO_FW_VERSION` in the same commit that changes behaviour.
 
+## 1.6.2 — 2026-10-20
+
+- **Filter-settling startup fix:** recognize ST's reserved FIFO values after
+  full-scale changes. Discard these during explicit calibration, bound the
+  settling wait, and start the stationary window only with real samples.
+  This prevents startup metadata from appearing as a clipped gyro reading.
+
+## 1.6.1 — 2026-10-20
+
+- **Fix driving mode losing calibration after a quick jerk:** use ±16 g /
+  ±2,000°/s ranges during practice, restoring the normal vario ranges on exit.
+  A clipped acceleration frame no longer forces parked re-zeroing: continue
+  gyro gravity tracking, suppress that frame, and resume after a short filter
+  recovery period. Event counts and calibration are retained.
+- **Fault diagnostics:** distinguish acceleration overrange, gyro overrange,
+  invalid data, and timing/axis faults. Preserve the exact offending frame in
+  telemetry and CSV; expose uptime and session peaks for live debugging.
+  Gyro clipping/data loss still require an explicit parked zero.
+- **Regression checks:** exercise motion past the old ranges, acceleration
+  clipping during rotation, automatic recovery without false/repeated events,
+  and diagnostic preservation on a real tracking failure.
+
 ## 1.6.0 — 2026-10-20
 
 - **IMU driving practice:** replaces GPS speed differentiation with paired

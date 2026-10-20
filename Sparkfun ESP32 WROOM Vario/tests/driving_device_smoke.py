@@ -28,7 +28,7 @@ def main():
         return json.loads(request(path))
 
     before = get_json('/api/settings')
-    assert before['fw_version'] == '1.6.0', before.get('fw_version')
+    assert before['fw_version'] == '1.6.2', before.get('fw_version')
     assert not before['gps_enabled'], 'Disable GPS before this independence check'
     assert not get_json('/api/driving')['active'], 'A practice session is already active'
     samples = []
@@ -46,6 +46,8 @@ def main():
             samples.append(state)
             assert state['active'] and state['logging'], state
             assert state['source'] == 'imu' and state['sample_hz'] == 120
+            assert state['accel_range_g'] == 16 and state['gyro_range_dps'] == 2000
+            assert not state['recovering'] and state['accel_overrange_samples'] == 0
             assert state['imu_faults'] == 0 and state['dropped_log_rows'] == 0, state
             assert not get_json('/api/settings')['gps_enabled'], 'Practice enabled GPS'
             if state['calibrated'] and state['accel_mph_s'] is not None:
@@ -79,7 +81,7 @@ def main():
     assert rows[0]['record'] == 'session_start'
     assert rows[-1]['record'] == 'session_end'
     assert all(None not in row and None not in row.values() for row in rows), 'CSV shape mismatch'
-    assert all(r['source'] == 'imu' and r['fw_version'] == '1.6.0' for r in rows)
+    assert all(r['source'] == 'imu' and r['fw_version'] == '1.6.2' for r in rows)
     assert sum(r['record'] == 'calibrated' for r in rows) == 2, 'Re-zero did not complete'
     measurements = [r for r in rows if r['record'] == 'sample']
     assert len(measurements) >= 70, len(measurements)

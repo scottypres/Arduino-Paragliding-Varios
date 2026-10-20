@@ -1,6 +1,6 @@
 # Driving practice (IMU)
 
-Firmware 1.6.0 uses the LSM6DSV16X accelerometer and gyro at 120 Hz.
+Firmware 1.6.2 uses the LSM6DSV16X accelerometer and gyro at 120 Hz.
 GPS is not required, enabled, or used by driving practice. The display shows
 signed **mph/s** and longitudinal **g**, not vehicle speed in mph.
 
@@ -64,10 +64,25 @@ cannot distinguish forward from reverse travel, and cannot prove the car is
 parked. A steady acceleration during zeroing can look like tilted gravity.
 Use for forward-driving practice; re-zero while parked before each drive.
 
-Read errors, saturated samples, missing pairs, FIFO overflow, or a backlog over
-half a second invalidate the result and silence maneuver alerts. The screen
-shows `--` and requests a parked zero; recovery never silently calibrates while
-you may be moving. Brief SD outages show **NO LOG** but measurement continues.
+Driving mode uses ±16 g and ±2,000°/s full scales; normal vario mode returns
+to ±4 g and ±500°/s. This prevents quick hand jerks from hitting the much
+smaller original driving ranges. The sensor marks filter-settling FIFO frames
+with reserved raw values after a range change. During explicit calibration,
+these are discarded (with a bounded wait) before the two-second stationary
+window starts; they are not counted as physical rotation or acceleration.
+See ST's [AN5763, section 4.3.1](https://www.st.com/resource/en/application_note/DM00851721.pdf).
+
+An acceleration-only overrange sample is logged and excluded from alerts.
+The gyro continues tracking gravity; the filter warms up for 250 ms of valid
+samples while the OLED shows **Shock: recovering**, then measurement resumes
+with the same calibration and event counts. This does not re-zero the sensor.
+
+Gyro overrange, invalid data, read errors, missing pairs, FIFO overflow, or a
+backlog over half a second still invalidate gravity tracking and silence
+maneuver alerts. The screen shows `--` and requests a parked zero (specifically
+**Gyro range: zero** for gyro overrange). Such failures cannot safely recover
+by pretending the vehicle is stationary. Brief SD outages show **NO LOG**
+but measurement continues.
 
 ## Logs and API
 
@@ -87,6 +102,9 @@ loss can lose the pending batch. A full queue disables recording visibly.
 
 - `GET /api/driving`: status, measurement, axis, calibration, sample count,
   fault count/reason, dropped log rows, session file. Also in `/api/state`.
+  Includes uptime, configured ranges, peak acceleration/angular velocity,
+  acceleration-overrange and discarded-settling counts, recovery state, and the most recent issue's
+  exact raw accel/gyro frame. A detector fault does not imply a reboot.
 - `POST /api/driving/start`, `/stop`, `/calibrate`: queued main-loop controls
   (202). Starting during a flight or battery test returns 409. Calibration
   requires the operator to park first.
@@ -99,7 +117,9 @@ g++ -std=c++11 -Wall -Wextra -Werror -fsanitize=address,undefined tests/driving_
 python tests/driving_device_smoke.py http://192.168.50.99 /tmp/driving-check
 ```
 
-The host test covers conversion, signs/all six axes, sustained acceleration,
+The host test covers quick-jerk regression and recovery, preserved gyro
+tracking through acceleration clipping, fault evidence, conversion, signs/all
+six axes, sustained acceleration,
 threshold duration, hysteresis, bumps, slopes, gyro tilt compensation, bias,
 noise, missing/invalid/saturated data, explicit re-zero, and adjustable limits.
 The device check requires a stationary unit with GPS off and a horizontal
@@ -107,7 +127,7 @@ forward axis. It verifies actual sample rate, two calibration cycles, SD CSV,
 no stationary alerts, and setting restoration. This does not validate road
 accuracy or the physical audibility/readability of the alerts and OLED.
 
-### Installation verification — 2026-10-20
+### Version 1.6.0 installation verification — 2026-10-20
 
 - WiFi build, ESP32 core 3.3.10: 1,653,075 bytes program storage and
   72,572 bytes static RAM. Firmware image checksums passed.
@@ -124,3 +144,24 @@ accuracy or the physical audibility/readability of the alerts and OLED.
 
 Flashed application SHA-256:
 `d631e6992393fdd52b49f939f7ba1017c7c07695ac0571ef8c9bcbef0f415c63`
+
+### Version 1.6.2 jerk-recovery verification — 2026-10-20
+
+- Live reproduction on 1.6.0 showed `Monitoring` changing to `invalid_sample`
+  while uptime and sample counts continued increasing. This was calibration
+  invalidation, not a reboot. Logged acceleration reached 3.8892 g before a
+  fault; the old guard rejected a single frame at 3.95 g or 495°/s.
+- Regression tests now cover motion above both old limits, clipped acceleration
+  during rotation, preservation of calibration/event counts, recovery without
+  false events, and exact gyro-fault evidence. Sanitizer checks passed.
+- Device validation exposed ST filter-settling markers after changing range;
+  1.6.2 discards those during explicit calibration before accepting real data.
+- WiFi build: 1,655,403 bytes program storage, 72,644 bytes static RAM. Image
+  checksums passed and ArduinoOTA installation succeeded.
+- Stationary check: two successful calibrations, two discarded settling frames,
+  99 SD measurement rows, approximately 115.8 samples/s, GPS disabled, and no
+  sensor faults or false alerts. Log:
+  `/logs/drive_2026_10_20_09-47-20_3443.csv`.
+
+Flashed application SHA-256:
+`b8731ebc7f111a25233c2b3353051f43e9fc4423239118debc122eb000d573b1`

@@ -6,8 +6,25 @@
 namespace driving {
 constexpr float kMphSPerG = 9.80665F / 0.44704F;
 constexpr float kSampleSeconds = 1.0F / 120.0F;
+constexpr float kAccelRangeG = 16.0F, kGyroRangeDps = 2000.0F;
+// ST AN5763 §4.3.1: DRDY_MASK marks unsettled FIFO data with these codes.
+// Check raw codes before scaling; they are metadata, not physical motion.
+inline bool fifoSettlingSample(int16_t x, int16_t y, int16_t z) {
+  return x >= 0x7FFD || y >= 0x7FFD || z >= 0x7FFD;
+}
 enum class Event : uint8_t { None, Acceleration, Braking };
 enum class State : uint8_t { Calibrating, Ready, NeedZero, AxisVertical };
+enum class Issue : uint8_t { None, AccelRange, GyroRange, InvalidData, Timing, Axis };
+inline const char *issueName(Issue issue) {
+  switch (issue) {
+    case Issue::AccelRange: return "accel_overrange";
+    case Issue::GyroRange: return "gyro_overrange";
+    case Issue::InvalidData: return "invalid_data";
+    case Issue::Timing: return "sample_timing";
+    case Issue::Axis: return "invalid_axis";
+    default: return "";
+  }
+}
 struct Vec {
   float x = 0, y = 0, z = 0;
   Vec() = default;
@@ -34,6 +51,8 @@ struct Reading {
   Vec accel, gyro;
   float gravityG = NAN, linearG = NAN, rateMphS = NAN;
   bool updated = false;
+  bool recovering = false;
+  Issue issue = Issue::None;
   Event event = Event::None;
 };
 class Detector {
@@ -52,22 +71,33 @@ class Detector {
     reading = Reading{};
     latched = candidate = Event::None;
     candidateSeconds = recoverySeconds = quietSeconds = 0;
+    shockRecoverySeconds = 0;
     filteredG = 0;
   }
   Reading sample(Vec accel, Vec gyro, float dt = kSampleSeconds) {
     ++samples;
     reading.updated = false;
+    reading.recovering = false;
+    reading.issue = Issue::None;
     reading.event = Event::None;
     reading.accel = accel;
     reading.gyro = gyro;
-    // Saturation, corrupted samples, and discontinuities cannot produce alerts.
-    if (!accel.finite() || !gyro.finite() || !isfinite(dt) || dt < 0.001F ||
-        dt > 0.05F || fabsf(accel.x) >= 3.95F || fabsf(accel.y) >= 3.95F ||
-        fabsf(accel.z) >= 3.95F || fabsf(gyro.x) >= 495 ||
-        fabsf(gyro.y) >= 495 || fabsf(gyro.z) >= 495 || axis >= 6) {
-      invalidate(); return reading;
-    }
+    if (!accel.finite() || !gyro.finite()) return fail(Issue::InvalidData, accel, gyro);
+    if (!isfinite(dt) || dt < 0.001F || dt > 0.05F) return fail(Issue::Timing, accel, gyro);
+    if (axis >= 6) return fail(Issue::Axis, accel, gyro);
+    // Lost angular motion makes gravity tracking unreliable. An accel-only
+    // shock does not: the valid gyro can continue tracking through that frame.
+    if (fabsf(gyro.x) >= kGyroRangeDps * .99F ||
+        fabsf(gyro.y) >= kGyroRangeDps * .99F ||
+        fabsf(gyro.z) >= kGyroRangeDps * .99F) return fail(Issue::GyroRange, accel, gyro);
+    const bool accelClipped = fabsf(accel.x) >= kAccelRangeG * .99F ||
+        fabsf(accel.y) >= kAccelRangeG * .99F || fabsf(accel.z) >= kAccelRangeG * .99F;
     if (state == State::Calibrating) {
+      if (accelClipped) {
+        reading.issue = Issue::AccelRange;
+        clearCalibration();
+        return reading;
+      }
       const float n = accel.norm();
       // Constant vehicle acceleration is indistinguishable from tilted gravity
       // during calibration; the operator MUST be parked for this step.
@@ -107,6 +137,16 @@ class Detector {
                 unit * (dot(unit, gravity) * (1.0F - cosf(angle)));
       gravity = gravity * (gravityNorm / gravity.norm());
     }
+    if (accelClipped) {
+      reading.issue = Issue::AccelRange;
+      reading.recovering = true;
+      reading.gravityG = project(gravity, axis);
+      reading.linearG = reading.rateMphS = NAN;
+      shockRecoverySeconds = .250F;
+      candidate = Event::None;
+      candidateSeconds = recoverySeconds = quietSeconds = filteredG = 0;
+      return reading;
+    }
     Vec residual = accel - gravity;
     // Correct drift slowly only near zero acceleration after two quiet seconds.
     // Acceleration-derived pitch must never cancel a sustained maneuver.
@@ -120,6 +160,12 @@ class Detector {
     } else { quietSeconds = 0; }
     filteredG += dt / (0.060F + dt) * (project(residual, axis) - filteredG);
     reading.gravityG = project(gravity, axis);
+    if (shockRecoverySeconds > 0) {
+      shockRecoverySeconds -= dt;
+      reading.recovering = true;
+      reading.linearG = reading.rateMphS = NAN;
+      return reading;  // warm the filter before resuming event qualification
+    }
     reading.linearG = filteredG;
     reading.rateMphS = filteredG * kMphSPerG;
     reading.updated = true;
@@ -150,7 +196,16 @@ class Detector {
   Vec gravity, gyroBias, accelSum, gyroSum, previousAccel;
   float gravityNorm = 1, accelSquared = 0, filteredG = 0;
   float quietSeconds = 0, candidateSeconds = 0, recoverySeconds = 0;
+  float shockRecoverySeconds = 0;
   Event latched = Event::None, candidate = Event::None;
+  Reading fail(Issue issue, Vec accel, Vec gyro) {
+    invalidate();
+    // Keep the offending frame for diagnostics; invalidation used to erase it.
+    reading.accel = accel;
+    reading.gyro = gyro;
+    reading.issue = issue;
+    return reading;
+  }
   void clearCalibration() {
     calibrationSamples = 0;
     accelSum = gyroSum = Vec{};

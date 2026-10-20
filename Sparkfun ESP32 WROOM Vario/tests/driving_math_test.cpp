@@ -18,6 +18,10 @@ static void near(float actual, float expected, float tolerance = 0.01F) {
   assert(isfinite(actual) && fabsf(actual - expected) < tolerance);
 }
 int main() {
+  assert(fifoSettlingSample(0x7FFF,0,0));
+  assert(fifoSettlingSample(0,0x7FFE,0));
+  assert(fifoSettlingSample(0,0,0x7FFD));
+  assert(!fifoSettlingSample(0x7FFC,-32768,0));
   near(kMphSPerG, 21.93685F, 0.001F);
   auto d = ready();
   feed(d, Vec(0.5F,0,1), 120);
@@ -102,11 +106,49 @@ int main() {
   d.calibrate(); feed(d, Vec(0,0,1),240);
   assert(d.state == State::Ready && d.accelerations == 1);
   d.sample(Vec(NAN,0,1), Vec{});
-  assert(d.state == State::NeedZero);
-  d = ready(); d.sample(Vec(4,0,1), Vec{});
-  assert(d.state == State::NeedZero && d.accelerations == 0);
-  d = ready(); d.sample(Vec(0,0,1), Vec(500,0,0));
-  assert(d.state == State::NeedZero);
+  assert(d.state == State::NeedZero && d.reading.issue == Issue::InvalidData);
+  assert(isnan(d.reading.accel.x));  // retain the rejected frame
+  // Regression: ordinary hand jerks crossed the old 3.95 g / 495 dps guard.
+  d = ready(); d.sample(Vec(4.5F,0,1), Vec(600,0,0));
+  assert(d.state == State::Ready && d.reading.issue == Issue::None);
+  assert(d.reading.updated);
+  // Accel clipping suppresses measurements briefly, but the healthy gyro
+  // continues tracking gravity. No re-zero or spurious event is necessary.
+  d = ready();
+  for (int i = 1; i <= 12; ++i) {
+    d.sample(Vec(0,0,16), Vec(0,90,0));
+    assert(d.state == State::Ready && d.reading.recovering);
+    assert(d.reading.issue == Issue::AccelRange && !d.reading.updated);
+    assert(d.reading.accel.z == 16 && !isfinite(d.reading.rateMphS));
+  }
+  const float shockAngle = 12 * 90 * kSampleSeconds * radians;
+  const Vec afterShock(-sinf(shockAngle),0,cosf(shockAngle));
+  feed(d, afterShock, 20);
+  assert(d.reading.recovering && !d.reading.updated);
+  feed(d, afterShock, 100);
+  assert(d.state == State::Ready && d.calibrationSamples == 240);
+  assert(d.reading.updated && !d.reading.recovering);
+  near(d.reading.rateMphS,0,.02F);
+  assert(d.accelerations == 0 && d.brakes == 0);
+  // Keep a maneuver latched across a clipped frame; don't count it twice.
+  d = ready(); feed(d,Vec(.5F,0,1),120);
+  d.sample(Vec(16,0,1),Vec{});
+  feed(d,Vec(.5F,0,1),120);
+  assert(d.state == State::Ready && d.accelerations == 1);
+  feed(d,Vec(-.5F,0,1),120);
+  assert(d.brakes == 1);
+  // A shock while calibrating restarts its stationary window, not a hard fault.
+  d.reset(); feed(d,Vec(0,0,1),100);
+  d.sample(Vec(16,0,1),Vec{});
+  assert(d.state == State::Calibrating && d.calibrationSamples == 0);
+  feed(d,Vec(0,0,1),240);
+  assert(d.state == State::Ready);
+  // Gyro clipping cannot preserve orientation: retain exact fault evidence.
+  d = ready(); d.sample(Vec(.25F,0,1), Vec(2000,0,0));
+  assert(d.state == State::NeedZero && d.reading.issue == Issue::GyroRange);
+  assert(d.reading.gyro.x == 2000 && d.reading.accel.x == .25F);
+  feed(d,Vec(0,0,1),240);
+  assert(d.state == State::NeedZero);  // never silently zero while moving
   d = ready(); d.sample(Vec(0,0,1), Vec{}, .1F);
   assert(d.state == State::NeedZero);
   d = ready(); d.sample(Vec(0,0,1), Vec{}, NAN);
@@ -118,5 +160,5 @@ int main() {
   feed(d, Vec(.15F,0,1),120); feed(d,Vec(-.15F,0,1),120);
   assert(d.accelerations == 1 && d.brakes == 1);
   puts("IMU detector tests passed: units, signs, six axes, persistence/re-arm, bumps, slopes,");
-  puts("gyro tilt compensation, calibration/bias/noise, data loss, saturation, and thresholds.");
+  puts("gyro tilt, bias/noise, jerk regression, shock recovery, fault evidence, and thresholds.");
 }

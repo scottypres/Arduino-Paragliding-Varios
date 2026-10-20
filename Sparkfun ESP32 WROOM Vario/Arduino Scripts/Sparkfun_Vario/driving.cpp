@@ -19,6 +19,11 @@ std::atomic<int32_t> drivingRequest{0};
 static bool savedImuEnabled = false;
 static uint32_t sessionStartMs = 0, lastSampleMs = 0, lastFlushMs = 0, alertStartMs = 0;
 static uint32_t imuFaults = 0, droppedLogRows = 0;
+static uint32_t accelOverrangeSamples = 0, lastIssueMs = 0;
+static uint32_t fifoSettlingSamples = 0;
+static uint16_t settlingSinceZero = 0;
+static float peakAccelAxisG = 0, peakGyroAxisDps = 0;
+static driving::Reading lastIssueReading;
 static bool alertPlaying = false, haveAlert = false;
 static driving::Event lastAlert = driving::Event::None;
 static const char *faultReason = "";
@@ -120,6 +125,10 @@ bool startDriving() {
   lastAlert = driving::Event::None;
   faultReason = "";
   imuFaults = droppedLogRows = rowHead = rowCount = 0;
+  accelOverrangeSamples = lastIssueMs = 0;
+  fifoSettlingSamples = settlingSinceZero = 0;
+  peakAccelAxisG = peakGyroAxisDps = 0;
+  lastIssueReading = driving::Reading{};
   drivingActive = true;
   blindsMode = false;
   inMenuMode = editingMenuItem = toneTestActive = false;
@@ -170,6 +179,7 @@ void calibrateDriving() {
   if (!drivingActive) return;
   alertPlaying = haveAlert = false;
   drivingDetector.calibrate();
+  settlingSinceZero = 0;
   faultReason = "";
   lastSampleMs = millis();
   queueLog("zero_requested");
@@ -180,21 +190,50 @@ void drivingImuFault(const char *reason) {
   if (!drivingActive) return;
   if (drivingDetector.state != driving::State::NeedZero || !*faultReason) {
     ++imuFaults;
-    drivingDetector.invalidate();
+    // A detector failure already invalidated the result and retained its raw
+    // offending frame. Do not erase that evidence a second time.
+    if (drivingDetector.state != driving::State::NeedZero) drivingDetector.invalidate();
     faultReason = reason;
     queueLog(reason);
   }
   alertPlaying = haveAlert = false;
 }
+void processDrivingImuSettling() {
+  if (!drivingActive) return;
+  lastSampleMs = millis();
+  ++fifoSettlingSamples;
+  // Only startup / explicitly requested calibration can discard these frames.
+  // Bound the wait so a broken sensor cannot masquerade as normal settling.
+  if (drivingDetector.state == driving::State::Calibrating && ++settlingSinceZero <= 120) {
+    drivingDetector.calibrate();
+  } else {
+    drivingImuFault("imu_settling");
+  }
+}
 void processDrivingImu(driving::Vec accel, driving::Vec gyro) {
   if (!drivingActive) return;
   lastSampleMs = millis();
   const auto previous = drivingDetector.state;
+  const auto previousReading = drivingDetector.reading;
   const auto r = drivingDetector.sample(accel, gyro);
+  if (accel.finite()) peakAccelAxisG = fmaxf(peakAccelAxisG,
+      fmaxf(fabsf(accel.x), fmaxf(fabsf(accel.y), fabsf(accel.z))));
+  if (gyro.finite()) peakGyroAxisDps = fmaxf(peakGyroAxisDps,
+      fmaxf(fabsf(gyro.x), fmaxf(fabsf(gyro.y), fabsf(gyro.z))));
+  if (r.issue != driving::Issue::None) {
+    lastIssueReading = r;
+    lastIssueMs = millis();
+  }
+  if (r.issue == driving::Issue::AccelRange) {
+    ++accelOverrangeSamples;
+    alertPlaying = haveAlert = false;
+    if (previousReading.issue != driving::Issue::AccelRange) queueLog("accel_overrange");
+  }
+  if (previousReading.recovering && r.updated) queueLog("shock_recovered");
   if (previous != drivingDetector.state) {
     if (drivingDetector.state == driving::State::Ready) queueLog("calibrated");
     else if (drivingDetector.state == driving::State::AxisVertical) queueLog("axis_vertical");
-    else if (drivingDetector.state == driving::State::NeedZero) drivingImuFault("invalid_sample");
+    else if (drivingDetector.state == driving::State::NeedZero) drivingImuFault(driving::issueName(r.issue));
   }
   if (r.event != driving::Event::None) {
     lastAlert = r.event;
@@ -233,7 +272,11 @@ String drivingStatus() {
   if (!imuReady) return "IMU missing";
   if (drivingDetector.state == driving::State::Calibrating) return "Park: keep still";
   if (drivingDetector.state == driving::State::AxisVertical) return "Change forward axis";
-  if (drivingDetector.state == driving::State::NeedZero) return "Park + Select: zero";
+  if (drivingDetector.state == driving::State::NeedZero) {
+    if (strcmp(faultReason, "gyro_overrange") == 0) return "Gyro range: zero";
+    return "Park + Select: zero";
+  }
+  if (drivingDetector.reading.recovering) return "Shock: recovering";
   if (haveAlert && millis() - alertStartMs < 3000) {
     return lastAlert == driving::Event::Braking ? "HARD BRAKE" : "FAST ACCEL";
   }
@@ -242,15 +285,31 @@ String drivingStatus() {
 String drivingJson() {
   JsonDocument doc;
   doc["active"] = drivingActive;
+  doc["uptime_ms"] = millis();
   doc["status"] = drivingStatus();
   doc["source"] = "imu";
   doc["forward_axis"] = driving::axisName(drivingAxis);
   doc["calibrated"] = drivingDetector.state == driving::State::Ready;
   doc["calibration_samples"] = drivingDetector.calibrationSamples;
   doc["sample_hz"] = 120;
+  doc["accel_range_g"] = driving::kAccelRangeG;
+  doc["gyro_range_dps"] = driving::kGyroRangeDps;
   doc["samples"] = drivingDetector.samples;
   doc["imu_faults"] = imuFaults;
   doc["fault"] = faultReason;
+  doc["recovering"] = drivingDetector.reading.recovering;
+  doc["accel_overrange_samples"] = accelOverrangeSamples;
+  doc["fifo_settling_samples"] = fifoSettlingSamples;
+  doc["peak_accel_axis_g"] = peakAccelAxisG;
+  doc["peak_gyro_axis_dps"] = peakGyroAxisDps;
+  doc["last_sample_issue"] = driving::issueName(lastIssueReading.issue);
+  doc["last_issue_ms"] = lastIssueMs;
+  doc["last_issue_ax_g"] = lastIssueReading.accel.x;
+  doc["last_issue_ay_g"] = lastIssueReading.accel.y;
+  doc["last_issue_az_g"] = lastIssueReading.accel.z;
+  doc["last_issue_gx_dps"] = lastIssueReading.gyro.x;
+  doc["last_issue_gy_dps"] = lastIssueReading.gyro.y;
+  doc["last_issue_gz_dps"] = lastIssueReading.gyro.z;
   doc["dropped_log_rows"] = droppedLogRows;
   const auto &r = drivingDetector.reading;
   if (isfinite(r.rateMphS)) doc["accel_mph_s"] = r.rateMphS;

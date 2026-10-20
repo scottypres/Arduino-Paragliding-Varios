@@ -20,6 +20,7 @@ void stopDriving();
 void serviceDriving();
 void calibrateDriving();  // operator must be parked
 void processDrivingImu(driving::Vec accel, driving::Vec gyro);
+void processDrivingImuSettling();
 void drivingImuFault(const char *reason);  // reason must have static lifetime
 void saveDrivingSettings();
 bool serviceDrivingAudio();  // true while driving owns the vario audio channel
